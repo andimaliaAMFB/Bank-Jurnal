@@ -66,7 +66,7 @@ window.addEventListener('mouseup', function(event){
     var form_modal = document.getElementById("form");
     if (form_modal.parentNode.style.display == "block") {
         console.log(form_modal.parentNode);
-        if (!(form_modal.childNodes[1].contains(event.target))){
+        if (event.target == form_modal){
             console.log("FormEnd!!");
             form_modal.parentNode.style.display = "none";
             shade_show("remove");

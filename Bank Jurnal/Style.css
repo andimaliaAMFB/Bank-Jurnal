@@ -353,6 +353,41 @@ main .main-isi .list-artikel .card .tabel-card tbody tr:hover{
     display: block;
     z-index: 10;
 }
+form#form-status table tr {
+    cursor: default;
+    text-align: left;
+}
+table#tabel-form {
+    width: 80%;
+    margin-left: 10%;
+}
+#tabel-form tbody tr {
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.125);
+}
+#tabel-form .child .child ul {
+    padding: 0;
+    margin: 0;
+}
+#tabel-form .child .child ul li {
+    list-style: none;
+    text-align: left;
+}
+#tabel-form .child .child ul li#see_article {
+    text-align: right;
+    margin-top: 0.5rem;
+}
+#tabel_status_change {
+    width: 50%;
+    height: 2rem;
+    border-radius: 0.5rem;
+    padding-inline: 1rem;
+    font-family: inherit;
+    font-size: inherit;
+}
+input.searchbar.search-jdl {
+    box-shadow: none;
+    border-radius: 0.5rem;
+}
 
 
 .container-slide{

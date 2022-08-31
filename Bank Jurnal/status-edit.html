@@ -1,0 +1,461 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rumah Jurnal - Bank Jurnal</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+    <header>
+        <div class="head-isi">
+            <div class="head-left-side">
+                <div class="head-taskbar">
+                    <button class="dot taskbar-btn" onclick="taskbar_function()">T</button>
+                </div>
+                <div class="head-logo">
+                    <img src="">
+                    <h3 id="nama-aplikasi">Rumah Jurnal</h3>
+                </div>
+            </div>
+            <div class="head-right-side">
+                <div class="head-searchbar searchbar">
+                   <form action="">
+                        <input type="text" name="search" id="search" placeholder="Search">
+                        <button type="submit" name="head-search" id="search-btn" class="dot">S</button>
+                    </form>
+                </div>
+                <div class="head-notif">
+                    <button class="dot" id="button-notif" onclick="dropdown_notif()">N</button>
+                    <ul class="dropdown-menu" style="display: none;" id="dropdown-notif">
+                        <li class="label-dropdown">Notifikasi</li>
+                        <li class="notif-isi">
+                            <p class="notif-isi-head">Artikel Baru Telah Terdaftar</p>
+                            <div class="notif-isi-waktu">
+                                <p>30 days Ago</p>
+                                <p class="view-full">View Full Notification</p>
+                            </div>
+                        </li>
+                        <li class="notif-isi">
+                            <p class="notif-isi-head">Artikel Baru Telah Terdaftar</p>
+                            <div class="notif-isi-waktu">
+                                <p>30 days Ago</p>
+                                <p class="view-full">View Full Notification</p>
+                            </div>
+                        </li>
+                        <li class="view-all">See Full Notification</li>
+                    </ul>
+                </div>
+                <div class="head-profile" onclick="dropdown_profile()">
+                    <button class="dot" id="button-profile">P</button>
+                    <ul class="dropdown-menu" style="display: none;" id="dropdown-profile">
+                        <li class="user-profile label-dropdown">
+                            <img src="┗∵┓テレカクシ思春期／HoneyWorks feat.鏡音レン.mp4_snapshot_01.24_[2015.09.27_10.55.19].jpg" alt="">
+                            <h3>Username</h3>
+                            <p>Peran</p>
+                        </li>
+                        <li>Profile</li>
+                        <li id="logout">Log Out</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="taskbar-isi" style="display: none;">
+        <div class="taskbar-content" id="taskbar">
+            <div class="task-head">
+                <div class="head-taskbar">
+                    <button class="dot taskbar-btn" onclick="taskbar_function()">T</button>
+                </div>
+                <div class="head-logo">
+                    <img src="">
+                    <h3 id="nama-aplikasi">Rumah Jurnal</h3>
+                </div>
+            </div>
+            <div class="task-content">
+                <ul>
+                    <li><h3>Dashboard</h3></li>
+                    <li><h3>Upload Artikel</h3></li>
+                    <li><h3>Draft</h3><p>10</p></li>
+                    <li><h3>Revisi Minor</h3><p>100</p></li>
+                    <li><h3>Revisi Mayor</h3><p>0</p></li>
+                    <li><h3>Layak Publish</h3><p>10</p></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <main>
+        <div class="main-isi">
+            <div class="judul-hlm"><h2>judul</h2></div>
+            <div class="list-artikel" style="margin-block: 2rem;">
+                <div class="artikel-tabel-edit card">
+                    <div class="article-order">
+                        <div class="searchbar search-jdl" style="width: 55%;">
+                            <form action="">
+                                <input type="text" name="s-jdl" id="search-jdl" placeholder="Judul Artikel">
+                                <button type="submit" name="s-jdl-btn" id="search-jdl-btn" class="dot">S</button>
+                            </form>
+                        </div>
+                        <div class="searchbar search-finalize selectbar" style="width: 30%;" id="final-select" onclick="dropdown_final()">
+                            
+                            <form class="select" action="">
+                                <label for="search-final" id="search-final">Catatan Revisi:</label>
+                                <p class="btn select-btn" id="select-final">[Yes / No]</p>
+                            </form>
+                            <div class="drop-select card se-se-bar" id="dropdown-final" style="display: none;">
+                                <ul class="select-droped">
+                                    <li>Yes</li>
+                                    <li>No</li>
+                                    <li>All</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="searchbar search-penulis selectbar se-selectbar" style="width: 50%;" id="pnl-select" onclick="dropdown_penulis()">
+                            <form class="select" action="">
+                                <label for="search-pnl" id="search-pnl">Penulis:</label>
+                                <p class="btn select-btn" id="select-pnl">>--Pilih Penulis--<</p>
+                            </form>
+                            <div class="drop-select card se-se-bar" id="dropdown-pnl" style="display: none;">
+                                <div class="select-search searchbar">
+                                    <form action="">
+                                        <input type="text" name="s-se-pnl" id="s-se-pnl" placeholder="Penulis">
+                                    </form>
+                                </div>
+                                <ul class="select-droped">
+                                    <li>poin</li>
+                                    <li>poin</li>
+                                    <li>poin</li>
+                                    <li>poin</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="searchbar search-prodi selectbar se-selectbar" style="width: 35%;" id="prodi-select" onclick="dropdown_select()">
+                            <form class="select" action="">
+                                <label for="search-prodi" id="search-prodi">Prodi:</label>
+                                <p class="btn select-btn" id="select-prodi">>--Pilih Program Studi--<</p>
+                            </form>
+                            <div class="drop-select card se-se-bar" id="dropdown-prodi" style="display: none;">
+                                <div class="select-search searchbar">
+                                    <form action="">
+                                        <input type="text" name="s-se-prodi" id="s-se-prodi" placeholder="Prodi">
+                                    </form>
+                                </div>
+                                <ul class="select-droped">
+                                    <li>poin</li>
+                                    <li>poin</li>
+                                    <li>poin</li>
+                                    <li>poin</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="tabel-card" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th style="width:40%">Judul</th>
+                                <th>Penulis</th>
+                                <th>Program Studi</th>
+                                <th style="width:10%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="width:40%">Judul</td>
+                                <td>Penulis</td>
+                                <td>Program Studi</td>
+                                <td style="width:10%" class="btn" onclick="form_function()">View</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%">Judul</td>
+                                <td>Penulis</td>
+                                <td>Program Studi</td>
+                                <td style="width:10%" class="btn" onclick="form_function()">View</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="page">
+                        <div class="table-data-count">
+                            10 of 100 article
+                        </div>
+                        <div class="page-button">
+                            <button class="np-btn btn" id="2-prev-btn-artikel"><<</button>
+                            <button class="np-btn btn" id="prev-btn-artikel"><</button>
+                            <p class="no-loc" id="no-loc-artikel">1</p>
+                            <button class="np-btn btn" id="next-btn-artikel">></button>
+                            <button class="np-btn btn" id="2-next-btn-artikel">>></button>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="form-modal" style="display: none;">
+                <div class="fliter-form" id="form">
+                    <div class="form-card card">
+                        <div class="card-head">
+                            <h3>Ubah Status</h3>
+                            <button class="btn" onclick="form_function()">X</button>
+                        </div>
+                        <div class="card-body">
+                            <form action="">
+                                <table class="tabel-card" style="width: 100%; text-align: left;">
+                                    <tr>
+                                        <td style="width: 25%;">Judul Artikel : </td>
+                                        <td>[Judul Artikel]</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Penulis : </td>
+                                        <td>[Nama Penulis]</td>
+                                    </tr>
+                                </table>
+                                <p style="padding: 0.5rem; margin: 0; margin-top: 1rem;">Status Perubahan</p>
+                                <table class="tabel-card" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Tanggal Upload</th>
+                                            <th>Status Lama</th>
+                                            <th>Status Baru</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Tanggal Upload</td>
+                                            <td>Status Lama</td>
+                                            <td>Status Baru</td>
+                                            <td>V</td>
+                                        </tr>
+                                        <tr class="child">
+                                            <td class="child" colspan="4">
+                                                <ul>
+                                                    <li>Status Lama</li>
+                                                    <li>Status Baru</li>
+                                                    <li>Catatan : </li>
+                                                    <li>[Catatan Revisi Yang diberikan Oleh Admin]</li>
+                                                    <li>Lihat Artikel</li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tanggal Upload</td>
+                                            <td>Status Lama</td>
+                                            <td>-</td>
+                                            <td>V</td>
+                                        </tr>
+                                        <tr class="child">
+                                            <td class="child" colspan="4">
+                                                <ul>
+                                                    <li>Status Lama</li>
+                                                    <li><select name="" id="">
+                                                        <option value="">Draft</option>
+                                                        <option value="">Revisi Minor</option>
+                                                        <option value="">Revisi Mayor</option>
+                                                        <option value="">Layak Publish</option>
+                                                    </select></li>
+                                                    <li>Catatan : </li>
+                                                    <li><input type="text" name="" id="" placeholder="[Catatan Revisi Yang diberikan Oleh Admin]"></li>
+                                                    <li>Lihat Artikel</li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    
+                                </table>
+                                <button type="submit" class="btn">Update Status</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+
+    </footer>
+    <div class="shade fade" id="shade"></div>
+    <script>
+        function overflow_body(isi) {
+            var body = document.getElementsByTagName("body");
+            
+            Array.from(body).forEach((x) => {
+                x.style.overflow = isi;
+            })
+        }
+        function shade_show(isi) {
+            var shade = document.getElementsByClassName("shade");
+            Array.from(shade).forEach((x) => {
+                if (isi == "show") {
+                    x.classList.add(isi);
+                }
+                else {
+                    x.classList.remove("show");
+                }
+            })
+        }
+        window.addEventListener('mouseup', function(event){
+            console.log(event.target);
+
+            var notif = document.getElementById("dropdown-notif");
+            if (notif.style.display == "block") {
+                if (event.target != notif && event.target.parentNode != notif && event.target.parentNode.parentNode != notif && event.target.parentNode.parentNode.parentNode != notif){
+                    console.log("===============");
+                    console.log(notif);
+                    console.log("Ended");
+                    console.log("===============");
+                    notif.style.display = "none";
+                }
+            }
+            
+            var prof = document.getElementById("dropdown-profile");
+            if (prof.style.display == "block") {
+                if (event.target != prof && event.target.parentNode != prof && event.target.parentNode.parentNode != prof){
+                    console.log("===============");
+                    console.log(prof);
+                    console.log("Ended");
+                    console.log("===============");
+                    prof.style.display = "none";
+                }
+            }
+            
+            var taskbar = document.getElementById("taskbar");
+            if (taskbar.parentNode.style.display == "block") {
+                console.log(taskbar);
+                if (event.target != taskbar && event.target.parentNode != taskbar && event.target.parentNode.parentNode != taskbar && event.target.parentNode.parentNode.parentNode != taskbar && event.target.parentNode.parentNode.parentNode.parentNode != taskbar){
+                    console.log("taskbarEnd!!");
+                    taskbar.parentNode.style.display = "none";
+                    shade_show("remove");
+                }
+            }
+            else if (taskbar.parentNode.style.display == "none") {
+                if (event.target != document.getElementsByClassName("taskbar-btn")) {
+                    taskbar_function();
+                }
+            }
+            
+
+            var form_modal = document.getElementById("form");
+            if (form_modal.parentNode.style.display == "block") {
+                console.log(form_modal.parentNode);
+                if (event.target != form_modal && event.target.parentNode != form_modal){
+                    console.log("FormEnd!!");
+                    form_modal.parentNode.style.display = "none";
+                    shade_show("remove");
+                }
+            }
+            var prodi = document.getElementById("dropdown-final");
+            var lbl_1_prodi = document.getElementById("search-prodi");
+            var lbl_2_prodi = document.getElementById("select-prodi");
+            if (event.target != prodi && event.target.parentNode != prodi.parentNode){
+                prodi.style.display = "none";
+                prodi.parentNode.style.boxShadow = "inset 0px 4px 4px rgba(0, 0, 0, 0.25)";
+                prodi.parentNode.style.backgroundColor = "#EFF6E3";
+                lbl_1_prodi.style.color = "rgba(0, 0, 0, .5)";
+                lbl_2_prodi.style.color = "rgba(0, 0, 0, .5)";
+                prodi.style.color = "rgba(0, 0, 0, 1)";
+            }  
+            
+            var pnl = document.getElementById("dropdown-pnl");
+            var lbl_1_pnl = document.getElementById("search-pnl");
+            var lbl_2_pnl = document.getElementById("select-pnl");
+            if (event.target != pnl && event.target.parentNode != pnl.parentNode){
+                pnl.style.display = "none";
+                pnl.parentNode.style.boxShadow = "inset 0px 4px 4px rgba(0, 0, 0, 0.25)";
+                pnl.parentNode.style.backgroundColor = "#EFF6E3";
+                lbl_1_pnl.style.color = "rgba(0, 0, 0, .5)";
+                lbl_2_pnl.style.color = "rgba(0, 0, 0, .5)";
+                pnl.style.color = "rgba(0, 0, 0, 1)";
+            }  
+
+            var final = document.getElementById("dropdown-prodi");
+            var lbl_1_final = document.getElementById("search-final");
+            var lbl_2_final = document.getElementById("select-final");
+            if (event.target != final && event.target.parentNode != final.parentNode){
+                final.style.display = "none";
+                final.parentNode.style.boxShadow = "inset 0px 4px 4px rgba(0, 0, 0, 0.25)";
+                final.parentNode.style.backgroundColor = "#EFF6E3";
+                lbl_1_final.style.color = "rgba(0, 0, 0, .5)";
+                lbl_2_final.style.color = "rgba(0, 0, 0, .5)";
+                final.style.color = "rgba(0, 0, 0, 1)";
+            }   
+        });
+        
+        
+        function dropdown_notif(){
+            var drop = document.getElementById("dropdown-notif");
+            if (drop.style.display === "none") {
+                drop.style.display = "block";
+            }
+        }
+        function dropdown_profile(){
+            var prof = document.getElementById("dropdown-profile");
+            if (prof.style.display === "none") {
+                prof.style.display = "block";
+            }
+        }
+        function taskbar_function() {
+            var taskbar = document.getElementsByClassName("taskbar-isi");
+            Array.from(taskbar).forEach((x) => {
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                    x.classList.add("show");
+                    shade_show("show");
+                }
+            });
+            console.log("OpenTaskbar!!");
+        }
+        function form_function() {
+            var form = document.getElementsByClassName("form-modal");
+            Array.from(form).forEach((x) => {
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                    x.classList.add("show");
+                    shade_show("show");
+                    overflow_body("hidden");
+                }
+            });
+            console.log("OpenForm!!");
+        }
+
+        function dropdown_final(){
+            var prof = document.getElementById("dropdown-final");
+            var lbl_1 = document.getElementById("search-final");
+            var lbl_2 = document.getElementById("select-final");
+            var btn = document.getElementById("final-select");
+            if (prof.style.display === "none") {
+                btn.style.boxShadow = "none";
+                prof.style.display = "block";
+                lbl_1.style.color = "#FFFFFF";
+                lbl_2.style.color = "#FFFFFF";
+                btn.style.backgroundColor = "#A8D470";
+            }
+        }
+        function dropdown_penulis(){
+            var pnl = document.getElementById("dropdown-pnl");
+            var lbl_1 = document.getElementById("search-pnl");
+            var lbl_2 = document.getElementById("select-pnl");
+            var btn = document.getElementById("pnl-select");
+            if (pnl.style.display == "none") {
+                btn.style.boxShadow = "none";
+                pnl.style.display = "block";
+                lbl_1.style.color = "#FFFFFF";
+                lbl_2.style.color = "#FFFFFF";
+                btn.style.backgroundColor = "#A8D470";
+            }
+        }
+        function dropdown_select(){
+            var prof = document.getElementById("dropdown-prodi");
+            var lbl_1 = document.getElementById("search-prodi");
+            var lbl_2 = document.getElementById("select-prodi");
+            var btn = document.getElementById("prodi-select");
+            if (prof.style.display === "none") {
+                btn.style.boxShadow = "none";
+                prof.style.display = "block";
+                lbl_1.style.color = "#FFFFFF";
+                lbl_2.style.color = "#FFFFFF";
+                btn.style.backgroundColor = "#A8D470";
+            }
+        }
+    </script>
+</body>
+</html>

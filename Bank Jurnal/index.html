@@ -1,0 +1,352 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rumah Jurnal - Bank Jurnal</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+    <header>
+        <div class="head-isi">
+            <div class="head-left-side">
+                <div class="head-taskbar">
+                    <button class="dot taskbar-btn" onclick="taskbar_function()">T</button>
+                </div>
+                <div class="head-logo">
+                    <img src="">
+                    <h3 id="nama-aplikasi">Rumah Jurnal</h3>
+                </div>
+            </div>
+            <div class="head-right-side">
+                <div class="head-searchbar searchbar">
+                   <form action="">
+                        <input type="text" name="search" id="search" placeholder="Search">
+                        <button type="submit" name="head-search" id="search-btn" class="dot">S</button>
+                    </form>
+                </div>
+                <div class="head-notif" onclick="dropdown_notif()">
+                    <button class="dot" id="button-notif">N</button>
+                    <ul class="dropdown-menu" style="display: none;" id="dropdown-notif">
+                        <li class="label-dropdown">Notifikasi</li>
+                        <li class="notif-isi">
+                            <p class="notif-isi-head">Artikel Baru Telah Terdaftar</p>
+                            <div class="notif-isi-waktu">
+                                <p>30 days Ago</p>
+                                <p class="view-full">View Full Notification</p>
+                            </div>
+                        </li>
+                        <li class="view-all">See Full Notification</li>
+                    </ul>
+                </div>
+                <div class="head-profile" onclick="dropdown_profile()">
+                    <button class="dot" id="button-profile">P</button>
+                    <ul class="dropdown-menu" style="display: none;" id="dropdown-profile">
+                        <li class="user-profile label-dropdown">
+                            <img src="┗∵┓テレカクシ思春期／HoneyWorks feat.鏡音レン.mp4_snapshot_01.24_[2015.09.27_10.55.19].jpg" alt="">
+                            <h3>Username</h3>
+                            <p>Peran</p>
+                        </li>
+                        <li>Profile</li>
+                        <li id="logout">Log Out</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="taskbar-isi" style="display: none;">
+        <div class="taskbar-content">
+            <div class="task-head">
+                <div class="head-taskbar">
+                    <button class="dot taskbar-btn" onclick="taskbar_function()">T</button>
+                </div>
+                <div class="head-logo">
+                    <img src="">
+                    <h3 id="nama-aplikasi">Rumah Jurnal</h3>
+                </div>
+            </div>
+            <div class="task-content">
+                <ul>
+                    <li><h3>Dashboard</h3></li>
+                    <li><h3>Upload Artikel</h3></li>
+                    <li><h3>Draft</h3><p>10</p></li>
+                    <li><h3>Revisi Minor</h3><p>100</p></li>
+                    <li><h3>Revisi Mayor</h3><p>0</p></li>
+                    <li><h3>Layak Publish</h3><p>10</p></li>
+                </ul>
+            </div>
+        </div>
+        <div class="shade" onclick="taskbar_function()"></div>
+    </div>
+    <main>
+        <div class="main-isi">
+            <div class="judul-hlm"><h2>judul</h2></div>
+            <div class="statistic-data">
+                <div class="static card" style="width: 55%;">
+                    <div class="card-head">Statistik Data</div>
+                    <div class="card-body">Statistik</div>
+                </div>
+                <div class="donut card" style="width: 40%;">
+                    <div class="card-head">Donut Data</div>
+                    <div class="card-body">Donut</div>
+                </div>
+            </div>
+            <div class="filter-prodi">
+                <div class="head-sub">
+                    <h4>List Program Studi</h4>
+                    <button class="filter-btn btn" onclick="form_function()">
+                        <img src="" alt="">
+                        Filter
+                    </button>
+                </div>
+                <div class="body-sub filter-body">
+                    <div class="prodi-box">
+                        prodi 1
+                    </div>
+                    <div class="prodi-box">
+                        Manajemen Dakwah
+                    </div>
+                    <div class="prodi-box">
+                        Teknik Informatika
+                    </div>
+                    <div class="prodi-box">
+                        Manajemen Pendidikian Islam
+                    </div>
+                    <div class="prodi-box">
+                        Pengembangan Masyarakat Islam
+                    </div>
+                    <div class="prodi-box">
+                        Pengembangan Masyarakat Islam
+                    </div>
+                </div>
+                <div class="fliter-form" style="display: none;">
+                    <div class="form-card card">
+                        <div class="card-head">
+                            <h3>Program Studi</h3>
+                            <button class="btn" onclick="form_function()">X</button>
+                        </div>
+                        <div class="card-body">
+                            <form action="">
+                                <div class="prodi-pilih">
+                                    
+                                <article>
+                                    <input type="checkbox">
+                                    <div>
+                                        <span>
+                                          Prodi 1
+                                        </span>
+                                      </div>
+                                </article>
+                                <article>
+                                    <input type="checkbox">
+                                    <div>
+                                        <span>
+                                            Manajemen Dakwah
+                                        </span>
+                                      </div>
+                                </article>
+                                <article>
+                                    <input type="checkbox">
+                                    <div>
+                                        <span>
+                                            Teknik Informatika
+                                        </span>
+                                      </div>
+                                </article>
+                                <article>
+                                    <input type="checkbox">
+                                    <div>
+                                        <span>
+                                            Manajemen Pendidikian Islam
+                                        </span>
+                                      </div>
+                                </article>
+                                <article>
+                                    <input type="checkbox">
+                                    <div>
+                                        <span>
+                                            Manajemen Dakwah
+                                        </span>
+                                      </div>
+                                </article>
+                                </div>
+                                
+                                <button type="submit" class="btn">Cari Prodi</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="shade" onclick="form_function()"></div>
+                </div>
+            </div>
+            <div class="list-artikel">
+                <div class="artikel-tabel card">
+                    <table class="tabel-card" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th style="width:40%">Judul</th>
+                                <th>Penulis</th>
+                                <th>Program Studi</th>
+                                <th style="width:10%">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="width:40%">Judul</td>
+                                <td>Penulis</td>
+                                <td>Program Studi</td>
+                                <td style="width:10%">Status</td>
+                            </tr>
+                            <tr>
+                                <td>Judul</td>
+                                <td>Penulis</td>
+                                <td>Program Studi</td>
+                                <td>Status</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="page">
+                        <div class="table-data-count">
+                            10 of 100 article
+                        </div>
+                        <div class="page-button">
+                            <button class="np-btn btn" id="2-prev-btn-artikel"><<</button>
+                            <button class="np-btn btn" id="prev-btn-artikel"><</button>
+                            <p class="no-loc" id="no-loc-artikel">1</p>
+                            <button class="np-btn btn" id="next-btn-artikel">></button>
+                            <button class="np-btn btn" id="2-next-btn-artikel">>></button>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="slide-penulis">
+                <div class="penulis-isi card">
+                    <div class="card-head">Penulis</div>
+                    <div class="card-body">
+                        <div class="container-slide">
+                            <div class="profile-box">
+                                <img src="" alt="profile-image">
+                                <p id="profile-name">Nama Pengguna</p>
+                            </div>
+                            <div class="profile-box">
+                                <img src="" alt="profile-image">
+                                <p id="profile-name">Nama Pengguna</p>
+                            </div>
+                            <div class="profile-box">
+                                <img src="" alt="profile-image">
+                                <p id="profile-name">Nama Pengguna</p>
+                            </div>
+                            <div class="profile-box">
+                                <img src="" alt="profile-image">
+                                <p id="profile-name">Nama Pengguna</p>
+                            </div>
+                            <div class="profile-box">
+                                <img src="" alt="profile-image">
+                                <p id="profile-name">Nama Pengguna</p>
+                            </div>
+                            <div class="profile-box">
+                                <img src="" alt="profile-image">
+                                <p id="profile-name">Nama Pengguna</p>
+                            </div>
+                            <div class="profile-box">
+                                <img src="" alt="profile-image">
+                                <p id="profile-name">Nama Pengguna</p>
+                            </div>
+                            <div class="profile-box">
+                                <img src="" alt="profile-image">
+                                <p id="profile-name">Nama Pengguna</p>
+                            </div>
+                            <div class="profile-box">
+                                <img src="" alt="profile-image">
+                                <p id="profile-name">Nama Pengguna</p>
+                            </div>
+                            <div class="profile-box">
+                                <img src="" alt="profile-image">
+                                <p id="profile-name">Nama Pengguna</p>
+                            </div>
+                        </div>
+                        <div class="page">
+                            <div class="table-data-count">
+                                10 of 100 article
+                            </div>
+                            <div class="page-button">
+                                <button class="np-btn btn" id="2-prev-btn-penulis"><<</button>
+                                <button class="np-btn btn" id="prev-btn-penulis"><</button>
+                                <p class="no-loc" id="no-loc-penulis">1</p>
+                                <button class="np-btn btn" id="next-btn-penulis">></button>
+                                <button class="np-btn btn" id="2-next-btn-penulis">>></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+
+    </footer>
+    <script>
+        function taskbar_function() {
+            var taskbar = document.getElementsByClassName("taskbar-isi");
+            Array.from(taskbar).forEach((x) => {
+                if (x.style.display === "none") {
+                x.style.display = "block";
+                } else {
+                x.style.display = "none";
+                }
+            })
+        }
+        function form_function() {
+            var form = document.getElementsByClassName("fliter-form");
+            Array.from(form).forEach((x) => {
+                if (x.style.display === "none") {
+                x.style.display = "block";
+                } else {
+                x.style.display = "none";
+                }
+            })
+        }
+
+        window.addEventListener('mouseup', function(event){
+            var notif = document.getElementById("dropdown-notif");
+            var notif_full = document.getElementsByClassName("head-notif");
+            if (event.target != notif && event.target.parentNode != notif_full){
+                notif.style.display = "none";
+            }
+            
+            var prof = document.getElementById("dropdown-profile");
+            var prof_full = document.getElementsByClassName("head-profile");
+            if (event.target != prof && event.target.parentNode != prof_full){
+                prof.style.display = "none";
+            }   
+        });
+        function dropdown_notif(){
+            var drop = document.getElementById("dropdown-notif");
+            var prof = document.getElementById("dropdown-profile");
+            if (drop.style.display === "none") {
+                drop.style.display = "block";
+            }
+            else {
+                drop.style.display = "none";
+            }
+            if (prof.style.display === "block") {
+                prof.style.display = "none";
+            }
+        }
+        function dropdown_profile(){
+            var prof = document.getElementById("dropdown-profile");
+            var drop = document.getElementById("dropdown-notif");
+            if (prof.style.display === "none") {
+                prof.style.display = "block";
+            }
+            else {
+                prof.style.display = "none";
+            }
+            if (drop.style.display === "block") {
+                drop.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

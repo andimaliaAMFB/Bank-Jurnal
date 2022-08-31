@@ -286,67 +286,7 @@
     <footer>
 
     </footer>
-    <script>
-        function taskbar_function() {
-            var taskbar = document.getElementsByClassName("taskbar-isi");
-            Array.from(taskbar).forEach((x) => {
-                if (x.style.display === "none") {
-                x.style.display = "block";
-                } else {
-                x.style.display = "none";
-                }
-            })
-        }
-        function form_function() {
-            var form = document.getElementsByClassName("fliter-form");
-            Array.from(form).forEach((x) => {
-                if (x.style.display === "none") {
-                x.style.display = "block";
-                } else {
-                x.style.display = "none";
-                }
-            })
-        }
-
-        window.addEventListener('mouseup', function(event){
-            var notif = document.getElementById("dropdown-notif");
-            var notif_full = document.getElementsByClassName("head-notif");
-            if (event.target != notif && event.target.parentNode != notif_full){
-                notif.style.display = "none";
-            }
-            
-            var prof = document.getElementById("dropdown-profile");
-            var prof_full = document.getElementsByClassName("head-profile");
-            if (event.target != prof && event.target.parentNode != prof_full){
-                prof.style.display = "none";
-            }   
-        });
-        function dropdown_notif(){
-            var drop = document.getElementById("dropdown-notif");
-            var prof = document.getElementById("dropdown-profile");
-            if (drop.style.display === "none") {
-                drop.style.display = "block";
-            }
-            else {
-                drop.style.display = "none";
-            }
-            if (prof.style.display === "block") {
-                prof.style.display = "none";
-            }
-        }
-        function dropdown_profile(){
-            var prof = document.getElementById("dropdown-profile");
-            var drop = document.getElementById("dropdown-notif");
-            if (prof.style.display === "none") {
-                prof.style.display = "block";
-            }
-            else {
-                prof.style.display = "none";
-            }
-            if (drop.style.display === "block") {
-                drop.style.display = "none";
-            }
-        }
-    </script>
+    
+    <script src="Script.js"></script>
 </body>
 </html>

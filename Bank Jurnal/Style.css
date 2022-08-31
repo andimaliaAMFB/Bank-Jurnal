@@ -353,9 +353,19 @@ main .main-isi .list-artikel .card .tabel-card tbody tr:hover{
     display: block;
     z-index: 10;
 }
+tr.status_perubahan {
+    border-bottom: 0;
+}
+form#form-status table thead tr,
+form#form-status table tr td.pointer {
+    text-align: center;
+}
 form#form-status table tr {
     cursor: default;
     text-align: left;
+}
+form#form-status table tr:hover {
+    background-color: inherit;
 }
 table#tabel-form {
     width: 80%;
@@ -363,6 +373,10 @@ table#tabel-form {
 }
 #tabel-form tbody tr {
     border-bottom: 0.5px solid rgba(0, 0, 0, 0.125);
+}
+form#form-status #tabel-form tbody tr.child:hover {
+    cursor: default;
+    background-color: inherit;
 }
 #tabel-form .child .child ul {
     padding: 0;
@@ -375,9 +389,9 @@ table#tabel-form {
 #tabel-form .child .child ul li#see_article {
     text-align: right;
     margin-top: 0.5rem;
+    float: right;
 }
 #tabel_status_change {
-    width: 50%;
     height: 2rem;
     border-radius: 0.5rem;
     padding-inline: 1rem;
@@ -387,6 +401,17 @@ table#tabel-form {
 input.searchbar.search-jdl {
     box-shadow: none;
     border-radius: 0.5rem;
+}
+#tabel-form .child td ul li{
+    display: flex;
+    margin-block: .5rem;
+    align-items: center;
+}
+#tabel-form .child td ul li span:first-child{
+    width: 30%;
+}
+#tabel-form .child td ul li span{
+    width: 50%;
 }
 
 
@@ -615,7 +640,9 @@ th, .tabel-card th{
 td, .tabel-card td{
     padding: .5rem;
 }
-tbody tr:hover, .tabel-card tbody tr:hover{
+tbody tr:hover, .tabel-card tbody tr:hover,
+form#form-status #tabel-form tbody tr:hover{
+    cursor: pointer;
     background-color: #eff6e3;
 }
 .fliter-form,

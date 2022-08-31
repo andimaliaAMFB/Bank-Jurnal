@@ -225,13 +225,19 @@
                                             <td>Tanggal Upload</td>
                                             <td>Status Lama</td>
                                             <td>Status Baru</td>
-                                            <td>V</td>
+                                            <td class="pointer">V</td>
                                         </tr>
                                         <tr class="child">
                                             <td class="child" colspan="4">
                                                 <ul>
-                                                    <li>Status Lama</li>
-                                                    <li>Status Baru</li>
+                                                    <li>
+                                                        <span>Status Lama: </span> 
+                                                        <span>[Status Lama]</span> 
+                                                    </li>
+                                                    <li>
+                                                        <span>Status Baru: </span> 
+                                                        <span>[Status Baru]</span> 
+                                                    </li>
                                                     <li>Catatan : </li>
                                                     <li>[Catatan Revisi Yang diberikan Oleh Admin]</li>
                                                     <li id="see_article">Lihat Artikel</li>
@@ -242,17 +248,25 @@
                                             <td>Tanggal Upload</td>
                                             <td>Status Lama</td>
                                             <td>-</td>
-                                            <td>V</td>
+                                            <td class="pointer">V</td>
                                         </tr>
                                         <tr class="child">
                                             <td class="child" colspan="4">
                                                 <ul>
-                                                    <li>Status Lama</li>
-                                                    <li>Status Baru<select name="" id="tabel_status_change">
-                                                        <option value="">Draft</option>
-                                                        <option value="">Revisi Minor</option>
-                                                        <option value="">Revisi Mayor</option>
-                                                        <option value="">Layak Publish</option>
+                                                    <li>
+                                                        <span>Status Lama: </span> 
+                                                        <span>[Status Lama]</span> 
+                                                    </li>
+                                                    <li>
+                                                        <span>Status Baru: </span>
+                                                        <span>
+                                                            <select name="" id="tabel_status_change">
+                                                                <option  disabled selected value>[Status Lama]</option>
+                                                                <option value="">Draft</option>
+                                                                <option value="">Revisi Minor</option>
+                                                                <option value="">Revisi Mayor</option>
+                                                                <option value="">Layak Publish</option>
+                                                        </span>
                                                     </select></li>
                                                     <li>Catatan : </li>
                                                     <li><input type="text" name="" id="" class="searchbar search-jdl" placeholder="[Catatan Revisi Yang diberikan Oleh Admin]"></li>

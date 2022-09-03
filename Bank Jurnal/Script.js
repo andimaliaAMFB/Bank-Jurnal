@@ -107,7 +107,19 @@ window.addEventListener('mouseup', function(event){
         lbl_1_final.style.color = "rgba(0, 0, 0, .5)";
         lbl_2_final.style.color = "rgba(0, 0, 0, .5)";
         final.style.color = "rgba(0, 0, 0, 1)";
-    }   
+    }  
+
+    
+    if (event.target.classList == "pointer") {
+        var table = document.getElementById(event.target.id);
+        // console.log(event.target.id);
+        if (table.parentNode.nextElementSibling.style.display === "none") {
+            table.parentNode.nextElementSibling.style.display = "table-row";
+        }
+        else {
+            table.parentNode.nextElementSibling.style.display = "none";
+        }
+    }
 });
 
 

@@ -639,6 +639,10 @@ th, .tabel-card th{
 }
 td, .tabel-card td{
     padding: .5rem;
+    cursor: default;
+}
+td.pointer, .tabel-card td td.pointer{
+    cursor: pointer;
 }
 tbody tr:hover, .tabel-card tbody tr:hover,
 form#form-status #tabel-form tbody tr:hover{

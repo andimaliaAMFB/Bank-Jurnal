@@ -673,9 +673,8 @@ form#form-status #tabel-form tbody tr:hover{
 .form-card .card-body form .btn{
     border-radius: 2rem;
     background-color: #218AC8;
-    margin-inline: auto 2rem;
+    margin-inline: auto 1rem;
     margin-block: 1rem;
-    float: right;
     border-radius: 2rem;
     background-color: #218AC8;
 }
@@ -696,4 +695,13 @@ form#form-status #tabel-form tbody tr:hover{
 .shade.fade{
     opacity: 0;
     display: none;
+}
+
+.row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.row.right{
+    justify-content: flex-end;
 }

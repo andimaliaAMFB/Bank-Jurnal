@@ -3,13 +3,15 @@ function overflow_body(isi) {
     
     Array.from(body).forEach((x) => {
         x.style.overflow = isi;
-        if (isi == "hidden") {
-            x.style.paddingRight = 17;
-        }
-        else {
-            x.style.paddingRight = null;
-        }
     })
+    if (isi == "hidden") {
+        document.getElementById("head-isi").style.paddingRight = (32 + 17);
+        document.getElementById("main-isi").style.paddingRight = 17;
+    }
+    else {
+        document.getElementById("head-isi").style.paddingRight = null;
+        document.getElementById("main-isi").style.paddingRight = null;
+    }
 }
 function shade_show(isi) {
     var shade = document.getElementsByClassName("shade");
@@ -122,6 +124,17 @@ window.addEventListener('mouseup', function(event){
     }
 });
 
+function form_height() {
+    console.log(document.getElementById("form").clientHeight);
+    if (document.getElementById("form").clientHeight >= window.innerHeight) {
+        console.log("bigger");
+        overflow_body("hidden");
+    }
+    else{
+        console.log("smaller");
+        overflow_body("auto");
+    }
+}
 
 function dropdown_notif(){
     var drop = document.getElementById("dropdown-notif");

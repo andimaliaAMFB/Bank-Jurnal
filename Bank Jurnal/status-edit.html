@@ -9,7 +9,7 @@
 </head>
 <body>
     <header>
-        <div class="head-isi">
+        <div class="head-isi" id="head-isi">
             <div class="head-left-side">
                 <div class="head-taskbar">
                     <button class="dot taskbar-btn" onclick="taskbar_function()">T</button>
@@ -86,7 +86,7 @@
         </div>
     </div>
     <main>
-        <div class="main-isi">
+        <div class="main-isi" id="main-isi">
             <div class="judul-hlm"><h2>judul</h2></div>
             <div class="list-artikel" style="margin-block: 2rem;">
                 <div class="artikel-tabel-edit card">
@@ -277,7 +277,14 @@
                                     </tbody>
                                     
                                 </table>
-                                <button type="submit" class="btn">Update Status</button>
+                                
+                                <div class="row right">
+                                    <div class="row">
+                                        <button type="submit" class="btn">Update Status</button>
+                                        <button type="cancel" class="btn">Close</button>
+                                    </div>
+                                </div>
+                                <!-- <button type="submit" class="btn">Update Status</button> -->
                             </form>
                         </div>
                     </div>

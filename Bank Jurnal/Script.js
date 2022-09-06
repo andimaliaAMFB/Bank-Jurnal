@@ -211,3 +211,84 @@ function dropdown_select(){
         btn.style.backgroundColor = "#A8D470";
     }
 }
+
+// tabel list
+const list_items = [
+	"Item 1",
+	"Item 2",
+	"Item 3",
+	"Item 4",
+	"Item 5",
+	"Item 6",
+	"Item 7",
+	"Item 8",
+	"Item 9",
+	"Item 10",
+	"Item 11",
+	"Item 12",
+	"Item 13",
+	"Item 14",
+	"Item 15",
+	"Item 16",
+	"Item 17",
+	"Item 18",
+	"Item 19",
+	"Item 20",
+	"Item 21",
+	"Item 22"
+];
+
+const list_element = document.querySelector('#list_wrapper div table tbody');
+const count = document.getElementById('article_pagination_count');
+const current = document.getElementById('no_loc_artikel');
+const pagination_element = document.getElementById('article_pagination');
+
+let current_page = 1;
+let rows = 10;
+
+
+function DisplayList (items, wrapper, rows_per_page, page) {
+	wrapper.innerHTML = "";
+	page--;
+
+	let start = rows_per_page * page;
+	let end = start + rows_per_page;
+	let paginatedItems = items.slice(start, end);
+
+    let result = '';
+	for (let i = 0; i < paginatedItems.length; i++) {
+		let item = paginatedItems[i];
+
+		result += `<tr>
+        <td>`+item+`</td>
+        </tr>`;
+	}
+    list_element.innerHTML = result;
+    current.innerHTML = current_page;
+    console.log(current_page);
+    count.innerHTML = paginatedItems.length +" of " + items.length + " Article";
+}
+
+document.querySelector('#next_btn_artikel').addEventListener('click', nextPage, false);
+document.querySelector('#last_btn_artikel').addEventListener('click', lastPage, false);
+document.querySelector('#prev_btn_artikel').addEventListener('click', previousPage, false);
+document.querySelector('#first_btn_artikel').addEventListener('click', firstPage, false);
+
+function previousPage() {
+    if(current_page > 1) current_page--;
+    DisplayList(list_items, list_element, rows, current_page);
+}
+function firstPage() {
+    current_page = 1;
+    DisplayList(list_items, list_element, rows, current_page);
+}
+
+function nextPage() {
+    if((current_page * rows) < list_items.length) current_page++;
+    DisplayList(list_items, list_element, rows, current_page);
+}
+function lastPage() {
+    current_page = Math.ceil(list_items.length/rows);
+    DisplayList(list_items, list_element, rows, current_page);
+}
+DisplayList(list_items, list_element, rows, current_page);

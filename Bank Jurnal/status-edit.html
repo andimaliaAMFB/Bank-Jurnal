@@ -88,16 +88,17 @@
     <main>
         <div class="main-isi" id="main-isi">
             <div class="judul-hlm"><h2>judul</h2></div>
-            <div class="list-artikel" style="margin-block: 2rem;">
+            
+            <div class="list-artikel" id="list_wrapper" style="margin-block: 2rem;">
                 <div class="artikel-tabel-edit card">
                     <div class="article-order">
-                        <div class="searchbar search-jdl" style="width: 55%;">
+                        <div class="searchbar search-jdl md6">
                             <form action="">
                                 <input type="text" name="s-jdl" id="search-jdl" placeholder="Judul Artikel">
                                 <button type="submit" name="s-jdl-btn" id="search-jdl-btn" class="dot">S</button>
                             </form>
                         </div>
-                        <div class="searchbar search-finalize selectbar" style="width: 30%;" id="final-select" onclick="dropdown_final()">
+                        <div class="searchbar search-finalize selectbar md3" id="final-select" onclick="dropdown_final()">
                             
                             <form class="select" action="">
                                 <label for="search-final" id="search-final">Catatan Revisi:</label>
@@ -106,12 +107,12 @@
                             <div class="drop-select card se-se-bar" id="dropdown-final" style="display: none;">
                                 <ul class="select-droped">
                                     <li>Yes</li>
-                                    <li>No</li>
+                                    <li class="active">No</li>
                                     <li>All</li>
                                 </ul>
                             </div>
                         </div>
-                        <div class="searchbar search-penulis selectbar se-selectbar" style="width: 50%;" id="pnl-select" onclick="dropdown_penulis()">
+                        <div class="searchbar search-penulis selectbar se-selectbar md5"id="pnl-select" onclick="dropdown_penulis()">
                             <form class="select" action="">
                                 <label for="search-pnl" id="search-pnl">Penulis:</label>
                                 <p class="btn select-btn" id="select-pnl">>--Pilih Penulis--<</p>
@@ -130,7 +131,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="searchbar search-prodi selectbar se-selectbar" style="width: 35%;" id="prodi-select" onclick="dropdown_select()">
+                        <div class="searchbar search-prodi selectbar se-selectbar md4" style="width: 35%;" id="prodi-select" onclick="dropdown_select()">
                             <form class="select" action="">
                                 <label for="search-prodi" id="search-prodi">Prodi:</label>
                                 <p class="btn select-btn" id="select-prodi">>--Pilih Program Studi--<</p>
@@ -153,52 +154,10 @@
                     <table class="tabel-card" style="width: 100%;">
                         <thead>
                             <tr>
-                                <th style="width:40%">Judul</th>
-                                <th>Penulis</th>
-                                <th>Program Studi</th>
-                                <th style="width:10%"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td style="width:40%">Judul</td>
-                                <td>Penulis</td>
-                                <td>Program Studi</td>
-                                <td style="width:10%" class="btn pointer" onclick="form_function()">View</td>
-                            </tr>
-                            <tr>
-                                <td style="width:40%">Judul</td>
-                                <td>Penulis</td>
-                                <td>Program Studi</td>
-                                <td style="width:10%" class="btn pointer" onclick="form_function()">View</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="page">
-                        <div class="table-data-count">
-                            10 of 100 article
-                        </div>
-                        <div class="page-button">
-                            <button class="np-btn btn" id="2-prev-btn-artikel"><<</button>
-                            <button class="np-btn btn" id="prev-btn-artikel"><</button>
-                            <p class="no-loc" id="no-loc-artikel">1</p>
-                            <button class="np-btn btn" id="next-btn-artikel">></button>
-                            <button class="np-btn btn" id="2-next-btn-artikel">>></button>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
-            
-            <div class="list-artikel" id="list_wrapper" style="margin-block: 2rem;">
-                <div class="artikel-tabel-edit card">
-                    <table class="tabel-card" style="width: 100%;">
-                        <thead>
-                            <tr>
-                                <th style="width:40%">Judul</th>
-                                <th>Penulis</th>
-                                <th>Program Studi</th>
-                                <th style="width:10%"></th>
+                                <th>Judul</th>
+                                <th class="md4">Penulis</th>
+                                <th class="md4">Program Studi</th>
+                                <th class="md2"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -219,7 +178,7 @@
                 </div>
             </div>
 
-            <div class="form-modal" style="display: none;">
+            <!-- <div class="form-modal" style="display: none;">
                 <div class="fliter-form" id="form">
                     <div class="form-card card">
                         <div class="card-head">
@@ -239,7 +198,6 @@
                                     </tr>
                                     <tr><td colspan="2">Status Perubahan</td></tr>
                                 </table>
-                                <!-- <p style="padding: 0.5rem; margin: 0; margin-top: 1rem;">Status Perubahan</p> -->
                                 <table class="tabel-card" id="tabel-form">
                                     <thead>
                                         <tr>
@@ -310,10 +268,95 @@
                                 <div class="row right">
                                     <div class="row">
                                         <button type="submit" class="btn">Update Status</button>
-                                        <button type="cancel" class="btn">Close</button>
+                                        <button class="btn">Close</button>
                                     </div>
                                 </div>
-                                <!-- <button type="submit" class="btn">Update Status</button> -->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            <div class="form-modal" style="display: none;">
+                <div class="fliter-form" id="form">
+                    <div class="form-card card">
+                        <div class="card-head">
+                            <h3>Ubah Status</h3>
+                            <button class="btn" onclick="form_function()">X</button>
+                        </div>
+                        <div class="card-body">
+                            <form action="" id="form-status">
+                                <div class="profile_form form_sub">
+                                    <div class="form_sub row" id="judul">
+                                        <div class="md4 form_sub_title">Judul Artikel</div>
+                                        <div>[Judul Artikel]</div>
+                                    </div>
+                                    <div class="form_sub row" id="penulis">
+                                        <div class="md4 form_sub_title">Penulis</div>
+                                        <div>[Nama Penulis]</div>
+                                    </div>
+                                    <div class="form_sub" id="status_title">
+                                        <div class="form_sub_title" id="status_title">Status Perubahan</div>
+                                    </div>
+                                </div>
+                                <div class="history_form">
+                                    <div class="history_list row">
+                                        <div class="date_up">MM/DD/YY</div>
+                                        <span></span>
+                                        <div class="pointer">V</div>
+                                    </div>
+                                    <!-- <div class="child">
+                                        <div class="form_sub row" id="lama">
+                                            <div class="md5 form_sub_title">Status Lama</div>
+                                            <div>[Status Lama]</div>
+                                        </div>
+                                        <div class="form_sub row" id="baru">
+                                            <div class="md5 form_sub_title">Status Baru</div>
+                                            <div>[Status Baru]</div>
+                                        </div>
+                                        <div class="form_sub row" id="catatan">
+                                            <div class="md5 form_sub_title">Catatan</div>
+                                            <div>[Catatan Revisi Yang diberikan Oleh Admin]</div>
+                                        </div>
+                                        <div class="link" id="see_article">Lihat Artikel></div>
+                                    </div> -->
+                                    <div class="history_list row border-top">
+                                        <div class="date_up">MM/DD/YY</div>
+                                        <span></span>
+                                        <div class="pointer" id="pointer1">V</div>
+                                    </div>
+                                    <!-- <div class="child">
+                                        <div class="form_sub row" id="lama">
+                                            <div class="md5 form_sub_title">Status Lama</div>
+                                            <div>[Status Lama]</div>
+                                        </div>
+                                        <div class="form_sub row" id="baru">
+                                            <div class="md5 form_sub_title">Status Baru</div>
+                                            <div>
+                                                <select name="" id="tabel_status_change">
+                                                    <option  disabled selected value>[Status Baru]</option>
+                                                    <option value="">Draft</option>
+                                                    <option value="">Revisi Minor</option>
+                                                    <option value="">Revisi Mayor</option>
+                                                    <option value="">Layak Publish</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form_sub row" id="catatan">
+                                            <div class="md5 form_sub_title">Catatan</div>
+                                            <div>
+                                                <textarea name="" id="" rows="10" class="searchbar search-jdl" placeholder="[Catatan Revisi Yang diberikan Oleh Admin]"></textarea>
+                                            </div>
+                                        </div>
+                                        <div id="see_article">Lihat Artikel></div>
+                                    </div> -->
+                                </div>
+                                
+                                <div class="row right">
+                                    <div class="row">
+                                        <button type="submit" class="btn">Update Status</button>
+                                        <button class="btn">Close</button>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>

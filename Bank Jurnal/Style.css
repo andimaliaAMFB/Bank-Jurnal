@@ -371,8 +371,50 @@ table#tabel-form {
     width: 80%;
     margin-left: 10%;
 }
+form#form-status {
+    color: rgba(0,0,0,.75);
+}
+form .profile_form .profile_form_sub {
+    justify-content: unset;
+    border-bottom: 1px solid rgba(0, 0, 0, .25);
+    margin-block: 1rem;
+}
+form .profile_form .profile_form_sub#status_title {
+    width: 35%;
+}
+.profile_form_title {
+    width: 25%;
+    flex: 0 0 25%;
+    font-weight: bold;
+}
+.profile_form_title#status_title {
+    width: 100%;
+    flex: 0 0 100%;
+    font-weight: bold;
+}
+form .profile_form .profile_form_sub div:nth-child(2) {
+    padding-inline: 0.5rem;
+}
+.link:hover,
+.history_list:hover,
+.history_list.parent:hover{
+    cursor: pointer;
+    color: #70CED4;
+    border-color: #70CED4;
+}
+
 #tabel-form tbody tr {
     border-bottom: 0.5px solid rgba(0, 0, 0, 0.125);
+}
+.card-body form .history_form{
+    width: 80%;
+    margin-left: 10%;
+    margin-block: 1rem;
+}
+.history_list span {
+    border: 1px solid;
+    width: 70%;
+    border-color: inherit;
 }
 form#form-status #tabel-form tbody tr.child:hover {
     cursor: default;
@@ -398,9 +440,10 @@ form#form-status #tabel-form tbody tr.child:hover {
     font-family: inherit;
     font-size: inherit;
 }
-input.searchbar.search-jdl {
+textarea.searchbar.search-jdl{
     box-shadow: none;
     border-radius: 0.5rem;
+    height: fit-content;
 }
 #tabel-form .child td ul li{
     display: flex;
@@ -442,10 +485,11 @@ main .main-isi .slide-penulis .penulis-isi .card-body .page{
     padding-inline: 1rem;
 }
 
-.article-order{
+.artikel-tabel-edit .article-order{
     display: flex;
     flex-wrap: wrap;
     border-bottom: 2px solid rgba(0,0,0,.25);
+    justify-content: unset;
 }
 main .main-isi .list-artikel .artikel-tabel-edit .article-order div{
     margin: 0 1rem 1rem 0;
@@ -494,6 +538,7 @@ footer{
 }
 form,
 input,
+textarea,
 button,
 h1,h2,h3,h4,h5,h6{
     margin: 0;
@@ -532,6 +577,7 @@ h1,h2,h3,h4,h5,h6{
     padding-inline: 1rem .2rem;
     height: calc(64px*.5);
     border-radius: calc((64px*.5)*.5);
+    resize: none;
 }
 .selectbar{
     padding-inline: 1rem;
@@ -624,6 +670,7 @@ main .main-isi div div .card-head{
     padding-inline: 0;
     margin-bottom: 1rem;
     border-bottom: 0.5px solid rgba(0, 0, 0, 0.25);
+    font-size: large;
 }
 .tabel-card{
     text-align: center;
@@ -643,6 +690,7 @@ td, .tabel-card td{
 }
 td.pointer, .tabel-card td td.pointer{
     cursor: pointer;
+    border-radius: unset;
 }
 tbody tr:hover, .tabel-card tbody tr:hover,
 form#form-status #tabel-form tbody tr:hover{
@@ -699,9 +747,114 @@ form#form-status #tabel-form tbody tr:hover{
 
 .row{
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
     align-items: center;
 }
 .row.right{
     justify-content: flex-end;
+}
+
+.form_sub_title {
+    font-weight: bold;
+}
+form div .form_sub {
+    justify-content: unset;
+    border-bottom: 1px solid rgba(0, 0, 0, .25);
+    margin-block: 1rem;
+}
+form .profile_form .form_sub#status_title {
+    width: 35%;
+}
+.profile_form_title#status_title {
+    width: 100%;
+    flex: 0 0 100%;
+    font-weight: bold;
+}
+
+form .history_form .form_sub {
+    border-bottom: none;
+}
+
+.history_form .history_list {
+    border-color: rgba(0, 0, 0, .25);
+    margin: 0.5rem 0;
+}
+.history_form .history_list:first-child {
+    border-top: none;
+    margin-block: 0 0.5rem;
+}
+
+.card-body form .history_form .child {
+    margin: .5rem 5%;
+    width: 90%;
+}
+div#catatan div:first-child {
+    margin-block-end: 0.5rem;
+}
+
+div#see_article {
+    text-align: right;
+}
+
+.border-top {
+    border-top: 1px solid;
+    padding: 1rem 0 0 0;
+}.border-bottom {
+    border-bottom: 1px solid;
+    padding: 0 0 1rem 0;
+}
+.border-left {
+    border-left: 1px solid;
+    padding: 0 0 0 1rem;
+}.border-right {
+    border-right: 1px solid;
+    padding: 0 1rem 0 0;
+}
+
+.md1 {
+    width: 6.25%;
+    flex: 0 0 6.25%;
+}.md2 {
+    width: 12.5%;
+    flex: 0 0 12.5%;
+}
+.md3 {
+    width: 16.665%;
+    flex: 0 0 16.665%;
+}
+.md4 {
+    width: 25%;
+    flex: 0 0 25%;
+}
+.md5 {
+    width: 35%;
+    flex: 0 0 35%;
+}
+.md6 {
+    width: 50%;
+    flex: 0 0 50%;
+}
+.md7 {
+    width: 65%;
+    flex: 0 0 65%;
+}
+.md8 {
+    width: 75%;
+    flex: 0 0 75%;
+}
+.md9 {
+    width: 80%;
+    flex: 0 0 80%;
+}
+.md10 {
+    width: 90%;
+    flex: 0 0 90%;
+}
+.md100 {
+    width: 100%;
+    flex: 0 0 100%;
+}
+
+#catatan div:last-child {
+    width: 100%;
 }

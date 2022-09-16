@@ -111,15 +111,42 @@ window.addEventListener('mouseup', function(event){
         final.style.color = "rgba(0, 0, 0, 1)";
     }  
 
+    if (event.target.classList == "btn pointer") {
+        //console.log(event.target.parentNode.getAttribute('data-id'));
+        form_inside(event.target.parentNode.getAttribute('data-id'));
+    }
     
     if (event.target.classList == "pointer") {
-        var table = document.getElementById(event.target.id);
-        // console.log(event.target.id);
-        if (table.parentNode.nextElementSibling.style.display === "none") {
-            table.parentNode.nextElementSibling.style.display = "table-row";
+        var parent = event.target.parentNode;
+        if (parent.classList.contains("parent")) {
+            parent.classList.remove("parent");
+            parent.nextSibling.remove();
         }
         else {
-            table.parentNode.nextElementSibling.style.display = "none";
+            parent.classList.add("parent");
+            var child = document.createElement("div");
+            if (parent.nextSibling) {
+                parent.parentNode.insertBefore(child, parent.nextSibling);
+            }
+            else {
+                parent.parentNode.appendChild(child);
+            }
+            child.classList.add("child");
+            var loc = parent.nextElementSibling;
+            var input = `<div class="form_sub row" id="lama">
+                    <div class="md5 form_sub_title">Status Lama</div>
+                    <div>[Status Lama]</div>
+                </div>
+                <div class="form_sub row" id="baru">
+                    <div class="md5 form_sub_title">Status Baru</div>
+                    <div>[Status Baru]</div>
+                </div>
+                <div class="form_sub row" id="catatan">
+                    <div class="md5 form_sub_title">Catatan</div>
+                    <div>[Catatan Revisi Yang diberikan Oleh Admin]</div>
+                </div>
+                <div class="link" id="see_article">Lihat Artikel></div>`;
+            loc.innerHTML = input;
         }
     }
 });
@@ -167,9 +194,13 @@ function form_function() {
             x.classList.add("show");
             shade_show("show");
             overflow_body("hidden");
-            console.log("OpenForm!!");
+            // console.log("OpenForm!!");
         }
     });
+}
+function form_inside(id) {
+    form_function();
+    console.log(id);
 }
 
 function dropdown_final(){
@@ -237,6 +268,23 @@ const list_items = [
 	"Item 21",
 	"Item 22"
 ];
+const finalize = [];
+for (let i = 0; i < list_items.length; i++) {
+    var arr = ["Yes", "No"];
+    var select = Math.floor(Math.random() * (arr.length - 1 + 1) + 1); 
+    finalize.push(arr[select-1]);
+}
+console.log(finalize);
+
+var final_select = document.querySelector('#dropdown-final ul .active').innerHTML;
+document.querySelector('#select-final').innerHTML = final_select;
+
+finalize_items = [];
+for (let index = 0; index < list_items.length; index++) {
+    if (finalize[index] == final_select) { finalize_items.push(list_items[index]); }
+    else if (final_select == "All") { finalize_items = list_items; }
+}
+console.log("finalize_items",finalize_items);
 
 const list_element = document.querySelector('#list_wrapper div table tbody');
 const count = document.getElementById('article_pagination_count');
@@ -253,15 +301,19 @@ function DisplayList (items, wrapper, rows_per_page, page) {
 
 	let start = rows_per_page * page;
 	let end = start + rows_per_page;
-	let paginatedItems = items.slice(start, end);
+    paginatedItems = items.slice(start, end);
 
     let result = '';
 	for (let i = 0; i < paginatedItems.length; i++) {
-		let item = paginatedItems[i];
-
-		result += `<tr>
-        <td>`+item+`</td>
+        let item = paginatedItems[i];
+        console.log("Finalize is = ",final_select);
+        result += `<tr  data-id="`+(i+1)+`">
+        <td> Judul Artikel `+item+`</td>
+        <td> Penulis `+item+`</td>
+        <td> Program Studi `+item+`</td>
+        <td class="btn pointer">View</td>
         </tr>`;
+		
 	}
     list_element.innerHTML = result;
     current.innerHTML = current_page;
@@ -276,19 +328,19 @@ document.querySelector('#first_btn_artikel').addEventListener('click', firstPage
 
 function previousPage() {
     if(current_page > 1) current_page--;
-    DisplayList(list_items, list_element, rows, current_page);
+    DisplayList(finalize_items, list_element, rows, current_page);
 }
 function firstPage() {
     current_page = 1;
-    DisplayList(list_items, list_element, rows, current_page);
+    DisplayList(finalize_items, list_element, rows, current_page);
 }
 
 function nextPage() {
-    if((current_page * rows) < list_items.length) current_page++;
-    DisplayList(list_items, list_element, rows, current_page);
+    if((current_page * rows) < finalize_items.length) current_page++;
+    DisplayList(finalize_items, list_element, rows, current_page);
 }
 function lastPage() {
-    current_page = Math.ceil(list_items.length/rows);
-    DisplayList(list_items, list_element, rows, current_page);
+    current_page = Math.ceil(finalize_items.length/rows);
+    DisplayList(finalize_items, list_element, rows, current_page);
 }
-DisplayList(list_items, list_element, rows, current_page);
+DisplayList(finalize_items, list_element, rows, current_page);

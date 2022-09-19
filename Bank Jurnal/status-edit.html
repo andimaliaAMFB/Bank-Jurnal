@@ -102,7 +102,7 @@
                             
                             <form class="select" action="">
                                 <label for="search-final" id="search-final">Catatan Revisi:</label>
-                                <p class="btn select-btn" id="select-final">[Yes / No]</p>
+                                <p class="btn select-btn" id="select-final">No</p>
                             </form>
                             <div class="drop-select card se-se-bar" id="dropdown-final" style="display: none;">
                                 <ul class="select-droped">
@@ -178,110 +178,12 @@
                 </div>
             </div>
 
-            <!-- <div class="form-modal" style="display: none;">
-                <div class="fliter-form" id="form">
-                    <div class="form-card card">
-                        <div class="card-head">
-                            <h3>Ubah Status</h3>
-                            <button class="btn" onclick="form_function()">X</button>
-                        </div>
-                        <div class="card-body">
-                            <form action="" id="form-status">
-                                <table class="tabel-card" style="width: 100%; text-align: left;">
-                                    <tr>
-                                        <td style="width: 25%;">Judul Artikel : </td>
-                                        <td>[Judul Artikel]</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Penulis : </td>
-                                        <td>[Nama Penulis]</td>
-                                    </tr>
-                                    <tr><td colspan="2">Status Perubahan</td></tr>
-                                </table>
-                                <table class="tabel-card" id="tabel-form">
-                                    <thead>
-                                        <tr>
-                                            <th>Tanggal Upload</th>
-                                            <th>Status Lama</th>
-                                            <th>Status Baru</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Tanggal Upload</td>
-                                            <td>Status Lama</td>
-                                            <td>Status Baru</td>
-                                            <td class="pointer" id="pointer1">V</td>
-                                        </tr>
-                                        <tr class="child" style="display: none;">
-                                            <td class="child" colspan="4">
-                                                <ul>
-                                                    <li>
-                                                        <span>Status Lama: </span> 
-                                                        <span>[Status Lama]</span> 
-                                                    </li>
-                                                    <li>
-                                                        <span>Status Baru: </span> 
-                                                        <span>[Status Baru]</span> 
-                                                    </li>
-                                                    <li>Catatan : </li>
-                                                    <li>[Catatan Revisi Yang diberikan Oleh Admin]</li>
-                                                    <li id="see_article">Lihat Artikel</li>
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Tanggal Upload</td>
-                                            <td>Status Lama</td>
-                                            <td>-</td>
-                                            <td class="pointer" id="pointer2">V</td>
-                                        </tr>
-                                        <tr class="child">
-                                            <td class="child" colspan="4">
-                                                <ul>
-                                                    <li>
-                                                        <span>Status Lama: </span> 
-                                                        <span>[Status Lama]</span> 
-                                                    </li>
-                                                    <li>
-                                                        <span>Status Baru: </span>
-                                                        <span>
-                                                            <select name="" id="tabel_status_change">
-                                                                <option  disabled selected value>[Status Lama]</option>
-                                                                <option value="">Draft</option>
-                                                                <option value="">Revisi Minor</option>
-                                                                <option value="">Revisi Mayor</option>
-                                                                <option value="">Layak Publish</option>
-                                                        </span>
-                                                    </select></li>
-                                                    <li>Catatan : </li>
-                                                    <li><input type="text" name="" id="" class="searchbar search-jdl" placeholder="[Catatan Revisi Yang diberikan Oleh Admin]"></li>
-                                                    <li id="see_article">Lihat Artikel</li>
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                    
-                                </table>
-                                
-                                <div class="row right">
-                                    <div class="row">
-                                        <button type="submit" class="btn">Update Status</button>
-                                        <button class="btn">Close</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
             <div class="form-modal" style="display: none;">
                 <div class="fliter-form" id="form">
                     <div class="form-card card">
                         <div class="card-head">
                             <h3>Ubah Status</h3>
-                            <button class="btn" onclick="form_function()">X</button>
+                            <button class="btn">X</button>
                         </div>
                         <div class="card-body">
                             <form action="" id="form-status">
@@ -299,62 +201,13 @@
                                     </div>
                                 </div>
                                 <div class="history_form">
-                                    <div class="history_list row">
-                                        <div class="date_up">MM/DD/YY</div>
-                                        <span></span>
-                                        <div class="pointer">V</div>
-                                    </div>
-                                    <!-- <div class="child">
-                                        <div class="form_sub row" id="lama">
-                                            <div class="md5 form_sub_title">Status Lama</div>
-                                            <div>[Status Lama]</div>
-                                        </div>
-                                        <div class="form_sub row" id="baru">
-                                            <div class="md5 form_sub_title">Status Baru</div>
-                                            <div>[Status Baru]</div>
-                                        </div>
-                                        <div class="form_sub row" id="catatan">
-                                            <div class="md5 form_sub_title">Catatan</div>
-                                            <div>[Catatan Revisi Yang diberikan Oleh Admin]</div>
-                                        </div>
-                                        <div class="link" id="see_article">Lihat Artikel></div>
-                                    </div> -->
-                                    <div class="history_list row border-top">
-                                        <div class="date_up">MM/DD/YY</div>
-                                        <span></span>
-                                        <div class="pointer" id="pointer1">V</div>
-                                    </div>
-                                    <!-- <div class="child">
-                                        <div class="form_sub row" id="lama">
-                                            <div class="md5 form_sub_title">Status Lama</div>
-                                            <div>[Status Lama]</div>
-                                        </div>
-                                        <div class="form_sub row" id="baru">
-                                            <div class="md5 form_sub_title">Status Baru</div>
-                                            <div>
-                                                <select name="" id="tabel_status_change">
-                                                    <option  disabled selected value>[Status Baru]</option>
-                                                    <option value="">Draft</option>
-                                                    <option value="">Revisi Minor</option>
-                                                    <option value="">Revisi Mayor</option>
-                                                    <option value="">Layak Publish</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form_sub row" id="catatan">
-                                            <div class="md5 form_sub_title">Catatan</div>
-                                            <div>
-                                                <textarea name="" id="" rows="10" class="searchbar search-jdl" placeholder="[Catatan Revisi Yang diberikan Oleh Admin]"></textarea>
-                                            </div>
-                                        </div>
-                                        <div id="see_article">Lihat Artikel></div>
-                                    </div> -->
+                                    
                                 </div>
                                 
                                 <div class="row right">
                                     <div class="row">
                                         <button type="submit" class="btn">Update Status</button>
-                                        <button class="btn">Close</button>
+                                        <button type="button" class="btn">Close</button>
                                     </div>
                                 </div>
                             </form>

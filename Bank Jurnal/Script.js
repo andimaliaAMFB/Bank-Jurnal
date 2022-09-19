@@ -68,11 +68,19 @@ window.addEventListener('mouseup', function(event){
     var form_modal = document.getElementById("form");
     if (form_modal.parentNode.style.display == "block") {
         console.log(form_modal.parentNode);
-        if (event.target == form_modal){
+        if (event.target == form_modal || event.target.classList == "btn"){
             console.log("FormEnd!!");
             form_modal.parentNode.style.display = "none";
             shade_show("remove");
             overflow_body("auto");
+            
+            var parent = document.querySelector('.history_form');
+            parent.innerHTML = '';
+        }
+        document.getElementById("form-status").onsubmit = function() {
+            //ubah finalize menjadi Yes
+            alert("The form was submitted");
+            return false;
         }
     }
     var prodi = document.getElementById("dropdown-final");
@@ -109,7 +117,13 @@ window.addEventListener('mouseup', function(event){
         lbl_1_final.style.color = "rgba(0, 0, 0, .5)";
         lbl_2_final.style.color = "rgba(0, 0, 0, .5)";
         final.style.color = "rgba(0, 0, 0, 1)";
-    }  
+    } 
+    var final_btn = document.getElementById("dropdown-final");
+    if (final_btn.contains(event.target)) {
+        document.querySelector('#dropdown-final ul .active').classList.remove("active");
+        event.target.classList.add("active");
+        changeFinal();
+    } 
 
     if (event.target.classList == "btn pointer") {
         //console.log(event.target.parentNode.getAttribute('data-id'));
@@ -123,6 +137,8 @@ window.addEventListener('mouseup', function(event){
             parent.nextSibling.remove();
         }
         else {
+            var last_list = parent.parentNode.lastElementChild;
+
             parent.classList.add("parent");
             var child = document.createElement("div");
             if (parent.nextSibling) {
@@ -131,6 +147,7 @@ window.addEventListener('mouseup', function(event){
             else {
                 parent.parentNode.appendChild(child);
             }
+
             child.classList.add("child");
             var loc = parent.nextElementSibling;
             var input = `<div class="form_sub row" id="lama">
@@ -146,6 +163,33 @@ window.addEventListener('mouseup', function(event){
                     <div>[Catatan Revisi Yang diberikan Oleh Admin]</div>
                 </div>
                 <div class="link" id="see_article">Lihat Artikel></div>`;
+                
+            if (last_list == parent) {
+                console.log("Ini adalah element terakhir ",parent);
+                input = `<div class="form_sub row" id="lama">
+                        <div class="md5 form_sub_title">Status Lama</div>
+                        <div>[Status Lama]</div>
+                    </div>
+                    <div class="form_sub row" id="baru">
+                        <div class="md5 form_sub_title">Status Baru</div>
+                        <div>
+                            <select name="" id="tabel_status_change">
+                                <option  disabled selected value>[Status Baru]</option>
+                                <option value="">Draft</option>
+                                <option value="">Revisi Minor</option>
+                                <option value="">Revisi Mayor</option>
+                                <option value="">Layak Publish</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form_sub row" id="catatan">
+                        <div class="md5 form_sub_title">Catatan</div>
+                        <div>
+                            <textarea name="" id="" rows="10" class="searchbar search-jdl" placeholder="[Catatan Revisi Yang diberikan Oleh Admin]"></textarea>
+                        </div>
+                    </div>
+                    <div class="link" id="see_article">Lihat Artikel></div>`;
+            }
             loc.innerHTML = input;
         }
     }
@@ -194,13 +238,37 @@ function form_function() {
             x.classList.add("show");
             shade_show("show");
             overflow_body("hidden");
-            // console.log("OpenForm!!");
+            console.log("OpenForm!!");
         }
     });
 }
 function form_inside(id) {
     form_function();
-    console.log(id);
+    console.log("id: ",id);
+
+    n_history = count_history[id];
+    console.log("n_history = ",n_history);
+    var parent = document.querySelector('.history_form');
+    
+    for (let i = 0; i < n_history; i++) {
+        console.log("history ke: ",i+1);
+        var child = document.createElement("div");
+        parent.appendChild(child);
+
+        child.classList.add("history_list");
+        child.classList.add("row");
+
+        if (i != 0) {
+            child.classList.add("border-top");
+        }
+
+        console.log("position is ",parent.lastElementChild);
+        var loc = parent.lastElementChild;
+        var input = `<div class="date_up">MM/DD/YY</div>
+            <span></span>
+            <div class="pointer">V</div>`;
+        loc.innerHTML = input;
+    }
 }
 
 function dropdown_final(){
@@ -268,6 +336,15 @@ const list_items = [
 	"Item 21",
 	"Item 22"
 ];
+
+//banyak histori dalam 1 artikel
+const count_history = [];
+for (let i = 0; i < list_items.length; i++) {
+    count_history.push(Math.floor(Math.random() * (4 - 2 + 1) + 1));
+}
+console.log(count_history);
+
+//Keterangan finalize tiap artikel
 const finalize = [];
 for (let i = 0; i < list_items.length; i++) {
     var arr = ["Yes", "No"];
@@ -276,16 +353,14 @@ for (let i = 0; i < list_items.length; i++) {
 }
 console.log(finalize);
 
-var final_select = document.querySelector('#dropdown-final ul .active').innerHTML;
-document.querySelector('#select-final').innerHTML = final_select;
-
-finalize_items = [];
-for (let index = 0; index < list_items.length; index++) {
-    if (finalize[index] == final_select) { finalize_items.push(list_items[index]); }
-    else if (final_select == "All") { finalize_items = list_items; }
+var final_select = "";
+function changeFinal() {
+    final_select = document.querySelector('#dropdown-final ul .active').innerHTML;
+    document.querySelector('#select-final').innerHTML = final_select;
+    finalRender(final_select);
 }
-console.log("finalize_items",finalize_items);
 
+//lokasi teks dsb yang akan diganti
 const list_element = document.querySelector('#list_wrapper div table tbody');
 const count = document.getElementById('article_pagination_count');
 const current = document.getElementById('no_loc_artikel');
@@ -313,7 +388,6 @@ function DisplayList (items, wrapper, rows_per_page, page) {
         <td> Program Studi `+item+`</td>
         <td class="btn pointer">View</td>
         </tr>`;
-		
 	}
     list_element.innerHTML = result;
     current.innerHTML = current_page;
@@ -343,4 +417,24 @@ function lastPage() {
     current_page = Math.ceil(finalize_items.length/rows);
     DisplayList(finalize_items, list_element, rows, current_page);
 }
+
+//list yang digunakan dalam list tabel
+finalize_items = [];
+final_finalize = [];
+function finalRender(final_select) {
+    finalize_items = [];
+    final_finalize = [];
+    for (let index = 0; index < list_items.length; index++) {
+        if (finalize[index] == final_select) 
+        {
+            finalize_items.push(list_items[index]); 
+            final_finalize.push(finalize[index]); 
+        }
+        else if (final_select == "All") { finalize_items = list_items; final_finalize = finalize; }
+    }
+    // console.log("finalize_items",finalize_items);
+    DisplayList(finalize_items, list_element, rows, current_page);
+}
+
+changeFinal();
 DisplayList(finalize_items, list_element, rows, current_page);

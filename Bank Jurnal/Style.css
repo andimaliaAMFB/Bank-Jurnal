@@ -397,7 +397,7 @@ form .profile_form .profile_form_sub div:nth-child(2) {
 }
 .link:hover,
 .history_list:hover,
-.history_list.parent:hover{
+.history_list.parent:hover *{
     cursor: pointer;
     color: #70CED4;
     border-color: #70CED4;
@@ -652,6 +652,10 @@ main .main-isi .list-artikel .artikel-tabel-edit .article-order #prodi-select:ho
 }
 .select-droped li:hover {
     background-color: #EFF6E3;
+}
+.select-droped li.active {
+    background-color: rgb(168, 212, 112);
+    color: white;
 }
 .card,
 main .main-isi div .card,

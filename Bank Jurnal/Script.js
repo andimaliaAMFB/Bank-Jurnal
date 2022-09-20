@@ -83,47 +83,52 @@ window.addEventListener('mouseup', function(event){
             return false;
         }
     }
-    var prodi = document.getElementById("dropdown-final");
-    var lbl_1_prodi = document.getElementById("search-prodi");
-    var lbl_2_prodi = document.getElementById("select-prodi");
+    var prodi = document.getElementById("dropdown-prodi");
     if (event.target != prodi && event.target.parentNode != prodi.parentNode){
         prodi.style.display = "none";
-        prodi.parentNode.style.boxShadow = "inset 0px 4px 4px rgba(0, 0, 0, 0.25)";
-        prodi.parentNode.style.backgroundColor = "#EFF6E3";
-        lbl_1_prodi.style.color = "rgba(0, 0, 0, .5)";
-        lbl_2_prodi.style.color = "rgba(0, 0, 0, .5)";
-        prodi.style.color = "rgba(0, 0, 0, 1)";
-    }  
+        document.getElementById("prodi-select").classList.remove("active");
+    }
+    if (prodi.contains(event.target)) {
+        if (event.target.parentNode.classList.contains("select-droped")) {
+            if (document.querySelector('#prodi-select .drop-select ul .active')) {
+                document.querySelector('#prodi-select .drop-select ul .active').classList.remove("active");
+            }
+            event.target.classList.add("active");
+            document.querySelector('#select-prodi').innerHTML = event.target.innerHTML;
+            prodi.style.display = "none";
+            changeFinal();
+        }
+    }
     
     var pnl = document.getElementById("dropdown-pnl");
-    var lbl_1_pnl = document.getElementById("search-pnl");
-    var lbl_2_pnl = document.getElementById("select-pnl");
     if (event.target != pnl && event.target.parentNode != pnl.parentNode){
         pnl.style.display = "none";
-        pnl.parentNode.style.boxShadow = "inset 0px 4px 4px rgba(0, 0, 0, 0.25)";
-        pnl.parentNode.style.backgroundColor = "#EFF6E3";
-        lbl_1_pnl.style.color = "rgba(0, 0, 0, .5)";
-        lbl_2_pnl.style.color = "rgba(0, 0, 0, .5)";
-        pnl.style.color = "rgba(0, 0, 0, 1)";
+        document.getElementById("pnl-select").classList.remove("active");
     }  
+    if (pnl.contains(event.target)) {
+        if (event.target.parentNode.classList.contains("select-droped")) {
+            if (document.querySelector('#pnl-select .drop-select ul .active')) {
+                document.querySelector('#pnl-select .drop-select ul .active').classList.remove("active");
+            }
+            event.target.classList.add("active");
+            document.querySelector('#select-pnl').innerHTML = event.target.innerHTML;
+            pnl.style.display = "none";
+            changeFinal();
+        }
+    }
 
-    var final = document.getElementById("dropdown-prodi");
-    var lbl_1_final = document.getElementById("search-final");
-    var lbl_2_final = document.getElementById("select-final");
+    var final = document.getElementById("dropdown-final");
     if (event.target != final && event.target.parentNode != final.parentNode){
         final.style.display = "none";
-        final.parentNode.style.boxShadow = "inset 0px 4px 4px rgba(0, 0, 0, 0.25)";
-        final.parentNode.style.backgroundColor = "#EFF6E3";
-        lbl_1_final.style.color = "rgba(0, 0, 0, .5)";
-        lbl_2_final.style.color = "rgba(0, 0, 0, .5)";
-        final.style.color = "rgba(0, 0, 0, 1)";
+        document.getElementById("final-select").classList.remove("active");
     } 
-    var final_btn = document.getElementById("dropdown-final");
-    if (final_btn.contains(event.target)) {
-        document.querySelector('#dropdown-final ul .active').classList.remove("active");
+    if (final.contains(event.target)) {
+        document.querySelector('#final-select .drop-select ul .active').classList.remove("active");
         event.target.classList.add("active");
+        document.querySelector('#select-final').innerHTML = event.target.innerHTML;
+        final.style.display = "none";
         changeFinal();
-    } 
+    }
 
     if (event.target.classList == "btn pointer") {
         //console.log(event.target.parentNode.getAttribute('data-id'));
@@ -271,45 +276,41 @@ function form_inside(id) {
     }
 }
 
-function dropdown_final(){
-    var prof = document.getElementById("dropdown-final");
-    var lbl_1 = document.getElementById("search-final");
-    var lbl_2 = document.getElementById("select-final");
-    var btn = document.getElementById("final-select");
+function dropdown(id){
+    var prof = document.getElementById(id);
+    var parent = prof.parentNode;
+    console.log(parent);
     if (prof.style.display === "none") {
-        btn.style.boxShadow = "none";
         prof.style.display = "block";
-        lbl_1.style.color = "#FFFFFF";
-        lbl_2.style.color = "#FFFFFF";
-        btn.style.backgroundColor = "#A8D470";
+        parent.classList.add("active");
     }
 }
-function dropdown_penulis(){
-    var pnl = document.getElementById("dropdown-pnl");
-    var lbl_1 = document.getElementById("search-pnl");
-    var lbl_2 = document.getElementById("select-pnl");
-    var btn = document.getElementById("pnl-select");
-    if (pnl.style.display == "none") {
-        btn.style.boxShadow = "none";
-        pnl.style.display = "block";
-        lbl_1.style.color = "#FFFFFF";
-        lbl_2.style.color = "#FFFFFF";
-        btn.style.backgroundColor = "#A8D470";
-    }
-}
-function dropdown_select(){
-    var prof = document.getElementById("dropdown-prodi");
-    var lbl_1 = document.getElementById("search-prodi");
-    var lbl_2 = document.getElementById("select-prodi");
-    var btn = document.getElementById("prodi-select");
-    if (prof.style.display === "none") {
-        btn.style.boxShadow = "none";
-        prof.style.display = "block";
-        lbl_1.style.color = "#FFFFFF";
-        lbl_2.style.color = "#FFFFFF";
-        btn.style.backgroundColor = "#A8D470";
-    }
-}
+// function dropdown_penulis(){
+//     var pnl = document.getElementById("dropdown-pnl");
+//     var lbl_1 = document.getElementById("search-pnl");
+//     var lbl_2 = document.getElementById("select-pnl");
+//     var btn = document.getElementById("pnl-select");
+//     if (pnl.style.display == "none") {
+//         btn.style.boxShadow = "none";
+//         pnl.style.display = "block";
+//         lbl_1.style.color = "#FFFFFF";
+//         lbl_2.style.color = "#FFFFFF";
+//         btn.style.backgroundColor = "#A8D470";
+//     }
+// }
+// function dropdown_select(){
+//     var prof = document.getElementById("dropdown-prodi");
+//     var lbl_1 = document.getElementById("search-prodi");
+//     var lbl_2 = document.getElementById("select-prodi");
+//     var btn = document.getElementById("prodi-select");
+//     if (prof.style.display === "none") {
+//         btn.style.boxShadow = "none";
+//         prof.style.display = "block";
+//         lbl_1.style.color = "#FFFFFF";
+//         lbl_2.style.color = "#FFFFFF";
+//         btn.style.backgroundColor = "#A8D470";
+//     }
+// }
 
 // tabel list
 const list_items = [
@@ -352,13 +353,56 @@ for (let i = 0; i < list_items.length; i++) {
     finalize.push(arr[select-1]);
 }
 console.log(finalize);
-
-var final_select = "";
-function changeFinal() {
-    final_select = document.querySelector('#dropdown-final ul .active').innerHTML;
-    document.querySelector('#select-final').innerHTML = final_select;
-    finalRender(final_select);
+final_count = 0;
+for (let i = 0; i < finalize.length; i++) {
+    if (finalize[i]=="No") {
+        final_count += 1;
+    }
+    
 }
+
+// Keterangan penulis
+var loc_penulis = document.querySelector('#pnl-select .drop-select .select-droped');
+var loc_prodi = document.querySelector('#prodi-select .drop-select .select-droped');
+var input_penulis = " ";
+var input_prodi = " ";
+var arr = ["1", "2", "3", "4", "5"];
+const penulis = [];
+const prodi = [];
+for (let i = 0; i < arr.length; i++) {
+    if (i==0) {
+        input_penulis += `<li>>--Pilih Semua--<</li>`
+        input_prodi += `<li>>--Pilih Semua--<</li>`
+    }
+    input_penulis += `<li>Penulis Item `+(arr[i])+`</li>`
+    input_prodi += `<li>Program Studi Item `+(arr[i])+`</li>`
+}
+for (let i = 0; i < list_items.length; i++) {
+    var select = Math.floor(Math.random() * (arr.length - 1 + 1) + 1); 
+    penulis.push("Penulis Item "+arr[select-1]);
+    prodi.push("Program Studi Item "+arr[select-1]);
+}
+loc_penulis.innerHTML = input_penulis;
+loc_prodi.innerHTML = input_prodi;
+
+// Change Finale lineup
+var final_select = document.querySelector('#select-final').innerHTML;
+var penulis_select = document.querySelector('#select-pnl').innerHTML;
+var prodi_select = document.querySelector('#select-prodi').innerHTML;
+function changeFinal() {
+    final_select = document.querySelector('#select-final').innerHTML;
+    document.querySelector('#select-final').innerHTML = final_select;
+
+    penulis_select = document.querySelector('#select-pnl').innerHTML;
+    document.querySelector('#select-pnl').innerHTML = penulis_select;
+
+    prodi_select = document.querySelector('#select-prodi').innerHTML;
+    document.querySelector('#select-prodi').innerHTML = prodi_select;
+
+    console.log("final_select:",final_select,"\npenulis_select:",penulis_select,"\nprodi_select:",prodi_select);
+    finalRender(final_select, penulis_select, prodi_select);
+}
+
 
 //lokasi teks dsb yang akan diganti
 const list_element = document.querySelector('#list_wrapper div table tbody');
@@ -370,7 +414,7 @@ let current_page = 1;
 let rows = 10;
 
 
-function DisplayList (items, wrapper, rows_per_page, page) {
+function DisplayList (items, penulis, prodi, wrapper, rows_per_page, page) {
 	wrapper.innerHTML = "";
 	page--;
 
@@ -384,8 +428,8 @@ function DisplayList (items, wrapper, rows_per_page, page) {
         console.log("Finalize is = ",final_select);
         result += `<tr  data-id="`+(i+1)+`">
         <td> Judul Artikel `+item+`</td>
-        <td> Penulis `+item+`</td>
-        <td> Program Studi `+item+`</td>
+        <td> `+penulis[i]+`</td>
+        <td> `+prodi[i]+`</td>
         <td class="btn pointer">View</td>
         </tr>`;
 	}
@@ -395,6 +439,80 @@ function DisplayList (items, wrapper, rows_per_page, page) {
     count.innerHTML = paginatedItems.length +" of " + items.length + " Article";
 }
 
+
+//list yang digunakan dalam list tabel
+finalize_items = list_items;
+final_finalize = finalize;
+final_penulis = penulis;
+final_prodi = prodi;
+function finalRender(final_select, penulis_select) {
+    console.log("================ Start Render ================");
+    finalize_items = [];
+    final_finalize = [];
+    final_penulis = [];
+    final_prodi = [];
+    console.log("list_items: ",list_items);
+    console.log("finalize_items: ",finalize_items, "\nfinal_penulis: ",final_penulis);
+    console.log("============== Finalize Start ==============");
+    if (final_select != "All") {
+        for (let index = 0; index < list_items.length; index++) {
+            if (finalize[index] == final_select)
+            {
+                finalize_items.push(list_items[index]); 
+                final_finalize.push(finalize[index]); 
+                final_penulis.push(penulis[index]); 
+                final_prodi.push(prodi[index]); 
+            }
+        }
+    }
+    else if (final_select == "All") {
+        finalize_items = [].concat(list_items);
+        final_finalize = [].concat(finalize);
+        final_penulis = [].concat(penulis);
+        final_prodi = [].concat(prodi);
+    }
+    console.log("finalize_items",finalize_items, "final_penulis",final_penulis);
+    console.log("============== Finalize Checked ==============");
+    
+
+    console.log("============== Penulis Start ==============");
+    if (((penulis_select == "&gt;--Pilih Penulis--&lt;") || (penulis_select == "&gt;--Pilih Semua--&lt;"))) {
+        // nothing to do here
+    }
+    else {
+        for (let index = 0; index < finalize_items.length; index++) {
+            console.log(final_penulis[index]," != ", penulis_select,final_penulis[index] != penulis_select);
+            if (final_penulis[index] != penulis_select) {
+                finalize_items.splice(index, 1);
+                final_penulis.splice(index, 1);
+                final_prodi.splice(index, 1);
+                index--;
+            }
+        }
+    }
+    console.log("finalize_items (After):",finalize_items, "\nfinal_penulis: ",final_penulis);
+    console.log("============== Penulis Checked ==============");
+
+    
+    console.log("============== Prodi Start ==============");
+    if (((prodi_select == "&gt;--Pilih Program Studi--&lt;") || (prodi_select == "&gt;--Pilih Semua--&lt;"))) {
+        // nothing to do here
+    }
+    else {
+        for (let index = 0; index < finalize_items.length; index++) {
+            console.log(final_prodi[index]," != ", prodi_select,final_prodi[index] != prodi_select);
+            if (final_prodi[index] != prodi_select) {
+                finalize_items.splice(index, 1);
+                final_prodi.splice(index, 1);
+                index--;
+            }
+        }
+    }
+    console.log("finalize_items (After):",finalize_items, "\nfinal_prodi: ",final_prodi);
+    console.log("============== Prodi Checked ==============");
+    console.log("================ Render Stopped ================");
+    DisplayList(finalize_items, final_penulis, final_prodi, list_element, rows, current_page);
+}
 document.querySelector('#next_btn_artikel').addEventListener('click', nextPage, false);
 document.querySelector('#last_btn_artikel').addEventListener('click', lastPage, false);
 document.querySelector('#prev_btn_artikel').addEventListener('click', previousPage, false);
@@ -402,39 +520,21 @@ document.querySelector('#first_btn_artikel').addEventListener('click', firstPage
 
 function previousPage() {
     if(current_page > 1) current_page--;
-    DisplayList(finalize_items, list_element, rows, current_page);
+    DisplayList(finalize_items, final_penulis, final_prodi, list_element, rows, current_page);
 }
 function firstPage() {
     current_page = 1;
-    DisplayList(finalize_items, list_element, rows, current_page);
+    DisplayList(finalize_items, final_penulis, final_prodi, list_element, rows, current_page);
 }
 
 function nextPage() {
     if((current_page * rows) < finalize_items.length) current_page++;
-    DisplayList(finalize_items, list_element, rows, current_page);
+    DisplayList(finalize_items, final_penulis, final_prodi, list_element, rows, current_page);
 }
 function lastPage() {
     current_page = Math.ceil(finalize_items.length/rows);
-    DisplayList(finalize_items, list_element, rows, current_page);
-}
-
-//list yang digunakan dalam list tabel
-finalize_items = [];
-final_finalize = [];
-function finalRender(final_select) {
-    finalize_items = [];
-    final_finalize = [];
-    for (let index = 0; index < list_items.length; index++) {
-        if (finalize[index] == final_select) 
-        {
-            finalize_items.push(list_items[index]); 
-            final_finalize.push(finalize[index]); 
-        }
-        else if (final_select == "All") { finalize_items = list_items; final_finalize = finalize; }
-    }
-    // console.log("finalize_items",finalize_items);
-    DisplayList(finalize_items, list_element, rows, current_page);
+    DisplayList(finalize_items, final_penulis, final_prodi, list_element, rows, current_page);
 }
 
 changeFinal();
-DisplayList(finalize_items, list_element, rows, current_page);
+DisplayList(finalize_items, final_penulis, final_prodi, list_element, rows, current_page);

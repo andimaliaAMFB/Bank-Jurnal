@@ -25,7 +25,7 @@ function shade_show(isi) {
     })
 }
 window.addEventListener('mouseup', function(event){
-    console.log(event.target);
+    // console.log(event.target);
 
     var notif = document.getElementById("dropdown-notif");
     if (notif.style.display == "block") {
@@ -83,6 +83,12 @@ window.addEventListener('mouseup', function(event){
             return false;
         }
     }
+    var judul = document.getElementById("dropdown-jdl");
+    if (event.target != judul && event.target.parentNode != judul.parentNode){
+        judul.style.display = "none";
+        document.getElementById("jdl-search").classList.remove("active");
+    }
+
     var prodi = document.getElementById("dropdown-prodi");
     if (event.target != prodi && event.target.parentNode != prodi.parentNode){
         prodi.style.display = "none";
@@ -275,7 +281,6 @@ function form_inside(id) {
         loc.innerHTML = input;
     }
 }
-
 function dropdown(id){
     var prof = document.getElementById(id);
     var parent = prof.parentNode;
@@ -283,6 +288,19 @@ function dropdown(id){
     if (prof.style.display === "none") {
         prof.style.display = "block";
         parent.classList.add("active");
+        if (parent.id.includes("final-select")) {
+            
+        }
+        else {
+            var input;
+            if (parent.id.includes("jdl")) {
+                input = document.querySelector('.active form input');
+            }
+            else {
+                input = document.querySelector('.active .drop-select .select-search form input');
+            }
+            suggestionBar(input,parent.id);
+        }
     }
 }
 // function dropdown_penulis(){
@@ -343,7 +361,7 @@ const count_history = [];
 for (let i = 0; i < list_items.length; i++) {
     count_history.push(Math.floor(Math.random() * (4 - 2 + 1) + 1));
 }
-console.log(count_history);
+// console.log(count_history);
 
 //Keterangan finalize tiap artikel
 const finalize = [];
@@ -352,7 +370,7 @@ for (let i = 0; i < list_items.length; i++) {
     var select = Math.floor(Math.random() * (arr.length - 1 + 1) + 1); 
     finalize.push(arr[select-1]);
 }
-console.log(finalize);
+// console.log(finalize);
 final_count = 0;
 for (let i = 0; i < finalize.length; i++) {
     if (finalize[i]=="No") {
@@ -364,19 +382,26 @@ for (let i = 0; i < finalize.length; i++) {
 // Keterangan penulis
 var loc_penulis = document.querySelector('#pnl-select .drop-select .select-droped');
 var loc_prodi = document.querySelector('#prodi-select .drop-select .select-droped');
-var input_penulis = " ";
-var input_prodi = " ";
+
 var arr = ["1", "2", "3", "4", "5"];
 const penulis = [];
 const prodi = [];
+var input_penulis = " ";
+var input_prodi = " ";
+
+let suggestions = [];
+
 for (let i = 0; i < arr.length; i++) {
     if (i==0) {
         input_penulis += `<li>>--Pilih Semua--<</li>`
-        input_prodi += `<li>>--Pilih Semua--<</li>`
+        input_prodi += `<li>>--Pilih Semua--<</li>`        
+        suggestions.push(">--Pilih Semua--<");
     }
     input_penulis += `<li>Penulis Item `+(arr[i])+`</li>`
     input_prodi += `<li>Program Studi Item `+(arr[i])+`</li>`
+    suggestions.push("Penulis Item "+arr[i]);
 }
+// penulis & prodi per list
 for (let i = 0; i < list_items.length; i++) {
     var select = Math.floor(Math.random() * (arr.length - 1 + 1) + 1); 
     penulis.push("Penulis Item "+arr[select-1]);
@@ -384,6 +409,81 @@ for (let i = 0; i < list_items.length; i++) {
 }
 loc_penulis.innerHTML = input_penulis;
 loc_prodi.innerHTML = input_prodi;
+
+// console.log(suggestions);
+var string = "Penulis Item 2";
+// console.log("string.includes('Item')",string.includes("Item"));
+// se-se-bar
+// function SeSeBar() {
+//     console.log(document.getElementById('s-se-pnl').value);
+//     let search = document.getElementById('s-se-pnl').value;
+//     // if (search.value == "") {
+//     //     penulis_list();
+//     // }
+//     // else {
+//     //     input_penulis = "";
+//     //     for (let i = 0; i < penulis.length; i++) {
+//     //         if (penulis[i].includes(search)) {
+//     //             input_penulis += `<li>Penulis Item `+(arr[i])+`</li>`
+//     //         }
+//     //     }
+//     //     loc_penulis.innerHTML = input_penulis;
+//     // }
+// }
+
+// getting all required elements
+
+function suggestionBar(input_box, parent_id) {
+    console.log("input_box (suggestionBar())",input_box);
+    
+    // if user press any key and release
+    input_box.onkeyup = (e)=>{
+        let userData = e.target.value; //user enetered data
+        let emptyArray = [];
+        if(userData){
+            console.log("==============================================");
+            emptyArray = suggestions.filter((data)=>{
+                //filtering array value and user characters to lowercase and return only those words which are start with user enetered chars
+                // console.log("hh");
+                // console.log(data.toLocaleLowerCase().includes(userData.toLocaleLowerCase()));
+                return data.toLocaleLowerCase().includes(userData.toLocaleLowerCase()); 
+            });
+            console.log("userData: ",userData);
+            emptyArray = emptyArray.map((data)=>{
+                // passing return data inside li tag
+                // console.log(data," includes ",userData,data.toLocaleLowerCase().includes(userData.toLocaleLowerCase()));
+                if (data.toLocaleLowerCase().includes(userData.toLocaleLowerCase())) {
+                    return data = '<li>'+ data +'</li>';
+                }
+            });
+            console.log("emptyArray",emptyArray);
+            showSuggestions(emptyArray,parent_id);
+        }
+        else{
+            showSuggestions(emptyArray,parent_id);
+        }
+    }
+    function showSuggestions(list,parent_id){
+        let listData;
+        let parent = document.getElementById(parent_id);
+        var loc_list = parent.querySelector('.drop-select .select-droped');
+        if(!list.length){
+            userValue = input_box.value;
+            if (!userValue || userValue.includes(" ")) {
+                listData = "";
+                for (let i = 0; i < suggestions.length; i++) {
+                    listData += `<li>`+(suggestions[i])+`</li>`
+                }
+            }
+            else{
+                listData = '<li><b>Nothing Found<b></li>';
+            }
+        }else {
+            listData = list.join('');
+        }
+        loc_list.innerHTML = listData;
+    }
+}
 
 // Change Finale lineup
 var final_select = document.querySelector('#select-final').innerHTML;
@@ -399,7 +499,7 @@ function changeFinal() {
     prodi_select = document.querySelector('#select-prodi').innerHTML;
     document.querySelector('#select-prodi').innerHTML = prodi_select;
 
-    console.log("final_select:",final_select,"\npenulis_select:",penulis_select,"\nprodi_select:",prodi_select);
+    // console.log("final_select:",final_select,"\npenulis_select:",penulis_select,"\nprodi_select:",prodi_select);
     finalRender(final_select, penulis_select, prodi_select);
 }
 
@@ -418,6 +518,7 @@ function DisplayList (items, penulis, prodi, wrapper, rows_per_page, page) {
 	wrapper.innerHTML = "";
 	page--;
 
+    
 	let start = rows_per_page * page;
 	let end = start + rows_per_page;
     paginatedItems = items.slice(start, end);
@@ -425,7 +526,7 @@ function DisplayList (items, penulis, prodi, wrapper, rows_per_page, page) {
     let result = '';
 	for (let i = 0; i < paginatedItems.length; i++) {
         let item = paginatedItems[i];
-        console.log("Finalize is = ",final_select);
+        // console.log("Finalize is = ",final_select);
         result += `<tr  data-id="`+(i+1)+`">
         <td> Judul Artikel `+item+`</td>
         <td> `+penulis[i]+`</td>
@@ -435,7 +536,7 @@ function DisplayList (items, penulis, prodi, wrapper, rows_per_page, page) {
 	}
     list_element.innerHTML = result;
     current.innerHTML = current_page;
-    console.log(current_page);
+    // console.log(current_page);
     count.innerHTML = paginatedItems.length +" of " + items.length + " Article";
 }
 
@@ -446,14 +547,14 @@ final_finalize = finalize;
 final_penulis = penulis;
 final_prodi = prodi;
 function finalRender(final_select, penulis_select) {
-    console.log("================ Start Render ================");
+    // csonsole.log("================ Start Render ================");
     finalize_items = [];
     final_finalize = [];
     final_penulis = [];
     final_prodi = [];
-    console.log("list_items: ",list_items);
-    console.log("finalize_items: ",finalize_items, "\nfinal_penulis: ",final_penulis);
-    console.log("============== Finalize Start ==============");
+    // console.log("list_items: ",list_items);
+    // console.log("finalize_items: ",finalize_items, "\nfinal_penulis: ",final_penulis);
+    // console.log("============== Finalize Start ==============");
     if (final_select != "All") {
         for (let index = 0; index < list_items.length; index++) {
             if (finalize[index] == final_select)
@@ -471,17 +572,17 @@ function finalRender(final_select, penulis_select) {
         final_penulis = [].concat(penulis);
         final_prodi = [].concat(prodi);
     }
-    console.log("finalize_items",finalize_items, "final_penulis",final_penulis);
-    console.log("============== Finalize Checked ==============");
+    // console.log("finalize_items",finalize_items, "final_penulis",final_penulis);
+    // console.log("============== Finalize Checked ==============");
     
 
-    console.log("============== Penulis Start ==============");
+    // console.log("============== Penulis Start ==============");
     if (((penulis_select == "&gt;--Pilih Penulis--&lt;") || (penulis_select == "&gt;--Pilih Semua--&lt;"))) {
         // nothing to do here
     }
     else {
         for (let index = 0; index < finalize_items.length; index++) {
-            console.log(final_penulis[index]," != ", penulis_select,final_penulis[index] != penulis_select);
+            // console.log(final_penulis[index]," != ", penulis_select,final_penulis[index] != penulis_select);
             if (final_penulis[index] != penulis_select) {
                 finalize_items.splice(index, 1);
                 final_penulis.splice(index, 1);
@@ -490,17 +591,17 @@ function finalRender(final_select, penulis_select) {
             }
         }
     }
-    console.log("finalize_items (After):",finalize_items, "\nfinal_penulis: ",final_penulis);
-    console.log("============== Penulis Checked ==============");
+    // console.log("finalize_items (After):",finalize_items, "\nfinal_penulis: ",final_penulis);
+    // console.log("============== Penulis Checked ==============");
 
     
-    console.log("============== Prodi Start ==============");
+    // console.log("============== Prodi Start ==============");
     if (((prodi_select == "&gt;--Pilih Program Studi--&lt;") || (prodi_select == "&gt;--Pilih Semua--&lt;"))) {
         // nothing to do here
     }
     else {
         for (let index = 0; index < finalize_items.length; index++) {
-            console.log(final_prodi[index]," != ", prodi_select,final_prodi[index] != prodi_select);
+            // console.log(final_prodi[index]," != ", prodi_select,final_prodi[index] != prodi_select);
             if (final_prodi[index] != prodi_select) {
                 finalize_items.splice(index, 1);
                 final_prodi.splice(index, 1);
@@ -508,9 +609,9 @@ function finalRender(final_select, penulis_select) {
             }
         }
     }
-    console.log("finalize_items (After):",finalize_items, "\nfinal_prodi: ",final_prodi);
-    console.log("============== Prodi Checked ==============");
-    console.log("================ Render Stopped ================");
+    // console.log("finalize_items (After):",finalize_items, "\nfinal_prodi: ",final_prodi);
+    // console.log("============== Prodi Checked ==============");
+    // console.log("================ Render Stopped ================");
     DisplayList(finalize_items, final_penulis, final_prodi, list_element, rows, current_page);
 }
 document.querySelector('#next_btn_artikel').addEventListener('click', nextPage, false);
@@ -526,7 +627,6 @@ function firstPage() {
     current_page = 1;
     DisplayList(finalize_items, final_penulis, final_prodi, list_element, rows, current_page);
 }
-
 function nextPage() {
     if((current_page * rows) < finalize_items.length) current_page++;
     DisplayList(finalize_items, final_penulis, final_prodi, list_element, rows, current_page);

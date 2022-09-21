@@ -607,6 +607,13 @@ footer{
     .article-order .searchbar.active form *{
         color: #FFFFFF;
     }
+    .se-selectbar .se-se-bar .select-search.searchbar form input{
+        cursor: text;
+        color: rgba(0, 0, 0, 0.5);
+    }
+    .select-search.searchbar form input:hover{
+        cursor: text;
+    }
     
     .searchbar form *{
         padding-inline: 6px;
@@ -627,16 +634,19 @@ footer{
         background-color: #FFFFFF;
         box-shadow: -4px 0px 4px rgba(0, 0, 0, 0.25);
     }
-    .drop-select{
+    .drop-select,
+    .se-selectbar .drop-select{
         position: absolute;
         right: 0;
         top: 125%;
         min-width: 50%;
-        max-width: 70%;
         max-height: 8rem;
         overflow-y: scroll;
         margin: 0;
         z-index: 1;
+    }
+    .se-selectbar .drop-select{
+        max-width: 70%;
     }
     .select-search{
         border-radius: 4px;

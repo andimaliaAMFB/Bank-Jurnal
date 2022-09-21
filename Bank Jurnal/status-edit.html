@@ -92,13 +92,17 @@
             <div class="list-artikel" id="list_wrapper" style="margin-block: 2rem;">
                 <div class="artikel-tabel-edit card">
                     <div class="article-order">
-                        <div class="searchbar search-jdl md6">
+                        <div class="searchbar search-jdl selectbar md6" id="jdl-search" onclick="dropdown('dropdown-jdl')">
                             <form action="">
                                 <input type="text" name="s-jdl" id="search-jdl" placeholder="Judul Artikel">
                                 <button type="submit" name="s-jdl-btn" id="search-jdl-btn" class="dot">S</button>
                             </form>
+                            <div class="drop-select card se-se-bar" id="dropdown-jdl" style="display: none;">
+                                <ul class="select-droped">
+                                </ul>
+                            </div>
                         </div>
-                        <div class="searchbar search-finalize selectbar md3" id="final-select" onclick="dropdown('dropdown-final')">
+                        <div class="searchbar search-finalize selectbar se-selectbar md3" id="final-select" onclick="dropdown('dropdown-final')">
                             
                             <form class="select" action="">
                                 <label for="search-final" id="search-final">Catatan Revisi:</label>

@@ -29,39 +29,31 @@ window.addEventListener('mouseup', function(event){
 
     var notif = document.getElementById("dropdown-notif");
     if (notif.style.display == "block") {
-        if (event.target != notif && event.target.parentNode != notif && event.target.parentNode.parentNode != notif && event.target.parentNode.parentNode.parentNode != notif){
-            console.log("===============");
-            console.log(notif);
-            console.log("Ended");
-            console.log("===============");
-            notif.style.display = "none";
-        }
+        if (!notif.contains(event.target)){ notif.style.display = "none"; }
+    }
+    else if ((notif.style.display == "none") && (event.target.id == "button-notif")) {
+        notif.style.display = "block";
     }
     
     var prof = document.getElementById("dropdown-profile");
     if (prof.style.display == "block") {
-        if (event.target != prof && event.target.parentNode != prof && event.target.parentNode.parentNode != prof){
-            console.log("===============");
-            console.log(prof);
-            console.log("Ended");
-            console.log("===============");
-            prof.style.display = "none";
-        }
+        if (!prof.contains(event.target)){ prof.style.display = "none"; }
+    }
+    else if ((prof.style.display == "none") && (event.target.id == "button-profile")) {
+        prof.style.display = "block";
     }
     
     var taskbar = document.getElementById("taskbar");
     if (taskbar.parentNode.style.display == "block") {
-        console.log(taskbar);
-        if (event.target != taskbar && event.target.parentNode != taskbar && event.target.parentNode.parentNode != taskbar && event.target.parentNode.parentNode.parentNode != taskbar && event.target.parentNode.parentNode.parentNode.parentNode != taskbar){
-            console.log("taskbarEnd!!");
+        if ((!taskbar.contains(event.target)) || (event.target.classList.contains("taskbar-btn"))){
             taskbar.parentNode.style.display = "none";
             shade_show("remove");
         }
     }
-    else if (taskbar.parentNode.style.display == "none") {
-        if (event.target == document.getElementsByClassName("taskbar-btn")) {
-            taskbar_function();
-        }
+    else if ((taskbar.parentNode.style.display == "none") && (event.target.classList.contains("taskbar-btn"))) {
+        taskbar.parentNode.style.display = "block";
+        taskbar.parentNode.classList.add("show");
+        shade_show("show");
     }
     
 
@@ -83,14 +75,27 @@ window.addEventListener('mouseup', function(event){
             return false;
         }
     }
+
     var judul = document.getElementById("dropdown-jdl");
-    if (event.target != judul && event.target.parentNode != judul.parentNode){
+    if (!judul.parentNode.contains(event.target)){
         judul.style.display = "none";
         document.getElementById("jdl-search").classList.remove("active");
     }
+    if (judul.contains(event.target)) {
+        if (event.target.parentNode.classList.contains("select-droped")) {
+            if (document.querySelector('#jdl-search .drop-select ul .active')) {
+                document.querySelector('#jdl-search .drop-select ul .active').classList.remove("active");
+            }
+            event.target.classList.add("active");
+            // judul.style.display = "none";
+            document.querySelector('#search-jdl').value = event.target.innerHTML;
+            console.log("judul:",document.querySelector('#s-se-pnl').value);
+            changeFinal();
+        }
+    }
 
     var prodi = document.getElementById("dropdown-prodi");
-    if (event.target != prodi && event.target.parentNode != prodi.parentNode){
+    if (!prodi.parentNode.contains(event.target)){
         prodi.style.display = "none";
         document.getElementById("prodi-select").classList.remove("active");
     }
@@ -107,7 +112,7 @@ window.addEventListener('mouseup', function(event){
     }
     
     var pnl = document.getElementById("dropdown-pnl");
-    if (event.target != pnl && event.target.parentNode != pnl.parentNode){
+    if (!pnl.parentNode.contains(event.target)){
         pnl.style.display = "none";
         document.getElementById("pnl-select").classList.remove("active");
     }  
@@ -124,7 +129,7 @@ window.addEventListener('mouseup', function(event){
     }
 
     var final = document.getElementById("dropdown-final");
-    if (event.target != final && event.target.parentNode != final.parentNode){
+    if (!final.parentNode.contains(event.target)){
         final.style.display = "none";
         document.getElementById("final-select").classList.remove("active");
     } 
@@ -206,41 +211,6 @@ window.addEventListener('mouseup', function(event){
     }
 });
 
-function form_height() {
-    console.log(document.getElementById("form").clientHeight);
-    if (document.getElementById("form").clientHeight >= window.innerHeight) {
-        console.log("bigger");
-        overflow_body("hidden");
-    }
-    else{
-        console.log("smaller");
-        overflow_body("auto");
-    }
-}
-
-function dropdown_notif(){
-    var drop = document.getElementById("dropdown-notif");
-    if (drop.style.display === "none") {
-        drop.style.display = "block";
-    }
-}
-function dropdown_profile(){
-    var prof = document.getElementById("dropdown-profile");
-    if (prof.style.display === "none") {
-        prof.style.display = "block";
-    }
-}
-function taskbar_function() {
-    var taskbar = document.getElementsByClassName("taskbar-isi");
-    Array.from(taskbar).forEach((x) => {
-        if (x.style.display === "none") {
-            x.style.display = "block";
-            x.classList.add("show");
-            shade_show("show");
-            console.log("OpenTaskbar!!");
-        }
-    });
-}
 function form_function() {
     var form = document.getElementsByClassName("form-modal");
     Array.from(form).forEach((x) => {
@@ -284,7 +254,7 @@ function form_inside(id) {
 function dropdown(id){
     var prof = document.getElementById(id);
     var parent = prof.parentNode;
-    console.log(parent);
+    // console.log(parent);
     if (prof.style.display === "none") {
         prof.style.display = "block";
         parent.classList.add("active");
@@ -293,8 +263,9 @@ function dropdown(id){
         }
         else {
             var input;
-            if (parent.id.includes("jdl")) {
+            if (parent.id.includes("search")) {
                 input = document.querySelector('.active form input');
+                prof.style.display = "none";
             }
             else {
                 input = document.querySelector('.active .drop-select .select-search form input');
@@ -390,22 +361,27 @@ var input_penulis = " ";
 var input_prodi = " ";
 
 let suggestions = [];
-
+let sugges_jdl = [];
+let sugges_pnl = [];
+let sugges_prodi = [];
 for (let i = 0; i < arr.length; i++) {
     if (i==0) {
         input_penulis += `<li>>--Pilih Semua--<</li>`
-        input_prodi += `<li>>--Pilih Semua--<</li>`        
-        suggestions.push(">--Pilih Semua--<");
+        input_prodi += `<li>>--Pilih Semua--<</li>`
+        sugges_pnl.push(">--Pilih Semua--<");
+        sugges_prodi.push(">--Pilih Semua--<");
     }
     input_penulis += `<li>Penulis Item `+(arr[i])+`</li>`
     input_prodi += `<li>Program Studi Item `+(arr[i])+`</li>`
-    suggestions.push("Penulis Item "+arr[i]);
+    sugges_pnl.push("Penulis Item "+arr[i]);
+    sugges_prodi.push("Program Studi Item "+arr[i]);
 }
 // penulis & prodi per list
 for (let i = 0; i < list_items.length; i++) {
     var select = Math.floor(Math.random() * (arr.length - 1 + 1) + 1); 
     penulis.push("Penulis Item "+arr[select-1]);
     prodi.push("Program Studi Item "+arr[select-1]);
+    sugges_jdl.push(list_items[i]);
 }
 loc_penulis.innerHTML = input_penulis;
 loc_prodi.innerHTML = input_prodi;
@@ -433,22 +409,36 @@ var string = "Penulis Item 2";
 
 // getting all required elements
 
+const form = document.querySelector('#jdl-search form');
+
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    changeFinal();
+});
+
 function suggestionBar(input_box, parent_id) {
-    console.log("input_box (suggestionBar())",input_box);
+    // console.log("input_box (suggestionBar())",input_box);
+    if (parent_id.includes("pnl")) { suggestions = [].concat(sugges_pnl); }
+    else if (parent_id.includes("prodi")) { suggestions = [].concat(sugges_prodi); }
+    else if (parent_id.includes("jdl")) { suggestions = [].concat(sugges_jdl); }
+    
+    parent = document.getElementById(parent_id);
+    dd = parent.querySelector('.drop-select');
     
     // if user press any key and release
     input_box.onkeyup = (e)=>{
         let userData = e.target.value; //user enetered data
         let emptyArray = [];
         if(userData){
-            console.log("==============================================");
+            dd.style.display = "block";
+            // console.log("==============================================");
             emptyArray = suggestions.filter((data)=>{
                 //filtering array value and user characters to lowercase and return only those words which are start with user enetered chars
                 // console.log("hh");
                 // console.log(data.toLocaleLowerCase().includes(userData.toLocaleLowerCase()));
                 return data.toLocaleLowerCase().includes(userData.toLocaleLowerCase()); 
             });
-            console.log("userData: ",userData);
+            // console.log("userData: ",userData);
             emptyArray = emptyArray.map((data)=>{
                 // passing return data inside li tag
                 // console.log(data," includes ",userData,data.toLocaleLowerCase().includes(userData.toLocaleLowerCase()));
@@ -456,10 +446,11 @@ function suggestionBar(input_box, parent_id) {
                     return data = '<li>'+ data +'</li>';
                 }
             });
-            console.log("emptyArray",emptyArray);
+            // console.log("emptyArray",emptyArray);
             showSuggestions(emptyArray,parent_id);
         }
         else{
+            dd.style.display = "none";
             showSuggestions(emptyArray,parent_id);
         }
     }
@@ -486,10 +477,15 @@ function suggestionBar(input_box, parent_id) {
 }
 
 // Change Finale lineup
+var judul_select = document.querySelector('#search-jdl').innerHTML;
 var final_select = document.querySelector('#select-final').innerHTML;
 var penulis_select = document.querySelector('#select-pnl').innerHTML;
 var prodi_select = document.querySelector('#select-prodi').innerHTML;
 function changeFinal() {
+    judul_select = document.querySelector('#search-jdl').value;
+    document.querySelector('#search-jdl').innerHTML = judul_select;
+    document.querySelector('#search-jdl').value = judul_select;
+    
     final_select = document.querySelector('#select-final').innerHTML;
     document.querySelector('#select-final').innerHTML = final_select;
 
@@ -499,8 +495,8 @@ function changeFinal() {
     prodi_select = document.querySelector('#select-prodi').innerHTML;
     document.querySelector('#select-prodi').innerHTML = prodi_select;
 
-    // console.log("final_select:",final_select,"\npenulis_select:",penulis_select,"\nprodi_select:",prodi_select);
-    finalRender(final_select, penulis_select, prodi_select);
+    // console.log("judul_select: ",judul_select,"final_select:",final_select,"\npenulis_select:",penulis_select,"\nprodi_select:",prodi_select);
+    finalRender(judul_select, final_select, penulis_select, prodi_select);
 }
 
 
@@ -543,15 +539,17 @@ function DisplayList (items, penulis, prodi, wrapper, rows_per_page, page) {
 
 //list yang digunakan dalam list tabel
 finalize_items = list_items;
+final_judul = list_items;
 final_finalize = finalize;
 final_penulis = penulis;
 final_prodi = prodi;
-function finalRender(final_select, penulis_select) {
+function finalRender(judul_select, final_select, penulis_select, prodi_select) {
     // csonsole.log("================ Start Render ================");
     finalize_items = [];
     final_finalize = [];
     final_penulis = [];
     final_prodi = [];
+    final_judul = [];
     // console.log("list_items: ",list_items);
     // console.log("finalize_items: ",finalize_items, "\nfinal_penulis: ",final_penulis);
     // console.log("============== Finalize Start ==============");
@@ -563,6 +561,7 @@ function finalRender(final_select, penulis_select) {
                 final_finalize.push(finalize[index]); 
                 final_penulis.push(penulis[index]); 
                 final_prodi.push(prodi[index]); 
+                final_judul.push(list_items[index]); 
             }
         }
     }
@@ -571,11 +570,11 @@ function finalRender(final_select, penulis_select) {
         final_finalize = [].concat(finalize);
         final_penulis = [].concat(penulis);
         final_prodi = [].concat(prodi);
+        final_judul = [].concat(list_items);
     }
     // console.log("finalize_items",finalize_items, "final_penulis",final_penulis);
     // console.log("============== Finalize Checked ==============");
     
-
     // console.log("============== Penulis Start ==============");
     if (((penulis_select == "&gt;--Pilih Penulis--&lt;") || (penulis_select == "&gt;--Pilih Semua--&lt;"))) {
         // nothing to do here
@@ -587,6 +586,7 @@ function finalRender(final_select, penulis_select) {
                 finalize_items.splice(index, 1);
                 final_penulis.splice(index, 1);
                 final_prodi.splice(index, 1);
+                final_judul.splice(index, 1);
                 index--;
             }
         }
@@ -605,12 +605,28 @@ function finalRender(final_select, penulis_select) {
             if (final_prodi[index] != prodi_select) {
                 finalize_items.splice(index, 1);
                 final_prodi.splice(index, 1);
+                final_judul.splice(index, 1);
                 index--;
             }
         }
     }
     // console.log("finalize_items (After):",finalize_items, "\nfinal_prodi: ",final_prodi);
     // console.log("============== Prodi Checked ==============");
+
+    
+    // console.log("============== Judul Start ==============");
+    // console.log("judul_select",judul_select);
+    for (let i = 0; i < finalize_items.length; i++) {
+        // console.log(finalize_items[i].toLocaleLowerCase().includes(judul_select.toLocaleLowerCase()));
+        if (!finalize_items[i].toLocaleLowerCase().includes(judul_select.toLocaleLowerCase())) {
+            // console.log("Dimiss",finalize_items[i]);
+            finalize_items.splice(i, 1);
+            final_judul.splice(i, 1);
+            i--;
+        }
+    }
+    // console.log("finalize_items (Last):",finalize_items, "\nfinal_judul: ",final_judul);
+    // console.log("============== Judul Checked ==============");
     // console.log("================ Render Stopped ================");
     DisplayList(finalize_items, final_penulis, final_prodi, list_element, rows, current_page);
 }

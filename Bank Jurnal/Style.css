@@ -596,6 +596,10 @@ footer{
         background-color: #A8D470;
         cursor: pointer;
     }
+    .article-order .searchbar.active:hover form button,
+    .article-order .searchbar:hover form button{
+        background-color: #FFFFFF;
+    }
     .article-order .selectbar:hover form *{
         background-color: transparent;
         cursor: pointer;
@@ -607,10 +611,14 @@ footer{
     .article-order .searchbar.active form *{
         color: #FFFFFF;
     }
+    .article-order .searchbar.active form button{
+        color: rgba(0, 0, 0, 0.5);
+    }
     .se-selectbar .se-se-bar .select-search.searchbar form input{
         cursor: text;
         color: rgba(0, 0, 0, 0.5);
     }
+    .article-order .searchbar form input:hover,
     .select-search.searchbar form input:hover{
         cursor: text;
     }

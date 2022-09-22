@@ -9,10 +9,10 @@
 </head>
 <body>
     <header>
-        <div class="head-isi">
+        <div class="head-isi" id="head-isi">
             <div class="head-left-side">
                 <div class="head-taskbar">
-                    <button class="dot taskbar-btn" onclick="taskbar_function()">T</button>
+                    <button class="dot taskbar-btn">T</button>
                 </div>
                 <div class="head-logo">
                     <img src="">
@@ -26,10 +26,17 @@
                         <button type="submit" name="head-search" id="search-btn" class="dot">S</button>
                     </form>
                 </div>
-                <div class="head-notif" onclick="dropdown_notif()">
-                    <button class="dot" id="button-notif">N</button>
+                <div class="head-notif">
+                    <button class="head-button dot" id="button-notif">N</button>
                     <ul class="dropdown-menu" style="display: none;" id="dropdown-notif">
                         <li class="label-dropdown">Notifikasi</li>
+                        <li class="notif-isi">
+                            <p class="notif-isi-head">Artikel Baru Telah Terdaftar</p>
+                            <div class="notif-isi-waktu">
+                                <p>30 days Ago</p>
+                                <p class="view-full">View Full Notification</p>
+                            </div>
+                        </li>
                         <li class="notif-isi">
                             <p class="notif-isi-head">Artikel Baru Telah Terdaftar</p>
                             <div class="notif-isi-waktu">
@@ -40,8 +47,8 @@
                         <li class="view-all">See Full Notification</li>
                     </ul>
                 </div>
-                <div class="head-profile" onclick="dropdown_profile()">
-                    <button class="dot" id="button-profile">P</button>
+                <div class="head-profile">
+                    <button class="head-button dot" id="button-profile">P</button>
                     <ul class="dropdown-menu" style="display: none;" id="dropdown-profile">
                         <li class="user-profile label-dropdown">
                             <img src="┗∵┓テレカクシ思春期／HoneyWorks feat.鏡音レン.mp4_snapshot_01.24_[2015.09.27_10.55.19].jpg" alt="">
@@ -56,10 +63,10 @@
         </div>
     </header>
     <div class="taskbar-isi" style="display: none;">
-        <div class="taskbar-content">
+        <div class="taskbar-content" id="taskbar">
             <div class="task-head">
                 <div class="head-taskbar">
-                    <button class="dot taskbar-btn" onclick="taskbar_function()">T</button>
+                    <button class="dot taskbar-btn">T</button>
                 </div>
                 <div class="head-logo">
                     <img src="">
@@ -77,10 +84,9 @@
                 </ul>
             </div>
         </div>
-        <div class="shade" onclick="taskbar_function()"></div>
     </div>
     <main>
-        <div class="main-isi">
+        <div class="main-isi" id="main-isi">
             <div class="judul-hlm"><h2>judul</h2></div>
             <div class="statistic-data">
                 <div class="static card" style="width: 55%;">
@@ -120,7 +126,7 @@
                         Pengembangan Masyarakat Islam
                     </div>
                 </div>
-                <div class="fliter-form" style="display: none;">
+                <!-- <div class="form-modal" id="filter-form" style="display: none;">
                     <div class="form-card card">
                         <div class="card-head">
                             <h3>Program Studi</h3>
@@ -177,48 +183,37 @@
                         </div>
                     </div>
                     <div class="shade" onclick="form_function()"></div>
-                </div>
+                </div> -->
+                
+                
             </div>
-            <div class="list-artikel">
-                <div class="artikel-tabel card">
+            <div class="list-artikel" id="list_wrapper" style="margin-block: 2rem;">
+                <div class="artikel-tabel-edit card">
                     <table class="tabel-card" style="width: 100%;">
                         <thead>
                             <tr>
-                                <th style="width:40%">Judul</th>
-                                <th>Penulis</th>
-                                <th>Program Studi</th>
-                                <th style="width:10%">Status</th>
+                                <th>Judul</th>
+                                <th class="md4">Penulis</th>
+                                <th class="md4">Program Studi</th>
+                                <th class="md2"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td style="width:40%">Judul</td>
-                                <td>Penulis</td>
-                                <td>Program Studi</td>
-                                <td style="width:10%">Status</td>
-                            </tr>
-                            <tr>
-                                <td>Judul</td>
-                                <td>Penulis</td>
-                                <td>Program Studi</td>
-                                <td>Status</td>
-                            </tr>
+                            <tr><td colspan="4"><i>Loading...</i></td></tr>
                         </tbody>
                     </table>
-                    <div class="page">
-                        <div class="table-data-count">
-                            10 of 100 article
+                    <div class="page" id="article_pagination">
+                        <div class="table-data-count" id="article_pagination_count">
                         </div>
                         <div class="page-button">
-                            <button class="np-btn btn" id="2-prev-btn-artikel"><<</button>
-                            <button class="np-btn btn" id="prev-btn-artikel"><</button>
-                            <p class="no-loc" id="no-loc-artikel">1</p>
-                            <button class="np-btn btn" id="next-btn-artikel">></button>
-                            <button class="np-btn btn" id="2-next-btn-artikel">>></button>
+                            <button class="np-btn btn" id="first_btn_artikel"><<</button>
+                            <button class="np-btn btn" id="prev_btn_artikel"><</button>
+                            <p class="no-loc" id="no_loc_artikel"></p>
+                            <button class="np-btn btn" id="next_btn_artikel">></button>
+                            <button class="np-btn btn" id="last_btn_artikel">>></button>
                         </div>
                     </div>
                 </div>
-                
             </div>
             <div class="slide-penulis">
                 <div class="penulis-isi card">
@@ -281,12 +276,52 @@
                     </div>
                 </div>
             </div>
+            <div class="form-modal" style="display: none;">
+                <div class="fliter-form" id="form">
+                    <div class="form-card card md7">
+                        <div class="card-head">
+                            <h3>Program Studi</h3>
+                            <button class="btn">X</button>
+                        </div>
+                        <div class="card-body">
+                            <form action="" id="form-status">
+                                <div class="prodi-pilih">
+                                    <article>
+                                        <input type="checkbox">
+                                        <div><span>Prodi 1</span></div>
+                                    </article>
+                                    <article>
+                                        <input type="checkbox">
+                                        <div><span>Manajemen Dakwah</span></div>
+                                    </article>
+                                    <article>
+                                        <input type="checkbox">
+                                        <div><span>Teknik Informatika</span></div>
+                                    </article>
+                                    <article>
+                                        <input type="checkbox">
+                                        <div><span>Manajemen Pendidikian Islam</span></div>
+                                    </article>
+                                    <article>
+                                        <input type="checkbox">
+                                        <div><span>Manajemen Dakwah</span></div>
+                                    </article>
+                                </div>
+                                
+                                <div class="row right">
+                                    <button type="submit" class="btn">Cari Prodi</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
     <footer>
 
     </footer>
-    
+    <div class="shade fade" id="shade"></div>
     <script src="Script.js"></script>
 </body>
 </html>

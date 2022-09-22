@@ -58,87 +58,95 @@ window.addEventListener('mouseup', function(event){
     
 
     var form_modal = document.getElementById("form");
-    if (form_modal.parentNode.style.display == "block") {
-        console.log(form_modal.parentNode);
-        if (event.target == form_modal || event.target.classList == "btn"){
-            console.log("FormEnd!!");
-            form_modal.parentNode.style.display = "none";
-            shade_show("remove");
-            overflow_body("auto");
-            
-            var parent = document.querySelector('.history_form');
-            parent.innerHTML = '';
-        }
-        document.getElementById("form-status").onsubmit = function() {
-            //ubah finalize menjadi Yes
-            alert("The form was submitted");
-            return false;
+    if (form_modal) {
+        if (form_modal.parentNode.style.display == "block") {
+            console.log(form_modal.parentNode);
+            if (event.target == form_modal || event.target.classList == "btn"){
+                // console.log("FormEnd!!");
+                form_modal.parentNode.style.display = "none";
+                shade_show("remove");
+                overflow_body("auto");
+                
+                var parent = document.querySelector('.history_form');
+                if (parent) { parent.innerHTML = ''; }
+            }
+            document.getElementById("form-status").onsubmit = function() {
+                //submit form
+                alert("The form was submitted");
+                return false;
+            }
         }
     }
 
     var judul = document.getElementById("dropdown-jdl");
-    if (!judul.parentNode.contains(event.target)){
-        judul.style.display = "none";
-        document.getElementById("jdl-search").classList.remove("active");
-    }
-    if (judul.contains(event.target)) {
-        if (event.target.parentNode.classList.contains("select-droped")) {
-            if (document.querySelector('#jdl-search .drop-select ul .active')) {
-                document.querySelector('#jdl-search .drop-select ul .active').classList.remove("active");
+    if (judul) {
+        if (!judul.parentNode.contains(event.target)){
+            judul.style.display = "none";
+            document.getElementById("jdl-search").classList.remove("active");
+        }
+        if (judul.contains(event.target)) {
+            if (event.target.parentNode.classList.contains("select-droped")) {
+                if (document.querySelector('#jdl-search .drop-select ul .active')) {
+                    document.querySelector('#jdl-search .drop-select ul .active').classList.remove("active");
+                }
+                event.target.classList.add("active");
+                // judul.style.display = "none";
+                document.querySelector('#search-jdl').value = event.target.innerHTML;
+                console.log("judul:",document.querySelector('#s-se-pnl').value);
+                changeFinal();
             }
-            event.target.classList.add("active");
-            // judul.style.display = "none";
-            document.querySelector('#search-jdl').value = event.target.innerHTML;
-            console.log("judul:",document.querySelector('#s-se-pnl').value);
-            changeFinal();
         }
     }
-
     var prodi = document.getElementById("dropdown-prodi");
-    if (!prodi.parentNode.contains(event.target)){
-        prodi.style.display = "none";
-        document.getElementById("prodi-select").classList.remove("active");
-    }
-    if (prodi.contains(event.target)) {
-        if (event.target.parentNode.classList.contains("select-droped")) {
-            if (document.querySelector('#prodi-select .drop-select ul .active')) {
-                document.querySelector('#prodi-select .drop-select ul .active').classList.remove("active");
-            }
-            event.target.classList.add("active");
-            document.querySelector('#select-prodi').innerHTML = event.target.innerHTML;
+    if (prodi) {
+        if (!prodi.parentNode.contains(event.target)){
             prodi.style.display = "none";
-            changeFinal();
+            document.getElementById("prodi-select").classList.remove("active");
+        }
+        if (prodi.contains(event.target)) {
+            if (event.target.parentNode.classList.contains("select-droped")) {
+                if (document.querySelector('#prodi-select .drop-select ul .active')) {
+                    document.querySelector('#prodi-select .drop-select ul .active').classList.remove("active");
+                }
+                event.target.classList.add("active");
+                document.querySelector('#select-prodi').innerHTML = event.target.innerHTML;
+                prodi.style.display = "none";
+                changeFinal();
+            }
         }
     }
-    
     var pnl = document.getElementById("dropdown-pnl");
-    if (!pnl.parentNode.contains(event.target)){
-        pnl.style.display = "none";
-        document.getElementById("pnl-select").classList.remove("active");
-    }  
-    if (pnl.contains(event.target)) {
-        if (event.target.parentNode.classList.contains("select-droped")) {
-            if (document.querySelector('#pnl-select .drop-select ul .active')) {
-                document.querySelector('#pnl-select .drop-select ul .active').classList.remove("active");
-            }
-            event.target.classList.add("active");
-            document.querySelector('#select-pnl').innerHTML = event.target.innerHTML;
+    if (pnl) {
+        if (!pnl.parentNode.contains(event.target)){
             pnl.style.display = "none";
-            changeFinal();
+            document.getElementById("pnl-select").classList.remove("active");
+        }  
+        if (pnl.contains(event.target)) {
+            if (event.target.parentNode.classList.contains("select-droped")) {
+                if (document.querySelector('#pnl-select .drop-select ul .active')) {
+                    document.querySelector('#pnl-select .drop-select ul .active').classList.remove("active");
+                }
+                event.target.classList.add("active");
+                document.querySelector('#select-pnl').innerHTML = event.target.innerHTML;
+                pnl.style.display = "none";
+                changeFinal();
+            }
         }
     }
 
     var final = document.getElementById("dropdown-final");
-    if (!final.parentNode.contains(event.target)){
-        final.style.display = "none";
-        document.getElementById("final-select").classList.remove("active");
-    } 
-    if (final.contains(event.target)) {
-        document.querySelector('#final-select .drop-select ul .active').classList.remove("active");
-        event.target.classList.add("active");
-        document.querySelector('#select-final').innerHTML = event.target.innerHTML;
-        final.style.display = "none";
-        changeFinal();
+    if (final) {
+        if (!final.parentNode.contains(event.target)){
+            final.style.display = "none";
+            document.getElementById("final-select").classList.remove("active");
+        } 
+        if (final.contains(event.target)) {
+            document.querySelector('#final-select .drop-select ul .active').classList.remove("active");
+            event.target.classList.add("active");
+            document.querySelector('#select-final').innerHTML = event.target.innerHTML;
+            final.style.display = "none";
+            changeFinal();
+        }
     }
 
     if (event.target.classList == "btn pointer") {
@@ -219,7 +227,7 @@ function form_function() {
             x.classList.add("show");
             shade_show("show");
             overflow_body("hidden");
-            console.log("OpenForm!!");
+            // console.log("OpenForm!!");
         }
     });
 }
@@ -383,8 +391,10 @@ for (let i = 0; i < list_items.length; i++) {
     prodi.push("Program Studi Item "+arr[select-1]);
     sugges_jdl.push(list_items[i]);
 }
-loc_penulis.innerHTML = input_penulis;
-loc_prodi.innerHTML = input_prodi;
+if (loc_penulis&&loc_prodi) {
+    loc_penulis.innerHTML = input_penulis;
+    loc_prodi.innerHTML = input_prodi;
+}
 
 // console.log(suggestions);
 var string = "Penulis Item 2";
@@ -410,11 +420,12 @@ var string = "Penulis Item 2";
 // getting all required elements
 
 const form = document.querySelector('#jdl-search form');
-
-form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    changeFinal();
-});
+if (form) {
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        changeFinal();
+    });
+}
 
 function suggestionBar(input_box, parent_id) {
     // console.log("input_box (suggestionBar())",input_box);
@@ -477,26 +488,36 @@ function suggestionBar(input_box, parent_id) {
 }
 
 // Change Finale lineup
-var judul_select = document.querySelector('#search-jdl').innerHTML;
-var final_select = document.querySelector('#select-final').innerHTML;
-var penulis_select = document.querySelector('#select-pnl').innerHTML;
-var prodi_select = document.querySelector('#select-prodi').innerHTML;
+let jdl_slt = document.querySelector('#search-jdl');
+let final_slt = document.querySelector('#select-final');
+let pnl_slt = document.querySelector('#select-pnl');
+let prodi_slt = document.querySelector('#select-prodi');
+
+var judul_select,final_select,penulis_select,prodi_select;
+if (jdl_slt && final_slt && pnl_slt && prodi_slt) {
+    judul_select = jdl_slt.innerHTML;
+    final_select = final_slt.innerHTML;
+    penulis_select = pnl_slt.innerHTML;
+    prodi_select = prodi_slt.innerHTML;
+}
 function changeFinal() {
-    judul_select = document.querySelector('#search-jdl').value;
-    document.querySelector('#search-jdl').innerHTML = judul_select;
-    document.querySelector('#search-jdl').value = judul_select;
-    
-    final_select = document.querySelector('#select-final').innerHTML;
-    document.querySelector('#select-final').innerHTML = final_select;
+    if (jdl_slt && final_slt && pnl_slt && prodi_slt) {
+        judul_select = jdl_slt.value;
+        jdl_slt.innerHTML = judul_select;
+        jdl_slt.value = judul_select;
+        
+        final_select = final_slt.innerHTML;
+        final_slt.innerHTML = final_select;
 
-    penulis_select = document.querySelector('#select-pnl').innerHTML;
-    document.querySelector('#select-pnl').innerHTML = penulis_select;
+        penulis_select = pnl_slt.innerHTML;
+        pnl_slt.innerHTML = penulis_select;
 
-    prodi_select = document.querySelector('#select-prodi').innerHTML;
-    document.querySelector('#select-prodi').innerHTML = prodi_select;
+        prodi_select = prodi_slt.innerHTML;
+        prodi_slt.innerHTML = prodi_select;
 
-    // console.log("judul_select: ",judul_select,"final_select:",final_select,"\npenulis_select:",penulis_select,"\nprodi_select:",prodi_select);
-    finalRender(judul_select, final_select, penulis_select, prodi_select);
+        // console.log("judul_select: ",judul_select,"final_select:",final_select,"\npenulis_select:",penulis_select,"\nprodi_select:",prodi_select);
+        finalRender(judul_select, final_select, penulis_select, prodi_select);
+    }
 }
 
 

@@ -246,7 +246,7 @@ body{
             border-radius: .25rem;
             cursor: pointer;
         }
-        main .main-isi .filter-prodi .filter-body .prodi-box:hover{
+        form .prodi-box:hover{
             background-color: #48aa6c;
         }
         main .main-isi .filter-prodi .fliter-form{
@@ -255,13 +255,13 @@ body{
             top: 0px;
             z-index: 1;
         }
-        main .main-isi .filter-prodi .fliter-form .card-body form .prodi-pilih{
+        .card-body form .prodi-pilih{
             display: inline-flex;
             flex-wrap: wrap;
             justify-content: initial;
             align-items: center;
         }
-        main .main-isi .filter-prodi .fliter-form .card-body form .prodi-pilih article {
+        .card-body form .prodi-pilih article {
             position: relative;
             border: 2px solid #6CD291;
             box-sizing: border-box;
@@ -269,13 +269,13 @@ body{
             margin: .5rem;
         }
 
-        main .main-isi .filter-prodi .fliter-form .card-body form .prodi-pilih article div {
+        form .prodi-pilih article div {
             padding: 8px 16px;
             align-items: center;
             transition: .5s ease;
         }
 
-        main .main-isi .filter-prodi .fliter-form .card-body form .prodi-pilih article input {
+        form .prodi-pilih article input {
             position: absolute;
             width: 100%;
             height: 100%;

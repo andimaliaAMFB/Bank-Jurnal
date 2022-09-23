@@ -106,26 +106,7 @@
                         Filter
                     </button>
                 </div>
-                <div class="body-sub filter-body">
-                    <div class="prodi-box">
-                        prodi 1
-                    </div>
-                    <div class="prodi-box">
-                        Manajemen Dakwah
-                    </div>
-                    <div class="prodi-box">
-                        Teknik Informatika
-                    </div>
-                    <div class="prodi-box">
-                        Manajemen Pendidikian Islam
-                    </div>
-                    <div class="prodi-box">
-                        Pengembangan Masyarakat Islam
-                    </div>
-                    <div class="prodi-box">
-                        Pengembangan Masyarakat Islam
-                    </div>
-                </div>
+                <div class="body-sub filter-body"></div>
                 <!-- <div class="form-modal" id="filter-form" style="display: none;">
                     <div class="form-card card">
                         <div class="card-head">
@@ -189,13 +170,13 @@
             </div>
             <div class="list-artikel" id="list_wrapper" style="margin-block: 2rem;">
                 <div class="artikel-tabel-edit card">
-                    <table class="tabel-card" style="width: 100%;">
+                    <table class="tabel-card md100">
                         <thead>
                             <tr>
                                 <th>Judul</th>
                                 <th class="md4">Penulis</th>
                                 <th class="md4">Program Studi</th>
-                                <th class="md2"></th>
+                                <th class="md2">Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -285,6 +266,16 @@
                         </div>
                         <div class="card-body">
                             <form action="" id="form-status">
+                                <div class="row left border-bottom">
+                                    <article class="row">
+                                        <label for="all">Pilih Semua:</label> 
+                                        <input type="checkbox" id="all">
+                                    </article>
+                                    <article class="row">
+                                        <label for="allClear">Batalkan pilihan:</label> 
+                                        <input type="checkbox" id="allClear">
+                                    </article>
+                                </div>
                                 <div class="prodi-pilih">
                                     <article>
                                         <input type="checkbox">

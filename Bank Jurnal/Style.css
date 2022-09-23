@@ -241,7 +241,7 @@ body{
             margin: 0 .5rem .5rem .5rem;
             padding: 8px 16px;
             text-align: center;
-            background-color: #6CD291;
+            background-color: #41b871;
             color: #FFFFFF;
             border-radius: .25rem;
             cursor: pointer;
@@ -260,6 +260,7 @@ body{
             flex-wrap: wrap;
             justify-content: initial;
             align-items: center;
+            margin-block: .5rem;
         }
         .card-body form .prodi-pilih article {
             position: relative;
@@ -552,6 +553,9 @@ footer{
         font-family: inherit;
         font-size: inherit;
     }
+    #form-status .row input {
+        width: auto;
+    }
     .btn{
         padding: 8px 16px;
         cursor: pointer;
@@ -696,6 +700,7 @@ footer{
         margin-bottom: 1rem;
         border-bottom: 0.5px solid rgba(0, 0, 0, 0.25);
         font-size: large;
+        padding-block: 0;
     }
     .tabel-card{
         text-align: center;
@@ -746,10 +751,13 @@ footer{
     .form-card .card-body form .btn{
         border-radius: 2rem;
         background-color: #218AC8;
-        margin-inline: auto 1rem;
+        margin-inline: 0 1rem;
         margin-block: 1rem;
         border-radius: 2rem;
         background-color: #218AC8;
+    }
+    .card-body form *{
+        border-color: rgba(0, 0, 0, 0.25);
     }
     .shade{
         position: fixed;
@@ -777,6 +785,16 @@ footer{
     }
     .row.right{
         justify-content: flex-end;
+    }
+    .row.left{
+        justify-content: flex-start;
+    }
+
+    form .row article {
+        margin-inline: 1rem;
+    }
+    .row label {
+        margin-inline: 0 1rem;
     }
 
     .form_sub_title {

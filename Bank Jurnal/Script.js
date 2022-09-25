@@ -548,7 +548,7 @@ if (loc_penulis&&loc_prodi) {
     function DisplayList (items, penulis, prodi, wrapper, rows_per_page, page) {
         wrapper.innerHTML = "";
         page--;
-
+        
         
         let start = rows_per_page * page;
         let end = start + rows_per_page;
@@ -560,8 +560,8 @@ if (loc_penulis&&loc_prodi) {
             // console.log("Finalize is = ",final_select);
             result += `<tr  data-id="`+(i+1)+`">
             <td> Judul Artikel `+item+`</td>
-            <td> `+penulis[i]+`</td>
-            <td> `+prodi[i]+`</td>`;
+            <td> `+penulis[i+start]+`</td>
+            <td> `+prodi[i+start]+`</td>`;
 
             if (lokal.includes("index")) {
                 result +=`<td>Status</td>
@@ -572,7 +572,7 @@ if (loc_penulis&&loc_prodi) {
                 </tr>`;
             }
         }
-        list_element.innerHTML = result;
+        wrapper.innerHTML = result;
         current.innerHTML = current_page;
         // console.log(current_page);
         count.innerHTML = paginatedItems.length +" of " + items.length + " Article";
@@ -674,7 +674,13 @@ if (loc_penulis&&loc_prodi) {
         // console.log("finalize_items (Last):",finalize_items, "\nfinal_judul: ",final_judul);
         // console.log("============== Judul Checked ==============");
         // console.log("================ Render Stopped ================");
+        
         DisplayList(finalize_items, final_penulis, final_prodi, list_element, rows, current_page);
+
+        if (lokal.includes("index")) {
+            final_penulis_unique = final_penulis.filter(UniqueList).sort();
+            PenulisList(final_penulis_unique, list_element_pnl, rows_pnl, current_page_pnl);
+        }
     }
     document.querySelector('#next_btn_artikel').addEventListener('click', nextPage, false);
     document.querySelector('#last_btn_artikel').addEventListener('click', lastPage, false);
@@ -697,10 +703,74 @@ if (loc_penulis&&loc_prodi) {
         current_page = Math.ceil(finalize_items.length/rows);
         DisplayList(finalize_items, final_penulis, final_prodi, list_element, rows, current_page);
     }
-
-    changeFinal();
-    DisplayList(finalize_items, final_penulis, final_prodi, list_element, rows, current_page);
 //End Table Render
+
+function UniqueList(value, index, self) {
+    return self.indexOf(value) === index;
+  }
+
+//Penulis Render
+    if (lokal.includes("index")) {
+        //var
+            let current_page_pnl = 1;
+            let rows_pnl = 10;
+            var final_penulis_unique = final_penulis.filter(UniqueList).sort();
+
+        
+        //lokasi teks dsb yang akan diganti
+            const list_element_pnl = document.querySelector('.penulis-isi .card-body .container-slide');
+            const count_pnl = document.getElementById('penulis_pagination_count');
+            const current_pnl = document.getElementById('no-loc-penulis');
+            const pagination_element_pnl = document.getElementById('penulis_pagination');
+
+        function PenulisList(penulis, wrapper, rows_per_page, page) {
+            wrapper.innerHTML = "";
+            page--;
+
+            // console.log(penulis);
+            let start = rows_per_page * page;
+            let end = start + rows_per_page;
+            paginatedItems = penulis.slice(start, end);
+
+            let result = '';
+            for (let i = 0; i < paginatedItems.length; i++) {
+                let item = paginatedItems[i];
+                // console.log("Finalize is = ",final_select);
+                result += `<div class="profile-box">
+                        <img src="" alt="profile-image">
+                        <p id="profile-name">`+paginatedItems[i]+`</p>
+                    </div>`;
+            }
+            wrapper.innerHTML = result;
+            current_pnl.innerHTML = current_page;
+            // console.log(current_page);
+            count_pnl.innerHTML = paginatedItems.length +" of " + penulis.length + " Authors";
+        }
+        
+        document.querySelector('#next_btn_penulis').addEventListener('click', nextPagePnl, false);
+        document.querySelector('#last_btn_penulis').addEventListener('click', lastPagePnl, false);
+        document.querySelector('#prev_btn_penulis').addEventListener('click', previousPagePnl, false);
+        document.querySelector('#first_btn_penulis').addEventListener('click', firstPagePnl, false);
+
+        function previousPagePnl() {
+            if(current_page_pnl > 1) current_page_pnl--;
+            PenulisList(final_penulis_unique, list_element_pnl, rows_pnl, current_page_pnl);
+        }
+        function firstPagePnl() {
+            current_page_pnl = 1;
+            PenulisList(final_penulis_unique, list_element_pnl, rows_pnl, current_page_pnl);
+        }
+        function nextPagePnl() {
+            if((current_page_pnl * rows_pnl) < final_penulis.length) current_page_pnl++;
+            PenulisList(final_penulis_unique, list_element_pnl, rows_pnl, current_page_pnl);
+        }
+        function lastPagePnl() {
+            current_page_pnl = Math.ceil(final_penulis.length/rows_pnl);
+            PenulisList(final_penulis_unique, list_element_pnl, rows_pnl, current_page_pnl);
+        }
+        PenulisList(final_penulis_unique, list_element_pnl, rows_pnl, current_page_pnl);
+    }
+//End Penulis Render
 
 //Prodi-select Render
     //variabel
@@ -781,7 +851,6 @@ if (loc_penulis&&loc_prodi) {
                         checkbox.nextElementSibling.style.backgroundColor = checkbox.parentNode.style.borderColor;
                 }
             });
-
             finalRender(" ", "All", "&gt;--Pilih Semua--&lt;", items)
         }
     }
@@ -812,10 +881,5 @@ if (loc_penulis&&loc_prodi) {
     if (lokal.includes("index")) { ProdiList(prodi_select_list); }
 //End Prodi-select Render
 
-//Penulis Render
-    function PenulisList(params) {
-        if (document.getElementsByClassName("slide-penulis")) {
-            console.log(document.getElementsByClassName("slide-penulis"));
-        }
-    }
-//End Penulis Render
+changeFinal();
+// DisplayList(finalize_items, final_penulis, final_prodi, list_element, rows, current_page);

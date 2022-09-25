@@ -9,6 +9,7 @@ var pnl = document.getElementById("dropdown-pnl");
 var final = document.getElementById("dropdown-final");
 var prodi_all = document.querySelector(`form .row article.row #all`);
 var prodi_Unall = document.querySelector(`form .row article.row #allClear`);
+var check_prodi_list = document.querySelector('.prodi-pilih');
 
 function overflow_body(isi) {
     var body = document.getElementsByTagName("body");
@@ -81,13 +82,25 @@ window.addEventListener('mouseup', function(event){
                 }
                 document.getElementById("form-status").onsubmit = function() {
                     //submit form
-                    alert("The form was submitted");
+                    // alert("The form was submitted");
+                    if (lokal.includes("index")) {
+                        let checkboxes = document.querySelectorAll('input[name="prodi"]:checked');
+                        let values = [];
+                        checkboxes.forEach((checkbox) => {
+                            // console.log(checkbox.nextElementSibling.querySelector('span').textContent);
+                            values.push(checkbox.nextElementSibling.querySelector('span').textContent);
+                        });
+                        // console.log(checkboxes);
+                        // alert(values);
+                        ProdiList(values)
+                    }
                     return false;
                 }
             }
         }
 
     //index
+    if (lokal.includes("index")) {
         if (event.target == prodi_all) {
             // console.log("Check All");
             prodi_Unall.checked = false;
@@ -98,7 +111,10 @@ window.addEventListener('mouseup', function(event){
             prodi_all.checked = false;
             checkProdi(false);
         }
-    
+        if (check_prodi_list.contains(event.target)) {
+            checkProdi_final(event.target,!event.target.checked);
+        }
+    }
     //status-ubah
         if (judul) {
             if (!judul.parentNode.contains(event.target)){
@@ -395,7 +411,7 @@ if (loc_penulis&&loc_prodi) {
 
 //Table Render
     // console.log(suggestions);
-    var string = "Penulis Item 2";
+    // var string = "Penulis Item 2";
     // console.log("string.includes('Item')",string.includes("Item"));
     // se-se-bar
     // function SeSeBar() {
@@ -544,8 +560,8 @@ if (loc_penulis&&loc_prodi) {
             // console.log("Finalize is = ",final_select);
             result += `<tr  data-id="`+(i+1)+`">
             <td> Judul Artikel `+item+`</td>
-            <td> `+penulis_list[i]+`</td>
-            <td> `+prodi_list[i]+`</td>`;
+            <td> `+penulis[i]+`</td>
+            <td> `+prodi[i]+`</td>`;
 
             if (lokal.includes("index")) {
                 result +=`<td>Status</td>
@@ -594,8 +610,8 @@ if (loc_penulis&&loc_prodi) {
         else if (final_select == "All") {
             finalize_items = [].concat(list_items);
             final_finalize = [].concat(finalize);
-            final_penulis = [].concat(penulis);
-            final_prodi = [].concat(prodi);
+            final_penulis = [].concat(penulis_list);
+            final_prodi = [].concat(prodi_list);
             final_judul = [].concat(list_items);
         }
         // console.log("finalize_items",finalize_items, "final_penulis",final_penulis);
@@ -622,14 +638,16 @@ if (loc_penulis&&loc_prodi) {
 
         
         // console.log("============== Prodi Start ==============");
-        if (((prodi_select == "&gt;--Pilih Program Studi--&lt;") || (prodi_select == "&gt;--Pilih Semua--&lt;"))) {
+        // console.log(prodi_select);
+        if (((prodi_select.includes("&gt;--Pilih Program Studi--&lt;")) || (prodi_select.includes("&gt;--Pilih Semua--&lt;")))) {
             // nothing to do here
         }
         else {
             for (let index = 0; index < finalize_items.length; index++) {
-                // console.log(final_prodi[index]," != ", prodi_select,final_prodi[index] != prodi_select);
-                if (final_prodi[index] != prodi_select) {
+                // console.log("final_prodi[",index,"]",final_prodi[index]);
+                if (!prodi_select.includes(final_prodi[index])) {
                     finalize_items.splice(index, 1);
+                    final_penulis.splice(index, 1);
                     final_prodi.splice(index, 1);
                     final_judul.splice(index, 1);
                     index--;
@@ -647,7 +665,9 @@ if (loc_penulis&&loc_prodi) {
             if (!finalize_items[i].toLocaleLowerCase().includes(judul_select.toLocaleLowerCase())) {
                 // console.log("Dimiss",finalize_items[i]);
                 finalize_items.splice(i, 1);
-                final_judul.splice(i, 1);
+                final_penulis.splice(index, 1);
+                final_prodi.splice(index, 1);
+                final_judul.splice(index, 1);
                 i--;
             }
         }
@@ -683,56 +703,113 @@ if (loc_penulis&&loc_prodi) {
 //End Table Render
 
 //Prodi-select Render
+    //variabel
+    var prodi_select_list = [].concat(sugges_prodi);
+    // console.log(prodi_select_list);
+
     //lokasi teks dsb yang akan diganti
     const prodi_wrapper = document.querySelector('.filter-prodi .filter-body');
-    const form_prodi_wrapper = document.querySelector('.prodi-pilih');
+
+    
+    //color per prodi
+        var pos;
+        var r = [], g = [], b = [];
+        let normal = 65;
+        for (let i = 0; i < sugges_prodi.length; i++) {
+            pos = Math.floor(Math.random() * (3 - 1 + 1) + 1);
+            if (pos != 1) { r.push(Math.floor(Math.random() * (255 - 102 + 1) + 102).toString(16)); }
+            else { r.push(normal.toString(16) ) }
+            if (pos != 2) { g.push(Math.floor(Math.random() * (255 - 102 + 1) + 102).toString(16)); }
+            else { g.push(normal.toString(16) ) }
+            if (pos != 3) { b.push(Math.floor(Math.random() * (255 - 102 + 1) + 102).toString(16)); }
+            else { b.push(normal.toString(16) ) }
+            // console.log(r[i],g[i],b[i]);
+        }
+    
+    
     function ProdiList(items) {
         if (document.getElementsByClassName("filter-prodi")) {
             let result = '';
             let result_form = '';
             let sisa = 0;
-            var r,g,b,pos;
-            let normal = 65;
-            for (let i = 1; i < arr.length; i++) {
-                //color per prodi
-                    pos = Math.floor(Math.random() * (3 - 1 + 1) + 1);
-                    if (pos != 1) { r = Math.floor(Math.random() * (255 - 102 + 1) + 102).toString(16); }
-                    else { r = normal.toString(16) }
-                    if (pos != 2) { g = Math.floor(Math.random() * (255 - 102 + 1) + 102).toString(16); }
-                    else { g = normal.toString(16) }
-                    if (pos != 3) { b = Math.floor(Math.random() * (255 - 102 + 1) + 102).toString(16); }
-                    else { b = normal.toString(16) }
-
-                if (i <= 11) {
-                    result += `<div class="prodi-box" style="background-color: #`+r+g+b+`;">Program Studi Item `+i+`</div>`;
-                }
-                else if ((i > 11) && (i < arr.length)) { sisa += 1; }
+            let show = 0;
+            let index = 0;
+            if (items[0] == ">--Pilih Semua--<") { index = 1 }
+            for (let i = index; i < sugges_prodi.length; i++) {
+                //prodi list that selected
                 
-                // console.log(sisa);
-                if ((i == arr.length-1) && (sisa != 0)) {
-                    result += `<div class="prodi-box" style="background-color: #787878;">`+sisa+` Other Program Studi</div>`;
-                }
-                result_form += `<article>
-                        <input type="checkbox">
-                        <div><span>Program Studi Item `+i+`</span></div>
-                    </article>`
+                    if ((show <= 11) && (items.includes(sugges_prodi[i]))) {
+                        result += `<div class="prodi-box" style="background-color: #`+r[i]+g[i]+b[i]+`;">`+sugges_prodi[i]+`</div>`;
+                        show += 1;
+                    }
+                    else if (show > 11) { sisa += 1; }
+
+                    // console.log(items.length,show,sisa);
+                    if (index == 0) {
+                        if (((show + sisa) == items.length) && (sisa != 0)) {
+                            result += `<div class="prodi-box" style="background-color: #787878;">`+sisa+` Other Program Studi</div>`;
+                        }
+                    }
+                    else {
+                        if (((show + sisa) == items.length-1) && (sisa != 0)) {
+                            result += `<div class="prodi-box" style="background-color: #787878;">`+sisa+` Other Program Studi</div>`;
+                        }
+                    }
+                    
+
+                // prodi list in form
+                    if (i >0) {
+                        result_form += `<article style="border-color: #`+r[i]+g[i]+b[i]+`;">
+                                <input type="checkbox" name="prodi">`;
+                        if (index == 0) {
+                            result_form += `<div><span>`+sugges_prodi[i]+`</span></div></article>`;
+                        }
+                        else {
+                            result_form += `<div><span>`+sugges_prodi[i]+`</span></div></article>`;
+                        }
+                    }
             }
             prodi_wrapper.innerHTML = result;
-            form_prodi_wrapper.innerHTML = result_form;
+            check_prodi_list.innerHTML = result_form;
+
+            
+            let checkboxes = document.querySelectorAll('input[name="prodi"]');
+            checkboxes.forEach((checkbox) => {
+                if (items.includes
+                    (checkbox.nextElementSibling.querySelector('span').textContent)) {
+                        checkbox.checked = true;
+                        checkbox.nextElementSibling.style.backgroundColor = checkbox.parentNode.style.borderColor;
+                }
+            });
+
+            finalRender(" ", "All", "&gt;--Pilih Semua--&lt;", items)
         }
     }
-    ProdiList(sugges_prodi);
 
     function checkProdi(check) {
-        var check_prodi_list = document.querySelector('.prodi-pilih');
+
+        // console.log(check,"prodi_all",prodi_all.checked,"\nprodi_Unall",prodi_Unall.checked);
         for (let i = 0; i < arr.length-1; i++) {
             var check_prodi = check_prodi_list.children[i].querySelector('input');
             // console.log(check_prodi_list.children[i].querySelector('input'));
             check_prodi.checked = check;
+            checkProdi_final(check_prodi,check);
         }
-        prodi_all.checked = false;
-        prodi_Unall.checked = false;
     }
+    function checkProdi_final(clicked,cek) {
+        let parent = clicked.parentNode;
+        let div = parent.querySelector('div');
+        if (cek) {
+            prodi_Unall.checked = false;
+            div.style.backgroundColor = parent.style.borderColor;
+        }
+        else {
+            prodi_all.checked = false;
+            div.style = null;
+        }
+    }
+
+    if (lokal.includes("index")) { ProdiList(prodi_select_list); }
 //End Prodi-select Render
 
 //Penulis Render

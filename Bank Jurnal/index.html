@@ -12,7 +12,7 @@
         <div class="head-isi" id="head-isi">
             <div class="head-left-side">
                 <div class="head-taskbar">
-                    <button class="dot taskbar-btn">T</button>
+                    <button class="dot head-button" id="taskbar-btn">T</button>
                 </div>
                 <div class="head-logo">
                     <img src="">
@@ -62,11 +62,11 @@
             </div>
         </div>
     </header>
-    <div class="taskbar-isi" style="display: none;">
-        <div class="taskbar-content" id="taskbar">
+    <div class="taskbar-isi" id="taskbar" style="display: none;">
+        <div class="taskbar-content">
             <div class="task-head">
                 <div class="head-taskbar">
-                    <button class="dot taskbar-btn">T</button>
+                    <button class="dot head-button" id="taskbar-btn">T</button>
                 </div>
                 <div class="head-logo">
                     <img src="">
@@ -107,66 +107,6 @@
                     </button>
                 </div>
                 <div class="body-sub filter-body"></div>
-                <!-- <div class="form-modal" id="filter-form" style="display: none;">
-                    <div class="form-card card">
-                        <div class="card-head">
-                            <h3>Program Studi</h3>
-                            <button class="btn" onclick="form_function()">X</button>
-                        </div>
-                        <div class="card-body">
-                            <form action="">
-                                <div class="prodi-pilih">
-                                    
-                                <article>
-                                    <input type="checkbox">
-                                    <div>
-                                        <span>
-                                          Prodi 1
-                                        </span>
-                                      </div>
-                                </article>
-                                <article>
-                                    <input type="checkbox">
-                                    <div>
-                                        <span>
-                                            Manajemen Dakwah
-                                        </span>
-                                      </div>
-                                </article>
-                                <article>
-                                    <input type="checkbox">
-                                    <div>
-                                        <span>
-                                            Teknik Informatika
-                                        </span>
-                                      </div>
-                                </article>
-                                <article>
-                                    <input type="checkbox">
-                                    <div>
-                                        <span>
-                                            Manajemen Pendidikian Islam
-                                        </span>
-                                      </div>
-                                </article>
-                                <article>
-                                    <input type="checkbox">
-                                    <div>
-                                        <span>
-                                            Manajemen Dakwah
-                                        </span>
-                                      </div>
-                                </article>
-                                </div>
-                                
-                                <button type="submit" class="btn">Cari Prodi</button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="shade" onclick="form_function()"></div>
-                </div> -->
-                
-                
             </div>
             <div class="list-artikel" id="list_wrapper" style="margin-block: 2rem;">
                 <div class="artikel-tabel-edit card">
@@ -189,7 +129,7 @@
                         <div class="page-button">
                             <button class="np-btn btn" id="first_btn_artikel"><<</button>
                             <button class="np-btn btn" id="prev_btn_artikel"><</button>
-                            <p class="no-loc" id="no_loc_artikel"></p>
+                            <p class="no-loc" id="no_loc_artikel">1</p>
                             <button class="np-btn btn" id="next_btn_artikel">></button>
                             <button class="np-btn btn" id="last_btn_artikel">>></button>
                         </div>

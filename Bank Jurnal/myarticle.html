@@ -116,61 +116,23 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="searchbar search-penulis selectbar se-selectbar md5"id="pnl-select">
-                            <form class="select" action="">
-                                <label for="search-pnl" id="search-pnl">Penulis:</label>
-                                <p class="btn select-btn" id="select-pnl">>--Pilih Penulis--<</p>
-                            </form>
-                            <div class="drop-select card se-se-bar" id="dropdown-pnl" style="display: none;">
-                                <div class="select-search searchbar">
-                                    <form action="">
-                                        <input type="text" name="s-se-pnl" id="s-se-pnl" placeholder="Penulis">
-                                    </form>
-                                </div>
-                                <ul class="select-droped">
-                                    <li>poin</li>
-                                    <li>poin</li>
-                                    <li>poin</li>
-                                    <li>poin</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="searchbar search-prodi selectbar se-selectbar md5" id="prodi-select">
-                            <form class="select" action="">
-                                <label for="search-prodi" id="search-prodi">Prodi:</label>
-                                <p class="btn select-btn" id="select-prodi">>--Pilih Program Studi--<</p>
-                            </form>
-                            <div class="drop-select card se-se-bar" id="dropdown-prodi" style="display: none;">
-                                <div class="select-search searchbar">
-                                    <form action="">
-                                        <input type="text" name="s-se-prodi" id="s-se-prodi" placeholder="Prodi">
-                                    </form>
-                                </div>
-                                <ul class="select-droped">
-                                    <li>poin</li>
-                                    <li>poin</li>
-                                    <li>poin</li>
-                                    <li>poin</li>
-                                </ul>
-                            </div>
-                        </div>
                     </div>
                     <table class="tabel-card" style="width: 100%;">
                         <thead>
                             <tr>
                                 <th>Judul</th>
-                                <th class="md4">Penulis</th>
-                                <th class="md4">Program Studi</th>
+                                <th class="md3">Tanggal Upload</th>
+                                <th class="md3">Tanggal Rilis</th>
+                                <th class="md2">Status</th>
                                 <th class="md2"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td colspan="4"><i>Loading...</i></td></tr>
+                            <tr><td colspan="5"><i>Loading...</i></td></tr>
                         </tbody>
                     </table>
                     <div class="page" id="article_pagination">
-                        <div class="table-data-count" id="article_pagination_count">
-                        </div>
+                        <div class="table-data-count" id="article_pagination_count">10 Of 100 Article</div>
                         <div class="page-button">
                             <button class="np-btn btn" id="first_btn_artikel"><<</button>
                             <button class="np-btn btn" id="prev_btn_artikel"><</button>
@@ -181,13 +143,12 @@
                     </div>
                 </div>
             </div>
-
             <div class="form-modal" style="display: none;">
                 <div class="fliter-form" id="form">
                     <div class="form-card card">
                         <div class="card-head">
                             <h3>Ubah Status</h3>
-                            <button class="btn">X</button>
+                            <button type="button" class="btn">X</button>
                         </div>
                         <div class="card-body">
                             <form action="" id="form-status">

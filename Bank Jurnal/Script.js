@@ -9,6 +9,9 @@ var dropmenu = document.querySelectorAll(`.drop-btn`);
 var prodi_all = document.querySelector(`form .row article.row #all`);
 var prodi_Unall = document.querySelector(`form .row article.row #allClear`);
 var pointer_history = document.querySelectorAll(`.history_list .pointer`);
+var upload_select = document.querySelectorAll(`.select-btn>div:first-child`)
+var upload_input = document.querySelectorAll(`.form_sub.row.box div:not([class]):not([id]) textarea`)
+var upload_penulis = document.querySelector(`#profile.form_sub.row`)
 
 //list example
     let list_judul = [];
@@ -58,7 +61,7 @@ var pointer_history = document.querySelectorAll(`.history_list .pointer`);
         }
         const row_slide = 10;
         var penulis_slide = [];
-    //form
+    //form-modal
         var form_wrapper = document.querySelector(`.form-modal`);
         if (form_wrapper) {
             var form_judul = form_wrapper.querySelector(`#judul`);
@@ -72,7 +75,7 @@ var pointer_history = document.querySelectorAll(`.history_list .pointer`);
     
 
 
-// console.log(headBtn);
+// console.log(upload_penulis);
 
 //function
 //mouse clicked
@@ -238,65 +241,130 @@ var pointer_history = document.querySelectorAll(`.history_list .pointer`);
                 
 
         //form
-            if (pointer_history) {
-                pointer_history = document.querySelectorAll(`.history_list .pointer`);
-                pointer_history.forEach((pointer,index) => {
-                    if (pointer.contains(event.target)) {
-                        var parent = pointer.parentNode;
-                        var detail = parent.nextSibling;
-                        var indexChild = 0;
-                        form_history.childNodes.forEach((child, index) => { if (parent == child) { indexChild = index + 1; } });
-                        
-                        if (parent.classList.contains("parent")) {
-                            parent.classList.remove("parent");
-                            detail.remove();
+            // form
+                if (upload_select) {
+                    upload_select.forEach((item )=> {
+                        var parent = item.parentNode;
+                        var dd = parent.querySelector(`.drop-select`);
+                        var selectParent = parent.parentNode;
+                        var next_input = selectParent.nextElementSibling;
+                        var listRow = selectParent.parentNode;
+                        // console.log(item, parent, parent.contains(event.target), event.target);
+                        if (parent.contains(event.target)) {
+                            if (dd) {
+                                dd.classList.add(`ddShow`);
+                                var suggestSearch = dd.querySelector('.se-se-bar .select-search input');
+                                var selectMenu = dd.querySelectorAll(`div ul li`);
+                                // console.log(item.textContent);
+                                suggestionBar(suggestSearch, dd, item.id, item.textContent);
+                                
+                                selectMenu.forEach((menu) => {
+                                    if (event.target == menu) {
+                                        if (dd.querySelector(`ul li.active`)) {
+                                            dd.querySelector(`ul li.active`).classList.remove("active");
+                                        }
+                                        menu.classList.add("active");
+                                        // console.log(event.target,menu);
+                                        item.innerHTML = menu.textContent;
+                                        item.value = menu.textContent;
+                                        
+                                        var child_break = document.createElement("div");
+                                        child_break.classList.add("break");
+                                        var child = document.createElement("div");
+                                        var input;
+                                        if (item.innerHTML.includes("Baru")) {
+                                            // console.log(item.innerHTML);
+                                            if (item.id.includes("pnl")) {
+                                                listRow.insertBefore(child_break, next_input);
+                                                listRow.insertBefore(child, next_input);
+                                                input = `<textarea id="pnl-`+item.id.charAt(item.id.length-1)+`" rows="1" class="searchbar" placeholder="[Nama Penulis]"></textarea>`;
+                                            }
+                                            else {
+                                                listRow.appendChild(child_break);
+                                                listRow.appendChild(child);
+                                                input = `<textarea id="prodi-`+item.id.charAt(item.id.length-1)+`" rows="1" class="searchbar" placeholder="[Nama Prodi]"></textarea>`;
+                                            }
+                                            
+                                            child.innerHTML = input;
+                                        }
+                                        else {
+                                            selectParent.nextElementSibling.remove();//remove break div
+                                            selectParent.nextElementSibling.remove();//remove textarea div
+                                        }
+                                        dd.classList.remove("ddShow");
+                                    }
+                                });
+                            }
                         }
                         else {
-                            var last_list = form_history.lastElementChild;
-            
-                            parent.classList.add("parent");
-                            var child = document.createElement("div");
-                            if (parent.nextSibling) { parent.parentNode.insertBefore(child, parent.nextSibling); }
-                            else { parent.parentNode.appendChild(child); }
-            
-                            child.classList.add("child");
-                            var loc = parent.nextElementSibling;
-                            var input = input_history(form_judul.textContent, parent, last_list, indexChild);
-                            loc.innerHTML = input;
-                        }
-                    }
-                });
-            }
-
-            if (form_wrapper) {
-                if (form_wrapper.classList.contains("show")) {
-                    var from_btn = form_wrapper.querySelectorAll(`.btn`);
-                    from_btn.forEach((btn) => {
-                        if ((event.target == form_wrapper.childNodes[1]) || (event.target == btn)) {
-                            if (btn.type === "submit") {
-                                document.getElementById("form-status").addEventListener('submit', (event) => {
-                                    event.preventDefault();
-                                });
-                                // console.log("The form was submitted");
-                                if (check_prodi_list) {
-                                    var checkboxes = document.querySelectorAll('input[name="prodi"]:checked');
-                                    if (checkboxes) {
-                                        var values = [];
-                                        checkboxes.forEach((checkbox) => {
-                                            values.push(checkbox.nextElementSibling.querySelector('span').textContent);
-                                        });
-                                        ProdiList(values);
-                                    }
+                            if (dd) {
+                                if (!dd.contains(event.target)) {
+                                    dd.classList.remove("ddShow");
                                 }
                             }
-                            form_wrapper.style.display = "none";
-                            form_wrapper.classList.remove("show");
-                            shade_show("remove");
-                            overflow_body("auto");
                         }
                     });
                 }
-            }
+            // form-modal
+                if (pointer_history) {
+                    pointer_history = document.querySelectorAll(`.history_list .pointer`);
+                    pointer_history.forEach((pointer,index) => {
+                        if (pointer.contains(event.target)) {
+                            var parent = pointer.parentNode;
+                            var detail = parent.nextSibling;
+                            var indexChild = 0;
+                            form_history.childNodes.forEach((child, index) => { if (parent == child) { indexChild = index + 1; } });
+                            
+                            if (parent.classList.contains("parent")) {
+                                parent.classList.remove("parent");
+                                detail.remove();
+                            }
+                            else {
+                                var last_list = form_history.lastElementChild;
+                
+                                parent.classList.add("parent");
+                                var child = document.createElement("div");
+                                if (parent.nextSibling) { parent.parentNode.insertBefore(child, parent.nextSibling); }
+                                else { parent.parentNode.appendChild(child); }
+                
+                                child.classList.add("child");
+                                var loc = parent.nextElementSibling;
+                                var input = input_history(form_judul.textContent, parent, last_list, indexChild);
+                                loc.innerHTML = input;
+                            }
+                        }
+                    });
+                }
+
+                if (form_wrapper) {
+                    if (form_wrapper.classList.contains("show")) {
+                        var from_btn = form_wrapper.querySelectorAll(`.btn`);
+                        from_btn.forEach((btn) => {
+                            if ((event.target == form_wrapper.childNodes[1]) || (event.target == btn)) {
+                                if (btn.type === "submit") {
+                                    document.getElementById("form-status").addEventListener('submit', (event) => {
+                                        event.preventDefault();
+                                    });
+                                    // console.log("The form was submitted");
+                                    if (check_prodi_list) {
+                                        var checkboxes = document.querySelectorAll('input[name="prodi"]:checked');
+                                        if (checkboxes) {
+                                            var values = [];
+                                            checkboxes.forEach((checkbox) => {
+                                                values.push(checkbox.nextElementSibling.querySelector('span').textContent);
+                                            });
+                                            ProdiList(values);
+                                        }
+                                    }
+                                }
+                                form_wrapper.style.display = "none";
+                                form_wrapper.classList.remove("show");
+                                shade_show("remove");
+                                overflow_body("auto");
+                            }
+                        });
+                    }
+                }
 
         //prodi_select
             if (lokasi.includes("index")) {
@@ -510,6 +578,61 @@ var pointer_history = document.querySelectorAll(`.history_list .pointer`);
             RenderFinal("tabel_status");
             RenderFinal("slide");
         }
+        else if (lokasi.includes("upload")) {
+            upload_penulis.innerHTML= `<div class="form_sub_title">Profile Penulis</div>
+                                            <div class="form_sub row box" id="pnl_1">
+                                                <div class="form_sub_list">Nama Penulis 1</div>
+                                                <div class="searchbar search-penulis selectbar se-selectbar">
+                                                    <div class="select-btn">
+                                                        <div id="pnl-1">>--Pilih Penulis--<</div>
+                                                        <div class="drop-select">
+                                                            <div class="se-se-bar" id="dropdown-pnl">
+                                                                <div class="select-search searchbar">
+                                                                    <input type="text" name="s-se-pnl" id="s-se-pnl" placeholder="Penulis">
+                                                                </div>
+                                                                <ul class="select-droped">
+                                                                    <li>poin</li>
+                                                                    <li>poin</li>
+                                                                    <li>poin</li>
+                                                                    <li>poin</li>
+                                                                    <li>poin</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form_sub_list">Program Studi 1</div>
+                                                <div class="searchbar search-prodi selectbar se-selectbar">
+                                                    <div class="select-btn">
+                                                        <div id="prodi-1">>--Pilih Program Studi--<</div>
+                                                        <div class="drop-select">
+                                                            <div class="se-se-bar" id="dropdown-prodi">
+                                                                <div class="select-search searchbar">
+                                                                    <input type="text" name="s-se-pnl" id="s-se-pnl" placeholder="Penulis">
+                                                                </div>
+                                                                <ul class="select-droped">
+                                                                    <li>poin</li>
+                                                                    <li>poin</li>
+                                                                    <li>poin</li>
+                                                                    <li>poin</li>
+                                                                    <li>poin</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form_sub addBox" id="pnl_3">
+                                                <button type="button" class="btn add-btn col-auto">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path>
+                                                    </svg>
+                                                    <p>Tambah Penulis</p>
+                                                </button>
+                                            </div>`;
+            upload_select = document.querySelectorAll(`.select-btn>div:first-child`);
+            upload_input = document.querySelectorAll(`.form_sub.row.box div:not([class]):not([id]) textarea`);
+        }
     }
     //form
         function form_function() {
@@ -626,17 +749,33 @@ function suggestionBar(input_box, dd, parent_id, label) {
     // console.log("input_box (suggestionBar())",input_box, dd, parent_id, label);
     let suggestions;
     let firstSuggestions;
-    if (parent_id.includes("pnl")) {
-        firstSuggestions = ">--Pilih Penulis--<";
-        suggestions = [firstSuggestions].concat(list_penulis);
-    }
-    else if (parent_id.includes("prodi")) {
-        firstSuggestions = ">--Pilih Prodi--<";
-        suggestions = [firstSuggestions].concat(list_prodi);
-    }
-    else if (parent_id.includes("jdl")) {
-        firstSuggestions = ">--Pilih Semua--<";
-        suggestions = [firstSuggestions].concat(list_judul);
+    var baru = false;
+    for (let i = 1; i <= 3; i++) {
+        // console.log(parent_id, parent_id.includes(`-`+i),(`-`+i));
+        if (parent_id.includes("pnl")) {
+            if (parent_id.includes(`-`+i)) {
+                firstSuggestions = "Masukan Nama Penulis Baru";
+                baru = true;
+            }
+            else if (!baru){
+                firstSuggestions = ">--Pilih Penulis--<";
+            }
+            suggestions = [firstSuggestions].concat(list_penulis);
+        }
+        else if (parent_id.includes("prodi")) {
+            if (parent_id.includes(`-`+i)) {
+                firstSuggestions = "Masukan Program Studi Baru";
+                baru = true;
+            }
+            else if (!baru){
+                firstSuggestions = ">--Pilih Prodi--<";
+            }
+            suggestions = [firstSuggestions].concat(list_prodi);
+        }
+        else if ((parent_id.includes("jdl")) && i == 1) {
+            firstSuggestions = ">--Pilih Semua--<";
+            suggestions = [firstSuggestions].concat(list_judul);
+        }
     }
 
     showSuggestions([],parent_id, label); //rewrite first
@@ -667,7 +806,12 @@ function suggestionBar(input_box, dd, parent_id, label) {
     function showSuggestions(list, parent_id, label){
         let listData;
         let parent = document.getElementById(parent_id);
+        // console.log(parent);
         var loc_list = parent.querySelector('.drop-select .select-droped');
+        if (!loc_list) {
+            var select_parent = document.getElementById(parent_id).parentNode;
+            loc_list = select_parent.querySelector('.drop-select .select-droped');
+        }
         if(!list.length){
             userValue = input_box.value;
             if (!userValue || userValue.includes(" ")) {

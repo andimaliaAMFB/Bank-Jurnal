@@ -158,6 +158,18 @@ body {
                 cursor: pointer;
                 width: 45%;
             }
+            .selectbar.se-selectbar:hover,
+            .selectbar.se-selectbar:has(.ddShow) {
+                background-color: #97C641!important;
+                color: #FFFFFF!important;
+                box-shadow: none;
+                border: 1px solid #97C641;
+                border-right: none;
+            }
+            .selectbar.se-selectbar:has(.ddShow)>form>div,
+            .selectbar.se-selectbar:has(.ddShow)>div>div {
+                color: #FFFFFF!important;
+            }
             .select-btn>div:first-child {
                 padding-right: 1rem;
             }
@@ -172,14 +184,17 @@ body {
                 padding: 5.5px 1rem;
                 height: 100%;
                 width: 100%;
+                text-align: center;
             }
             .selectbar .select-btn {
                 width: 100%;
             }
             .selectbar .select-btn.show {
                 background-color: #FFFFFF;
-                border-radius: 1rem 1rem 0 0;
+                border-radius: 0 1rem 0 0;
                 box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
+                border: 1px solid #97C641;
+                border-left: none;
             }
             /* select search */
                 .select-search.searchbar {
@@ -804,11 +819,15 @@ body {
                 width: 100%;
                 border-bottom: inherit;
             }
-            .form .form_sub.row>.form_sub.box:nth-last-child(2), .form .form_sub.row>.form_sub.addBox:last-child {
+            .form .form_sub.row>.form_sub.box:nth-last-child(2),
+            .form .form_sub.row>.form_sub:last-child {
                 border-bottom: none;
             }
             .form_sub#profile {--bs-gutter-x: 0;}
             .form .form_sub.row>div:not([class]):not([id]) {
+                padding-inline: 0;
+            }
+            .form .form_sub.row>div.selectbar.se-selectbar {
                 padding-inline: 0;
             }
             
@@ -836,7 +855,3 @@ body {
         justify-content: center;
     }
 /* footer end */
-
-
-
-

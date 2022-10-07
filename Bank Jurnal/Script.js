@@ -8,6 +8,7 @@ var lokasi = window.location.href; // link web
 var dropmenu = document.querySelectorAll(`.drop-btn`);
 var prodi_all = document.querySelector(`form .row article.row #all`);
 var prodi_Unall = document.querySelector(`form .row article.row #allClear`);
+var pointer_history = document.querySelectorAll(`.history_list .pointer`);
 
 //list example
     let list_judul = [];
@@ -71,14 +72,15 @@ var prodi_Unall = document.querySelector(`form .row article.row #allClear`);
     
 
 
-// console.log(page_button);
+// console.log(headBtn);
 
 //function
 //mouse clicked
     window.addEventListener('mouseup', function(event){
+        // console.log(event.target);
         //general
             headBtn.forEach((btn,index) => {
-                if (event.target == btn) {
+                if (btn.contains(event.target)) {
                     if (btn.nextElementSibling) {
                         if (dropdown[index-1].style.display === "none") { dropdown[index-1].style.display = "block"; }
                         else { dropdown[index-1].style.display = "none"; }
@@ -106,27 +108,25 @@ var prodi_Unall = document.querySelector(`form .row article.row #allClear`);
                     // console.log("select", select, "select.querySelector", select.querySelector(`.drop-select`));
                     var dropSelect = select.querySelector(`.drop-select`);
                     if (dropSelect) {
-                        var selectMenu = dropSelect.querySelectorAll(`ul li`);
+                        var selectMenu = dropSelect.querySelectorAll(`div ul li`);
                     }
                     var label, suggestSearch;
 
                     if (select.contains(event.target)) {
-                        // console.log(select,event.target);
+                        // console.log(select,event.target, select.id);
                         if (!select.id.includes("jdl")) {
-                            if (dropSelect) { dropSelect.style.display = "block"; }
+                            if (dropSelect) {
+                                dropSelect.classList.add("ddShow");
+                                dropSelect.parentElement.classList.add("show");
+                            }
                         }
-                        
                         if (select.classList.contains("se-selectbar")) {
-                            label = select.querySelector('form p');
-                            suggestSearch = dropSelect.querySelector('.select-search form input');
+                            label = select.querySelector('form .select-btn div');
+                            suggestSearch = dropSelect.querySelector('.select-search input');
                         }
                         else if (select.classList.contains("search-jdl")) {
                             label = select.querySelector('form input');
                             suggestSearch = select.querySelector('form input');
-                        }
-
-                        if (!select.id.includes("final")) {
-                            suggestionBar(suggestSearch, dropSelect, select.id);
                         }
 
                         selectMenu.forEach((menu, index) => {
@@ -134,17 +134,25 @@ var prodi_Unall = document.querySelector(`form .row article.row #allClear`);
                                 if (dropSelect.querySelector(`ul li.active`)) {
                                     dropSelect.querySelector(`ul li.active`).classList.remove("active");
                                 }
-                                event.target.classList.add("active");
-                                dropSelect.style.display = "none";
-                                label.innerHTML = event.target.textContent;
-                                label.value = event.target.textContent;
+                                menu.classList.add("active");
+                                // console.log(menu,menu.classList);
+                                label.innerHTML = menu.textContent;
+                                label.value = menu.textContent;
                                 checkTypeList();
+                                
+                        
+                                dropSelect.classList.remove("ddShow");
+                                dropSelect.parentElement.classList.remove("show");
                             }
                         });
+                        if (!select.id.includes("final")) {
+                            suggestionBar(suggestSearch, dropSelect, select.id, label.textContent);
+                        }
                     }
                     else {
                         if (dropSelect) {
-                            dropSelect.style.display = "none";
+                            dropSelect.classList.remove("ddShow");
+                            dropSelect.parentElement.classList.remove("show");
                         }
                     }
                     
@@ -190,33 +198,33 @@ var prodi_Unall = document.querySelector(`form .row article.row #allClear`);
             // List Pagination Btn
                 if (page_button) {
                     page_button.forEach((btn) => {
-                        if (event.target == btn) {
-                            // console.log(tabel_page.innerHTML > 1,tabel_page.innerHTML--,tabel_page.innerHTML);
-                            if (event.target.id.includes("artikel")) {
-                                if (event.target.id.includes("first")) {
+                        if (btn.contains(event.target)) {
+                            // console.log(btn.id);
+                            if (btn.id.includes("artikel")) {
+                                if (btn.id.includes("first")) {
                                     tabel_page.innerHTML = 1;
                                 }
-                                else if (event.target.id.includes("prev")) {
+                                else if (btn.id.includes("prev")) {
                                     if(tabel_page.innerHTML > 1) tabel_page.innerHTML--;
                                 }
-                                else if (event.target.id.includes("next")) {
+                                else if (btn.id.includes("next")) {
                                     if((tabel_page.innerHTML * row_tabel) < render_list.length) tabel_page.innerHTML++;
                                 }
-                                else if (event.target.id.includes("last")) {
+                                else if (btn.id.includes("last")) {
                                     tabel_page.innerHTML = Math.ceil(render_list.length/row_tabel);
                                 }
                             }
-                            else if (event.target.id.includes("penulis")) {
-                                if (event.target.id.includes("first")) {
+                            else if (btn.id.includes("penulis")) {
+                                if (btn.id.includes("first")) {
                                     slide_page.innerHTML = 1;
                                 }
-                                else if (event.target.id.includes("prev")) {
+                                else if (btn.id.includes("prev")) {
                                     if(slide_page.innerHTML > 1) slide_page.innerHTML--;
                                 }
-                                else if (event.target.id.includes("next")) {
+                                else if (btn.id.includes("next")) {
                                     if((slide_page.innerHTML * row_slide) < penulis_slide.length) slide_page.innerHTML++;
                                 }
-                                else if (event.target.id.includes("last")) {
+                                else if (btn.id.includes("last")) {
                                     slide_page.innerHTML = Math.ceil(penulis_slide.length/row_slide);
                                 }
                             }
@@ -230,29 +238,34 @@ var prodi_Unall = document.querySelector(`form .row article.row #allClear`);
                 
 
         //form
-            if (event.target.classList == ("pointer")) {
-                var parent = event.target.parentNode;
-                var detail = parent.nextSibling;
-                var indexChild = 0;
-                form_history.childNodes.forEach((child, index) => { if (parent == child) { indexChild = index + 1; } });
-                
-                if (parent.classList.contains("parent")) {
-                    parent.classList.remove("parent");
-                    detail.remove();
-                }
-                else {
-                    var last_list = form_history.lastElementChild;
-    
-                    parent.classList.add("parent");
-                    var child = document.createElement("div");
-                    if (parent.nextSibling) { parent.parentNode.insertBefore(child, parent.nextSibling); }
-                    else { parent.parentNode.appendChild(child); }
-    
-                    child.classList.add("child");
-                    var loc = parent.nextElementSibling;
-                    var input = input_history(form_judul.textContent, parent, last_list, indexChild);
-                    loc.innerHTML = input;
-                }
+            if (pointer_history) {
+                pointer_history = document.querySelectorAll(`.history_list .pointer`);
+                pointer_history.forEach((pointer,index) => {
+                    if (pointer.contains(event.target)) {
+                        var parent = pointer.parentNode;
+                        var detail = parent.nextSibling;
+                        var indexChild = 0;
+                        form_history.childNodes.forEach((child, index) => { if (parent == child) { indexChild = index + 1; } });
+                        
+                        if (parent.classList.contains("parent")) {
+                            parent.classList.remove("parent");
+                            detail.remove();
+                        }
+                        else {
+                            var last_list = form_history.lastElementChild;
+            
+                            parent.classList.add("parent");
+                            var child = document.createElement("div");
+                            if (parent.nextSibling) { parent.parentNode.insertBefore(child, parent.nextSibling); }
+                            else { parent.parentNode.appendChild(child); }
+            
+                            child.classList.add("child");
+                            var loc = parent.nextElementSibling;
+                            var input = input_history(form_judul.textContent, parent, last_list, indexChild);
+                            loc.innerHTML = input;
+                        }
+                    }
+                });
             }
 
             if (form_wrapper) {
@@ -396,7 +409,7 @@ var prodi_Unall = document.querySelector(`form .row article.row #allClear`);
                 <td>Status</td>
                 <td>
                     <button class="btn pointer drop-btn"> Lainnya </button>
-                    <div class="drop-select card se-se-bar" id="dropdown-menu-article" style="display: none;">
+                    <div class="dropdown-menu card se-se-bar" id="dropdown-menu-article" style="display: none;">
                         <ul class="select-droped">
                             <li>Lihat Artikel</li>
                             <li>Upload Ulang</li>
@@ -408,7 +421,7 @@ var prodi_Unall = document.querySelector(`form .row article.row #allClear`);
             }
         }
         else if (type.includes("slide")) {
-            first_column = `<div class="profile-box">
+            first_column = `<div class="profile-box flex-wrap col-auto">
                             <img src="" alt="profile-image">
                             <p id="profile-name">`+ pnl +`</p>
                         </div>`;
@@ -425,13 +438,13 @@ var prodi_Unall = document.querySelector(`form .row article.row #allClear`);
                 judul_search = item.querySelector('form input').value;
             }
             if (item.id.includes("final")) {
-                final_select = item.querySelector('form p').innerHTML;
+                final_select = item.querySelector('form .select-btn #select-final').innerHTML;
             }
             if (item.id.includes("pnl")) {
-                pnl_select = item.querySelector('form p').innerHTML;
+                pnl_select = item.querySelector('form .select-btn #select-pnl').innerHTML;
             }
             if (item.id.includes("prodi")) {
-                prodi_select = item.querySelector('form p').innerHTML;
+                prodi_select = item.querySelector('form .select-btn #select-prodi').innerHTML;
             }
         });
 
@@ -439,7 +452,7 @@ var prodi_Unall = document.querySelector(`form .row article.row #allClear`);
         if ((!judul_search) || (judul_search == ">--Pilih Semua--<")) { judul_search = "All"}
         if (!final_select) { final_select = "All"}
         if ((!pnl_select) || (pnl_select == ">--Pilih Penulis--<") || (pnl_select == "&gt;--Pilih Penulis--&lt;")) { pnl_select = "All"}
-        if ((!prodi_select) || (prodi_select == ">--Pilih Prodi--<") || (prodi_select == "&gt;--Pilih Program Studi--&lt;")) {
+        if ((!prodi_select) || (prodi_select == "&gt;--Pilih Prodi--&lt;") || (prodi_select == "&gt;--Pilih Program Studi--&lt;")) {
             if ((!prodi_select) && (document.querySelector(`.filter-prodi`))) { prodi_select = prodi_select_list; }
             else { prodi_select = "All"; }
         }
@@ -534,59 +547,69 @@ var prodi_Unall = document.querySelector(`form .row article.row #allClear`);
                 var loc = form_history.lastElementChild;
                 var input = `<div class="date_up">MM/DD/YY</div>
                     <span></span>
-                    <div class="pointer">V</div>`;
+                    <div class="pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                        </svg>
+                    </div>`;
                 loc.innerHTML = input;
             }
             
         }
         function input_history(judulArtikel, parent, last_list, index) {
-            var input = `<div class="form_sub row" id="lama">
-                            <div class="md5 form_sub_title">Status Lama</div>
+            var input = `<div class="history_detail row" id="lama">
+                            <div class="form_sub_title">Status Lama</div>
                             <div>[Status Lama `+judulArtikel+`-`+(index - 1)+`]</div>
                         </div>`;
             if (last_list != parent) {
-                input += `<div class="form_sub row" id="baru">
-                            <div class="md5 form_sub_title">Status Baru</div>
+                input += `<div class="history_detail row" id="baru">
+                            <div class="form_sub_title">Status Baru</div>
                             <div>[Status Baru `+judulArtikel+`-`+index+`]</div>
                         </div>
-                        <div class="form_sub row" id="catatan">
-                            <div class="md5 form_sub_title">Catatan</div>
+                        <div class="history_detail row" id="catatan">
+                            <div class="form_sub_title">Catatan</div>
                             <div>[Catatan Revisi `+judulArtikel+`-`+index+`]</div>
                         </div>
-                        <div class="link" id="see_article">Lihat Artikel></div>`;
+                        <div class="history_detail row" id="artikel">
+                            <div class="link" id="see_article">Lihat Artikel</div>
+                        </div>`;
             }
             else if (last_list == parent) {
                 if (lokasi.includes("status")) {
-                    input += `<div class="form_sub row" id="baru">
-                            <div class="md5 form_sub_title">Status Baru</div>
-                            <div>
-                                <select name="" id="tabel_status_change">
-                                    <option  disabled selected value>[Status Baru]</option>
-                                    <option value="">Draft</option>
-                                    <option value="">Revisi Minor</option>
-                                    <option value="">Revisi Mayor</option>
-                                    <option value="">Layak Publish</option>
-                                </select>
+                    input += `<div class="history_detail row" id="baru">
+                                <div class="form_sub_title">Status Baru</div>
+                                <div>
+                                    <select name="" id="tabel_status_change">
+                                        <option disabled="" selected="" value="">[Status Baru]</option>
+                                        <option value="">Draft</option>
+                                        <option value="">Revisi Minor</option>
+                                        <option value="">Revisi Mayor</option>
+                                        <option value="">Layak Publish</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form_sub row" id="catatan">
-                            <div class="md5 form_sub_title">Catatan</div>
-                            <div>
-                                <textarea name="" id="" rows="10" class="searchbar search-jdl" placeholder="[Catatan Revisi Yang diberikan Oleh Admin]"></textarea>
+                            <div class="history_detail row" id="catatan">
+                                <div class="form_sub_title">Catatan</div>
+                                <div>
+                                    <textarea name="" id="" rows="10" class="searchbar search-jdl" placeholder="[Catatan Revisi Yang diberikan Oleh Admin]"></textarea>
+                                </div>
                             </div>
-                        </div>
-                        <div class="link" id="see_article">Lihat Artikel></div>`;
+                            <div class="history_detail row" id="artikel">
+                                <div class="link" id="see_article">Lihat Artikel</div>
+                            </div>`;
                 }
                 else {
-                    input += `<div class="form_sub row" id="baru">
-                                <div class="md5 form_sub_title">Status Baru</div>
+                    input += `<div class="history_detail row" id="baru">
+                                <div class="form_sub_title">Status Baru</div>
                                 <div>-- Belum Ada Status Baru --</div>
                             </div>
-                            <div class="form_sub row" id="catatan">
-                                <div class="md5 form_sub_title">Catatan</div>
+                            <div class="history_detail row" id="catatan">
+                                <div class="form_sub_title">Catatan</div>
                                 <div>-- Belum Ada Catatan Baru --</div>
                             </div>
-                            <div class="link" id="see_article">Lihat Artikel></div>`;
+                            <div class="history_detail row" id="artikel">
+                                <div class="link" id="see_article">Lihat Artikel</div>
+                            </div>`;
                 }
             }
             return input;
@@ -599,8 +622,8 @@ if (form) {
         checkTypeList();
     });
 }
-function suggestionBar(input_box, dd, parent_id) {
-    // console.log("input_box (suggestionBar())",input_box);
+function suggestionBar(input_box, dd, parent_id, label) {
+    // console.log("input_box (suggestionBar())",input_box, dd, parent_id, label);
     let suggestions;
     let firstSuggestions;
     if (parent_id.includes("pnl")) {
@@ -616,14 +639,14 @@ function suggestionBar(input_box, dd, parent_id) {
         suggestions = [firstSuggestions].concat(list_judul);
     }
 
-    showSuggestions([],parent_id); //rewrite first
+    showSuggestions([],parent_id, label); //rewrite first
     
     // if user press any key and release
     input_box.onkeyup = (e)=>{
         let userData = e.target.value; //user enetered data
         let emptyArray = [];
         if(userData){
-            dd.style.display = "block";
+            dd.classList.add("ddShow");
             // console.log("==============================================");
             emptyArray = suggestions.filter((data)=>{
                 return data.toLocaleLowerCase().includes(userData.toLocaleLowerCase()); 
@@ -634,14 +657,14 @@ function suggestionBar(input_box, dd, parent_id) {
                     return data = '<li>'+ data +'</li>';
                 }
             });
-            showSuggestions(emptyArray,parent_id);
+            showSuggestions(emptyArray,parent_id, label);
         }
         else{
-            if (parent_id.includes("jdl")) { dd.style.display = "none"; }
-            showSuggestions(emptyArray,parent_id);
+            if (parent_id.includes("jdl")) { dd.classList.remove("ddShow"); }
+            showSuggestions(emptyArray,parent_id, label);
         }
     }
-    function showSuggestions(list,parent_id){
+    function showSuggestions(list, parent_id, label){
         let listData;
         let parent = document.getElementById(parent_id);
         var loc_list = parent.querySelector('.drop-select .select-droped');
@@ -650,7 +673,21 @@ function suggestionBar(input_box, dd, parent_id) {
             if (!userValue || userValue.includes(" ")) {
                 listData = "";
                 for (let i = 0; i < suggestions.length; i++) {
-                    listData += `<li>`+(suggestions[i])+`</li>`
+                    if (label) {
+                        // console.log(suggestions[i],label,suggestions[i].toLocaleLowerCase() == label.toLocaleLowerCase());
+                        if (suggestions[i].toLocaleLowerCase() == label.toLocaleLowerCase()) {
+                            listData += `<li class="active">`+(suggestions[i])+`</li>`
+                        }
+                        else if ((suggestions[i].includes("Prodi")) && (label == ">--Pilih Program Studi--<") && (i == 0)) {
+                            listData += `<li class="active">`+(suggestions[i])+`</li>`
+                        }
+                        else {
+                            listData += `<li>`+(suggestions[i])+`</li>`
+                        }
+                    }
+                    else {
+                        listData += `<li>`+(suggestions[i])+`</li>`
+                    }
                 }
             }
             else{

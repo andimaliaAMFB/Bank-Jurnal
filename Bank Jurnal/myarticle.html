@@ -5,29 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rumah Jurnal - Bank Jurnal</title>
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <!-- CSS Only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="Style.css">
 </head>
 <body>
     <header>
-        <div class="head-isi" id="head-isi">
-            <div class="head-left-side">
-                <div class="head-taskbar">
-                    <button class="dot head-button" id="taskbar-btn">T</button>
+        <div class="head-isi row justify-content-between" id="head-isi">
+            <div class="head-left-side row col-auto">
+                <div class="head-taskbar col-auto">
+                    <button class="head-button" id="taskbar-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                        </svg>
+                    </button>
                 </div>
-                <div class="head-logo">
+                <div class="head-logo col-auto">
                     <img src="">
-                    <h3 id="nama-aplikasi">Rumah Jurnal</h3>
+                    <p id="nama-aplikasi" style="font-weight: bold;">Rumah Jurnal</p>
                 </div>
             </div>
-            <div class="head-right-side">
-                <div class="head-searchbar searchbar">
+            <div class="head-right-side row col-auto justify-content-end">
+                <div class="head-searchbar searchbar col-7">
                    <form action="">
                         <input type="text" name="search" id="search" placeholder="Search">
-                        <button type="submit" name="head-search" id="search-btn" class="dot">S</button>
+                        <button type="submit" name="head-search" id="search-btn" class="dot search-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                            </svg>
+                        </button>
                     </form>
                 </div>
-                <div class="head-notif">
-                    <button class="head-button dot" id="button-notif">N</button>
+                <div class="head-notif col-auto">
+                    <button class="head-button" id="button-notif">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
+                            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
+                        </svg>
+                    </button>
                     <ul class="dropdown-menu" style="display: none;" id="dropdown-notif">
                         <li class="label-dropdown">Notifikasi</li>
                         <li class="notif-isi">
@@ -47,7 +61,7 @@
                         <li class="view-all">See Full Notification</li>
                     </ul>
                 </div>
-                <div class="head-profile">
+                <div class="head-profile col-auto">
                     <button class="head-button dot" id="button-profile">P</button>
                     <ul class="dropdown-menu" style="display: none;" id="dropdown-profile">
                         <li class="user-profile label-dropdown">
@@ -64,23 +78,27 @@
     </header>
     <div class="taskbar-isi" id="taskbar" style="display: none;">
         <div class="taskbar-content">
-            <div class="task-head">
-                <div class="head-taskbar">
-                    <button class="dot head-button" id="taskbar-btn">T</button>
+            <div class="task-head row col-auto">
+                <div class="head-taskbar col-auto">
+                    <button class="head-button" id="taskbar-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                          </svg>
+                    </button>
                 </div>
-                <div class="head-logo">
+                <div class="head-logo col-auto">
                     <img src="">
-                    <h3 id="nama-aplikasi">Rumah Jurnal</h3>
+                    <p id="nama-aplikasi" style="font-weight: bold;">Rumah Jurnal</p>
                 </div>
             </div>
             <div class="task-content">
                 <ul>
-                    <li><h3>Dashboard</h3></li>
-                    <li><h3>Upload Artikel</h3></li>
-                    <li><h3>Draft</h3><p>10</p></li>
-                    <li><h3>Revisi Minor</h3><p>100</p></li>
-                    <li><h3>Revisi Mayor</h3><p>0</p></li>
-                    <li><h3>Layak Publish</h3><p>10</p></li>
+                    <li>Dashboard</li>
+                    <li>Upload Artikel</li>
+                    <li>Draft<p>10</p></li>
+                    <li>Revisi Minor<p>100</p></li>
+                    <li>Revisi Mayor<p>0</p></li>
+                    <li>Layak Publish<p>10</p></li>
                 </ul>
             </div>
         </div>
@@ -90,90 +108,177 @@
             <div class="judul-hlm"><h2>judul</h2></div>
             
             <div class="list-artikel" id="list_wrapper" style="margin-block: 2rem;">
-                <div class="artikel-tabel-edit card">
-                    <div class="article-order">
-                        <div class="searchbar search-jdl selectbar md6" id="jdl-search">
+                <div class="artikel-tabel-edit card px-3">
+                    <div class="article-order row">
+                        <div class="searchbar search-jdl selectbar col-6" id="jdl-search">
                             <form action="">
-                                <input type="text" name="s-jdl" id="search-jdl" placeholder="Judul Artikel">
-                                <button type="submit" name="s-jdl-btn" id="search-jdl-btn" class="dot">S</button>
+                                <div class="col-auto">
+                                    <input type="text" name="s-jdl" id="search-jdl" placeholder="Judul Artikel">
+                                    <div class="drop-select">
+                                        <div class="se-se-bar" id="dropdown-jdl">
+                                            <ul class="select-droped">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" name="s-jdl-btn" id="search-jdl-btn" class="dot search-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                    </svg>
+                                </button>
                             </form>
-                            <div class="drop-select card se-se-bar" id="dropdown-jdl" style="display: none;">
-                                <ul class="select-droped">
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="searchbar search-finalize selectbar se-selectbar md3" id="final-select">
                             
+                        </div>
+                        <div class="searchbar search-finalize selectbar se-selectbar col-auto" id="final-select">
                             <form class="select" action="">
-                                <label for="search-final" id="search-final">Catatan Revisi:</label>
-                                <p class="btn select-btn" id="select-final">No</p>
+                                <div class="col-auto">Catatan Revisi:</div>
+                                <div class="col-auto select-btn">
+                                    <div id="select-final">No</div>
+                                    <div class="drop-select">
+                                        <div class="se-se-bar" id="dropdown-final">
+                                            <ul class="select-droped">
+                                                <li>Yes</li>
+                                                <li class="active">No</li>
+                                                <li>All</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
-                            <div class="drop-select card se-se-bar" id="dropdown-final" style="display: none;">
-                                <ul class="select-droped">
-                                    <li>Yes</li>
-                                    <li class="active">No</li>
-                                    <li>All</li>
-                                </ul>
-                            </div>
                         </div>
                     </div>
                     <table class="tabel-card" style="width: 100%;">
                         <thead>
                             <tr>
                                 <th>Judul</th>
-                                <th class="md3">Tanggal Upload</th>
-                                <th class="md3">Tanggal Rilis</th>
-                                <th class="md2">Status</th>
-                                <th class="md2"></th>
+                                <th class="col-md-2">Tanggal Upload</th>
+                                <th class="col-md-2">Tanggal Rilis</th>
+                                <th class="col-md-1">Status</th>
+                                <th class="col-md-1">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td colspan="5"><i>Loading...</i></td></tr>
+                            <tr><td colspan="4"><i>Loading...</i></td></tr>
                         </tbody>
                     </table>
-                    <div class="page" id="article_pagination">
-                        <div class="table-data-count" id="article_pagination_count">10 Of 100 Article</div>
-                        <div class="page-button">
-                            <button class="np-btn btn" id="first_btn_artikel"><<</button>
-                            <button class="np-btn btn" id="prev_btn_artikel"><</button>
-                            <p class="no-loc" id="no_loc_artikel">1</p>
-                            <button class="np-btn btn" id="next_btn_artikel">></button>
-                            <button class="np-btn btn" id="last_btn_artikel">>></button>
+                    <div class="page row" id="article_pagination">
+                        <div class="table-data-count col-auto" id="article_pagination_count">
+                        </div>
+                        <div class="page-button row col-auto">
+                            <button class="np-btn btn col-auto" id="first_btn_artikel">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                    <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                </svg>
+                            </button>
+                            <button class="np-btn btn col-auto" id="prev_btn_artikel">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                </svg>
+                            </button>
+                            <p class="no-loc col-auto" id="no_loc_artikel">1</p>
+                            <button class="np-btn btn col-auto" id="next_btn_artikel">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                </svg>
+                            </button>
+                            <button class="np-btn btn col-auto" id="last_btn_artikel">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                    <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                </svg>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="form-modal" style="display: none;">
                 <div class="fliter-form" id="form">
-                    <div class="form-card card">
-                        <div class="card-head">
-                            <h3>Ubah Status</h3>
-                            <button type="button" class="btn">X</button>
+                    <div class="form-card card col-8">
+                        <div class="card-head row justify-content-between">
+                            <h3 class="col-auto">Ubah Status</h3>
+                            <button class="btn col-auto">X</button>
                         </div>
                         <div class="card-body">
                             <form action="" id="form-status">
                                 <div class="profile_form form_sub">
                                     <div class="form_sub row" id="judul">
-                                        <div class="md4 form_sub_title">Judul Artikel</div>
+                                        <div class="form_sub_title">Judul Artikel</div>
                                         <div>[Judul Artikel]</div>
                                     </div>
                                     <div class="form_sub row" id="penulis">
-                                        <div class="md4 form_sub_title">Penulis</div>
+                                        <div class="form_sub_title">Penulis</div>
                                         <div>[Nama Penulis]</div>
                                     </div>
-                                    <div class="form_sub" id="status_title">
-                                        <div class="form_sub_title" id="status_title">Status Perubahan</div>
+                                    <div class="form_sub row" id="status_title">
+                                        <div class="form_sub_title">Status Perubahan</div>
+                                        <div class="history_form">
+                                            <div class="history_list row parent">
+                                                <div class="date_up">MMMM/DD/YYYY</div>
+                                                <span></span>
+                                                <div class="pointer">V</div>
+                                            </div>
+                                            <div class="history_detail child">
+                                                <div class="history_detail row" id="lama">
+                                                    <div class="form_sub_title">Status Lama</div>
+                                                    <div>[Status Lama Judul Artikel ke 1-1]</div>
+                                                </div>
+                                                <div class="history_detail row" id="baru">
+                                                    <div class="form_sub_title">Status Baru</div>
+                                                    <div>[Status Baru Judul Artikel ke 1-1]</div>
+                                                </div>
+                                                <div class="history_detail row" id="catatan">
+                                                    <div class="form_sub_title">Catatan</div>
+                                                    <div>[Catatan Revisi Judul Artikel ke 1-1]</div>
+                                                </div>
+                                                <div class="history_detail row" id="artikel">
+                                                    <div class="link" id="see_article">Lihat Artikel</div>
+                                                </div>
+                                            </div>
+                                            <div class="history_list row">
+                                                <div class="date_up">MMMM/DD/YYYY</div>
+                                                <span></span>
+                                                <div class="pointer">V</div>
+                                            </div>
+                                            <div class="history_detail child">
+                                                <div class="history_detail row" id="lama">
+                                                    <div class="form_sub_title">Status Lama</div>
+                                                    <div>[Status Lama Judul Artikel ke 1-1]</div>
+                                                </div>
+                                                <div class="history_detail row" id="baru">
+                                                    <div class="form_sub_title">Status Baru</div>
+                                                    <div>
+                                                        <select name="" id="tabel_status_change">
+                                                            <option disabled="" selected="" value="">[Status Baru]</option>
+                                                            <option value="">Draft</option>
+                                                            <option value="">Revisi Minor</option>
+                                                            <option value="">Revisi Mayor</option>
+                                                            <option value="">Layak Publish</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="history_detail row" id="catatan">
+                                                    <div class="form_sub_title">Catatan</div>
+                                                    <div>
+                                                        <textarea name="" id="" rows="10" class="searchbar search-jdl" placeholder="[Catatan Revisi Yang diberikan Oleh Admin]"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="history_detail row" id="artikel">
+                                                    <div class="link" id="see_article">Lihat Artikel</div>
+                                                </div>
+                                            </div>
+                                            <div class="history_list row">
+                                                <div class="date_up">MMMM/DD/YYYY</div>
+                                                <span></span>
+                                                <div class="pointer">V</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="history_form">
-                                    
-                                </div>
-                                
-                                <div class="row right">
-                                    <div class="row">
-                                        <button type="submit" class="btn">Update Status</button>
-                                        <button type="button" class="btn">Close</button>
-                                    </div>
+                                <div class="row justify-content-end">
+                                        <button type="submit" class="btn submit-btn col-auto">Update Status</button>
+                                        <button type="button" class="btn submit-btn-border col-auto">Close</button>
                                 </div>
                             </form>
                         </div>

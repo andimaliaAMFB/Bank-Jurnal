@@ -1,0 +1,242 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rumah Jurnal - Bank Jurnal</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <!-- CSS Only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+    <header>
+        <div class="head-isi row justify-content-between" id="head-isi">
+            <div class="head-left-side row col-auto">
+                <div class="head-taskbar col-auto">
+                    <button class="head-button" id="taskbar-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="head-logo col-auto">
+                    <img src="">
+                    <p id="nama-aplikasi" style="font-weight: bold;">Rumah Jurnal</p>
+                </div>
+            </div>
+            <div class="head-right-side row col-auto justify-content-end">
+                <div class="head-searchbar searchbar col-7">
+                   <form action="">
+                        <input type="text" name="search" id="search" placeholder="Search">
+                        <button type="submit" name="head-search" id="search-btn" class="dot search-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+                <div class="head-notif col-auto">
+                    <button class="head-button" id="button-notif">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
+                            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" style="display: none;" id="dropdown-notif">
+                        <li class="label-dropdown">Notifikasi</li>
+                        <li class="notif-isi">
+                            <p class="notif-isi-head">Artikel Baru Telah Terdaftar</p>
+                            <div class="notif-isi-waktu">
+                                <p>30 days Ago</p>
+                                <p class="view-full">View Full Notification</p>
+                            </div>
+                        </li>
+                        <li class="notif-isi">
+                            <p class="notif-isi-head">Artikel Baru Telah Terdaftar</p>
+                            <div class="notif-isi-waktu">
+                                <p>30 days Ago</p>
+                                <p class="view-full">View Full Notification</p>
+                            </div>
+                        </li>
+                        <li class="view-all">See Full Notification</li>
+                    </ul>
+                </div>
+                <div class="head-profile col-auto">
+                    <button class="head-button dot" id="button-profile">P</button>
+                    <ul class="dropdown-menu" style="display: none;" id="dropdown-profile">
+                        <li class="user-profile label-dropdown">
+                            <img src="┗∵┓テレカクシ思春期／HoneyWorks feat.鏡音レン.mp4_snapshot_01.24_[2015.09.27_10.55.19].jpg" alt="">
+                            <h3>Username</h3>
+                            <p>Peran</p>
+                        </li>
+                        <li>Profile</li>
+                        <li id="logout">Log Out</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="taskbar-isi" id="taskbar" style="display: none;">
+        <div class="taskbar-content">
+            <div class="task-head row col-auto">
+                <div class="head-taskbar col-auto">
+                    <button class="head-button" id="taskbar-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                          </svg>
+                    </button>
+                </div>
+                <div class="head-logo col-auto">
+                    <img src="">
+                    <p id="nama-aplikasi" style="font-weight: bold;">Rumah Jurnal</p>
+                </div>
+            </div>
+            <div class="task-content">
+                <ul>
+                    <li>Dashboard</li>
+                    <li>Upload Artikel</li>
+                    <li>Draft<p>10</p></li>
+                    <li>Revisi Minor<p>100</p></li>
+                    <li>Revisi Mayor<p>0</p></li>
+                    <li>Layak Publish<p>10</p></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <main>
+        <div class="main-isi" id="main-isi">
+            <div class="judul-hlm"><h2>judul</h2></div>
+            <form action="">
+                <div class="card form">
+                    <div class="form_sub row" id="profile">
+                        <div class="form_sub_title">Profile Penulis</div>
+                        <div class="form_sub row box" id="pnl_1">
+                            <div class="form_sub_list">Nama Penulis 1</div>
+                            <div class="searchbar search-penulis selectbar se-selectbar">
+                                <div class="select-btn">
+                                    <div id="pnl-1">>--Pilih Penulis--<</div>
+                                    <div class="drop-select">
+                                        <div class="se-se-bar" id="dropdown-pnl">
+                                            <div class="select-search searchbar">
+                                                <input type="text" name="s-se-pnl" id="s-se-pnl" placeholder="Penulis">
+                                            </div>
+                                            <ul class="select-droped">
+                                                <li>poin</li>
+                                                <li>poin</li>
+                                                <li>poin</li>
+                                                <li>poin</li>
+                                                <li>poin</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="break"></div>
+                            <div>
+                                <textarea id="pnl-1" rows="1" class="searchbar" placeholder="[Nama Penulis]"></textarea>
+                            </div>
+                            <div class="form_sub_list">Program Studi 1</div>
+                            <div class="searchbar search-prodi selectbar se-selectbar">
+                                <div class="select-btn">
+                                    <div id="prodi-1">>--Pilih Program Studi--<</div>
+                                    <div class="drop-select">
+                                        <div class="se-se-bar" id="dropdown-prodi">
+                                            <div class="select-search searchbar">
+                                                <input type="text" name="s-se-pnl" id="s-se-pnl" placeholder="Penulis">
+                                            </div>
+                                            <ul class="select-droped">
+                                                <li>poin</li>
+                                                <li>poin</li>
+                                                <li>poin</li>
+                                                <li>poin</li>
+                                                <li>poin</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="break"></div>
+                            <div>
+                                <textarea id="prodi-1" rows="1" class="searchbar" placeholder="[Nama Prodi]"></textarea>
+                            </div>
+                        </div>
+                        <div class="form_sub row box" id="pnl_2">
+                            <div class="form_sub_list">Nama Penulis 2</div><div class="searchbar search-penulis selectbar se-selectbar">
+                                <div class="select-btn">
+                                    <div id="pnl-2">>--Pilih Penulis--<</div>
+                                    <div class="drop-select">
+                                        <div class="se-se-bar" id="dropdown-pnl">
+                                            <div class="select-search searchbar">
+                                                <input type="text" name="s-se-pnl" id="s-se-pnl" placeholder="Penulis">
+                                            </div>
+                                            <ul class="select-droped">
+                                                <li>poin</li>
+                                                <li>poin</li>
+                                                <li>poin</li>
+                                                <li>poin</li>
+                                                <li>poin</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form_sub_list">Program Studi 2</div>
+                            <div class="searchbar search-prodi selectbar se-selectbar">
+                                <div class="select-btn">
+                                    <div id="prodi-2">>--Pilih Program Studi--<</div>
+                                    <div class="drop-select">
+                                        <div class="se-se-bar" id="dropdown-prodi">
+                                            <div class="select-search searchbar">
+                                                <input type="text" name="s-se-pnl" id="s-se-pnl" placeholder="Penulis">
+                                            </div>
+                                            <ul class="select-droped">
+                                                <li>poin</li>
+                                                <li>poin</li>
+                                                <li>poin</li>
+                                                <li>poin</li>
+                                                <li>poin</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form_sub addBox" id="pnl_3">
+                            <button type="button" class="btn add-btn col-auto">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path>
+                                </svg>
+                                <p>Tambah Penulis</p>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form_sub row" id="artikel">
+                        <div class="form_sub_title">Upload Artikel</div>
+                        <div class="form_sub row box" id="artikel">
+                            <div class="form_sub_list">Judul Artikel</div><div class="searchbar">
+                                <input type="text" name="jdl" id="jdl" placeholder="[Judul Artikel]">
+                            </div>
+                        </div>
+                        <div class="form_sub addBox" id="add_artikel">
+                            <button type="button" class="btn add-btn col-auto">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path>
+                                </svg>
+                                <p>Tambahkan Artikel</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-end">
+                    <button type="submit" class="btn submit-btn col-auto">Update Status</button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <footer>
+
+    </footer>
+    <div class="shade fade" id="shade"></div>
+    <script src="Script.js"></script>
+</body>
+</html>

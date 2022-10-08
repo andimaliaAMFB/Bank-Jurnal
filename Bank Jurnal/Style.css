@@ -813,6 +813,8 @@ body {
             }
             .form .form_sub.row>div.form_sub_list {
                 margin-block: 1rem;
+            }
+            .form .form_sub.row div.form_sub_list {
                 font-weight: bold;
             }
             .form .form_sub.row>.form_sub.box,.form .form_sub.row>.form_sub.addBox {
@@ -855,3 +857,45 @@ body {
         justify-content: center;
     }
 /* footer end */
+
+.form .form_sub.row>div.profile-text {
+    padding-inline: 2rem 1rem;
+}
+
+.w-50>.selectbar.se-selectbar {
+    width: 100%;
+}
+
+.w-100>.selectbar.se-selectbar {
+    width: 50%;
+}
+
+.card>.card-head,.card>.card-body {
+    padding-block: 0;
+}
+
+.drop-file {
+    border-radius: 8px;
+    height: 20rem;
+    border: 4px dashed #70CED4;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.drop-file>p {
+    font-weight: bolder;
+    font-size: large;
+}
+
+p.link:hover,
+.drop-file:hover p.link{
+    color: #70CED4;
+    cursor: pointer;
+}
+
+.drop-file:hover {
+    cursor: pointer;
+}

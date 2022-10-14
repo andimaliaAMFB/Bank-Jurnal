@@ -9,9 +9,10 @@ var dropmenu = document.querySelectorAll(`.drop-btn`);
 var prodi_all = document.querySelector(`form .row article.row #all`);
 var prodi_Unall = document.querySelector(`form .row article.row #allClear`);
 var pointer_history = document.querySelectorAll(`.history_list .pointer`);
-var upload_select = document.querySelectorAll(`.select-btn>div:first-child`)
-var upload_input = document.querySelectorAll(`.form_sub.row.box div:not([class]):not([id]) textarea`)
-var upload_penulis = document.querySelector(`#profile.form_sub.row`)
+var upload_select = document.querySelectorAll(`.select-btn>div:first-child`);
+var upload_input = document.querySelectorAll(`.form_sub.row.box div:not([class]):not([id]) textarea`);
+var upload_penulis = document.querySelector(`#profile.form_sub.row`);
+var panel_switch = document.querySelectorAll(`form.row .panel`);
 
 //list example
     let list_judul = [];
@@ -249,7 +250,7 @@ var upload_penulis = document.querySelector(`#profile.form_sub.row`)
                         var selectParent = parent.parentNode;
                         var next_input = selectParent.nextElementSibling;
                         var listRow = selectParent.parentNode;
-                        // console.log(item, parent, parent.contains(event.target), event.target);
+                        // console.log(item, parent, selectParent, next_input, listRow);
                         if (parent.contains(event.target)) {
                             if (dd) {
                                 dd.classList.add(`ddShow`);
@@ -365,6 +366,189 @@ var upload_penulis = document.querySelector(`#profile.form_sub.row`)
                         });
                     }
                 }
+            //login form
+                if (panel_switch) {
+                    var change_btn = document.querySelector(`.change-btn`);
+                    var panelWelcome = '';
+                    var panelIsi = '';
+                    if (change_btn) {
+                        if (change_btn.contains(event.target)) {
+                            if (panel_switch[0].classList.contains("second")) {
+                                panel_switch[0].classList.remove("second");
+                                panelWelcome += `
+                                                <div>
+                                                    <div class="form-title">
+                                                        <p>Selamat Datang!</p>
+                                                    </div>
+                                                    <div class="form-subtitle">
+                                                        <p>Belum memiliki akun Rumah Jurnal?</p>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <button type="button" class="btn change-btn w-100">
+                                                        <p>Sign Up</p>
+                                                    </button>
+                                                </div>`;
+    
+                                panelIsi += `
+                                            <div class="form-title">
+                                                <p>Sign In to Rumah Jurnal</p>
+                                            </div>
+                                            <div class="d-flex flex-column">
+                                                <div class="searchbar">
+                                                    <input type="text" name="email" id="email" placeholder="Email" class="w-100">
+                                                </div>
+                                                <div class="searchbar">
+                                                    <input type="password" name="pass" id="pass" placeholder="Password" class="w-100">
+                                                </div>
+                                            </div>
+                                            <div class="d-flex flex-column">
+                                                <button type="button" class="btn log-btn w-100">
+                                                    <p>Sign In</p>
+                                                </button>
+                                                <div class="form-subtitle">
+                                                    <p>Atau Sign In Menggunakan</p>
+                                                </div>
+                                                <button type="button" class="btn log-btn-border d-flex justify-content-between align-items-center">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-google logo" viewBox="0 0 16 16">
+                                                        <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z"></path>
+                                                    </svg>
+                                                    <p class="flex-grow-1">Google</p>
+                                                </button>
+                                            </div>`
+                            }
+                            else {
+                                panel_switch[0].classList.add("second");
+                                panelWelcome += `
+                                                <div>
+                                                    <div class="form-title">
+                                                        <p>Hallo!</p>
+                                                    </div>
+                                                    <div class="form-subtitle">
+                                                        <p>Sudah memiliki akun Rumah Jurnal?</p>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <button type="button" class="btn change-btn w-100">
+                                                        <p>Sign In</p>
+                                                    </button>
+                                                </div>`;
+    
+                                
+                                panelIsi += `
+                                            <div class="form-title">
+                                                <p>Sign Up to Rumah Jurnal</p>
+                                            </div>
+                                            <div class="d-flex flex-column">
+                                                <div class="searchbar">
+                                                    <input type="text" name="username" id="user" placeholder="Username" class="w-100">
+                                                </div>
+                                                <div class="searchbar">
+                                                    <input type="text" name="email" id="email" placeholder="Email" class="w-100">
+                                                </div>
+                                                <div class="searchbar">
+                                                    <input type="password" name="pass" id="pass" placeholder="Password" class="w-100">
+                                                </div>
+                                                <div class="searchbar">
+                                                    <input type="password" name="passS" id="passS" placeholder="Re Enter Password" class="w-100">
+                                                </div>
+                                            </div>
+                                            <div class="d-flex flex-column">
+                                                <button type="button" class="btn log-btn w-100">
+                                                    <p>Sign In</p>
+                                                </button>
+                                                <div class="form-subtitle">
+                                                    <p>Atau Sign In Menggunakan</p>
+                                                </div>
+                                                <button type="button" class="btn log-btn-border d-flex justify-content-between align-items-center">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-google logo" viewBox="0 0 16 16">
+                                                        <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z"></path>
+                                                    </svg>
+                                                    <p class="flex-grow-1">Google</p>
+                                                </button>
+                                            </div>`
+                            }
+                            panel_switch[0].querySelector(`#change`).innerHTML = panelWelcome;
+                            panel_switch[1].innerHTML = panelIsi;
+                        }
+                    }
+                }
+            // add form
+                var addBtn = document.querySelector(`.add-btn`);
+                if (addBtn) {
+                    if (addBtn.contains(event.target)) {
+                        var prevAdd = document.querySelector(`.addBox`).previousElementSibling;
+                        var no
+                        for (let i = 0; i <= 3; i++) {
+                            if (prevAdd.id.includes(i)) {
+                                no = i+1
+                            }
+                        }
+                        console.log(no,prevAdd.id,document.querySelector(`.addBox`));
+                        if (no <= 4) {
+                            var newAuthor = `
+                                        <div class="form_sub_list">Nama Penulis `+no+`</div>
+                                        <div class="searchbar search-penulis selectbar se-selectbar">
+                                            <div class="select-btn">
+                                                <div id="pnl-`+no+`">>--Pilih Penulis--<
+                                                </div>
+                                                <div class="drop-select">
+                                                    <div class="se-se-bar" id="dropdown-pnl">
+                                                        <div class="select-search searchbar">
+                                                            <input type="text" name="s-se-pnl" id="s-se-pnl" placeholder="Penulis">
+                                                        </div>
+                                                        <ul class="select-droped">
+                                                            <li>poin</li>
+                                                            <li>poin</li>
+                                                            <li>poin</li>
+                                                            <li>poin</li>
+                                                            <li>poin</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form_sub_list">Program Studi `+no+`</div>
+                                        <div class="searchbar search-prodi selectbar se-selectbar">
+                                            <div class="select-btn">
+                                                <div id="prodi-`+no+`">>--Pilih Program Studi--<</div>
+                                                <div class="drop-select">
+                                                    <div class="se-se-bar" id="dropdown-prodi">
+                                                        <div class="select-search searchbar">
+                                                            <input type="text" name="s-se-pnl" id="s-se-pnl" placeholder="Penulis">
+                                                        </div>
+                                                        <ul class="select-droped">
+                                                            <li>poin</li>
+                                                            <li>poin</li>
+                                                            <li>poin</li>
+                                                            <li>poin</li>
+                                                            <li>poin</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        `;
+
+
+                            var child = document.createElement("div");
+                            child.classList.add("form_sub");
+                            child.classList.add("row");
+                            child.classList.add("box");
+                            child.setAttribute(`id`,`pnl_`+no)
+                            prevAdd.parentNode.insertBefore(child, prevAdd.nextElementSibling);
+                            child.innerHTML = newAuthor;
+                            console.log(prevAdd.parentNode);
+                            upload_select = document.querySelectorAll(`.select-btn>div:first-child`);
+                            upload_input = document.querySelectorAll(`.form_sub.row.box div:not([class]):not([id]) textarea`);
+                            upload_penulis = document.querySelector(`#profile.form_sub.row`);
+                            if (no == 4) {
+                                addBtn.parentNode.innerHTML = ``;
+                            }
+                        }
+                    }
+                }
+                
 
         //prodi_select
             if (lokasi.includes("index")) {
@@ -622,7 +806,7 @@ var upload_penulis = document.querySelector(`#profile.form_sub.row`)
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form_sub addBox" id="pnl_3">
+                                            <div class="form_sub addBox">
                                                 <button type="button" class="btn add-btn col-auto">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
                                                         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path>

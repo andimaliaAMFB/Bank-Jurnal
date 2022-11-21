@@ -12,32 +12,29 @@
 </head>
 <body>
     <header>
-        <div class="head-isi row justify-content-between px-4" id="head-isi">
-            <div class="head-left-side navbar col-auto d-flex">
-                <div class="head-taskbar me-3">
+        <nav class="head-isi navbar justify-content-between" id="head-isi">
+            <div class="head-left-side navbar d-flex">
+                <div class="head-taskbar navbar me-2">
                     <button class="head-button" id="taskbar-btn">
                         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
                         </svg>
                     </button>
                 </div>
-                <div class="head-logo navbar mx-3">
+                <div class="head-logo navbar ms-2">
                     <img class="navbar-toggler-icon me-3" src="asset/logo_rumah jurnal 1.png">
                     <p id="nama-aplikasi" style="font-weight: bold;">Rumah Jurnal</p>
                 </div>
             </div>
-            <div class="head-right-side navbar col-auto justify-content-end">
-                <div class="head-searchbar searchbar col-auto">
-                   <form action="">
-                        <input type="text" name="search" id="search" placeholder="Search">
-                        <button type="submit" name="head-search" id="search-btn" class="dot search-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
-                            </svg>
-                        </button>
-                    </form>
+            <div class="head-right-side navbar justify-content-end">
+                <div class="head-search me-2" id="button-search">
+                    <button type="button" name="head-search" id="search-btn" class="head-button dot">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                        </svg>
+                    </button>
                 </div>
-                <div class="head-notif mx-3">
+                <div class="head-notif navbar mx-2">
                     <button class="head-button" id="button-notif">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
                             <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"></path>
@@ -62,11 +59,11 @@
                         <li class="view-all">See Full Notification</li>
                     </ul>
                 </div>
-                <div class="head-profile ms-3">
+                <div class="head-profile navbar ms-2">
                     <button class="head-button dot" id="button-profile">P</button>
                     <ul class="dropdown-menu" style="display: none;" id="dropdown-profile">
                         <li class="user-profile label-dropdown">
-                            <img src="┗∵┓テレカクシ思春期／HoneyWorks feat.鏡音レン.mp4_snapshot_01.24_[2015.09.27_10.55.19].jpg" alt="">
+                            <img src="" alt="">
                             <h3>Username</h3>
                             <p>Peran</p>
                         </li>
@@ -75,7 +72,84 @@
                     </ul>
                 </div>
             </div>
+        </nav>
+        
+        <div class="head-modal form-modal show" style="display: none;">
+            <div class="fliter-form h-auto p-3" id="form_search">
+                <div class="form-card card col-md-8">
+                    <div class="mx-3" id="search">
+                        <form action="" class="card-head d-flex flex-wrap justify-content-center p-3 pt-0">
+                            <h3 class="w-100 mb-3">Search</h3>
+                            <div class="col-10 searchbar search-label search-value justify-content-center">
+                                <input class="w-100" type="text" name="search" id="search" placeholder="Search">
+                            </div>
+                            <div class="col-auto searchbar search-button justify-content-center">
+                                <button type="submit" name="head-search" id="search-btn" class="dot search-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+                        <div class="w-100 se-se-bar drop-select ddShow" id="dropdown-search">
+                                <ul class="select-droped h-auto">
+                                    <li class="d-flex p-3 border-bottom">
+                                        <div class="col-4 p-2">
+                                            <img src="" alt="Prodi">
+                                        </div>
+                                        <div class="flex-grow-1 flex-column justify-content-between p-2">
+                                            <div class="">Judul Artikel</div>
+                                            <div class="">Penulis</div>
+                                            <div class="">Keyword</div>
+                                        </div>
+                                    </li>
+                                    <li class="d-flex p-3 border-bottom">
+                                        <div class="col-4 p-2">
+                                            <img src="" alt="Prodi">
+                                        </div>
+                                        <div class="flex-grow-1 flex-column justify-content-between p-2">
+                                            <div class="">Judul Artikel</div>
+                                            <div class="">Penulis</div>
+                                            <div class="">Keyword</div>
+                                        </div>
+                                    </li>
+                                    <li class="d-flex p-3 border-bottom">
+                                        <div class="col-4 p-2">
+                                            <img src="" alt="Prodi">
+                                        </div>
+                                        <div class="flex-grow-1 flex-column justify-content-between p-2">
+                                            <div class="">Judul Artikel</div>
+                                            <div class="">Penulis</div>
+                                            <div class="">Keyword</div>
+                                        </div>
+                                    </li>
+                                    <li class="d-flex p-3 border-bottom">
+                                        <div class="col-4 p-2">
+                                            <img src="" alt="Prodi">
+                                        </div>
+                                        <div class="flex-grow-1 flex-column justify-content-between p-2">
+                                            <div class="">Judul Artikel</div>
+                                            <div class="">Penulis</div>
+                                            <div class="">Keyword</div>
+                                        </div>
+                                    </li>
+                                    <li class="d-flex p-3 border-bottom">
+                                        <div class="col-4 p-2">
+                                            <img src="" alt="Prodi">
+                                        </div>
+                                        <div class="flex-grow-1 flex-column justify-content-between p-2">
+                                            <div class="">Judul Artikel</div>
+                                            <div class="">Penulis</div>
+                                            <div class="">Keyword</div>
+                                        </div>
+                                    </li>
+                                </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+        
     </header>
     <div class="taskbar-isi" id="taskbar" style="display: none;">
         <div class="taskbar-content">
@@ -120,7 +194,7 @@
             <div class="filter-prodi">
                 <div class="head-sub row justify-content-between">
                     <h4>List Program Studi</h4>
-                    <button class="filter-btn btn row" onclick="form_function()">
+                    <button class="filter-btn btn row">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
                             <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
                         </svg>
@@ -178,7 +252,7 @@
                 <div class="penulis-isi card">
                     <div class="card-head">Penulis</div>
                     <div class="card-body">
-                        <div class="container-slide px-3 row flex-wrap">
+                        <div class="container-slide px-3 row flex-wrap justify-content-between">
                             <div class="profile-box col-auto">
                                 <img src="" alt="profile-image">
                                 <p id="profile-name">Nama Pengguna</p>

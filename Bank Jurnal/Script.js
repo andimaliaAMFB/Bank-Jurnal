@@ -5,6 +5,8 @@ var dropdown = document.querySelectorAll('.dropdown-menu');
 var taskbar = document.getElementById('taskbar');
 var shade = document.getElementById("shade");
 var lokasi = window.location.href; // link web
+var headSearch = document.getElementById("search");
+var headSearchDd = document.getElementById("dropdown-search");
 var dropmenu = document.querySelectorAll(`.drop-btn`);
 var prodi_all = document.querySelector(`form .row article.row #all`);
 var prodi_Unall = document.querySelector(`form .row article.row #allClear`);
@@ -14,6 +16,8 @@ var upload_input = document.querySelectorAll(`.form_sub.row.box div:not([class])
 var upload_penulis = document.querySelector(`#profile.form_sub.row`);
 var panel_switch = document.querySelectorAll(`form.row .panel`);
 var drop_file_input = document.querySelectorAll(`.drop-file__input`);
+
+// alert(tryExport + 2); // Try Export Variable
 
 
 //list example
@@ -32,6 +36,10 @@ var drop_file_input = document.querySelectorAll(`.drop-file__input`);
             final_list.push([list_judul[i], list_finalize[fnl-1], list_penulis[pnl-1], list_prodi[prodi-1]]);
         }
     let render_list = [].concat(final_list);
+    let list_kota = [];
+        for (let i = 1; i <= 100; i++) { list_kota.push("Kota "+i); }
+    let list_prov = [];
+        for (let i = 1; i <= 100; i++) { list_prov.push("Provinsi "+i); }
 // console.table(final_list);
 
 //banyak histori dalam 1 artikel
@@ -95,135 +103,134 @@ var drop_file_input = document.querySelectorAll(`.drop-file__input`);
     
 
 
-console.log(form_page);
-console.log(form_sub_list);
-console.log(form_sub_list_search);
+// console.log(headSearch, headSearchDd);
+// console.log(form_sub_list);
+// console.log(form_sub_list_search);
 
 //function
 //mouse clicked
     window.addEventListener('mouseup', function(event){
         // console.log(event.target);
         //general
-            headBtn.forEach((btn,index) => {
+            headBtn.forEach((btn,index) => { //Open Close Header Menu Modal
                 if (btn.contains(event.target)) {
                     // console.log(dropdown,dropdown[index-2]);
                     if (btn.nextElementSibling) {
-                        if (dropdown[index-2].style.display === "none") { dropdown[index-2].style.display = "block"; }
-                        else { dropdown[index-2].style.display = "none"; }
+                        if (dropdown[index-2].style.display === "none") { dropdown[index-2].style.display = "block"; } //open modal when clicked menu in hide
+                        else { dropdown[index-2].style.display = "none"; } //hide modal if the menu clicked again
                     }
                     else if (btn.id == taskbarBtnId.id) {
-                        if (taskbar.style.display === "none") { taskbar.style.display = "block"; shade_show("show"); }
-                        else { taskbar.style.display = "none"; shade_show("remove");}
+                        if (taskbar.style.display === "none") { taskbar.style.display = "block"; shade_show("show"); } //open taskbar when the menu clicked
+                        else { taskbar.style.display = "none"; shade_show("remove");} //close taskbar if the menu clicked again
                     }
-                    else if (btn.id.includes("search")) {
-                        console.log("modal open");
+                    else if (btn.id.includes("search")) { //open search menu
+                        // console.log("modal open");
                         form_function(document.querySelector(`.head-modal`));
+                        suggestionBar(headSearch, headSearchDd, headSearch.id, headSearch.textContent);
                     }
                 }
                 else {
                     if (btn.nextElementSibling) {
                         if (dropdown[index-2].style.display === "block") {
-                            if (!btn.parentNode.contains(event.target)) { dropdown[index-2].style.display = "none"; }
+                            if (!btn.parentNode.contains(event.target)) { dropdown[index-2].style.display = "none"; } //hide modal that the menu not clicked
                         }
                     }
                     else if (event.target == taskbar) {
-                        if (taskbar.style.display === "block") { taskbar.style.display = "none"; shade_show("remove"); }
+                        if (taskbar.style.display === "block") { taskbar.style.display = "none"; shade_show("remove"); } //close taskbar if clicked the background
                     }
-                    else if (event.target == document.querySelector(`#form_search`)) {
+                    else if (event.target == document.querySelector(`#form_search`)) { //close search menu if clicked the background
                         form_function(document.querySelector(`.head-modal`));
                     }
                 }
             });
 
         //tabel or Slide List
-            if (tabel_select) {
+            if (tabel_select) { //selected filter table
                 tabel_select.forEach((select,index) => {
                     // console.log("select", select, "select.querySelector", select.querySelector(`.drop-select`));
-                    var dropSelect = select.querySelector(`.drop-select`);
-                    var selectValue = select.querySelector(`.search-value`);
-                    if (dropSelect) {
-                        var selectMenu = dropSelect.querySelectorAll(`div ul li`);
-                        selectMenu.forEach(i => {
-                            // console.log(i);
-                        })
+                    var dropSelect = select.querySelector(`.drop-select`); //Dropdown menu for filter select list
+                    var selectValue = select.querySelector(`.search-value`); //Selected list from filter select list
+
+                    if (dropSelect) { //Chek if this tabel have dropdown menu for each table menu
+                        var selectMenu = dropSelect.querySelectorAll(`div ul li`); //List in dropdown menu filter select
                     }
-                    var selectValue, inputValue;
+                    var inputValue; //Typed Input from dropdown menu select list
 
                     if (select.contains(event.target)) {
                         // console.log(select,event.target, select.id,selectValue);
-                        if (!select.id.includes("jdl")) {
+                        if (!select.id.includes("jdl")) { //show dropdown menu of filter select table (catatan penulis, penulis, jurusan)
                             if (dropSelect) {
                                 selectValue.classList.add("show");
                             }
                         }
-                        if (select.querySelector(`.search-value input`)) {
-                            inputValue = select.querySelector('.search-value input');
+                        if (select.querySelector(`.search-value input`)) { //check if this filter select is Contain Key Input
+                            inputValue = select.querySelector('.search-value input'); //location of input variabel and selected same
                             selectValue = select.querySelector('.search-value input');
                         }
                         else {
-                            inputValue = select.querySelector('.select-search input');
+                            inputValue = select.querySelector('.select-search input'); //location of input variabel and selected different
                         }
 
                         selectMenu.forEach((menu, index) => {
                             if (event.target == menu) {
-                                if (dropSelect.querySelector(`ul li.active`)) {
+                                if (dropSelect.querySelector(`ul li.active`)) { //remove active class from unselected filter list
                                     dropSelect.querySelector(`ul li.active`).classList.remove("active");
                                 }
-                                menu.classList.add("active");
+                                menu.classList.add("active"); //add active class for selected filter list
                                 // console.log(menu,menu.classList);
-                                if (!select.id.includes("final")) {
+                                if (!select.id.includes("final")) { //change value of filter list for (penulis, prodi) select list
                                     inputValue.value = menu.textContent;
                                 }
-                                selectValue.innerHTML = menu.textContent;
+                                selectValue.innerHTML = menu.textContent; //change selectted value of filter list for catatan revisi
                                 checkTypeList();
                                 
                         
-                                selectValue.classList.remove("show");
+                                selectValue.classList.remove("show"); //close List in dropdown menu filter select
                             }
                         });
                         if (!select.id.includes("final")) {
                             // console.log(inputValue.value, dropSelect, select.id, selectValue.innerText);
-                            suggestionBar(inputValue, dropSelect, select.id, selectValue.textContent);
+                            suggestionBar(inputValue, dropSelect, select.id, selectValue.textContent); //show suggestion for List in dropdown menu filter select
                         }
                     }
                     else {
                         if (dropSelect) {
-                            selectValue.classList.remove("show");
+                            selectValue.classList.remove("show"); //close List in dropdown menu filter select
                         }
                     }
                     
                 });
             }
 
-            if (dropmenu) {
+            if (dropmenu) { //dropdown menu for each table row
                 dropmenu.forEach((btn,index) => {
                     var next = btn.nextElementSibling;
                     var tr = btn.parentNode.parentNode;
                     if (event.target == btn) {
-                        if (next) {
+                        if (next) { //show clicked menu dropdown if hidden
                             if (next.style.display === "none") { next.style.display = "block"; }
                             else { next.style.display = "none"; }
                         }
                         else {
                             tr = btn.parentNode;
-                            form_inside(form_wrapper,tr.getAttribute('data-id'));
+                            form_inside(form_wrapper,tr.getAttribute('data-id')); //make div child for every revision in this article
                         }
                     }
                     else {
-                        if (btn.nextElementSibling) {
-                            if (next.style.display === "block") {
-                                if (!btn.parentNode.contains(event.target)) { next.style.display = "none"; }
+                        if (next) {
+                            if (next.style.display === "block") { //if menu dropdown show
+                                if (!btn.parentNode.contains(event.target)) { next.style.display = "none"; } //close unclicked menu dropdown
                                 else {
-                                    if (event.target.textContent.includes("Lihat Artikel")) {
+                                    if (event.target.textContent.includes("Lihat Artikel")) { //if click (Lihat Artikel) menu
     
                                     }
-                                    else if (event.target.textContent.includes("Upload Ulang")) {
+                                    else if (event.target.textContent.includes("Upload Ulang")) { //if click (Lihat Artikel) menu
                                         
                                     }
-                                    else if (event.target.textContent.includes("Status Perubahan")) {
-                                        form_inside(form_wrapper,tr.getAttribute('data-id'));
+                                    else if (event.target.textContent.includes("Status Perubahan")) { //if click (Lihat Artikel) menu
+                                        form_inside(form_wrapper,tr.getAttribute('data-id')); //make div child for every revision in this article
                                     }
-                                    next.style.display = "none";
+                                    next.style.display = "none"; //close menu dropdown
                                 }
                             }
                         }
@@ -274,171 +281,130 @@ console.log(form_sub_list_search);
                 
 
         //form
-            // form
-                // if (upload_select) {
-                //     upload_select.forEach((item )=> {
-                //         var parent = item.parentNode;
-                //         var dd = parent.querySelector(`.drop-select`);
-                //         var selectParent = parent.parentNode;
-                //         var next_input = selectParent.nextElementSibling;
-                //         var listRow = selectParent.parentNode;
-                //         // console.log(item, parent, selectParent, next_input, listRow);
-                //         if (parent.contains(event.target)) {
-                //             if (dd) {
-                //                 dd.classList.add(`ddShow`);
-                //                 var inputValue = dd.querySelector('.se-se-bar .select-search input');
-                //                 var selectMenu = dd.querySelectorAll(`div ul li`);
-                //                 // console.log(item.textContent);
-                //                 suggestionBar(inputValue, dd, item.id, item.textContent);
-                                
-                //                 selectMenu.forEach((menu) => {
-                //                     if (event.target == menu) {
-                //                         if (dd.querySelector(`ul li.active`)) {
-                //                             dd.querySelector(`ul li.active`).classList.remove("active");
-                //                         }
-                //                         menu.classList.add("active");
-                //                         // console.log(event.target,menu);
-                //                         item.innerHTML = menu.textContent;
-                //                         item.value = menu.textContent;
-                                        
-                //                         var child_break = document.createElement("div");
-                //                         child_break.classList.add("break");
-                //                         var child = document.createElement("div");
-                //                         var input;
-                //                         if (item.innerHTML.includes("Baru")) {
-                //                             // console.log(item.innerHTML);
-                //                             if (item.id.includes("pnl")) {
-                //                                 listRow.insertBefore(child_break, next_input);
-                //                                 listRow.insertBefore(child, next_input);
-                //                                 input = `<textarea id="pnl-`+item.id.charAt(item.id.length-1)+`" rows="1" class="searchbar" placeholder="[Nama Penulis]"></textarea>`;
-                //                             }
-                //                             else {
-                //                                 listRow.appendChild(child_break);
-                //                                 listRow.appendChild(child);
-                //                                 input = `<textarea id="prodi-`+item.id.charAt(item.id.length-1)+`" rows="1" class="searchbar" placeholder="[Nama Prodi]"></textarea>`;
-                //                             }
-                                            
-                //                             child.innerHTML = input;
-                //                         }
-                //                         else {
-                //                             selectParent.nextElementSibling.remove();//remove break div
-                //                             selectParent.nextElementSibling.remove();//remove textarea div
-                //                         }
-                //                         dd.classList.remove("ddShow");
-                //                     }
-                //                 });
-                //             }
-                //         }
-                //         else {
-                //             if (dd) {
-                //                 if (!dd.contains(event.target)) {
-                //                     dd.classList.remove("ddShow");
-                //                 }
-                //             }
-                //         }
-                //     });
-                // }
-                
-                if (form_page) {
-                    form_page.forEach((form, form_index, form_array) => {
+            // form upload
+                if (form_page) { //full form page for upload
+                    form_page.forEach((form) => {
                         // console.log(form);
                         var form_list = form.querySelectorAll(`.form-sub`);
+
                         if (form_list) {
                             form_list.forEach(list => {
                                 // console.log(form.id,list);
-                                var searchbar = list.querySelectorAll(`.search-value`);
-                                var search_value = list.querySelectorAll(`.searchbar input`);
+
+                                // Hierarki urutan searchbar
+                                // .form-sub \.\ .form-sub.addBox                                                                        (M)
+                                // .select   \\ .input                                                                                   (0)
+                                // div(Title Searchbar) -|.|- div.search-input                                                           (1)
+                                // .................... -|.|- div.searchbar.searchFull.search-value |.| .searchbar.search-dd.drop-select (2)
+                                // .................... -|.|- input#id    || button                 |.| .se-se-bar                       (3)
+                                // .................... -|.|- ..................................... |.| ul.select-droped                 (4)
+                                // .................... -|.|- ..................................... |.| li                               (5)
+                                
+                                var searchbar = list.querySelectorAll(`.search-value`); //hierarki (2)
+
                                 searchbar.forEach(search => {
                                     // console.log(event.target,search.parentNode,search.parentNode.contains(event.target));
-                                    if (search.parentNode.contains(event.target)) {
-                                        var search_parent = search.parentNode;
-                                        var search_dd = search_parent.querySelector(`.search-dd`);
-                                        var search_input = search.querySelector(`input`);
-                                        var search_dd_menu = search_dd.querySelectorAll(`div ul li`);
 
-                                        form_searchbar(event.target, search_parent, search, search_input, search_dd, search_dd_menu);
+                                    if (search.parentNode.contains(event.target)) { //open searchbar dropdown menu, memilih list row revisi
+                                        var search_parent = search.parentNode; //hierarki (1)
+                                        var search_dd = search_parent.querySelector(`.search-dd`); //hierarki (2)
+                                        var search_input = search.querySelector(`input`);  //hierarki (3)
+                                        var search_dd_menu = search_dd.querySelectorAll(`div ul li`);  //hierarki (5)
+
+                                        form_searchbar(event.target, search_parent, search, search_input, search_dd, search_dd_menu); //open-close dropdown input that has suggestion, add active to selected value
                                         
                                         // console.log(search_input.value);
-                                        if (!search.classList.contains("show")) {
-                                            // console.log(search_parent.parentNode,search_parent.parentNode.nextElementSibling);
-                                            var parent = search_parent.parentNode;
-                                            var loc_next = parent.nextElementSibling;
-                                            if (search_input.value.includes("Baru")) {
+                                        if (!search.classList.contains("show")) { //change after dropdown input closed
+                                            // console.log(search,search_parent.parentNode,search_parent.parentNode.nextElementSibling);
+                                            
+                                            var parent = search_parent.parentNode; //hierarki (0)
+                                            var loc_next = parent.nextElementSibling; //hierarki (0) yang mirip dengan parent
+
+                                            if (search_input.value.includes("Baru")) { //memilih penulis atau prodi baru yang tidak ada dalam database
                                                 // console.log(!loc_next || loc_next.classList.contains("select"));
                                                 if (!loc_next || loc_next.classList.contains("select")) {
-                                                    var next = document.createElement("div");
-    
-                                                search_parent.parentNode.classList.forEach(classL => {
-                                                    // console.log(classL);
-                                                    next.classList.add(classL);
-                                                })
-                                                next.classList.add("input");
-                                                next.classList.remove("select");
-                                                next.setAttribute(`id`,`text-`+search_parent.id)
-    
-                                                var inner = `<div class="col-md-3"></div>
-                                                            <div class="col-md-9 search_input d-flex flex-wrap">
-                                                                <div class="searchbar w-100">
-                                                                    <input class="w-100" type="text" name="`+search_parent.id+`" id="`+search_parent.id+`"`
-                                                if (search_parent.id.includes("pnl")) {
-                                                    inner += `placeholder="[Nama Penulis]">
-                                                                </div>
-                                                            </div>`
-                                                }
-                                                else if (search_parent.id.includes("prodi")) {
-                                                    inner += `placeholder="[Program Studi]">
-                                                                </div>
-                                                            </div>`
-                                                }
-    
-                                                form_addNewElement(parent.parentNode, loc_next, next, inner);
+                                                    var next = document.createElement("div"); //membuat .input, hierarki (0), baru di lokasi selanjut hierarki (0)
+                                                    
+                                                    // .input
+                                                        parent.classList.forEach(classL => {
+                                                            // console.log(classL);
+                                                            next.classList.add(classL);
+                                                        })
+                                                        next.classList.add("input");
+                                                        next.classList.remove("select");
+                                                        next.setAttribute(`id`,`text-`+search_parent.id)
+            
+                                                        var inner = `<div class="col-md-3"></div>
+                                                                    <div class="col-md-9 search_input d-flex flex-wrap">
+                                                                        <div class="searchbar w-100">
+                                                                            <input class="w-100" type="text" name="`+search_parent.id+`" id="`+search_parent.id+`"`
+                                                        if (search_parent.id.includes("pnl")) {
+                                                            inner += `placeholder="[Nama Penulis]">
+                                                                        </div>
+                                                                    </div>`
+                                                        }
+                                                        else if (search_parent.id.includes("prodi")) {
+                                                            inner += `placeholder="[Program Studi]">
+                                                                        </div>
+                                                                    </div>`
+                                                        }
+                                                    // .input
+        
+                                                    form_addNewElement(parent.parentNode, loc_next, next, inner);
                                                 }
                                             }
-                                            else if (!search_input.value.includes("Baru")) {
-                                                console.log(document.getElementById("text-"+search_parent.id));
+                                            else if (!search_input.value.includes("Baru")) { //memilih penulis atau prodi baru yang ada dalam database
+                                                // console.log(document.getElementById("text-"+search_parent.id));
                                                 document.getElementById("text-"+search_parent.id).remove();
                                             }
                                         }
 
                                     }
-                                    else { search.classList.remove(`show`); }
+                                    else { search.classList.remove(`show`); } //close searchbar dropdown menu
                                 })
                                 
-                                var listBtn = list.querySelectorAll(`button`);
+                                var listBtn = list.querySelectorAll(`button`); //list semua button yang ada dalam form-sub, hirarki (0)
                                 listBtn.forEach(btn => {
                                     if (btn.contains(event.target)) {
                                         // console.log(btn.classList);
                                         // console.log(list);
                                         // console.log(form,form.childElementCount,form.children);
-                                        if (list.classList.contains("addBox")) {
-                                            if (form.childElementCount <= 6) {
-                                                var next = document.createElement("div");
+
+                                        if (list.classList.contains("addBox")) { //click button child of div.form-sub.addBox
+                                            if (form.childElementCount <= 6) { //this button can only click 3x while form child <= 6
+
+                                                var next = document.createElement("div"); //membuat .form-sub, hierarki (M), baru di lokasi selanjut hierarki (M)
                                                 var innerText
-                                                form.children[1].classList.forEach(classL => {
-                                                    next.classList.add(classL);
-                                                })
-                                                // console.log(form_sub_list,form_index);
-                                                form_sub_list.forEach((item, item_index) => {
-                                                    if (item_index == 0) {
-                                                        item_text = "";
-                                                        for (let i = 0; i < item.childElementCount; i++) {
-                                                            if (!item.children[i].classList.contains("input")) {
-                                                                item_text += item.children[i].outerHTML; //add outerHTML of list
+                                                
+                                                // div.form-sub
+                                                    form.children[1].classList.forEach(classL => {
+                                                        next.classList.add(classL);
+                                                    })
+                                                    // console.log(form_sub_list,form_index);
+
+                                                    form_sub_list.forEach((item, item_index) => {
+                                                        if (item_index == 0) {
+                                                            item_text = "";
+                                                            for (let i = 0; i < item.childElementCount; i++) {
+                                                                if (!item.children[i].classList.contains("input")) {
+                                                                    item_text += item.children[i].outerHTML; //add outerHTML of list
+                                                                }
                                                             }
+                                                            // console.log(item_text);
+                                                            innerText = item_text;
                                                         }
-                                                        // console.log(item_text);
-                                                        innerText = item_text;
-                                                    }
-                                                })
-                                                // console.log(innerText);
-                                                innerText = replace_id_list(innerText, (form.childElementCount-1));
-                                                form_addNewElement(form, list, next, innerText);
-                                                if (form.childElementCount == 6) {
+                                                    })
+                                                    // console.log(innerText);
+                                                    innerText = replace_id_list(innerText, (form.childElementCount-1));
+                                                    form_addNewElement(form, list, next, innerText);
+                                                // div.form-sub
+
+                                                if (form.childElementCount == 6) { //hidden .addBox when form child == 6
                                                     btn.parentNode.style.display = "none";
                                                 }
                                             }
                                         }
-                                        else if (btn.classList.contains("cancel-btn")) {
+                                        else if (btn.classList.contains("cancel-btn")) { //delete a row from list form
                                             // console.log("Cancel Penulis");
                                             if (form.childElementCount > 3) { list.remove(); }
                                             if (form.childElementCount < 6) {
@@ -447,7 +413,7 @@ console.log(form_sub_list_search);
                                         }
 
                                         // console.log("List Rechange Name n ID");
-                                        for (let i = 1; i < form.childElementCount-1; i++) {
+                                        for (let i = 1; i < form.childElementCount-1; i++) { //penyesuaian id row pada list form
                                             // console.log(form.childElementCount,i,form.children[i]);
                                             changeText = replace_id_list(form.children[i].outerHTML, i);
                                             // console.log(changeText);
@@ -461,26 +427,34 @@ console.log(form_sub_list_search);
                     })
                 }
             // form-modal
-                if (pointer_history) {
+                if (pointer_history) { //form of history of revision
                     pointer_history = document.querySelectorAll(`.history_list .pointer`);
-                    pointer_history.forEach((pointer,index) => {
-                        if (pointer.contains(event.target)) {
+                    pointer_history.forEach((pointer) => {
+
+                        //pointer hierarchy
+                        //.history_form                                                    (M)
+                        //.history_list.parent -|.|- .history_list.border-top -|.|- .child (0)
+
+                        if (pointer.contains(event.target)) { //clicked pointer or the child
                             var parent = pointer.parentNode;
                             var detail = parent.nextSibling;
                             var indexChild = 0;
+
                             form_history.childNodes.forEach((child, index) => { if (parent == child) { indexChild = index + 1; } });
                             
-                            if (parent.classList.contains("parent")) {
+                            if (parent.classList.contains("parent")) { //child detail deleted
                                 parent.classList.remove("parent");
                                 detail.remove();
                             }
-                            else {
+                            else { //child detail added, add .parent class
                                 var last_list = form_history.lastElementChild;
                 
                                 parent.classList.add("parent");
                                 var child = document.createElement("div");
-                                if (parent.nextSibling) { parent.parentNode.insertBefore(child, parent.nextSibling); }
-                                else { parent.parentNode.appendChild(child); }
+
+                                //location of detail .child
+                                if (parent.nextSibling) { parent.parentNode.insertBefore(child, parent.nextSibling); } //add detail .child after pointer position
+                                else { parent.parentNode.appendChild(child); } //add detail .child as last child
                 
                                 child.classList.add("child");
                                 var loc = parent.nextElementSibling;
@@ -491,21 +465,19 @@ console.log(form_sub_list_search);
                     });
                 }
 
-                if (form_wrapper) {
+                if (form_wrapper) { //modal form of prodi selection
                     // console.log(form_wrapper);
                     var open_form_btn = document.querySelector(`.filter-btn`);
 
-                    if (open_form_btn && open_form_btn.contains(event.target)) {
-                        form_function(form_wrapper);
-                    }
-                    if (form_wrapper.classList.contains("show")) {
+                    if (open_form_btn && open_form_btn.contains(event.target)) { form_function(form_wrapper); } //open modal
+
+                    if (form_wrapper.classList.contains("show")) { //form modal opened
                         var from_btn = form_wrapper.querySelectorAll(`.btn`);
                         from_btn.forEach((btn) => {
                             if ((event.target == form_wrapper.childNodes[1]) || (event.target == btn)) {
                                 if (btn.type === "submit") {
-                                    document.getElementById("form-status").addEventListener('submit', (event) => {
-                                        event.preventDefault();
-                                    });
+                                    document.getElementById("form-status").addEventListener('submit', (event) => { event.preventDefault(); });
+                                    
                                     // console.log("The form was submitted");
                                     if (check_prodi_list) {
                                         var checkboxes = document.querySelectorAll('input[name="prodi"]:checked');
@@ -514,7 +486,9 @@ console.log(form_sub_list_search);
                                             checkboxes.forEach((checkbox) => {
                                                 values.push(checkbox.nextElementSibling.querySelector('span').textContent);
                                             });
-                                            ProdiList(values);
+                                            if (!lokasi.includes(`profile`)) {
+                                                ProdiList(values);
+                                            }
                                         }
                                     }
                                 }
@@ -633,81 +607,6 @@ console.log(form_sub_list_search);
                         }
                     }
                 }
-            // add form
-                // var addBtn = document.querySelector(`.add-btn`);
-                // if (addBtn) {
-                //     if (addBtn.contains(event.target)) {
-                //         var prevAdd = document.querySelector(`.addBox`).previousElementSibling;
-                //         var no
-                //         for (let i = 0; i <= 3; i++) {
-                //             if (prevAdd.id.includes(i)) {
-                //                 no = i+1
-                //             }
-                //         }
-                //         console.log(no,prevAdd.id,document.querySelector(`.addBox`));
-                //         if (no <= 4) {
-                //             var newAuthor = `
-                //                         <div class="form_sub_list">Nama Penulis `+no+`</div>
-                //                         <div class="searchbar search-penulis selectbar se-selectbar">
-                //                             <div class="select-btn">
-                //                                 <div id="pnl-`+no+`">>--Pilih Penulis--<
-                //                                 </div>
-                //                                 <div class="drop-select">
-                //                                     <div class="se-se-bar" id="dropdown-pnl">
-                //                                         <div class="select-search searchbar">
-                //                                             <input type="text" name="s-se-pnl" id="s-se-pnl" placeholder="Penulis">
-                //                                         </div>
-                //                                         <ul class="select-droped">
-                //                                             <li>poin</li>
-                //                                             <li>poin</li>
-                //                                             <li>poin</li>
-                //                                             <li>poin</li>
-                //                                             <li>poin</li>
-                //                                         </ul>
-                //                                     </div>
-                //                                 </div>
-                //                             </div>
-                //                         </div>
-                //                         <div class="form_sub_list">Program Studi `+no+`</div>
-                //                         <div class="searchbar search-prodi selectbar se-selectbar">
-                //                             <div class="select-btn">
-                //                                 <div id="prodi-`+no+`">>--Pilih Program Studi--<</div>
-                //                                 <div class="drop-select">
-                //                                     <div class="se-se-bar" id="dropdown-prodi">
-                //                                         <div class="select-search searchbar">
-                //                                             <input type="text" name="s-se-pnl" id="s-se-pnl" placeholder="Penulis">
-                //                                         </div>
-                //                                         <ul class="select-droped">
-                //                                             <li>poin</li>
-                //                                             <li>poin</li>
-                //                                             <li>poin</li>
-                //                                             <li>poin</li>
-                //                                             <li>poin</li>
-                //                                         </ul>
-                //                                     </div>
-                //                                 </div>
-                //                             </div>
-                //                         </div>
-                //                         `;
-
-
-                //             var child = document.createElement("div");
-                //             child.classList.add("form_sub");
-                //             child.classList.add("row");
-                //             child.classList.add("box");
-                //             child.setAttribute(`id`,`pnl_`+no)
-                //             prevAdd.parentNode.insertBefore(child, prevAdd.nextElementSibling);
-                //             child.innerHTML = newAuthor;
-                //             console.log(prevAdd.parentNode);
-                //             upload_select = document.querySelectorAll(`.select-btn>div:first-child`);
-                //             upload_input = document.querySelectorAll(`.form_sub.row.box div:not([class]):not([id]) textarea`);
-                //             upload_penulis = document.querySelector(`#profile.form_sub.row`);
-                //             if (no == 4) {
-                //                 addBtn.parentNode.innerHTML = ``;
-                //             }
-                //         }
-                //     }
-                // }
                 
 
         //prodi_select
@@ -733,12 +632,12 @@ console.log(form_sub_list_search);
         let main_isi = document.querySelector('body main #main-isi');
         body.style.overflow = isi;
         if (isi == "hidden") {
-            head_isi.style.paddingRight = (32 + 17);
-            main_isi.style.paddingRight = 17;
+            head_isi.classList.add(`formShow`);
+            main_isi.classList.add(`formShow`);
         }
         else {
-            head_isi.style.paddingRight = null;
-            main_isi.style.paddingRight = null;
+            head_isi.classList.remove(`formShow`);
+            main_isi.classList.remove(`formShow`);
         }
     }
     function shade_show(isi) {
@@ -859,14 +758,27 @@ console.log(form_sub_list_search);
                             <p id="profile-name">`+ pnl +`</p>
                         </div>`;
         }
+        else if (type.includes("search")) {
+            first_column = `<a href="">
+                                <li class="d-flex m-3 border-bottom rounded-1 line-1">
+                                    <div class="col-4 p-2">
+                                        <img src="`+ prodi +`" alt="`+ prodi +`">
+                                    </div>
+                                    <div class="flex-grow-1 flex-column justify-content-between p-2">
+                                        <div>`+ judul +`</div>
+                                        <div>`+ pnl +`</div>
+                                    </div>
+                                </li>
+                            </a>`;
+        }
         
         
         return first_column + last_column;
     }
-    function RenderFinal(type) {
-        var render_item = [].concat(final_list);
-        var judul_search, final_select, pnl_select, prodi_select = '';
-        tabel_select.forEach(item => {
+    function RenderFinal(type) { //render type table that gonna show
+        var render_item = [].concat(final_list); //render list for table
+        var judul_search, final_select, pnl_select, prodi_select = ''; //selected item for filter
+        tabel_select.forEach(item => { //check if this page has filter menu
             // console.log(item,item.id,item.querySelector('.search-value').textContent);
             // console.log(item,item.querySelector('.search-value'),item.querySelector('.search-value').innerText);
             
@@ -892,7 +804,7 @@ console.log(form_sub_list_search);
         // console.log("prodi_select", prodi_select, "   || pnl_select", pnl_select);
         
         for (let i = 0; i < render_item.length; i++) {
-            if (final_select != "All") {
+            if (final_select != "All") { //filter catatan revisi
                 if (render_item[i]) {
                     if (render_item[i][1] != final_select) {
                         // console.log(render_item[i]);
@@ -901,7 +813,7 @@ console.log(form_sub_list_search);
                     }
                 }
             }
-            if (pnl_select != "All") {
+            if (pnl_select != "All") { //filter penulis
                 if (render_item[i]) {
                     if (render_item[i][2] != pnl_select) {
                         render_item.splice(i, 1);
@@ -909,7 +821,7 @@ console.log(form_sub_list_search);
                     }
                 }
             }
-            if (prodi_select != "All") {
+            if (prodi_select != "All") { //filter prodi
                 if (render_item[i]) {
                     if (!prodi_select.includes(render_item[i][3])) {
                         render_item.splice(i, 1);
@@ -917,7 +829,7 @@ console.log(form_sub_list_search);
                     }
                 }
             }
-            if (judul_search != "All") {
+            if (judul_search != "All") { //filter judul artikel
                 if (render_item[i]) {
                     if (!render_item[i][0].toLocaleLowerCase().includes(judul_search.toLocaleLowerCase())) {
                         render_item.splice(i, 1);
@@ -927,20 +839,20 @@ console.log(form_sub_list_search);
             }
         }
         
-        render_list = [].concat(render_item);
+        render_list = [].concat(render_item); //list yang akan ditampilkan
         // console.log(render_item, tabel_list, row_tabel, tabel_page.innerHTML, type);
-        if (type.includes("tabel")) { DisplayList(render_item, tabel_list, row_tabel, tabel_page.innerHTML, type); }
-        else if (type.includes("slide")) { DisplayList(render_item, slide_list, row_slide, slide_page.innerHTML, "slide"); }
+        if (type.includes("tabel")) { DisplayList(render_item, tabel_list, row_tabel, tabel_page.innerHTML, type); } //list ditampilkan dalam tampilan tabel
+        else if (type.includes("slide")) { DisplayList(render_item, slide_list, row_slide, slide_page.innerHTML, "slide"); } //list ditampilkan dalam tampilan slide
     }
-    function checkTypeList() {
+    function checkTypeList() { //type render for every html file
         // console.log(lokasi);
-        if (lokasi.includes("my")) { RenderFinal("tabel_dropdown"); }
-        else if (lokasi.includes("status")) { RenderFinal("tabel_pointer"); }
-        else if (lokasi.includes("index")) {
+        if (lokasi.includes("my")) { RenderFinal("tabel_dropdown"); } //self article page
+        else if (lokasi.includes("status")) { RenderFinal("tabel_pointer"); } //article status change article page -Admin only
+        else if (lokasi.includes("index")) { //home page
             RenderFinal("tabel_status");
             RenderFinal("slide");
         }
-        else if (lokasi.includes("upload")) {
+        else if (lokasi.includes("upload")) { //upload article page
             // console.log(form_sub_list,form_sub_list[0].children);
             form_sub_list.forEach((item, item_index) => {
                 if (item_index == 0) {
@@ -959,8 +871,9 @@ console.log(form_sub_list_search);
         }
     }
     //form
-        function form_searchbar(value_select, search_wrapper, value_wrapper, input_wrapper, dd_wrapper, dd_menu) {
+        function form_searchbar(value_select, search_wrapper, value_wrapper, input_wrapper, dd_wrapper, dd_menu) { //open-close dropdown input that has suggestion, add active to selected value
             // console.log(value_select, search_wrapper, value_wrapper, input_wrapper, dd_wrapper);
+            // console.log("input wrapper ", input_wrapper);
             var dd_menu_active = dd_wrapper.querySelector(`div ul li.active`);
             if (value_wrapper.classList.contains("show")) {
                 dd_menu.forEach(menu => {
@@ -987,7 +900,7 @@ console.log(form_sub_list_search);
             else { main_wrapper.appendChild(New); }
             New.innerHTML = InnerNew;
         }
-        function form_function(modal) {
+        function form_function(modal) { //open-clos form modal
             // console.log(modal);
             if (modal.style.display === "none") {
                 modal.style.display = null;
@@ -1002,14 +915,14 @@ console.log(form_sub_list_search);
                 overflow_body("auto");
             }
         }
-        function form_inside(wrapper,id) {
-            form_function(wrapper);
-            const tr = document.querySelectorAll(`tr`);
+        function form_inside(wrapper,id) { //make div child for every revision in this article
+            form_function(wrapper); //open-clos form modal
+            const tr = document.querySelectorAll(`tr`); //list item in form per row
             tr.forEach((item) => {
                 if (item.getAttribute('data-id') == id) {
                     form_judul.innerHTML = item.childNodes[1].textContent;
                     final_list.forEach((data,index) => {
-                        if (data[0] == item.childNodes[1].textContent) {
+                        if (data[0] == item.childNodes[1].textContent) { //check if title same with loop of every article
                             form_penulis.innerHTML = data[2];
                             n_history = count_history[index];
                         }
@@ -1018,7 +931,7 @@ console.log(form_sub_list_search);
             });
             
             form_history.innerHTML = '';
-            for (let i = 0; i < n_history; i++) {
+            for (let i = 0; i < n_history; i++) { //make div child for every revision in this article
                 var child = document.createElement("div");
                 form_history.appendChild(child);
 
@@ -1222,11 +1135,22 @@ function suggestionBar(input_box, dd, parent_id, selectValue) {
             firstSuggestions = ">--Pilih Semua--<";
             suggestions = [firstSuggestions].concat(list_judul);
         }
+        else if ((parent_id.includes("search"))) {
+            suggestions = [].concat(final_list);
+        }
+        else if ((parent_id.includes("kota")) && i == 1) {
+            firstSuggestions = ">--Pilih Kota--<";
+            suggestions = [firstSuggestions].concat(list_kota);
+        }
+        else if ((parent_id.includes("prov")) && i == 1) {
+            firstSuggestions = ">--Pilih Provinsi--<";
+            suggestions = [firstSuggestions].concat(list_prov);
+        }
     }
     var parent = dd.parentNode;
     var dd = parent.querySelector(`.search-value`);
     var space = parent.querySelector(`.search-break`);
-    // console.log(dd);
+    // console.log(suggestions);
 
     showSuggestions([],parent_id, selectValue); //rewrite first
     
@@ -1235,16 +1159,40 @@ function suggestionBar(input_box, dd, parent_id, selectValue) {
         let userData = e.target.value; //user enetered data
         let emptyArray = [];
         if(userData){
-            dd.classList.add("show");
+            if (!parent_id.includes("search")) { dd.classList.add("show"); } 
             if (space) { space.classList.remove("col-3"); }
             // console.log("==============================================");
+            // console.log("emptyArray: ",emptyArray);
             emptyArray = suggestions.filter((data)=>{
-                return data.toLocaleLowerCase().includes(userData.toLocaleLowerCase()); 
+                if (parent_id.includes("search")) {
+                    let stringData = "";
+                    data.filter((dataList) => { stringData = stringData + " || " + dataList; })
+                    return stringData.toLocaleLowerCase().includes(userData.toLocaleLowerCase());
+                }
+                else { return data.toLocaleLowerCase().includes(userData.toLocaleLowerCase()); }
             });
             // console.log("userData: ",userData);
-            emptyArray = emptyArray.map((data)=>{
-                if (data.toLocaleLowerCase().includes(userData.toLocaleLowerCase())) {
-                    return data = '<li>'+ data +'</li>';
+            // console.log("emptyArray: ",emptyArray);
+            emptyArray = emptyArray.map((data, dataIndex)=>{
+                if (parent_id.includes("search")) {
+                    let containData = false;
+                    let sudahDitambah = false;
+                    let stringData = "";
+                    data.filter((dataList,index,array) => {
+                        if (dataList.toLocaleLowerCase().includes(userData.toLocaleLowerCase())) {
+                            containData = true;
+                        }
+                        if (containData && !sudahDitambah) {
+                            stringData = input_list(dataIndex, array[0], array[2], array[3], "search");
+                            sudahDitambah = true;
+                        }
+                    })
+                    return stringData;
+                }
+                else {
+                    if (data.toLocaleLowerCase().includes(userData.toLocaleLowerCase())) {
+                        return data = '<li>'+ data +'</li>';
+                    }
                 }
             });
             showSuggestions(emptyArray,parent_id, selectValue);
@@ -1260,15 +1208,19 @@ function suggestionBar(input_box, dd, parent_id, selectValue) {
     function showSuggestions(list, parent_id, selectValue){
         let listData;
         let parent = document.getElementById(parent_id);
-        // console.log(parent);
+        // console.log(parent,list);
         var loc_list = parent.querySelector('.drop-select .select-droped');
-        // console.log(parent,loc_list);
+        // console.log(selectValue,loc_list);
         if (!loc_list) {
             var select_parent = document.getElementById(parent_id).parentNode;
             loc_list = select_parent.querySelector('.drop-select .select-droped');
+            if (parent_id.includes("search")) {
+                loc_list = headSearchDd;
+            }
         }
         if(!list.length){
             userValue = input_box.value;
+            let searchHead = ``;
             if (!userValue || userValue.includes(" ")) {
                 listData = "";
                 for (let i = 0; i < suggestions.length; i++) {
@@ -1285,17 +1237,27 @@ function suggestionBar(input_box, dd, parent_id, selectValue) {
                         }
                     }
                     else {
-                        listData += `<li>`+(suggestions[i])+`</li>`
+                        if (parent_id.includes("search")) {
+                            listData = `<li class="d-flex m-3 border-bottom rounded-1 line-2 p-2 justify-content-center">
+                                            <p>Apa yang Anda Cari?</p>
+                                        </li>`
+                        }
+                        else { listData += `<li>`+(suggestions[i])+`</li>`; }
                     }
                 }
             }
             else{
-                listData = '<li><b>Nothing Found</b></li>';
+                if (parent_id.includes("search")) {
+                    listData = `<li class="d-flex m-3 border-bottom rounded-1 bg-red-1 p-2 justify-content-center">
+                                    <b>Nothing Found</b>
+                                </li>`;
+                }
+                else { listData = '<li><b>Nothing Found</b></li>'; }
             }
         }else {
             listData = list.join('');
         }
-        // console.log(loc_list);
+        // console.log(loc_list, listData);
         loc_list.innerHTML = listData;
     }
 }

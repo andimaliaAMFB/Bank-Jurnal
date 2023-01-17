@@ -200,150 +200,39 @@
                 </div>
             </div>
         </div>
-        
         <main>
             <div class="main-isi" id="main-isi">
-                <form action="">
-                    <div class="card form">
-                        <div class="card-head justify-content-center">
-                            <h3>Profile</h3>
-                        </div>
-                        <div class="card-body row" id="profile">
-                            <div class="d-flex box flex-grow-1">
-                                <div class="form_sub_list col-md-3" id="img-profile" style="background-color: blueviolet;">
-                                    <img src="asset/logo_rumah jurnal 1.png">
-                                </div>
-                                <div class="ms-3 flex-grow-1 profile-text d-flex flex-column justify-content-center">
-                                    <div><h4>Username</h4></div>
-                                    <div><h5>Peran</h5></div>
-                                </div>
+                <div class="detail-artikel">
+                    <div class="card">
+                        <div class="card-head d-flex flex-wrap align-items-center p-3 m-0 mx-3">
+                            <div class="col-3 p-3">
+                                <img src="" alt="">
                             </div>
-                            <div class="mt-3 form_sub row box gx-0">
-                                <div class="row col-md-12 gx-0 p-1 form-sub border-0 w-100">
-                                    <div class="d-flex flex-wrap align-items-center px-3 my-2" id="name">
-                                        <div class="form_sub_title w-100">Nama Pengguna</div>
-                                        <div class="col-md-12 search_input d-flex flex-wrap w-100">
-                                            <div class="searchbar w-100">
-                                                <input class="w-100" type="text" name="name" placeholder="[Nama Pengguna]">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row col-md-12 gx-0 p-1 form-sub border-0">
-                                    <div class="col-md-6 d-flex flex-wrap align-items-center px-3 my-2" id="tgl">
-                                        <div class="form_sub_title w-100">Tanggal Lahir</div>
-                                        <div class="col-md-12 search_input d-flex flex-wrap">
-                                            <div class="searchbar w-100 px-3">
-                                                <input type="date" name="tgl" style="width:100%;" placeholder="YYYY-MM-DD">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row col-md-6 gx-0 p-1 form-sub border-0">
-                                    <div class="d-flex flex-wrap align-items-center px-3 my-2" id="tlp">
-                                        <div class="form_sub_title w-100">Nomor Telp</div>
-                                        <div class="col-md-12 search_input d-flex flex-wrap w-100">
-                                            <div class="searchbar w-100">
-                                                <input type="text" name="tlp" placeholder="[xxxx-xxxx-xxxx]">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row col-md-6 gx-0 p-1 form-sub border-0">
-                                    <div class="d-flex flex-wrap align-items-center px-3 my-2" id="email">
-                                        <div class="form_sub_title w-100">Email</div>
-                                        <div class="col-md-12 search_input d-flex flex-wrap w-100">
-                                            <div class="searchbar w-100">
-                                                <input type="text" name="email" placeholder="[xxxxx@xxxmail.com]">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row col-md-6 gx-0 p-1 form-sub border-0">
-                                    <div class="w-100 d-flex flex-wrap align-items-center px-3 my-2" id="kota">
-                                        <div class="form_sub_title w-100">Kota</div>
-                                        <div class="col-md-12 search_input d-flex flex-wrap w-100" id="kota">
-                                            <div class="searchbar searchFull search-value w-100">
-                                                <input type="text" name="kota" id="kota" placeholder="[Kota]">
-                                                <button type="button">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                                                        <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"></path>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                            <div class="searchbar search-dd drop-select w-100" style="height: 0;">
-                                                <div class="w-100 se-se-bar d-flex flex-column justify-content-between" id="dropdown-kota">
-                                                    <ul class="select-droped">
-                                                        <li>point</li>
-                                                        <li>point</li>
-                                                        <li>point</li>
-                                                        <li>point</li>
-                                                        <li>point</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row col-md-6 gx-0 p-1 form-sub border-0">
-                                    <div class="w-100 d-flex flex-wrap align-items-center px-3 my-2" id="prov">
-                                        <div class="form_sub_title w-100">Provinsi</div>
-                                        <div class="col-md-12 search_input d-flex flex-wrap w-100">
-                                            <div class="searchbar searchFull search-value w-100">
-                                                <input type="text" name="prov" id="prov" placeholder="[Provinsi]">
-                                                <button type="button">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                                                        <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"></path>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                            <div class="searchbar search-dd drop-select w-100" style="height: 0;">
-                                                <div class="w-100 se-se-bar d-flex flex-column justify-content-between" id="dropdown-prov">
-                                                    <ul class="select-droped">
-                                                        <li>point</li>
-                                                        <li>point</li>
-                                                        <li>point</li>
-                                                        <li>point</li>
-                                                        <li>point</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row col-md-9 gx-0 p-1 form-sub border-0">
-                                    <div class="d-flex flex-wrap align-items-center px-3 my-2" id="alamat">
-                                        <div class="form_sub_title w-100">Alamat</div>
-                                        <div class="col-md-12 search_input d-flex flex-wrap w-100">
-                                            <div class="searchbar w-100">
-                                                <input type="text" name="alamat" placeholder="[Alamat]">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row col-md-3 gx-0 p-1 form-sub border-0">
-                                    <div class="d-flex flex-wrap align-items-center px-3 my-2" id="pos">
-                                        <div class="form_sub_title w-100">Kode Pos</div>
-                                        <div class="col-md-12 search_input d-flex flex-wrap w-100">
-                                            <div class="searchbar w-100">
-                                                <input type="text" name="pos" placeholder="[Kode Pos]">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="col-9 text-start p-3">
+                                <h3>Judul</h3>
+                                <p>Tahun</p>
+                                <p>Penulis</p>
+                                <p>Abstrak</p>
                             </div>
                         </div>
+                        <div class="card-body article d-flex flex-column px-4">
+                            <embed src="asset/jadwal S1.pdf" width="100%" height="100%">
+                        </div>
                     </div>
-                    <div class="row justify-content-end">
-                        <button type="submit" class="btn submit-btn col-auto">Perbarui Profile</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </main>
         <footer>
 
         </footer>
         <div class="shade fade" id="shade"></div>
+        
+        <!-- JS comunicate with database -->
+        <!-- <script>
+            var tryExport = 3;
+        </script> -->
+        <!-- JS comunicate with database -->
+
         <script src="Script.js"></script>
     </body>
 </html>

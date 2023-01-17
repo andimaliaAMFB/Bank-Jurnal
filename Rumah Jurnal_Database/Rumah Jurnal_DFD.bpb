@@ -2072,7 +2072,7 @@ Target Arrow=0</a:DisplayPreferences>
 <a:CreationDate>1672889533</a:CreationDate>
 <a:ModificationDate>1672905089</a:ModificationDate>
 <a:CenterTextOffset>(-5619, 304)</a:CenterTextOffset>
-<a:Rect>((-20051,4248), (-2013,6100))</a:Rect>
+<a:Rect>((-20051,4248), (-2013,6097))</a:Rect>
 <a:ListOfPoints>((-19651,4873),(-2413,4873))</a:ListOfPoints>
 <a:CornerStyle>9</a:CornerStyle>
 <a:ArrowStyle>1</a:ArrowStyle>
@@ -2221,7 +2221,7 @@ Flow.Stereotype 0</a:SymbolContent>
 <a:CreationDate>1672889599</a:CreationDate>
 <a:ModificationDate>1672905112</a:ModificationDate>
 <a:CenterTextOffset>(5720, 86)</a:CenterTextOffset>
-<a:Rect>((186,4342), (20306,5994))</a:Rect>
+<a:Rect>((186,4342), (20306,5992))</a:Rect>
 <a:ListOfPoints>((19906,4967),(586,4967))</a:ListOfPoints>
 <a:CornerStyle>9</a:CornerStyle>
 <a:ArrowStyle>1</a:ArrowStyle>

@@ -1,11 +1,8 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     06/01/2023 20:41:26                          */
+/* Created on:     17/01/2023 11:46:23                          */
 /*==============================================================*/
 
-
-alter table AKUN 
-   drop foreign key FK_AKUN_AKUN_PENU_PENULIS;
 
 alter table AKUN 
    drop foreign key FK_AKUN_PROFIL_AK_KOTA;
@@ -13,17 +10,17 @@ alter table AKUN
 alter table AKUN 
    drop foreign key FK_AKUN_PROFIL_AK_PROVINSI;
 
-alter table ARTIKEL_DETAIL 
-   drop foreign key FK_ARTIKEL__ARTIKEL_A_AKUN;
+alter table ARTIKEL 
+   drop foreign key FK_ARTIKEL_ARTIKEL_U_AKUN;
 
 alter table ARTIKEL_DETAIL 
    drop foreign key FK_ARTIKEL__DETAIL_AR_ARTIKEL;
 
-alter table ARTIKEL_DETAIL 
-   drop foreign key FK_ARTIKEL__PENULIS_A_PENULIS;
+alter table ARTIKEL_DETAIL_PENULIS 
+   drop foreign key FK_ARTIKEL__ARTIKEL_P_ARTIKEL_;
 
-alter table ARTIKEL_DETAIL 
-   drop foreign key FK_ARTIKEL__REVISI_AR_REVISI;
+alter table ARTIKEL_DETAIL_PENULIS 
+   drop foreign key FK_ARTIKEL__RELATIONS_PENULIS;
 
 alter table PENULIS 
    drop foreign key FK_PENULIS_AKUN_PENU_AKUN;
@@ -42,9 +39,6 @@ alter table REVISI_DETAIL
 
 
 alter table AKUN 
-   drop foreign key FK_AKUN_AKUN_PENU_PENULIS;
-
-alter table AKUN 
    drop foreign key FK_AKUN_PROFIL_AK_KOTA;
 
 alter table AKUN 
@@ -52,22 +46,26 @@ alter table AKUN
 
 drop table if exists AKUN;
 
+
+alter table ARTIKEL 
+   drop foreign key FK_ARTIKEL_ARTIKEL_U_AKUN;
+
 drop table if exists ARTIKEL;
 
 
 alter table ARTIKEL_DETAIL 
-   drop foreign key FK_ARTIKEL__ARTIKEL_A_AKUN;
-
-alter table ARTIKEL_DETAIL 
    drop foreign key FK_ARTIKEL__DETAIL_AR_ARTIKEL;
 
-alter table ARTIKEL_DETAIL 
-   drop foreign key FK_ARTIKEL__REVISI_AR_REVISI;
-
-alter table ARTIKEL_DETAIL 
-   drop foreign key FK_ARTIKEL__PENULIS_A_PENULIS;
-
 drop table if exists ARTIKEL_DETAIL;
+
+
+alter table ARTIKEL_DETAIL_PENULIS 
+   drop foreign key FK_ARTIKEL__RELATIONS_PENULIS;
+
+alter table ARTIKEL_DETAIL_PENULIS 
+   drop foreign key FK_ARTIKEL__ARTIKEL_P_ARTIKEL_;
+
+drop table if exists ARTIKEL_DETAIL_PENULIS;
 
 drop table if exists JURUSAN;
 
@@ -105,7 +103,6 @@ drop table if exists REVISI_DETAIL;
 create table AKUN
 (
    ID_AKUN              varchar(12) not null  comment '',
-   ID_PENULIS           varchar(12)  comment '',
    ID_KOTA              varchar(12) not null  comment '',
    ID_PROVINSI          varchar(12) not null  comment '',
    USERNAME             varchar(20) not null  comment '',
@@ -116,6 +113,7 @@ create table AKUN
    NO_TELEPON           varchar(12) not null  comment '',
    EMAIL                varchar(20) not null  comment '',
    ALAMAT               varchar(200) not null  comment '',
+   KODE_POS             varchar(6) not null  comment '',
    primary key (ID_AKUN)
 );
 
@@ -125,6 +123,7 @@ create table AKUN
 create table ARTIKEL
 (
    ID_ARTIKEL           varchar(12) not null  comment '',
+   ID_AKUN              varchar(12) not null  comment '',
    primary key (ID_ARTIKEL)
 );
 
@@ -133,15 +132,23 @@ create table ARTIKEL
 /*==============================================================*/
 create table ARTIKEL_DETAIL
 (
-   ID_PENULIS           varchar(12) not null  comment '',
-   ID_ARTIKEL           varchar(12) not null  comment '',
-   ID_AKUN              varchar(12) not null  comment '',
    ID_DETAILARTIKEL     varchar(12) not null  comment '',
-   ID_REVISI            varchar(12)  comment '',
+   ID_ARTIKEL           varchar(12) not null  comment '',
    JUDUL_ARTIKEL        varchar(20) not null  comment '',
    TANGGAL_UPLOAD       datetime not null  comment '',
    STATUS_ARTIKEL       varchar(12) not null  comment '',
-   primary key (ID_PENULIS, ID_ARTIKEL, ID_AKUN, ID_DETAILARTIKEL)
+   primary key (ID_DETAILARTIKEL)
+);
+
+/*==============================================================*/
+/* Table: ARTIKEL_DETAIL_PENULIS                                */
+/*==============================================================*/
+create table ARTIKEL_DETAIL_PENULIS
+(
+   ID_LIST_PENULIS      varchar(12) not null  comment '',
+   ID_PENULIS           varchar(12) not null  comment '',
+   ID_DETAILARTIKEL     varchar(12) not null  comment '',
+   primary key (ID_LIST_PENULIS)
 );
 
 /*==============================================================*/
@@ -192,11 +199,8 @@ create table PROVINSI
 create table REVISI
 (
    ID_REVISI            varchar(12) not null  comment '',
-   ID_PENULIS           varchar(12) not null  comment '',
-   ID_ARTIKEL           varchar(12) not null  comment '',
-   ID_AKUN              varchar(12) not null  comment '',
    ID_DETAILARTIKEL     varchar(12) not null  comment '',
-   AKU_ID_AKUN          varchar(12) not null  comment '',
+   ID_AKUN              varchar(12) not null  comment '',
    primary key (ID_REVISI)
 );
 
@@ -213,39 +217,36 @@ create table REVISI_DETAIL
    primary key (ID_DETAILREVISI)
 );
 
-alter table AKUN add constraint FK_AKUN_AKUN_PENU_PENULIS foreign key (ID_PENULIS)
-      references PENULIS (ID_PENULIS) on delete restrict on update restrict;
-
 alter table AKUN add constraint FK_AKUN_PROFIL_AK_KOTA foreign key (ID_KOTA)
-      references KOTA (ID_KOTA) on delete restrict on update restrict;
+      references KOTA (ID_KOTA) on delete cascade on update cascade;
 
 alter table AKUN add constraint FK_AKUN_PROFIL_AK_PROVINSI foreign key (ID_PROVINSI)
-      references PROVINSI (ID_PROVINSI) on delete restrict on update restrict;
+      references PROVINSI (ID_PROVINSI) on delete cascade on update cascade;
 
-alter table ARTIKEL_DETAIL add constraint FK_ARTIKEL__ARTIKEL_A_AKUN foreign key (ID_AKUN)
-      references AKUN (ID_AKUN) on delete restrict on update restrict;
+alter table ARTIKEL add constraint FK_ARTIKEL_ARTIKEL_U_AKUN foreign key (ID_AKUN)
+      references AKUN (ID_AKUN) on delete cascade on update cascade;
 
 alter table ARTIKEL_DETAIL add constraint FK_ARTIKEL__DETAIL_AR_ARTIKEL foreign key (ID_ARTIKEL)
-      references ARTIKEL (ID_ARTIKEL) on delete restrict on update restrict;
+      references ARTIKEL (ID_ARTIKEL) on delete cascade on update cascade;
 
-alter table ARTIKEL_DETAIL add constraint FK_ARTIKEL__PENULIS_A_PENULIS foreign key (ID_PENULIS)
-      references PENULIS (ID_PENULIS) on delete restrict on update restrict;
+alter table ARTIKEL_DETAIL_PENULIS add constraint FK_ARTIKEL__ARTIKEL_P_ARTIKEL_ foreign key (ID_DETAILARTIKEL)
+      references ARTIKEL_DETAIL (ID_DETAILARTIKEL) on delete cascade on update cascade;
 
-alter table ARTIKEL_DETAIL add constraint FK_ARTIKEL__REVISI_AR_REVISI foreign key (ID_REVISI)
-      references REVISI (ID_REVISI) on delete restrict on update restrict;
+alter table ARTIKEL_DETAIL_PENULIS add constraint FK_ARTIKEL__RELATIONS_PENULIS foreign key (ID_PENULIS)
+      references PENULIS (ID_PENULIS) on delete cascade on update cascade;
 
 alter table PENULIS add constraint FK_PENULIS_AKUN_PENU_AKUN foreign key (ID_AKUN)
-      references AKUN (ID_AKUN) on delete restrict on update restrict;
+      references AKUN (ID_AKUN) on delete cascade on update cascade;
 
 alter table PENULIS add constraint FK_PENULIS_JURUSAN_P_JURUSAN foreign key (ID_JURUSAN)
-      references JURUSAN (ID_JURUSAN) on delete restrict on update restrict;
+      references JURUSAN (ID_JURUSAN) on delete cascade on update cascade;
 
-alter table REVISI add constraint FK_REVISI_ADMIN_PE__AKUN foreign key (AKU_ID_AKUN)
-      references AKUN (ID_AKUN) on delete restrict on update restrict;
+alter table REVISI add constraint FK_REVISI_ADMIN_PE__AKUN foreign key (ID_AKUN)
+      references AKUN (ID_AKUN) on delete cascade on update cascade;
 
-alter table REVISI add constraint FK_REVISI_REVISI_AR_ARTIKEL_ foreign key (ID_PENULIS, ID_ARTIKEL, ID_AKUN, ID_DETAILARTIKEL)
-      references ARTIKEL_DETAIL (ID_PENULIS, ID_ARTIKEL, ID_AKUN, ID_DETAILARTIKEL) on delete restrict on update restrict;
+alter table REVISI add constraint FK_REVISI_REVISI_AR_ARTIKEL_ foreign key (ID_DETAILARTIKEL)
+      references ARTIKEL_DETAIL (ID_DETAILARTIKEL) on delete cascade on update cascade;
 
 alter table REVISI_DETAIL add constraint FK_REVISI_D_DETAIL_RE_REVISI foreign key (ID_REVISI)
-      references REVISI (ID_REVISI) on delete restrict on update restrict;
+      references REVISI (ID_REVISI) on delete cascade on update cascade;
 

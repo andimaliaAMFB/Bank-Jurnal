@@ -42,7 +42,7 @@ var drop_file_input = document.querySelectorAll(`.drop-file__input`);
     let list_prov = [];
         for (let i = 1; i <= 100; i++) { list_prov.push("Provinsi "+i); }
 // console.log("final_list");
-// console.log(final_list);
+console.log(final_list);
 // console.log(final_list[0]);
 // console.log(final_list[0][0]);
 // console.log(list_prodi);

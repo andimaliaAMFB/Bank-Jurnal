@@ -42,7 +42,7 @@ var drop_file_input = document.querySelectorAll(`.drop-file__input`);
     let list_prov = [];
         for (let i = 1; i <= 100; i++) { list_prov.push("Provinsi "+i); }
 // console.log("final_list");
-console.log(final_list);
+// console.log(final_list);
 // console.log(final_list[0]);
 // console.log(final_list[0][0]);
 // console.log(list_prodi);
@@ -51,9 +51,15 @@ console.log(final_list);
 //banyak histori dalam 1 artikel
     const count_history = [];
     for (let i = 0; i < final_list.length; i++) {
-        count_history.push(Math.floor(Math.random() * (4 - 2 + 1) + 2));
+        if (lokasi.includes("my") || lokasi.includes("status")) {
+            count_history.push(historyArray[i][1]);
+        }
+        else {
+            count_history.push(Math.floor(Math.random() * (4 - 2 + 1) + 2));
+        }
     }
-    var prodi_select_list = [].concat(list_prodi);
+
+var prodi_select_list = [].concat(list_prodi);
 
 // location data
     //header
@@ -509,7 +515,7 @@ console.log(final_list);
             // form-modal
                 if (pointer_history) { //form of history of revision
                     pointer_history = document.querySelectorAll(`.history_list .pointer`);
-                    pointer_history.forEach((pointer) => {
+                    pointer_history.forEach((pointer,pointerIndex) => {
 
                         //pointer hierarchy
                         //.history_form                                                    (M)
@@ -539,12 +545,25 @@ console.log(final_list);
                                 child.classList.add("child");
                                 var loc = parent.nextElementSibling;
                                 
-                                // var thisFinalize = "Yes";
-                                // render_list.forEach(data => {
-                                //     if (data[0] == form_judul.textContent) { thisFinalize = data[1]; }
-                                // });
+                                var thisFinalize = "";
+                                var thisStatus = "";
+                                var thisNextStatus = "";
+                                var thisRevisi = "";
+                                render_list.forEach(data => {
+                                    if (data[0] == form_judul.textContent)
+                                    {
+                                        thisFinalize = data[1];
+                                    }
+                                    historyArray.forEach(element => {
+                                        if (element[0] == form_judul.textContent) {
+                                            thisStatus = element[4][pointerIndex];
+                                            thisNextStatus = element[5][pointerIndex];
+                                            thisRevisi = element[6][pointerIndex];
+                                        }
+                                    });
+                                });
 
-                                var input = input_history(form_judul.textContent, parent, last_list, indexChild);
+                                var input = input_history(form_judul.textContent, parent, last_list, indexChild, thisFinalize, thisStatus, thisNextStatus, thisRevisi);
                                 loc.innerHTML = input;
                             }
                         }
@@ -925,6 +944,7 @@ console.log(final_list);
         function form_inside(wrapper,id) { //make div child for every revision in this article
             form_function(wrapper); //open-clos form modal
             const tr = document.querySelectorAll(`tr`); //list item in form per row
+            var arraydate = [];
             tr.forEach((item) => {
                 if (item.getAttribute('data-id') == id) {
                     form_judul.innerHTML = item.childNodes[1].textContent;
@@ -932,11 +952,12 @@ console.log(final_list);
                         if (data[0] == item.childNodes[1].textContent) { //check if title same with loop of every article
                             form_penulis.innerHTML = data[2];
                             n_history = count_history[index];
+                            arraydate = historyArray[index][3];
                         }
                     });
                 }
             });
-            
+            // console.log(arraydate);
             form_history.innerHTML = '';
             for (let i = 0; i < n_history; i++) { //make div child for every revision in this article
                 var child = document.createElement("div");
@@ -947,7 +968,7 @@ console.log(final_list);
                 if (i != 0) { child.classList.add("border-top"); }
 
                 var loc = form_history.lastElementChild;
-                var input = `<div class="date_up">MM/DD/YY</div>
+                var input = `<div class="date_up">`+arraydate[i]+`</div>
                     <span></span>
                     <div class="pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
@@ -958,26 +979,26 @@ console.log(final_list);
             }
             
         }
-        function input_history(judulArtikel, parent, last_list, index) {
+        function input_history(judulArtikel, parent, last_list, index, sFinalize, CurrentStatus, NextStatus, catatanRevisi) {
             var input = `<div class="history_detail row" id="lama">
                             <div class="form_sub_title">Status Lama</div>
-                            <div>[Status Lama `+judulArtikel+`-`+(index - 1)+`]</div>
+                            <div>[`+CurrentStatus+`]</div>
                         </div>`;
             if (last_list != parent) {
                 input += `<div class="history_detail row" id="baru">
                             <div class="form_sub_title">Status Baru</div>
-                            <div>[Status Baru `+judulArtikel+`-`+index+`]</div>
+                            <div>[`+NextStatus+`]</div>
                         </div>
                         <div class="history_detail row" id="catatan">
                             <div class="form_sub_title">Catatan</div>
-                            <div>[Catatan Revisi `+judulArtikel+`-`+index+`]</div>
+                            <div>[`+catatanRevisi+`]</div>
                         </div>
                         <div class="history_detail row" id="artikel">
                             <div class="link" id="see_article">Lihat Artikel</div>
                         </div>`;
             }
             else if (last_list == parent) {
-                if (lokasi.includes("status")) {
+                if (lokasi.includes("status") && sFinalize == 'No') {
                     input += `<div class="history_detail row" id="baru">
                                 <div class="form_sub_title">Status Baru</div>
                                 <div>
@@ -1003,11 +1024,11 @@ console.log(final_list);
                 else {
                     input += `<div class="history_detail row" id="baru">
                                 <div class="form_sub_title">Status Baru</div>
-                                <div>-- Belum Ada Status Baru --</div>
+                                <div>[`+NextStatus+`]</div>
                             </div>
                             <div class="history_detail row" id="catatan">
                                 <div class="form_sub_title">Catatan</div>
-                                <div>-- Belum Ada Catatan Baru --</div>
+                                <div>[`+catatanRevisi+`]</div>
                             </div>
                             <div class="history_detail row" id="artikel">
                                 <div class="link" id="see_article">Lihat Artikel</div>

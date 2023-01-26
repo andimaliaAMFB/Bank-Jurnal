@@ -30,4 +30,4 @@ Route::resource('/article', produkController::class);
 Route::resource('/profile', produkController::class);
 Route::resource('/myarticle', produkController::class);
 Route::get('/upload/{id_akun}', 'App\Http\Controllers\uploadArtikel_Controller@index')->name('upload');
-Route::resource('status', statusEdit_Controller::class);
+Route::get('/status/{level_status}', [statusEdit_Controller::class, 'index'])->name('status.index');

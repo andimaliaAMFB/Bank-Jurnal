@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use Session;
 
 class listController extends Controller
 {
@@ -39,10 +40,11 @@ class listController extends Controller
                     ->join('jurusan','jurusan.ID_JURUSAN', '=', 'penulis.ID_JURUSAN')
                     ->join('revisi','revisi.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
                     ->join('revisi_detail','revisi_detail.ID_REVISI', '=', 'revisi.ID_REVISI')
-                    ->select('artikel_detail.JUDUL_ARTIKEL',
-                                'revisi_detail.STATUS_REVISI',
-                                'penulis.NAMA_PENULIS',
-                                'jurusan.NAMA_JURUSAN',)
+                    ->select('artikel.ID_ARTIKEL',
+                            'artikel_detail.JUDUL_ARTIKEL',
+                            'revisi_detail.STATUS_REVISI',
+                            'penulis.NAMA_PENULIS',
+                            'jurusan.NAMA_JURUSAN',)
                     ->Where(function($query) use ($typeTable) {
                         $query->where('artikel_detail.STATUS_ARTIKEL','=',$typeTable)
                                 ->where('revisi_detail.STATUS_ARTIKEL_BARU','=','-');
@@ -73,6 +75,26 @@ class listController extends Controller
                                 ->orWhere('revisi_detail.STATUS_ARTIKEL_BARU','=','Layak Publish');
                     })
                     ->orderByDesc('artikel.ID_ARTIKEL')
+                    ->orderByDesc('artikel_detail.ID_DETAILARTIKEL')
+                    ->get();
+        }
+        else if ($typeTable == 'All') {
+            $Array = DB::table('artikel_detail')
+                    ->join('artikel','artikel_detail.ID_ARTIKEL','=','artikel.ID_ARTIKEL')
+                    ->join('artikel_detail_penulis','artikel_detail_penulis.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
+                    ->join('penulis','penulis.ID_PENULIS', '=', 'artikel_detail_penulis.ID_PENULIS')
+                    ->join('jurusan','jurusan.ID_JURUSAN', '=', 'penulis.ID_JURUSAN')
+                    ->join('revisi','revisi.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
+                    ->join('revisi_detail','revisi_detail.ID_REVISI', '=', 'revisi.ID_REVISI')
+                    ->select('artikel.ID_ARTIKEL',
+                            'artikel_detail.JUDUL_ARTIKEL',
+                            'revisi_detail.STATUS_REVISI',
+                            'penulis.NAMA_PENULIS',
+                            'jurusan.NAMA_JURUSAN',
+                            'artikel_detail.TANGGAL_UPLOAD',
+                            'artikel_detail.STATUS_ARTIKEL',
+                            'revisi_detail.STATUS_ARTIKEL_BARU',
+                            'revisi_detail.REVISI')
                     ->orderByDesc('artikel_detail.ID_DETAILARTIKEL')
                     ->get();
         }
@@ -123,25 +145,23 @@ class listController extends Controller
                             $listJurusan = $listJurusan.", ";
                         }
                     }
-                    if ($index != 0 && $tableArray[($index - 1)]['JUDUL_ARTIKEL'] != $Judul[$key])  {
-                        if (!$finalizeAdd) {
-                            if ($listFinalize.$tableArray[$index]['STATUS_REVISI'] == '1') {
-                                $listFinalize = 'Yes';
-                            }
-                            else {$listFinalize = 'No';}
-                            if ($format == 'up-ri-sta') {
-                                if ($tableArray[$index]['TANGGAL_UPLOAD']) { $tanggalUp = $tableArray[$index]['TANGGAL_UPLOAD']; }
-                                if ($tableArray[$index]['STATUS_ARTIKEL_BARU'] != '-') {
-                                    $tanggalRilis = '-';
-                                    if ($tableArray[$index]['STATUS_ARTIKEL_BARU'] == 'Layak Publish') {
-                                        $tanggalRilis = $tableArray[$index]['TANGGAL_UPLOAD'];
-                                    }
-                                    $status = $tableArray[$index]['STATUS_ARTIKEL_BARU'];
-                                }
-                                else {  $status = $tableArray[$index]['STATUS_ARTIKEL']; $tanggalRilis = '-'; }
-                            }
-                            $finalizeAdd = true;
+                    if (!$finalizeAdd) {
+                        if ($tableArray[$index]['STATUS_REVISI'] == '1') {
+                            $listFinalize = 'Yes';
                         }
+                        else if ($tableArray[$index]['STATUS_REVISI'] == '0') {$listFinalize = 'No';}
+                        if ($format == 'up-ri-sta') {
+                            if ($tableArray[$index]['TANGGAL_UPLOAD']) { $tanggalUp = $tableArray[$index]['TANGGAL_UPLOAD']; }
+                            if ($tableArray[$index]['STATUS_ARTIKEL_BARU'] != '-') {
+                                $tanggalRilis = '-';
+                                if ($tableArray[$index]['STATUS_ARTIKEL_BARU'] == 'Layak Publish') {
+                                    $tanggalRilis = $tableArray[$index]['TANGGAL_UPLOAD'];
+                                }
+                                $status = $tableArray[$index]['STATUS_ARTIKEL_BARU'];
+                            }
+                            else {  $status = $tableArray[$index]['STATUS_ARTIKEL']; $tanggalRilis = '-'; }
+                        }
+                        $finalizeAdd = true;
                     }
                     if ($index < count($tableArray)-1 && $tableArray[($index + 1)]['JUDUL_ARTIKEL'] != $Judul[$key])  {
                         if (!$finalizeAdd) {
@@ -207,8 +227,12 @@ class listController extends Controller
         $draft = $this->CountRevisied(json_decode($this->getTable('Draft'),true));
         $rmayor = $this->CountRevisied(json_decode($this->getTable('Revisi Mayor'),true));
         $rminor = $this->CountRevisied(json_decode($this->getTable('Revisi Minor'),true));
-
-        $listJumlah = ['Draft' => $draft,'Revisi Mayor' => $rmayor,'Revisi Minor' => $rminor,];
+        
+        $username_akun = DB::table('akun')->where('ID_AKUN','=',Session::get('id_akun'))->value('USERNAME');
+        $status_akun = Session::get('status_akun');
+        
+        $listJumlah = ['Username' => $username_akun,'Status' => $status_akun,
+                        'Draft' => $draft,'Revisi Mayor' => $rmayor,'Revisi Minor' => $rminor,];
         // print_r($listJumlah);
         return $listJumlah;
     }

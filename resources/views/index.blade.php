@@ -69,8 +69,8 @@
                             <ul class="dropdown-menu" style="display: none;" id="dropdown-profile">
                                 <li class="user-profile label-dropdown">
                                     <img src="" alt="">
-                                    <h3>Username</h3>
-                                    <p>Peran</p>
+                                    <h3>{{ $taskbarValue['Username'] }}</h3>
+                                    <p>{{ $taskbarValue['Status'] }}</p>
                                 </li>
                                 <a href="">
                                     <li>Profile</li>
@@ -219,7 +219,8 @@
                     </div>
                 </div>
             </div>
-        @endif
+        @endif    
+    
         <main>
             <div class="main-isi" id="main-isi">
                 <div class="judul-hlm"><h2>{{ $title }}</h2></div>

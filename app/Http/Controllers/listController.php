@@ -31,8 +31,7 @@ class listController extends Controller
         }
         else if ($typeTable == 'Draft' || 
                 $typeTable == 'Revisi Mayor' || 
-                $typeTable == 'Revisi Minor')
-        {
+                $typeTable == 'Revisi Minor'){
             $Array = DB::table('artikel_detail')
                     ->join('artikel','artikel_detail.ID_ARTIKEL','=','artikel.ID_ARTIKEL')
                     ->join('artikel_detail_penulis','artikel_detail_penulis.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
@@ -53,8 +52,7 @@ class listController extends Controller
                     ->orderByDesc('artikel_detail.ID_DETAILARTIKEL')
                     ->get();
         }
-        else if (str_contains($typeTable,'MyArticle'))
-        {
+        else if (str_contains($typeTable,'MyArticle')){
             $Array = DB::table('artikel_detail')
                     ->join('artikel','artikel_detail.ID_ARTIKEL','=','artikel.ID_ARTIKEL')
                     ->join('artikel_detail_penulis','artikel_detail_penulis.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
@@ -76,6 +74,32 @@ class listController extends Controller
                     })
                     ->orderByDesc('artikel.ID_ARTIKEL')
                     ->orderByDesc('artikel_detail.ID_DETAILARTIKEL')
+                    ->get();
+        }
+        else if (str_contains($typeTable,'Akun-')) {
+            $Array = DB::table('akun')
+                    ->where('ID_AKUN','=',substr($typeTable,5))
+                    ->get();
+        }
+        else if (str_contains($typeTable,'PNL-')) {
+            $Array = DB::table('akun')
+                    ->join('penulis','penulis.ID_AKUN','=','akun.ID_AKUN')
+                    ->where('penulis.ID_AKUN','=',substr($typeTable,4))
+                    ->get();
+        }
+        else if (str_contains($typeTable,'KOTA-')) {
+            $Array = DB::table('kota')
+                    ->where('ID_KOTA','=',substr($typeTable,5))
+                    ->get();
+        }
+        else if (str_contains($typeTable,'PROV-')) {
+            $Array = DB::table('provinsi')
+                    ->where('ID_PROVINSI','=',substr($typeTable,5))
+                    ->get();
+        }
+        else if (str_contains($typeTable,'Prodi-')) {
+            $Array = DB::table('jurusan')
+                    ->where('ID_JURUSAN','=',substr($typeTable,6))
                     ->get();
         }
         else if ($typeTable == 'All') {
@@ -117,6 +141,8 @@ class listController extends Controller
         }
         else if ($typeTable == 'Penulis') { $Array = DB::table('penulis')->select('NAMA_PENULIS')->get(); }
         else if ($typeTable == 'Prodi') { $Array = DB::table('jurusan')->select('NAMA_JURUSAN')->get(); }
+        else if ($typeTable == 'Kota') { $Array = DB::table('kota')->select('NAMA_KOTA')->get(); }
+        else if ($typeTable == 'Prov') { $Array = DB::table('provinsi')->select('NAMA_PROVINSI')->get(); }
         return $Array;
     }
     function TabletoList (array $tableArray,array $Judul, string $format) {
@@ -228,12 +254,54 @@ class listController extends Controller
         $rmayor = $this->CountRevisied(json_decode($this->getTable('Revisi Mayor'),true));
         $rminor = $this->CountRevisied(json_decode($this->getTable('Revisi Minor'),true));
         
-        $username_akun = DB::table('akun')->where('ID_AKUN','=',Session::get('id_akun'))->value('USERNAME');
-        $status_akun = Session::get('status_akun');
-        
-        $listJumlah = ['Username' => $username_akun,'Status' => $status_akun,
-                        'Draft' => $draft,'Revisi Mayor' => $rmayor,'Revisi Minor' => $rminor,];
+        $listJumlah = ['Draft' => $draft,'Revisi Mayor' => $rmayor,'Revisi Minor' => $rminor,];
         // print_r($listJumlah);
         return $listJumlah;
+    }
+    function getAkun () {
+        $arrayID = [];
+        if (Session::get('id_akun')) {
+            $akun = json_decode($this->getTable('Akun-'.Session::get('id_akun')),true);
+            $penulis = json_decode($this->getTable('PNL-'.Session::get('id_akun')),true);
+            $kota = json_decode($this->getTable('KOTA-'.$akun[0]['ID_KOTA']),true);
+            $prov = json_decode($this->getTable('PROV-'.$akun[0]['ID_PROVINSI']),true);
+
+            // print_r($penulis);
+            // echo "<br>".$akun[0]['ID_KOTA']."<br>";
+            // print_r($kota);
+            // echo "<br>".$akun[0]['ID_PROVINSI']."<br>";
+            // print_r($prov);
+            if (!empty($penulis)) {
+                $prodi = json_decode($this->getTable('Prodi-'.$penulis[0]['ID_JURUSAN']),true);
+                $arrayID[] = ['ID_AKUN' => Session::get('id_akun'),
+                                'STATUS_AKUN' => Session::get('status_akun'),
+                                'USERNAME' => $akun[0]['USERNAME'],
+                                'ID_PENULIS' => $penulis[0]['ID_PENULIS'],
+                                'NAMA' => $penulis[0]['NAMA_PENULIS'],
+                                'NAMA_JURUSAN' => $prodi[0]['NAMA_JURUSAN'],
+                                'NO_TELEPON' => $akun[0]['NO_TELEPON'],
+                                'EMAIL' => $akun[0]['EMAIL'],
+                                'TANGGAL_LAHIR' => $akun[0]['TANGGAL_LAHIR'],
+                                'NAMA_KOTA' => $kota[0]['NAMA_KOTA'],
+                                'NAMA_PROVINSI' => $prov[0]['NAMA_PROVINSI'],
+                                'ALAMAT' => $akun[0]['ALAMAT'],
+                                'KODE_POS' => $akun[0]['KODE_POS']];
+            }
+            else {
+                $arrayID[] = ['ID_AKUN' => Session::get('id_akun'),
+                                'STATUS_AKUN' => Session::get('status_akun'),
+                                'USERNAME' => $akun[0]['USERNAME'],
+                                'NAMA' => $akun[0]['NAMA'],
+                                'NO_TELEPON' => $akun[0]['NO_TELEPON'],
+                                'EMAIL' => $akun[0]['EMAIL'],
+                                'TANGGAL_LAHIR' => $akun[0]['TANGGAL_LAHIR'],
+                                'NAMA_KOTA' => $kota[0]['NAMA_KOTA'],
+                                'NAMA_PROVINSI' => $prov[0]['NAMA_PROVINSI'],
+                                'ALAMAT' => $akun[0]['ALAMAT'],
+                                'KODE_POS' => $akun[0]['KODE_POS']];
+            }
+        }
+
+        return $arrayID;
     }
 }

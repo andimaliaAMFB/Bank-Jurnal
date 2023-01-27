@@ -25,9 +25,11 @@ Route::get('dashboard', [produkController::class, 'index'])->name('dashboard');
     Route::post('/signup', [AkunController::class, 'signupInput'])->name('signup.store');
 
     Route::get('/logout', [AkunController::class, 'logout'])->name('logout');
+    
+    Route::get('/profile', [AkunController::class, 'showProfile'])->name('profile');
+    Route::put('/profile', [AkunController::class, 'updateProfie'])->name('profile.update');
 
 Route::resource('/article', produkController::class);
-Route::resource('/profile', produkController::class);
 Route::resource('/myarticle', produkController::class);
 Route::get('/upload/{id_akun}', 'App\Http\Controllers\uploadArtikel_Controller@index')->name('upload');
 Route::get('/status/{level_status}', [statusEdit_Controller::class, 'index'])->name('status.index');

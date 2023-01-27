@@ -35,8 +35,7 @@ class statusEdit_Controller extends Controller
 
         $final = (new listController)->TabletoList($tableArray,$judul,'title-pnl-prodi');
 
-        $id_akun = Session::get('id_akun');
-        $status_akun = Session::get('status_akun');
-        return view('status-edit',compact('id_akun','status_akun','title','judul','penulis','tableProdi','final','taskbarValue','tableArray','AlltableArray'));
+        $arrayAkun = (new listController)->getAkun();
+        return view('status-edit',compact('arrayAkun','title','judul','penulis','tableProdi','final','taskbarValue','tableArray','AlltableArray'));
     }
 }

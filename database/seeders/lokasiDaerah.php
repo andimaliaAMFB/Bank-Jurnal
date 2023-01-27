@@ -14,10 +14,10 @@ class lokasiDaerah extends Seeder
      */
     public function run()
     {
-        $namaProvinsi = array("Aceh","Bali","Bangka Belitung","Banten","Bengkulu","Daerah Istimewa Yogyakarta","Gorontalo",
-                    "Jakarta","Jambi","Jawa Barat","Jawa Tengah","Jawa Timur","Kalimantan Barat","Kalimantan Selatan","Kalimantan Tengah","Kalimantan Timur","Kalimantan Utara",
-                    "Kepulauan Riau","Lampung","Maluku Utara","Maluku","Nusa Tenggara Barat","Nusa Tenggara Timur","Papua Barat Daya","Papua","Riau",
-                    "Sulawesi Selatan","Sulawesi Tengah","Sulawesi Tenggara","Sulawesi Utara","Sumatra Barat","Sumatra Selatan","Sumatra Utara");
+        $namaProvinsi = array('Aceh','Bali','Bangka Belitung','Banten','Bengkulu','Daerah Istimewa Yogyakarta','Gorontalo',
+                    'Jakarta','Jambi','Jawa Barat','Jawa Tengah','Jawa Timur','Kalimantan Barat','Kalimantan Selatan','Kalimantan Tengah','Kalimantan Timur','Kalimantan Utara',
+                    'Kepulauan Riau','Lampung','Maluku Utara','Maluku','Nusa Tenggara Barat','Nusa Tenggara Timur','Papua Barat Daya','Papua','Riau',
+                    'Sulawesi Selatan','Sulawesi Tengah','Sulawesi Tenggara','Sulawesi Utara','Sumatra Barat','Sumatra Selatan','Sumatra Utara');
         $provinsi;
         for ($i=0; $i < count($namaProvinsi); $i++) { 
             $provinsi["P-".($i+1)] = $namaProvinsi[$i];

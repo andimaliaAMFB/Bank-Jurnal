@@ -141,8 +141,16 @@ class AkunController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
-        //
+    public function showProfile() {
+        $taskbarValue = (new listController)->taskbarList ();
+
+        $tableKota = json_decode((new listController)->getTable('Kota'),true);
+        $tableProv = json_decode((new listController)->getTable('Prov'),true);
+        $tableProdi = json_decode((new listController)->getTable('Prodi'),true);
+        
+        $arrayAkun = (new listController)->getAkun();
+        // print_r($tableProv);
+        return view('profile',compact('arrayAkun','tableProdi','tableKota','tableProv','taskbarValue'));
     }
 
     /**
@@ -162,7 +170,7 @@ class AkunController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
+    public function updateProfie(Request $request, $id) {
         //
     }
 

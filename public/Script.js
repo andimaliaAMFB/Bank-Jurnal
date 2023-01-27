@@ -37,10 +37,10 @@ var drop_file_input = document.querySelectorAll(`.drop-file__input`);
     //         final_list.push([list_judul[i], list_finalize[fnl-1], list_penulis[pnl-1], list_prodi[prodi-1]]);
     //     }
     let render_list = [].concat(final_list);
-    let list_kota = [];
-        for (let i = 1; i <= 100; i++) { list_kota.push("Kota "+i); }
-    let list_prov = [];
-        for (let i = 1; i <= 100; i++) { list_prov.push("Provinsi "+i); }
+    // let list_kota = [];
+    //     for (let i = 1; i <= 100; i++) { list_kota.push("Kota "+i); }
+    // let list_prov = [];
+    //     for (let i = 1; i <= 100; i++) { list_prov.push("Provinsi "+i); }
 // console.log("final_list");
 // console.log(final_list);
 // console.log(final_list[0]);
@@ -390,11 +390,12 @@ var prodi_select_list = [].concat(list_prodi);
                             var listBtn = list.querySelectorAll(`button`); //list semua button yang ada dalam form-sub, hirarki (0)
                             listBtn.forEach(btn => {
                                 if (btn.contains(event.target)) {
-                                    // console.log(btn.classList);
+                                    // console.log(btn);
                                     // console.log(list);
                                     // console.log(form,form.childElementCount,form.children);
 
                                     form.querySelectorAll(`.form-sub .search-value input`).forEach((item) => {
+                                        // console.log(item);
                                         if (item.id.includes("pnl")) {
                                             list_inputPnl.push(item.value);
                                         }
@@ -407,6 +408,7 @@ var prodi_select_list = [].concat(list_prodi);
                                     // console.log("-----------------------------------------------");
 
                                     if (list.classList.contains("addBox")) { //click button child of div.form-sub.addBox
+                                        console.log(btn,"Add");
                                         if (form.childElementCount <= 6) { //this button can only click 3x while form child <= 6
 
                                             var next = document.createElement("div"); //membuat .form-sub, hierarki (M), baru di lokasi selanjut hierarki (M)
@@ -486,23 +488,25 @@ var prodi_select_list = [].concat(list_prodi);
                                     }
                                      
                                     ThisForm = document.querySelector(`.form_sub.row#profile`);
-                                    // console.log(ThisForm.childElementCount, ThisForm.querySelectorAll(`.form-sub`).length);
-                                    ThisForm.querySelectorAll(`.form-sub`).forEach((item,itemIndex) => {
-                                        if (!item.classList.contains(`addBox`)) {
-                                            // console.log("Lenght: ",ThisForm.querySelectorAll(`.form-sub`).length, " | itemIndex: ",itemIndex,item);
-                                            // // console.log(item,item.querySelectorAll(`input`));
-                                            // console.log("replace_id_list(item.outerHTML,", itemIndex+1,")");
+                                    if (ThisForm) {
+                                        // console.log(ThisForm.childElementCount, ThisForm.querySelectorAll(`.form-sub`).length);
+                                        ThisForm.querySelectorAll(`.form-sub`).forEach((item,itemIndex) => {
+                                            if (!item.classList.contains(`addBox`)) {
+                                                // console.log("Lenght: ",ThisForm.querySelectorAll(`.form-sub`).length, " | itemIndex: ",itemIndex,item);
+                                                // // console.log(item,item.querySelectorAll(`input`));
+                                                // console.log("replace_id_list(item.outerHTML,", itemIndex+1,")");
 
-                                            item.querySelectorAll(`input`).forEach(input => {
-                                                // console.log("Before: ",input.name," | ",input.id," | ",input.outerHTML);
-                                                input.name = replace_id_list(input.name, itemIndex+1);
-                                                input.id = replace_id_list(input.id, itemIndex+1);
-                                                input.outerHTML = replace_id_list(input.outerHTML, itemIndex+1);
-                                                // console.log("After: ",input.name," | ",input.id," | ",input.outerHTML);
-                                            })
-                                            item.outerHTML = replace_id_list(item.outerHTML, itemIndex+1);
-                                        }
-                                    });
+                                                item.querySelectorAll(`input`).forEach(input => {
+                                                    // console.log("Before: ",input.name," | ",input.id," | ",input.outerHTML);
+                                                    input.name = replace_id_list(input.name, itemIndex+1);
+                                                    input.id = replace_id_list(input.id, itemIndex+1);
+                                                    input.outerHTML = replace_id_list(input.outerHTML, itemIndex+1);
+                                                    // console.log("After: ",input.name," | ",input.id," | ",input.outerHTML);
+                                                })
+                                                item.outerHTML = replace_id_list(item.outerHTML, itemIndex+1);
+                                            }
+                                        });
+                                    }
                                 }
                             
                             })
@@ -917,7 +921,12 @@ var prodi_select_list = [].concat(list_prodi);
             }
             else {
                 value_wrapper.classList.add("show");
-                suggestionBar(input_wrapper, dd_wrapper, input_wrapper.id, input_wrapper.textContent);
+                if (input_wrapper.value) {
+                    suggestionBar(input_wrapper, dd_wrapper, input_wrapper.id, input_wrapper.value);
+                }
+                else {
+                    suggestionBar(input_wrapper, dd_wrapper, input_wrapper.id, input_wrapper.textContent);
+                }
             }
         }
         function form_addNewElement(main_wrapper, Next, New, InnerNew) {
@@ -1389,7 +1398,7 @@ function suggestionBar(input_box, dd, parent_id, selectValue) {
         // console.log(parent,list);
 
         var loc_list = parent.querySelector('.drop-select .select-droped');
-        // console.log(selectValue,loc_list);
+        // console.log("selectValue: ",selectValue, " || ",loc_list);
 
         if (!loc_list) {
             var select_parent = document.getElementById(parent_id).parentNode;
@@ -1399,9 +1408,12 @@ function suggestionBar(input_box, dd, parent_id, selectValue) {
             }
         }
         if(!list.length){
+            // console.log(list.length);
             userValue = input_box.value;
             let searchHead = ``;
-            if (!userValue || userValue.includes(" ")) {
+            if (!userValue || userValue.includes(" ") 
+                || parent_id == 'kota' || parent_id == 'prov' 
+                || (parent_id == 'prodi' && lokasi.includes('profile'))) {
                 listData = "";
                 for (let i = 0; i < suggestions.length; i++) {
                     if (selectValue) {

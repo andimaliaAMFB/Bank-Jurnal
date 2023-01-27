@@ -14,7 +14,7 @@
         <header>
             <nav class="head-isi navbar justify-content-between" id="head-isi">
                 <div class="head-left-side navbar d-flex">
-                    @if(isset($id_akun))
+                    @if(isset($arrayAkun[0]['ID_AKUN']))
                         <div class="head-taskbar navbar me-2">
                             <button class="head-button" id="taskbar-btn">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
@@ -31,14 +31,14 @@
                     </a>
                 </div>
                 <div class="head-right-side navbar justify-content-end">
-                    @if(isset($id_akun))
-                        <div class="head-search me-2" id="button-search">
-                            <button type="button" name="head-search" id="search-btn" class="head-button dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
-                                </svg>
-                            </button>
-                        </div>
+                    <div class="head-search me-2" id="button-search">
+                        <button type="button" name="head-search" id="search-btn" class="head-button dot">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    @if(isset($arrayAkun[0]['ID_AKUN']))
                         <div class="head-notif navbar mx-2">
                             <button class="head-button" id="button-notif">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
@@ -69,10 +69,10 @@
                             <ul class="dropdown-menu" style="display: none;" id="dropdown-profile">
                                 <li class="user-profile label-dropdown">
                                     <img src="" alt="">
-                                    <h3>{{ $taskbarValue['Username'] }}</h3>
-                                    <p>{{ $taskbarValue['Status'] }}</p>
+                                    <h3>{{ $arrayAkun[0]['USERNAME'] }}</h3>
+                                    <p>{{ $arrayAkun[0]['STATUS_AKUN'] }}</p>
                                 </li>
-                                <a href="">
+                                <a href="{{ route('profile') }}">
                                     <li>Profile</li>
                                 </a>
                                 <a href="{{ route('logout') }}">
@@ -81,13 +81,6 @@
                             </ul>
                         </div>
                     @else
-                        <div class="head-search me-2" id="button-search">
-                            <button type="button" name="head-search" id="search-btn" class="head-button dot">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
-                                </svg>
-                            </button>
-                        </div>
                         <div class="head-profile navbar ms-2">
                             <a href="{{ route('loginShow') }}" class="head-button btn full-1 py-1 px-2" id="button-profile">LOGIN</a>
                         </div>
@@ -188,7 +181,7 @@
             </div>
             
         </header>
-        @if(isset($id_akun))
+        @if(isset($arrayAkun[0]['ID_AKUN']))
             <div class="taskbar-isi" id="taskbar" style="display: none;">
                 <div class="taskbar-content">
                     <div class="task-head navbar col-auto d-flex">
@@ -210,7 +203,7 @@
                         <ul>
                             <a href="{{ route('dashboard') }}"><li>Dashboard</li></a>
                             <a href=""><li>Upload Artikel</li></a>
-                            @if(isset($status_akun) && $status_akun == 'Admin')
+                            @if(isset($arrayAkun[0]['STATUS_AKUN']) && $arrayAkun[0]['STATUS_AKUN'] == 'Admin')
                             <a href="{{ route('status.index', ['level_status' => 'draft']) }}"><li>Draft<p>{{ $taskbarValue['Draft'] }}</p></li></a>
                             <a href="{{ route('status.index', ['level_status' => 'revisi-mayor']) }}"><li>Revisi Mayor<p>{{ $taskbarValue['Revisi Mayor'] }}</p></li></a>
                             <a href="{{ route('status.index', ['level_status' => 'revisi-minor']) }}"><li>Revisi Minor<p>{{ $taskbarValue['Revisi Minor'] }}</p></li></a>
@@ -219,7 +212,7 @@
                     </div>
                 </div>
             </div>
-        @endif    
+        @endif
     
         <main>
             <div class="main-isi" id="main-isi">

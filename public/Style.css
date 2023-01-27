@@ -913,7 +913,6 @@ body {
                 margin-left: 0.5rem;
             }
             .form_sub.row>div:first-child {
-                width: 25%;
                 font-weight: bold;
             }
             .form_sub.row .form_sub_title {

@@ -21,10 +21,8 @@ class produkController extends Controller
 
         $final = (new listController)->TabletoList($tableArray,$judul,'title-pnl-prodi');
 
-        // print_r($tableProdi);
-        $id_akun = Session::get('id_akun');
-        $status_akun = Session::get('status_akun');
-        return view('index',compact('id_akun','status_akun','title','judul','penulis','tableProdi','final','taskbarValue'));
+        $arrayAkun = (new listController)->getAkun();
+        return view('index',compact('arrayAkun','title','judul','penulis','tableProdi','final','taskbarValue'));
     }
     public function login()
     {

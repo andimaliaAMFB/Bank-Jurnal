@@ -14,14 +14,16 @@
         <header>
             <nav class="head-isi navbar justify-content-between" id="head-isi">
                 <div class="head-left-side navbar d-flex">
-                    <div class="head-taskbar navbar me-2">
-                        <button class="head-button" id="taskbar-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
-                            </svg>
-                        </button>
-                    </div>
-                    <a href="<?php echo url('home') ?>" class="ms-2">
+                    @if(isset($arrayAkun[0]['ID_AKUN']))
+                        <div class="head-taskbar navbar me-2">
+                            <button class="head-button" id="taskbar-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    @endif
+                    <a href="{{ route('dashboard') }}" class="ms-2">
                         <div class="navbar head-logo">
                             <img class="navbar-toggler-icon me-3" src="../asset/logo_rumah jurnal 1.png">
                             <p id="nama-aplikasi" style="font-weight: bold;">Rumah Jurnal</p>
@@ -36,49 +38,57 @@
                             </svg>
                         </button>
                     </div>
-                    <div class="head-notif navbar mx-2">
-                        <button class="head-button" id="button-notif">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
-                                <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"></path>
-                            </svg>
-                        </button>
-                        <ul class="dropdown-menu" style="display: none;" id="dropdown-notif">
-                            <li class="label-dropdown">Notifikasi</li>
-                            <li class="notif-isi">
-                                <p class="notif-isi-head">Artikel Baru Telah Terdaftar</p>
-                                <div class="notif-isi-waktu">
-                                    <p>30 days Ago</p>
-                                    <p class="view-full">View Full Notification</p>
-                                </div>
-                            </li>
-                            <li class="notif-isi">
-                                <p class="notif-isi-head">Artikel Baru Telah Terdaftar</p>
-                                <div class="notif-isi-waktu">
-                                    <p>30 days Ago</p>
-                                    <p class="view-full">View Full Notification</p>
-                                </div>
-                            </li>
-                            <li class="view-all">See Full Notification</li>
-                        </ul>
-                    </div>
-                    <div class="head-profile navbar ms-2">
-                        <button class="head-button dot" id="button-profile">P</button>
-                        <ul class="dropdown-menu" style="display: none;" id="dropdown-profile">
-                            <li class="user-profile label-dropdown">
-                                <img src="" alt="">
-                                <h3>Username</h3>
-                                <p>Peran</p>
-                            </li>
-                            <a href="<?php echo url('profile', ['id' => $id]) ?>">
-                                <li>Profile</li>
-                            </a>
-                            <li id="logout">Log Out</li>
-                        </ul>
-                    </div>
+                    @if(isset($arrayAkun[0]['ID_AKUN']))
+                        <div class="head-notif navbar mx-2">
+                            <button class="head-button" id="button-notif">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
+                                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"></path>
+                                </svg>
+                            </button>
+                            <ul class="dropdown-menu" style="display: none;" id="dropdown-notif">
+                                <li class="label-dropdown">Notifikasi</li>
+                                <li class="notif-isi">
+                                    <p class="notif-isi-head">Artikel Baru Telah Terdaftar</p>
+                                    <div class="notif-isi-waktu">
+                                        <p>30 days Ago</p>
+                                        <p class="view-full">View Full Notification</p>
+                                    </div>
+                                </li>
+                                <li class="notif-isi">
+                                    <p class="notif-isi-head">Artikel Baru Telah Terdaftar</p>
+                                    <div class="notif-isi-waktu">
+                                        <p>30 days Ago</p>
+                                        <p class="view-full">View Full Notification</p>
+                                    </div>
+                                </li>
+                                <li class="view-all">See Full Notification</li>
+                            </ul>
+                        </div>
+                        <div class="head-profile navbar ms-2">
+                            <button class="head-button dot" id="button-profile">P</button>
+                            <ul class="dropdown-menu" style="display: none;" id="dropdown-profile">
+                                <li class="user-profile label-dropdown">
+                                    <img src="" alt="">
+                                    <h3>{{ $arrayAkun[0]['USERNAME'] }}</h3>
+                                    <p>{{ $arrayAkun[0]['STATUS_AKUN'] }}</p>
+                                </li>
+                                <a href="{{ route('profile') }}">
+                                    <li>Profile</li>
+                                </a>
+                                <a href="{{ route('logout') }}">
+                                    <li id="logout">Log Out</li>
+                                </a>
+                            </ul>
+                        </div>
+                    @else
+                        <div class="head-profile navbar ms-2">
+                            <a href="{{ route('loginShow') }}" class="head-button btn full-1 py-1 px-2" id="button-profile">LOGIN</a>
+                        </div>
+                    @endif
                 </div>
             </nav>
             
-            <div class="head-modal form-modal show" style="display: none;">
+            <div class="head-modal form-modal" style="display: none;">
                 <div class="fliter-form h-auto p-3" id="form_search">
                     <div class="form-card card col-md-8">
                         <div class="mx-3">
@@ -171,35 +181,40 @@
             </div>
             
         </header>
-        <div class="taskbar-isi" id="taskbar" style="display: none;">
-            <div class="taskbar-content">
-                <div class="task-head navbar col-auto d-flex">
-                    <div class="head-taskbar navbar me-2">
-                        <button class="head-button" id="taskbar-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
-                            </svg>
-                        </button>
-                    </div>
-                    <a href="<?php echo url('home') ?>" class="ms-2">
-                        <div class="navbar head-logo">
-                            <img class="navbar-toggler-icon me-3" src="../asset/logo_rumah jurnal 1.png">
-                            <p id="nama-aplikasi" style="font-weight: bold;">Rumah Jurnal</p>
+        @if(isset($arrayAkun[0]['ID_AKUN']))
+            <div class="taskbar-isi" id="taskbar" style="display: none;">
+                <div class="taskbar-content">
+                    <div class="task-head navbar col-auto d-flex">
+                        <div class="head-taskbar navbar me-2">
+                            <button class="head-button" id="taskbar-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+                                </svg>
+                            </button>
                         </div>
-                    </a>
-                </div>
-                <div class="task-content">
-                    <ul>
-                        <a href="<?php echo url('home') ?>"><li>Dashboard</li></a>
-                        <a href="<?php echo url('upload', ['id' => $id]) ?>"><li>Upload Artikel</li></a>
-                        <a href="<?php echo url('draft') ?>"><li>Draft<p>10</p></li></a>
-                        <a href="<?php echo url('revisi-minor') ?>"><li>Revisi Minor<p>100</p></li></a>
-                        <a href="<?php echo url('revisi-mayor') ?>"><li>Revisi Mayor<p>0</p></li></a>
-                        <a href="<?php echo url('layak-publish') ?>"><li>Layak Publish<p>10</p></li></a>
-                    </ul>
+                        <a href="{{ route('dashboard') }}" class="ms-2">
+                            <div class="navbar head-logo">
+                                <img class="navbar-toggler-icon me-3" src="../asset/logo_rumah jurnal 1.png">
+                                <p id="nama-aplikasi" style="font-weight: bold;">Rumah Jurnal</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="task-content">
+                        <ul>
+                            <a href="{{ route('dashboard') }}"><li>Dashboard</li></a>
+                            <a href="{{ route('upload.create') }}"><li>Upload Artikel</li></a>
+                            @if(isset($arrayAkun[0]['STATUS_AKUN']) && $arrayAkun[0]['STATUS_AKUN'] == 'Admin')
+                            <a href="{{ route('status.index', ['level_status' => 'draft']) }}"><li>Draft<p>{{ $taskbarValue['Draft'] }}</p></li></a>
+                            <a href="{{ route('status.index', ['level_status' => 'revisi-mayor']) }}"><li>Revisi Mayor<p>{{ $taskbarValue['Revisi Mayor'] }}</p></li></a>
+                            <a href="{{ route('status.index', ['level_status' => 'revisi-minor']) }}"><li>Revisi Minor<p>{{ $taskbarValue['Revisi Minor'] }}</p></li></a>
+                            @elseif(isset($arrayAkun[0]['STATUS_AKUN']) && $arrayAkun[0]['STATUS_AKUN'] == 'Penulis')
+                            <a href="{{ route('myarticle') }}"><li>My Article</li></a>
+                            @endif
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
         
         <main>
             <div class="main-isi" id="main-isi">

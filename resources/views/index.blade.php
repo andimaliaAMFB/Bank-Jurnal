@@ -202,11 +202,13 @@
                     <div class="task-content">
                         <ul>
                             <a href="{{ route('dashboard') }}"><li>Dashboard</li></a>
-                            <a href=""><li>Upload Artikel</li></a>
+                            <a href="{{ route('upload.create') }}"><li>Upload Artikel</li></a>
                             @if(isset($arrayAkun[0]['STATUS_AKUN']) && $arrayAkun[0]['STATUS_AKUN'] == 'Admin')
                             <a href="{{ route('status.index', ['level_status' => 'draft']) }}"><li>Draft<p>{{ $taskbarValue['Draft'] }}</p></li></a>
                             <a href="{{ route('status.index', ['level_status' => 'revisi-mayor']) }}"><li>Revisi Mayor<p>{{ $taskbarValue['Revisi Mayor'] }}</p></li></a>
                             <a href="{{ route('status.index', ['level_status' => 'revisi-minor']) }}"><li>Revisi Minor<p>{{ $taskbarValue['Revisi Minor'] }}</p></li></a>
+                            @elseif(isset($arrayAkun[0]['STATUS_AKUN']) && $arrayAkun[0]['STATUS_AKUN'] == 'Penulis')
+                            <a href="{{ route('myarticle') }}"><li>My Article</li></a>
                             @endif
                         </ul>
                     </div>
@@ -425,14 +427,14 @@
         <!-- JS comunicate with database -->
         <script type="text/javascript">
             var judul = <?php echo json_encode($judul); ?>;
-            var penulis = <?php echo json_encode($penulis); ?>;
+            var penulis = <?php echo json_encode($tablePenulis); ?>;
             var prodi = <?php echo json_encode($tableProdi); ?>;
             var final = <?php echo json_encode($final); ?>;
 
             let list_judul = [];
             judul.forEach((element,index) => { list_judul[index] = judul[index]; });
             let list_penulis = [];
-            penulis.forEach((element,index) => { list_penulis[index] = penulis[index]; });
+            penulis.forEach((element,index) => { list_penulis[index] = penulis[index]['NAMA_PENULIS']; });
             let list_prodi = [];
             prodi.forEach((element,index) => { list_prodi[index] = prodi[index]['NAMA_JURUSAN']; });
             let final_list = final;

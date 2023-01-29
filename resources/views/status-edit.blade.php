@@ -202,11 +202,13 @@
                     <div class="task-content">
                         <ul>
                             <a href="{{ route('dashboard') }}"><li>Dashboard</li></a>
-                            <a href=""><li>Upload Artikel</li></a>
+                            <a href="{{ route('upload.create') }}"><li>Upload Artikel</li></a>
                             @if(isset($arrayAkun[0]['STATUS_AKUN']) && $arrayAkun[0]['STATUS_AKUN'] == 'Admin')
                             <a href="{{ route('status.index', ['level_status' => 'draft']) }}"><li>Draft<p>{{ $taskbarValue['Draft'] }}</p></li></a>
                             <a href="{{ route('status.index', ['level_status' => 'revisi-mayor']) }}"><li>Revisi Mayor<p>{{ $taskbarValue['Revisi Mayor'] }}</p></li></a>
                             <a href="{{ route('status.index', ['level_status' => 'revisi-minor']) }}"><li>Revisi Minor<p>{{ $taskbarValue['Revisi Minor'] }}</p></li></a>
+                            @elseif(isset($arrayAkun[0]['STATUS_AKUN']) && $arrayAkun[0]['STATUS_AKUN'] == 'Penulis')
+                            <a href="{{ route('myarticle') }}"><li>My Article</li></a>
                             @endif
                         </ul>
                     </div>

@@ -332,6 +332,7 @@ var prodi_select_list = [].concat(list_prodi);
                                     var search_dd = search_parent.querySelector(`.search-dd`); //hierarki (2)
                                     var search_input = search.querySelector(`input`);  //hierarki (3)
                                     var search_dd_menu = search_dd.querySelectorAll(`div ul li`);  //hierarki (5)
+                                    // console.log(event.target);
 
                                     form_searchbar(event.target, search_parent, search, search_input, search_dd, search_dd_menu); //open-close dropdown input that has suggestion, add active to selected value
                                     
@@ -1415,6 +1416,7 @@ function suggestionBar(input_box, dd, parent_id, selectValue) {
                 || parent_id == 'kota' || parent_id == 'prov' 
                 || (parent_id == 'prodi' && lokasi.includes('profile'))) {
                 listData = "";
+                // console.log(userValue);
                 for (let i = 0; i < suggestions.length; i++) {
                     if (selectValue) {
                         // console.log(suggestions[i],selectValue,suggestions[i].toLocaleLowerCase() == selectValue.toLocaleLowerCase());

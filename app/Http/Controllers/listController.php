@@ -60,13 +60,14 @@ class listController extends Controller
                     ->join('jurusan','jurusan.ID_JURUSAN', '=', 'penulis.ID_JURUSAN')
                     ->join('revisi','revisi.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
                     ->join('revisi_detail','revisi_detail.ID_REVISI', '=', 'revisi.ID_REVISI')
-                    ->select('artikel_detail.JUDUL_ARTIKEL',
-                                'revisi_detail.STATUS_REVISI',
-                                'penulis.NAMA_PENULIS',
-                                'jurusan.NAMA_JURUSAN',
-                                'artikel_detail.TANGGAL_UPLOAD',
-                                'artikel_detail.STATUS_ARTIKEL',
-                                'revisi_detail.STATUS_ARTIKEL_BARU')
+                    ->select('artikel.ID_ARTIKEL',
+                            'artikel_detail.JUDUL_ARTIKEL',
+                            'revisi_detail.STATUS_REVISI',
+                            'penulis.NAMA_PENULIS',
+                            'jurusan.NAMA_JURUSAN',
+                            'artikel_detail.TANGGAL_UPLOAD',
+                            'artikel_detail.STATUS_ARTIKEL',
+                            'revisi_detail.STATUS_ARTIKEL_BARU')
                     ->where('penulis.ID_PENULIS','=',substr($typeTable,10))
                     ->Where(function($query) {
                         $query->where('revisi_detail.STATUS_ARTIKEL_BARU','=','-')
@@ -233,8 +234,10 @@ class listController extends Controller
             else if (str_contains($ColumnTable,'JURUSAN')) { $Array[] = $tableArray[$index]['NAMA_JURUSAN']; }
         }
         // printf(count($Array).", ".count(array_values($Array)));
-        $Array = array_unique($Array);
-        $Array = array_combine(range(0,count($Array)-1),array_values($Array));
+        if (count($Array) != 0) {
+            $Array = array_unique($Array);
+            $Array = array_combine(range(0,count($Array)-1),array_values($Array));
+        }
         return $Array;
     }
     function CountRevisied (array $TableArray) {
@@ -271,7 +274,7 @@ class listController extends Controller
             // print_r($kota);
             // echo "<br>".$akun[0]['ID_PROVINSI']."<br>";
             // print_r($prov);
-            if (!empty($penulis)) {
+            if (!empty($penulis) && Session::get('status_akun') != "Admin") {
                 $prodi = json_decode($this->getTable('Prodi-'.$penulis[0]['ID_JURUSAN']),true);
                 $arrayID[] = ['ID_AKUN' => Session::get('id_akun'),
                                 'STATUS_AKUN' => Session::get('status_akun'),

@@ -14,16 +14,18 @@
         <header>
             <nav class="head-isi navbar justify-content-between" id="head-isi">
                 <div class="head-left-side navbar d-flex">
-                    <div class="head-taskbar navbar me-2">
-                        <button class="head-button" id="taskbar-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
-                            </svg>
-                        </button>
-                    </div>
-                    <a href="<?php echo url('dashboard') ?>" class="ms-2">
+                    @if(isset($arrayAkun[0]['ID_AKUN']))
+                        <div class="head-taskbar navbar me-2">
+                            <button class="head-button" id="taskbar-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    @endif
+                    <a href="{{ route('dashboard') }}" class="ms-2">
                         <div class="navbar head-logo">
-                            <img class="navbar-toggler-icon me-3" src="../asset/logo_rumah jurnal 1.png">
+                            <img class="navbar-toggler-icon me-3" src="../../asset/logo_rumah jurnal 1.png">
                             <p id="nama-aplikasi" style="font-weight: bold;">Rumah Jurnal</p>
                         </div>
                     </a>
@@ -36,49 +38,57 @@
                             </svg>
                         </button>
                     </div>
-                    <div class="head-notif navbar mx-2">
-                        <button class="head-button" id="button-notif">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
-                                <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"></path>
-                            </svg>
-                        </button>
-                        <ul class="dropdown-menu" style="display: none;" id="dropdown-notif">
-                            <li class="label-dropdown">Notifikasi</li>
-                            <li class="notif-isi">
-                                <p class="notif-isi-head">Artikel Baru Telah Terdaftar</p>
-                                <div class="notif-isi-waktu">
-                                    <p>30 days Ago</p>
-                                    <p class="view-full">View Full Notification</p>
-                                </div>
-                            </li>
-                            <li class="notif-isi">
-                                <p class="notif-isi-head">Artikel Baru Telah Terdaftar</p>
-                                <div class="notif-isi-waktu">
-                                    <p>30 days Ago</p>
-                                    <p class="view-full">View Full Notification</p>
-                                </div>
-                            </li>
-                            <li class="view-all">See Full Notification</li>
-                        </ul>
-                    </div>
-                    <div class="head-profile navbar ms-2">
-                        <button class="head-button dot" id="button-profile">P</button>
-                        <ul class="dropdown-menu" style="display: none;" id="dropdown-profile">
-                            <li class="user-profile label-dropdown">
-                                <img src="" alt="">
-                                <h3>Username</h3>
-                                <p>Peran</p>
-                            </li>
-                            <a href="">
-                                <li>Profile</li>
-                            </a>
-                            <li id="logout">Log Out</li>
-                        </ul>
-                    </div>
+                    @if(isset($arrayAkun[0]['ID_AKUN']))
+                        <div class="head-notif navbar mx-2">
+                            <button class="head-button" id="button-notif">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
+                                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"></path>
+                                </svg>
+                            </button>
+                            <ul class="dropdown-menu" style="display: none;" id="dropdown-notif">
+                                <li class="label-dropdown">Notifikasi</li>
+                                <li class="notif-isi">
+                                    <p class="notif-isi-head">Artikel Baru Telah Terdaftar</p>
+                                    <div class="notif-isi-waktu">
+                                        <p>30 days Ago</p>
+                                        <p class="view-full">View Full Notification</p>
+                                    </div>
+                                </li>
+                                <li class="notif-isi">
+                                    <p class="notif-isi-head">Artikel Baru Telah Terdaftar</p>
+                                    <div class="notif-isi-waktu">
+                                        <p>30 days Ago</p>
+                                        <p class="view-full">View Full Notification</p>
+                                    </div>
+                                </li>
+                                <li class="view-all">See Full Notification</li>
+                            </ul>
+                        </div>
+                        <div class="head-profile navbar ms-2">
+                            <button class="head-button dot" id="button-profile">P</button>
+                            <ul class="dropdown-menu" style="display: none;" id="dropdown-profile">
+                                <li class="user-profile label-dropdown">
+                                    <img src="" alt="">
+                                    <h3>{{ $arrayAkun[0]['USERNAME'] }}</h3>
+                                    <p>{{ $arrayAkun[0]['STATUS_AKUN'] }}</p>
+                                </li>
+                                <a href="{{ route('profile') }}">
+                                    <li>Profile</li>
+                                </a>
+                                <a href="{{ route('logout') }}">
+                                    <li id="logout">Log Out</li>
+                                </a>
+                            </ul>
+                        </div>
+                    @else
+                        <div class="head-profile navbar ms-2">
+                            <a href="{{ route('loginShow') }}" class="head-button btn full-1 py-1 px-2" id="button-profile">LOGIN</a>
+                        </div>
+                    @endif
                 </div>
             </nav>
             
-            <div class="head-modal form-modal show" style="display: none;">
+            <div class="head-modal form-modal" style="display: none;">
                 <div class="fliter-form h-auto p-3" id="form_search">
                     <div class="form-card card col-md-8">
                         <div class="mx-3">
@@ -171,35 +181,40 @@
             </div>
             
         </header>
-        <div class="taskbar-isi" id="taskbar" style="display: none;">
-            <div class="taskbar-content">
-                <div class="task-head navbar col-auto d-flex">
-                    <div class="head-taskbar navbar me-2">
-                        <button class="head-button" id="taskbar-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
-                            </svg>
-                        </button>
-                    </div>
-                    <a href="<?php echo url('dashboard') ?>" class="ms-2">
-                        <div class="navbar head-logo">
-                            <img class="navbar-toggler-icon me-3" src="../asset/logo_rumah jurnal 1.png">
-                            <p id="nama-aplikasi" style="font-weight: bold;">Rumah Jurnal</p>
+        @if(isset($arrayAkun[0]['ID_AKUN']))
+            <div class="taskbar-isi" id="taskbar" style="display: none;">
+                <div class="taskbar-content">
+                    <div class="task-head navbar col-auto d-flex">
+                        <div class="head-taskbar navbar me-2">
+                            <button class="head-button" id="taskbar-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+                                </svg>
+                            </button>
                         </div>
-                    </a>
-                </div>
-                <div class="task-content">
-                    <ul>
-                        <a href="<?php echo url('dashboard') ?>"><li>Dashboard</li></a>
-                        <a href=""><li>Upload Artikel</li></a>
-                        <a href="<?php echo url('draft') ?>"><li>Draft<p>10</p></li></a>
-                        <a href="<?php echo url('revisi-minor') ?>"><li>Revisi Minor<p>100</p></li></a>
-                        <a href="<?php echo url('revisi-mayor') ?>"><li>Revisi Mayor<p>0</p></li></a>
-                        <a href="<?php echo url('layak-publish') ?>"><li>Layak Publish<p>10</p></li></a>
-                    </ul>
+                        <a href="{{ route('dashboard') }}" class="ms-2">
+                            <div class="navbar head-logo">
+                                <img class="navbar-toggler-icon me-3" src="../../asset/logo_rumah jurnal 1.png">
+                                <p id="nama-aplikasi" style="font-weight: bold;">Rumah Jurnal</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="task-content">
+                        <ul>
+                            <a href="{{ route('dashboard') }}"><li>Dashboard</li></a>
+                            <a href="{{ route('upload.create') }}"><li>Upload Artikel</li></a>
+                            @if(isset($arrayAkun[0]['STATUS_AKUN']) && $arrayAkun[0]['STATUS_AKUN'] == 'Admin')
+                            <a href="{{ route('status.index', ['level_status' => 'draft']) }}"><li>Draft<p>{{ $taskbarValue['Draft'] }}</p></li></a>
+                            <a href="{{ route('status.index', ['level_status' => 'revisi-mayor']) }}"><li>Revisi Mayor<p>{{ $taskbarValue['Revisi Mayor'] }}</p></li></a>
+                            <a href="{{ route('status.index', ['level_status' => 'revisi-minor']) }}"><li>Revisi Minor<p>{{ $taskbarValue['Revisi Minor'] }}</p></li></a>
+                            @elseif(isset($arrayAkun[0]['STATUS_AKUN']) && $arrayAkun[0]['STATUS_AKUN'] == 'Penulis')
+                            <a href="{{ route('myarticle') }}"><li>My Article</li></a>
+                            @endif
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
         
         <main>
             <div class="main-isi" id="main-isi">
@@ -311,11 +326,11 @@
                                 <form action="" id="form-status">
                                     <div class="profile_form form_sub">
                                         <div class="form_sub row" id="judul">
-                                            <div class="form_sub_title">Judul Artikel</div>
+                                            <div class="form_sub_title w-25">Judul Artikel</div>
                                             <div class="w-75">[Judul Artikel]</div>
                                         </div>
                                         <div class="form_sub row" id="penulis">
-                                            <div class="form_sub_title">Penulis</div>
+                                            <div class="form_sub_title w-25">Penulis</div>
                                             <div class="w-75">[Nama Penulis]</div>
                                         </div>
                                         <div class="form_sub row" id="status_title">
@@ -404,7 +419,9 @@
             var penulis = <?php echo json_encode($penulis); ?>;
             var prodi = <?php echo json_encode($tableProdi); ?>;
             var final = <?php echo json_encode($final); ?>;
-            var thisAuthor = "<?php echo $namaPenulis; ?>";
+            var tableArray = <?php echo json_encode($tableArray); ?>;
+            var AlltableArray = <?php echo json_encode($AlltableArray); ?>;
+            var thisAuthor = <?php echo json_encode($arrayAkun[0]['NAMA']); ?>;
             // console.log(thisAuthor);
 
             let list_judul = [];
@@ -414,6 +431,55 @@
             let list_prodi = [];
             prodi.forEach((element,index) => { list_prodi[index] = prodi[index]['NAMA_JURUSAN']; });
             let final_list = final;
+            
+            // console.table(list_judul);
+            // console.table(list_penulis);
+            // console.table(tableArray);
+            // console.table(final);
+
+            var historyArray = [];
+            id_artikel = '';
+            tableArray.forEach(index => {
+                artikel_judul = '';
+                artikel_count = 0;
+                index_up = true;
+                tgl = [];
+                status_lama = [];
+                status_baru = [];
+                revisi = [];
+                // console.log(index['ID_ARTIKEL']);
+                if (index['ID_ARTIKEL'] != id_artikel) {
+                    AlltableArray.forEach(indexAll => {
+                        if (index['ID_ARTIKEL'] == indexAll['ID_ARTIKEL']) {
+                            if (indexAll['JUDUL_ARTIKEL'] != artikel_judul) {
+                                artikel_judul = indexAll['JUDUL_ARTIKEL'];
+                                artikel_count += 1;
+                                // console.log(indexAll);
+                                // console.log(artikel_judul, ' || ', artikel_count);
+
+                                AlltableArray.forEach((element,elementIndex) => {
+                                    if (element['JUDUL_ARTIKEL'] == artikel_judul) {
+                                        // console.log(elementIndex);
+                                        if (index_up) {
+                                            index_up = false;
+                                            tgl.push(element['TANGGAL_UPLOAD']);
+                                            status_lama.push(element['STATUS_ARTIKEL']);
+                                            status_baru.push(element['STATUS_ARTIKEL_BARU']);
+                                            revisi.push(element['REVISI']);
+                                        }
+                                    }
+                                });
+                                index_up = true;
+                            }
+                        }
+                    });
+                    id_artikel = index['ID_ARTIKEL'];
+                    historyArray.push([index['JUDUL_ARTIKEL'],artikel_count,index['NAMA_PENULIS'],tgl.reverse(),status_lama.reverse(),status_baru.reverse(),revisi.reverse()]);
+                }
+            });
+
+            // console.table(historyArray);
+            // console.log(historyArray[0][1]);
 
         </script>
         <!-- JS comunicate with database -->

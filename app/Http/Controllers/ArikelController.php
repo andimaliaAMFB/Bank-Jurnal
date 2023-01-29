@@ -23,7 +23,14 @@ class ArikelController extends Controller
      */
     public function create()
     {
-        //
+        $title = "Upload Artikel";
+        $taskbarValue = (new listController)->taskbarList ();
+        
+        $tableProdi = json_decode((new listController)->getTable('Prodi'),true);
+        $tablePenulis = json_decode((new listController)->getTable('Penulis'),true);
+
+        $arrayAkun = (new listController)->getAkun();
+        return view('upload',compact('arrayAkun','title','tablePenulis','tableProdi','taskbarValue'));
     }
 
     /**

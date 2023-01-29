@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\produkController;
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\statusEdit_Controller;
+use App\Http\Controllers\ArikelController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,19 +18,26 @@ use App\Http\Controllers\statusEdit_Controller;
 */
 
 Route::get('dashboard', [produkController::class, 'index'])->name('dashboard');
-// Route::resource('login', AkunController::class);
-    Route::get('/login', [AkunController::class, 'login'])->name('loginShow');
-    Route::post('/login', [AkunController::class, 'loginInput'])->name('login.store');
 
-    Route::get('/signup', [AkunController::class, 'signup'])->name('signupShow');
-    Route::post('/signup', [AkunController::class, 'signupInput'])->name('signup.store');
+Route::get('/login', [AkunController::class, 'login'])->name('loginShow');
+Route::post('/login', [AkunController::class, 'loginInput'])->name('login.store');
 
-    Route::get('/logout', [AkunController::class, 'logout'])->name('logout');
-    
-    Route::get('/profile', [AkunController::class, 'showProfile'])->name('profile');
-    Route::put('/profile', [AkunController::class, 'updateProfie'])->name('profile.update');
+Route::get('/signup', [AkunController::class, 'signup'])->name('signupShow');
+Route::post('/signup', [AkunController::class, 'signupInput'])->name('signup.store');
 
-Route::resource('/article', produkController::class);
-Route::resource('/myarticle', produkController::class);
-Route::get('/upload/{id_akun}', 'App\Http\Controllers\uploadArtikel_Controller@index')->name('upload');
+Route::get('/logout', [AkunController::class, 'logout'])->name('logout');
+
+Route::get('/profile', [AkunController::class, 'showProfile'])->name('profile');
+Route::put('/profile', [AkunController::class, 'updateProfie'])->name('profile.update');
+
+Route::get('/myarticle', [produkController::class, 'myarticle'])->name('myarticle');
+Route::group(['prefix' => 'article'], function()
+{
+    Route::get('/{id_article}', [ArikelController::class, 'show'])->name('article');
+
+    Route::resource('upload', ArikelController::class);
+    Route::group(['prefix' => 'upload'], function() {
+        Route::resource('re-upload', ArikelController::class);
+    });
+});
 Route::get('/status/{level_status}', [statusEdit_Controller::class, 'index'])->name('status.index');

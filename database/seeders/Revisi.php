@@ -47,7 +47,7 @@ class Revisi extends Seeder
                                             ))
                                 ->value('STATUS_ARTIKEL');
                 $kondisiRevisi = true;
-                if (!$statusAfter) { $kondisiRevisi = rand(false,true); $statusAfter = "-";}
+                if (!$statusAfter) { $kondisiRevisi = false; $statusAfter = "-";}
                 DB::table('revisi_detail') -> INSERT ([
                     'ID_DETAILREVISI' => $revisi[$index]->ID_REVISI."_D",
                     'ID_REVISI' => $revisi[$index]->ID_REVISI,

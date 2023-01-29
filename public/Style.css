@@ -71,6 +71,7 @@ body {
         margin: 0;
     }
     a {
+        color: var(--bs-body-color);
         text-decoration: none;
     }
     /* div */

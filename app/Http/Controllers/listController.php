@@ -77,6 +77,41 @@ class listController extends Controller
                     ->orderByDesc('artikel_detail.ID_DETAILARTIKEL')
                     ->get();
         }
+        else if (str_contains($typeTable,'Article-')){
+            $Array = DB::table('artikel_detail')
+                    ->join('artikel','artikel_detail.ID_ARTIKEL','=','artikel.ID_ARTIKEL')
+                    ->join('artikel_detail_penulis','artikel_detail_penulis.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
+                    ->join('penulis','penulis.ID_PENULIS', '=', 'artikel_detail_penulis.ID_PENULIS')
+                    ->join('jurusan','jurusan.ID_JURUSAN', '=', 'penulis.ID_JURUSAN')
+                    ->join('revisi','revisi.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
+                    ->join('revisi_detail','revisi_detail.ID_REVISI', '=', 'revisi.ID_REVISI')
+                    ->select('artikel.ID_ARTIKEL',
+                            'artikel_detail.JUDUL_ARTIKEL',
+                            'revisi_detail.STATUS_REVISI',
+                            'penulis.NAMA_PENULIS',
+                            'jurusan.NAMA_JURUSAN',
+                            'artikel_detail.TANGGAL_UPLOAD',
+                            'artikel_detail.STATUS_ARTIKEL',
+                            'revisi_detail.STATUS_ARTIKEL_BARU')
+                    ->where('artikel.ID_ARTIKEL','=',substr($typeTable,8))
+                    ->Where(function($query) use ($typeTable) {
+                        $query->where('artikel_detail.STATUS_ARTIKEL','=','Layak Publish')
+                                ->orWhere('revisi_detail.STATUS_ARTIKEL_BARU','=','Layak Publish');
+                    })
+                    ->orderByDesc('artikel.ID_ARTIKEL')
+                    ->orderByDesc('artikel_detail.ID_DETAILARTIKEL')
+                    ->get();
+        }
+        else if (str_contains($typeTable,'Judul-')){
+            $Array = DB::table('artikel_detail')
+                    ->join('artikel','artikel_detail.ID_ARTIKEL','=','artikel.ID_ARTIKEL')
+                    ->select('artikel.ID_ARTIKEL',
+                            'artikel_detail.JUDUL_ARTIKEL')
+                    ->where('artikel_detail.JUDUL_ARTIKEL','=',substr($typeTable,6))
+                    ->orderByDesc('artikel.ID_ARTIKEL')
+                    ->orderByDesc('artikel_detail.ID_DETAILARTIKEL')
+                    ->get();
+        }
         else if (str_contains($typeTable,'Akun-')) {
             $Array = DB::table('akun')
                     ->where('ID_AKUN','=',substr($typeTable,5))

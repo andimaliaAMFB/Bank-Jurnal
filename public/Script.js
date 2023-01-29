@@ -753,6 +753,8 @@ var prodi_select_list = [].concat(list_prodi);
                 </tr>`;
             }
             else if (type.includes("status")) {
+                first_column = `<tr  data-id="`+ id +`">
+                <td><a href="article/`+ judul+`">`+ judul+`</a></td>`;
                 last_column = `<td>`+ pnl +`</td>
                     <td>`+ prodi+`</td>
                 </tr>`;
@@ -775,10 +777,10 @@ var prodi_select_list = [].concat(list_prodi);
             }
         }
         else if (type.includes("slide")) {
-            first_column = `<div class="profile-box d-flex flex-wrap justify-content-around align-items-center col-md-3 m-2 mx-3">
+            first_column = `<a href="`+ pnl +`" class="profile-box d-flex flex-wrap justify-content-around align-items-center col-md-3 m-2 mx-3">
                             <img src="" alt="profile-image">
                             <p id="profile-name">`+ pnl +`</p>
-                        </div>`;
+                        </a>`;
         }
         else if (type.includes("search")) {
             first_column = `<a href="">

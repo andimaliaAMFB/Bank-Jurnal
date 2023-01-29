@@ -8,7 +8,7 @@
         <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
         <!-- CSS Only -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-        <link rel="stylesheet" href="Style.css">
+        <link rel="stylesheet" href="../../Style.css">
     </head>
     <body>
         <header>
@@ -25,7 +25,7 @@
                     @endif
                     <a href="{{ route('dashboard') }}" class="ms-2">
                         <div class="navbar head-logo">
-                            <img class="navbar-toggler-icon me-3" src="../asset/logo_rumah jurnal 1.png">
+                            <img class="navbar-toggler-icon me-3" src="../../asset/logo_rumah jurnal 1.png">
                             <p id="nama-aplikasi" style="font-weight: bold;">Rumah Jurnal</p>
                         </div>
                     </a>
@@ -194,7 +194,7 @@
                         </div>
                         <a href="{{ route('dashboard') }}" class="ms-2">
                             <div class="navbar head-logo">
-                                <img class="navbar-toggler-icon me-3" src="../asset/logo_rumah jurnal 1.png">
+                                <img class="navbar-toggler-icon me-3" src="../../asset/logo_rumah jurnal 1.png">
                                 <p id="nama-aplikasi" style="font-weight: bold;">Rumah Jurnal</p>
                             </div>
                         </a>
@@ -225,10 +225,10 @@
                                 <img src="" alt="">
                             </div>
                             <div class="col-9 text-start p-3">
-                                <h3>Judul</h3>
-                                <p>Tahun</p>
-                                <p>Penulis</p>
-                                <p>Abstrak</p>
+                                <h3>{{ $final[0][0] }}</h3>
+                                <p>{{ $final[0][2] }}</p>
+                                <p>Tanggal Upload: {{ $final[0][4] }}</p>
+                                <p>Tanggal Rilis: {{ $final[0][5] }}</p>
                             </div>
                         </div>
                         <div class="card-body article d-flex flex-column px-4">
@@ -244,11 +244,21 @@
         <div class="shade fade" id="shade"></div>
         
         <!-- JS comunicate with database -->
-        <!-- <script>
-            var tryExport = 3;
-        </script> -->
+        <script>
+            var judul = <?php echo json_encode($judul); ?>;
+            var penulis = <?php echo json_encode($penulis); ?>;
+            var final = <?php echo json_encode($final); ?>;
+
+            let list_judul = [];
+            judul.forEach((element,index) => { list_judul[index] = judul[index]; });
+            let list_penulis = [];
+            penulis.forEach((element,index) => { list_penulis[index] = penulis[index]; });
+            let list_prodi = [];
+            let final_list = final;
+            // console.log(final);
+        </script>
         <!-- JS comunicate with database -->
 
-        <script src="Script.js"></script>
+        <script src="../../Script.js"></script>
     </body>
 </html>

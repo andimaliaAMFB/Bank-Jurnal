@@ -52,7 +52,32 @@ class ArikelController extends Controller
      */
     public function show($id)
     {
-        //
+        // echo substr('Article-'.$id,8);
+        $taskbarValue = (new listController)->taskbarList ();
+        $tableArray;
+        $loop = false;
+        
+        do {
+            $tableArray = json_decode((new listController)->getTable('Article-'.$id),true);
+            // print_r($tableArray);
+            if (empty($tableArray)) {
+                $id = json_decode((new listController)->getTable('Judul-'.$id),true)[0]['ID_ARTIKEL'];
+                // print_r($id);
+                $loop = true;
+            }
+            else { $loop = false; }
+        } while ($loop);
+
+
+        $judul =  (new listController)->UniqueList($tableArray,'JUDUL');
+        $penulis = (new listController)->UniqueList($tableArray,'PENULIS');
+
+        $final = (new listController)->TabletoList($tableArray,$judul,'up-ri-sta');
+
+        $arrayAkun = (new listController)->getAkun();
+
+        // print_r($tableArray);
+        return view('lihatArticle',compact('arrayAkun','final','judul','penulis','taskbarValue'));
     }
 
     /**

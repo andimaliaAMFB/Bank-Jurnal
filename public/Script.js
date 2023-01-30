@@ -717,6 +717,7 @@ var prodi_select_list = [].concat(list_prodi);
         paginatedItems = item.slice(start, end);
 
         // console.log(start, end, item);
+        // console.log(paginatedItems);
         let result = '';
         for (let i = 0; i < paginatedItems.length; i++) {
             if (type.includes("slide")) {
@@ -727,6 +728,7 @@ var prodi_select_list = [].concat(list_prodi);
             }
         }
         location_item.innerHTML = result;
+        // console.log(location_item);
         if (type.includes("tabel")) {
             tabel_page.innerHTML = page + 1;
             tabel_detail.innerHTML = paginatedItems.length +" of " + item.length + " Articles";
@@ -741,6 +743,7 @@ var prodi_select_list = [].concat(list_prodi);
         else  { dropmenu = document.querySelectorAll(`.pointer`); }
     }
     function input_list(id, judul, pnl, prodi, up, rilis, status, type) {
+        // console.log(type);
         let first_column = '';
         let last_column = '';
         if (type.includes("tabel")) {
@@ -775,9 +778,15 @@ var prodi_select_list = [].concat(list_prodi);
                 </td>
             </tr>`;
             }
+            else if (type.includes("artikel_penulis")) {
+                first_column = `<tr  data-id="`+ id +`">
+                <td><a href="article/`+ judul+`">`+ judul+`</a></td>`;
+                last_column = `<td>`+ up +`</td>
+                                <td>`+ rilis +`</td>`;
+            }
         }
         else if (type.includes("slide")) {
-            first_column = `<a href="`+ pnl +`" class="profile-box d-flex flex-wrap justify-content-around align-items-center col-md-3 m-2 mx-3">
+            first_column = `<a href="@`+ pnl +`" class="profile-box d-flex flex-wrap justify-content-around align-items-center col-md-3 m-2 mx-3">
                             <img src="" alt="profile-image">
                             <p id="profile-name">`+ pnl +`</p>
                         </a>`;
@@ -902,6 +911,9 @@ var prodi_select_list = [].concat(list_prodi);
             // console.log(innerText);
             upload_penulis.children[1].innerHTML= innerText;
         }
+        else if (lokasi.includes("Penulis")) { //upload article page
+            RenderFinal("tabel_artikel_penulis");
+        }
     }
     //form
         function form_searchbar(value_select, search_wrapper, value_wrapper, input_wrapper, dd_wrapper, dd_menu) { //open-close dropdown input that has suggestion, add active to selected value
@@ -969,7 +981,15 @@ var prodi_select_list = [].concat(list_prodi);
                     });
                 }
             });
-            // console.log(arraydate);
+            console.log(wrapper);
+            console.log(wrapper.querySelector(`.card-head h3`));
+            if (lokasi.includes('status')) { wrapper.querySelector(`.card-head h3`).textContent = 'Ubah Status Revisi'; }
+            else {
+                wrapper.querySelector(`.card-head h3`).textContent = 'Status Revisi';
+                if (wrapper.querySelector(`.card-body button.submit-btn`)) {
+                    wrapper.querySelector(`.card-body button.submit-btn`).remove();
+                }
+            }
             form_history.innerHTML = '';
             for (let i = 0; i < n_history; i++) { //make div child for every revision in this article
                 var child = document.createElement("div");

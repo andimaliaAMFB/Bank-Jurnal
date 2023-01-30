@@ -4,15 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ArikelController extends Controller
+class ArtikelController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index(){
         //
     }
 
@@ -21,8 +20,7 @@ class ArikelController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         $title = "Upload Artikel";
         $taskbarValue = (new listController)->taskbarList ();
         
@@ -39,8 +37,7 @@ class ArikelController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
@@ -50,8 +47,7 @@ class ArikelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         // echo substr('Article-'.$id,8);
         $taskbarValue = (new listController)->taskbarList ();
         $tableArray;
@@ -79,6 +75,46 @@ class ArikelController extends Controller
         // print_r($tableArray);
         return view('lihatArticle',compact('arrayAkun','final','judul','penulis','taskbarValue'));
     }
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showbyPenulis($id) {
+        // echo substr('Penulis-'.$id,9);
+        $taskbarValue = (new listController)->taskbarList ();
+        $tableArray;
+        $loop = false;
+        
+        $AlltableArray = json_decode((new listController)->getTable('All'),true);
+        $a = 0;
+        while ($a <= 1) {
+            // echo $id."<br>";
+            $tableArray = json_decode((new listController)->getTable('Penulis-'.$id),true);
+            if (empty($tableArray) && $a == 0) {
+                $id = json_decode((new listController)->getTable('PNL-'.substr($id,1)),true)[0]['ID_PENULIS'];
+            }
+            $a += 1;
+        }
+        $tableProdi = json_decode((new listController)->getTable('Prodi'),true);
+
+        if (!empty($tableArray)) {
+            $judul =  (new listController)->UniqueList($tableArray,'JUDUL');
+            $penulis = (new listController)->UniqueList($tableArray,'PENULIS');
+            $final = (new listController)->TabletoList($tableArray,$judul,'up-ri-sta');
+        }
+        else {
+            $judul =  [];
+            $penulis = [];
+            $final[0] = array('NAMA_PENULIS' => $id);
+        }
+
+        $arrayAkun = (new listController)->getAkun();
+
+        // print_r($final);
+        return view('myarticle',compact('arrayAkun','judul','penulis','tableProdi','final','taskbarValue','tableArray','AlltableArray'));
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -86,8 +122,7 @@ class ArikelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         //
     }
 
@@ -98,8 +133,7 @@ class ArikelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         //
     }
 
@@ -109,8 +143,7 @@ class ArikelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //
     }
 }

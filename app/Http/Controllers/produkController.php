@@ -9,8 +9,7 @@ use Session;
 
 class produkController extends Controller
 {
-    public function index()
-    {
+    public function index() {
         $title = "Dashboard";
         $taskbarValue = (new listController)->taskbarList ();
         $tableArray = json_decode((new listController)->getTable('Layak Publish'),true);
@@ -25,25 +24,11 @@ class produkController extends Controller
         $arrayAkun = (new listController)->getAkun();
         return view('index',compact('arrayAkun','title','judul','penulis','tablePenulis','tableProdi','final','taskbarValue'));
     }
-    public function login()
-    {
-        return view('login');
-    }
-    public function login_cek(Request $request)
-    {
-        echo $request->user;
-        return redirect()->route('dashboard');
-    }
-    public function login_store(Request $request)
-    {
-        return view('login');
-    }
     public function profile($id_akun)
     {
         return view('profile',compact('id_akun'));
     }
-    public function myarticle()
-    {
+    public function myarticle() {
         $title = "My Article";
 
         $taskbarValue = (new listController)->taskbarList ();

@@ -218,11 +218,31 @@
         
         <main>
             <div class="main-isi" id="main-isi">
+                @if(isset($title))
                 <div class="judul-hlm"><h2>{{ $title }}</h2></div>
-                
+                @endif
                 <div class="list-artikel" id="mylist_wrapper" style="margin-block: 2rem;">
                     <div class="artikel-tabel-edit card px-3">
+                        <div class="d-flex box flex-grow-1 pb-3 border-bottom">
+                            <div class="form_sub_list col-md-3" id="img-profile" style="background-color: blueviolet;">
+                                <img src="../asset/logo_rumah jurnal 1.png">
+                            </div>
+                            <div class="ms-3 flex-grow-1 profile-text d-flex flex-column justify-content-center form_sub">
+                                @if(isset($final[0]['NAMA_PENULIS']))
+                                <div><h4>{{ $final[0]['NAMA_PENULIS'] }}</h4></div>
+                                @else
+                                <div><h4>{{ $final[0][2] }}</h4></div>
+                                @endif
+                                <div><h5>Penulis</h5></div>
+                            </div>
+                        </div>
+                        @if(isset($final[0]['NAMA_PENULIS']))
+                        <div class="article-order row flex-wrap card-head border-0">
+                            <h5 class="m-0">{{ $final[0]['NAMA_PENULIS'] }} Tidak Memiliki Artikel yang sudah di Publish</h5>
+                        </div>
+                        @else
                         <div class="article-order row flex-wrap card-head">
+                            @if(isset($title))
                             <div class="col-md-7 search_input me-3" id="jdl-search">
                                 <form action="" class="d-flex flex-wrap">
                                     <div class="col-10 searchbar search-label search-value justify-content-center flex-grow-1">
@@ -268,22 +288,63 @@
                                     </div>
                                 </form>
                             </div>
+                            @else
+                            <div class="col-md-12 search_input pe-3" id="jdl-search">
+                                <form action="" class="d-flex flex-wrap">
+                                    <div class="col-10 searchbar search-label search-value justify-content-center flex-grow-1">
+                                        <input class="w-100" type="text" name="s-jdl" id="search-jdl" placeholder="Judul Artikel">
+                                    </div>
+                                    <div class="col-auto searchbar search-button justify-content-center">
+                                        <button type="submit" name="s-jdl-btn" id="search-jdl-btn" class="dot search-btn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="col-10 searchbar search-dd drop-select flex-grow-1" style="height: 0;">
+                                        <div class="w-100 se-se-bar" id="dropdown-jdl">
+                                            <ul class="select-droped">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto searchbar search-break justify-content-center col-3" style="height: 0;">
+                                        <button type="button" class="dot search-btn" style="height: 0;">
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            @endif
                         </div>
+                        @endif
+                        @if(isset($final[0]['NAMA_PENULIS']))
+                        <table class="tabel-card" style="width: 100%;display:none;">
+                        @else
                         <table class="tabel-card" style="width: 100%;">
+                        @endif
                             <thead>
                                 <tr>
                                     <th>Judul</th>
+                                    
+                                    @if(isset($title))
                                     <th class="col-md-2">Tanggal Upload</th>
                                     <th class="col-md-2">Tanggal Rilis</th>
                                     <th class="col-md-1">Status</th>
                                     <th class="col-md-1">Action</th>
+                                    @else
+                                    <th class="col-md-3">Tanggal Upload</th>
+                                    <th class="col-md-3">Tanggal Rilis</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr><td colspan="4"><i>Loading...</i></td></tr>
                             </tbody>
                         </table>
+                        @if(isset($final[0]['NAMA_PENULIS']))
+                        <div class="page row" id="article_pagination" style="display:none">
+                        @else
                         <div class="page row" id="article_pagination">
+                        @endif
                             <div class="table-data-count col-auto" id="article_pagination_count">
                             </div>
                             <div class="page-button row col-auto">
@@ -421,7 +482,8 @@
             var final = <?php echo json_encode($final); ?>;
             var tableArray = <?php echo json_encode($tableArray); ?>;
             var AlltableArray = <?php echo json_encode($AlltableArray); ?>;
-            var thisAuthor = <?php echo json_encode($arrayAkun[0]['NAMA']); ?>;
+            if (final[0][2]) { var thisAuthor = final[0][2]; }
+            else { var thisAuthor = final[0]['NAMA_PENULIS']; }
             // console.log(thisAuthor);
 
             let list_judul = [];
@@ -435,7 +497,7 @@
             // console.table(list_judul);
             // console.table(list_penulis);
             // console.table(tableArray);
-            // console.table(final);
+            console.table(final);
 
             var historyArray = [];
             id_artikel = '';

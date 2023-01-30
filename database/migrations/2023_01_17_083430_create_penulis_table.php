@@ -18,7 +18,7 @@ class CreatePenulisTable extends Migration
                 $table->ipAddress('ID_PENULIS',12);
                 $table->primary('ID_PENULIS');
 
-                $table->ipAddress('ID_AKUN',12);
+                $table->ipAddress('ID_AKUN',12)->nullable();
                 $table->ipAddress('ID_JURUSAN',12);
                 $table->ipAddress('NAMA_PENULIS',20);
             });

@@ -223,19 +223,31 @@
                 @endif
                 <div class="list-artikel" id="mylist_wrapper" style="margin-block: 2rem;">
                     <div class="artikel-tabel-edit card px-3">
+                        
+                        @if(empty($arrayAkun) || isset($final[0]['NAMA_PENULIS']) && $arrayAkun[0]['NAMA'] != $final[0]['NAMA_PENULIS'] || $arrayAkun[0]['NAMA'] != $final[0][2])
                         <div class="d-flex box flex-grow-1 pb-3 border-bottom">
-                            <div class="form_sub_list col-md-3" id="img-profile" style="background-color: blueviolet;">
-                                <img src="../asset/logo_rumah jurnal 1.png">
-                            </div>
-                            <div class="ms-3 flex-grow-1 profile-text d-flex flex-column justify-content-center form_sub">
-                                @if(isset($final[0]['NAMA_PENULIS']))
-                                <div><h4>{{ $final[0]['NAMA_PENULIS'] }}</h4></div>
+                        <div class="form_sub_list col-md-3 ps-3 pt-3" id="img-profile">
+                            <label for="img-input" class="btn">
+                                @if(isset($pp))
+                                <img src="{{ 'storage/profile-image/'.$pp }}" id="uploadedIMG" class="profile_img">
                                 @else
-                                <div><h4>{{ $final[0][2] }}</h4></div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16" style="display: block; opacity: 0.75;">
+                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                </svg>
                                 @endif
-                                <div><h5>Penulis</h5></div>
-                            </div>
+                            </label>
                         </div>
+                        <div class="ms-3 p-3 flex-grow-1 profile-text d-flex flex-column justify-content-center form_sub">
+                            @if(isset($final[0]['NAMA_PENULIS']))
+                            <div><h4>{{ $final[0]['NAMA_PENULIS'] }}</h4></div>
+                            @else
+                            <div><h4>{{ $final[0][2] }}</h4></div>
+                            @endif
+                            <div><h5>Penulis</h5></div>
+                        </div>
+                        </div>
+                        @endif
                         @if(isset($final[0]['NAMA_PENULIS']))
                         <div class="article-order row flex-wrap card-head border-0">
                             <h5 class="m-0">{{ $final[0]['NAMA_PENULIS'] }} Tidak Memiliki Artikel yang sudah di Publish</h5>

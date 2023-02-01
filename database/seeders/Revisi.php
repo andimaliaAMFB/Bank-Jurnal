@@ -29,6 +29,7 @@ class Revisi extends Seeder
         }
 
         // Add Revisi_Detail
+        $status = array('Draft','Revisi Mayor','Revisi Minor','Layak Publish');
         $revisi = DB::table('revisi')->get();
         foreach ($revisi as $index=>$data) {
             $statusBefore = DB::table('artikel_detail')
@@ -47,7 +48,15 @@ class Revisi extends Seeder
                                             ))
                                 ->value('STATUS_ARTIKEL');
                 $kondisiRevisi = true;
-                if (!$statusAfter) { $kondisiRevisi = false; $statusAfter = "-";}
+                if (!$statusAfter) {
+                    $kondisiRevisi = rand(false,true);
+                    if ($kondisiRevisi) {
+                        $statusAfter = $status[rand(1,count($status)-1)];
+                    }
+                    else {
+                        $statusAfter = "-";
+                    }
+                }
                 DB::table('revisi_detail') -> INSERT ([
                     'ID_DETAILREVISI' => $revisi[$index]->ID_REVISI."_D",
                     'ID_REVISI' => $revisi[$index]->ID_REVISI,

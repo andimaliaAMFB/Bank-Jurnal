@@ -68,7 +68,7 @@
                             <button class="head-button dot" id="button-profile">P</button>
                             <ul class="dropdown-menu" style="display: none;" id="dropdown-profile">
                                 <li class="user-profile label-dropdown">
-                                    <img src="" alt="">
+                                    <img src="" alt="" class="profile_img">
                                     <h3>{{ $arrayAkun[0]['USERNAME'] }}</h3>
                                     <p>{{ $arrayAkun[0]['STATUS_AKUN'] }}</p>
                                 </li>
@@ -218,15 +218,33 @@
 
         <main>
             <div class="main-isi" id="main-isi">
-                <form action="">
+                <form action="{{ route('profile.update', ['id' => $arrayAkun[0]['ID_AKUN']]) }}" method="POST" enctype="multipart/form-data">
+                {{ csrf_field() }}
+                <input type="hidden" name="_method" value="PUT">
                     <div class="card form">
                         <div class="card-head justify-content-center">
                             <h3>Profile</h3>
                         </div>
                         <div class="card-body row" id="profile">
                             <div class="d-flex box flex-grow-1">
-                                <div class="form_sub_list col-md-3" id="img-profile" style="background-color: blueviolet;">
-                                    <img src="../asset/logo_rumah jurnal 1.png">
+                                <div class="form_sub_list col-md-3 img_add" id="img-profile">
+                                    <label for="img-input" class="btn">
+                                        @if(isset($arrayAkun[0]['FOTO_PROFIL']))
+                                        <img src="{{ 'storage/profile-image/'.$arrayAkun[0]['FOTO_PROFIL'] }}" id="uploadedIMG" class="profile_img">
+                                        @else
+                                        <img src="" id="uploadedIMG" class="profile_img">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" id="blank-pp" class="bi bi-person-circle" viewBox="0 0 16 16" style="display: block; opacity: 0.75;">
+                                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                        </svg>
+                                        @endif
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                        </svg>
+                                    </label>
+                                    <input class="form-file" id="img-input" type="file" name="imageup" style="display:none; visibility: none;" onchange="priviewImage();"/>
+                                    
                                 </div>
                                 <div class="ms-3 flex-grow-1 profile-text d-flex flex-column justify-content-center form_sub">
                                     <div><h4>{{ $arrayAkun[0]['USERNAME'] }}</h4></div>
@@ -414,5 +432,21 @@
         </script>
         <!-- JS comunicate with database -->
         <script src="../Script.js"></script>
+
+        <script type="text/javascript">
+            function priviewImage(){
+                var file = document.getElementById('img-input').files;
+                if (file.length > 0) {
+                    var fileReader = new FileReader();
+
+                    fileReader.onload = function (event){
+                        document.getElementById('uploadedIMG').setAttribute("src",event.target.result)
+                    };
+
+                    fileReader.readAsDataURL(file[0]);
+                    document.getElementById('blank-pp').style.display = 'none';
+                }
+            }
+        </script>
     </body>
 </html>

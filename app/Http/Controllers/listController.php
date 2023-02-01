@@ -40,14 +40,12 @@ class listController extends Controller
                     ->join('revisi','revisi.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
                     ->join('revisi_detail','revisi_detail.ID_REVISI', '=', 'revisi.ID_REVISI')
                     ->select('artikel.ID_ARTIKEL',
+                            'artikel_detail.ID_DETAILARTIKEL',
                             'artikel_detail.JUDUL_ARTIKEL',
                             'revisi_detail.STATUS_REVISI',
                             'penulis.NAMA_PENULIS',
                             'jurusan.NAMA_JURUSAN',)
-                    ->Where(function($query) use ($typeTable) {
-                        $query->where('artikel_detail.STATUS_ARTIKEL','=',$typeTable)
-                                ->where('revisi_detail.STATUS_ARTIKEL_BARU','=','-');
-                    })
+                    ->where('artikel_detail.STATUS_ARTIKEL','=',$typeTable)
                     ->orderByDesc('artikel.ID_ARTIKEL')
                     ->orderByDesc('artikel_detail.ID_DETAILARTIKEL')
                     ->get();
@@ -150,16 +148,19 @@ class listController extends Controller
         else if (str_contains($typeTable,'KOTA-')) {
             $Array = DB::table('kota')
                     ->where('ID_KOTA','=',substr($typeTable,5))
+                    ->orWhere('NAMA_KOTA','=',substr($typeTable,5))
                     ->get();
         }
         else if (str_contains($typeTable,'PROV-')) {
             $Array = DB::table('provinsi')
                     ->where('ID_PROVINSI','=',substr($typeTable,5))
+                    ->orWhere('NAMA_PROVINSI','=',substr($typeTable,5))
                     ->get();
         }
         else if (str_contains($typeTable,'Prodi-')) {
             $Array = DB::table('jurusan')
                     ->where('ID_JURUSAN','=',substr($typeTable,6))
+                    ->orWhere('NAMA_JURUSAN','=',substr($typeTable,6))
                     ->get();
         }
         else if ($typeTable == 'All') {
@@ -171,6 +172,7 @@ class listController extends Controller
                     ->join('revisi','revisi.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
                     ->join('revisi_detail','revisi_detail.ID_REVISI', '=', 'revisi.ID_REVISI')
                     ->select('artikel.ID_ARTIKEL',
+                            'artikel_detail.ID_DETAILARTIKEL',
                             'artikel_detail.JUDUL_ARTIKEL',
                             'revisi_detail.STATUS_REVISI',
                             'penulis.NAMA_PENULIS',
@@ -310,6 +312,53 @@ class listController extends Controller
         }
         return $count;
     }
+    function SliceTable (array $TableArray, array $AlltableArray, string $typeTable) {
+        $array_at_key = array();
+        foreach ($TableArray as $key => $value) {
+            $currentID = intval(substr($TableArray[$key]['ID_DETAILARTIKEL'],5));
+            // echo $key."<br>";
+            // print_r($TableArray[$key]);
+            // echo "<br>";
+            foreach ($AlltableArray as $keyAll => $valueAll) {
+                if ($AlltableArray[$keyAll]['ID_ARTIKEL'] == $TableArray[$key]['ID_ARTIKEL']) {
+                    $currentIDAll = intval(substr($AlltableArray[$keyAll]['ID_DETAILARTIKEL'],5));
+                    if ($currentID < $currentIDAll) {
+                        $array_at_key[] = $key;
+                    }
+                }
+            }
+        }
+
+        // echo "<br>===================================================<br>";
+        // print_r($array_at_key);
+        // echo "<br>";
+
+        // echo "<br>===================================================<br>";
+        $array_at_key = array_values(array_unique($array_at_key));
+        // print_r($array_at_key);
+        // echo "<br>";
+
+        foreach ($array_at_key as $key => $value) {
+            // echo $key.": ".$value."<br>";
+            unset($TableArray[$value]);
+        }
+
+        // echo "<br>===================================================<br>";
+        $TableArray = array_values($TableArray);
+        $id_artikel = '';
+        $count = 0;
+        foreach ($TableArray as $key => $value) {
+            if ($TableArray[$key]['JUDUL_ARTIKEL'] != $id_artikel) {
+                $id_artikel = $TableArray[$key]['JUDUL_ARTIKEL'];
+                // echo $key."<br>";
+                // print_r($TableArray[$key]);
+                // echo "<br>";
+                $count += 1;
+            }
+        }
+        // echo $count;
+        return $TableArray;
+    }
 
     function taskbarList () {
         $draft = $this->CountRevisied(json_decode($this->getTable('Draft'),true));
@@ -347,7 +396,8 @@ class listController extends Controller
                                 'NAMA_KOTA' => $kota[0]['NAMA_KOTA'],
                                 'NAMA_PROVINSI' => $prov[0]['NAMA_PROVINSI'],
                                 'ALAMAT' => $akun[0]['ALAMAT'],
-                                'KODE_POS' => $akun[0]['KODE_POS']];
+                                'KODE_POS' => $akun[0]['KODE_POS'],
+                                'FOTO_PROFIL' => $akun[0]['FOTO_PROFIL']];
             }
             else {
                 $arrayID[] = ['ID_AKUN' => Session::get('id_akun'),
@@ -360,7 +410,8 @@ class listController extends Controller
                                 'NAMA_KOTA' => $kota[0]['NAMA_KOTA'],
                                 'NAMA_PROVINSI' => $prov[0]['NAMA_PROVINSI'],
                                 'ALAMAT' => $akun[0]['ALAMAT'],
-                                'KODE_POS' => $akun[0]['KODE_POS']];
+                                'KODE_POS' => $akun[0]['KODE_POS'],
+                                'FOTO_PROFIL' => $akun[0]['FOTO_PROFIL']];
             }
         }
 

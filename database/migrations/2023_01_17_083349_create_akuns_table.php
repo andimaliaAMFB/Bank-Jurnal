@@ -29,6 +29,7 @@ class CreateAkunsTable extends Migration
                 $table->ipAddress('ID_PROVINSI',12);
                 $table->ipAddress('ALAMAT',200);
                 $table->ipAddress('KODE_POS',6);
+                $table->binary('FOTO_PROFIL')->nullable();
             });
         }
         Schema::table('akun', function(Blueprint $table) {

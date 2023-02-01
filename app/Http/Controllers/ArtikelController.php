@@ -93,7 +93,9 @@ class ArtikelController extends Controller
             // echo $id."<br>";
             $tableArray = json_decode((new listController)->getTable('Penulis-'.$id),true);
             if (empty($tableArray) && $a == 0) {
-                $id = json_decode((new listController)->getTable('PNL-'.substr($id,1)),true)[0]['ID_PENULIS'];
+                $id = json_decode((new listController)->getTable('PNL-'.substr($id,1)),true);
+                $pp = json_decode((new listController)->getTable('Akun-'.$id[0]['ID_AKUN']),true)[0]['FOTO_PROFIL'];
+                $id = $id[0]['ID_PENULIS'];
             }
             $a += 1;
         }
@@ -107,13 +109,30 @@ class ArtikelController extends Controller
         else {
             $judul =  [];
             $penulis = [];
-            $final[0] = array('NAMA_PENULIS' => $id);
+            $tableArray = json_decode((new listController)->getTable('PNL-'.$id),true);
+            $final[0] = array('NAMA_PENULIS' => $tableArray[0]['NAMA_PENULIS']);
         }
 
         $arrayAkun = (new listController)->getAkun();
 
+        // echo "hh".$pp;
         // print_r($final);
-        return view('myarticle',compact('arrayAkun','judul','penulis','tableProdi','final','taskbarValue','tableArray','AlltableArray'));
+        // echo "<br>";
+        // print_r($arrayAkun);
+        if (!empty($arrayAkun) && $arrayAkun[0]['STATUS_AKUN'] == 'Penulis') {
+            if ($arrayAkun[0]['NAMA'] != $final[0]['NAMA_PENULIS'] || $arrayAkun[0]['NAMA'] != $final[0][2]) {
+                // echo 'to article by penulis';
+                return view('myarticle',compact('arrayAkun','judul','penulis','tableProdi','final','pp','taskbarValue','tableArray','AlltableArray'));
+            }
+            else {
+                // echo 'to my article';
+                return redirect()->route('myarticle');
+            }
+        }
+        else {
+            // echo 'to article by penulis';
+            return view('myarticle',compact('arrayAkun','judul','penulis','tableProdi','final','pp','taskbarValue','tableArray','AlltableArray'));
+        }
     }
 
     /**

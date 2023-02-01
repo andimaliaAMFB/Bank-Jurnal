@@ -149,7 +149,8 @@ class AkunController extends Controller
         $tableProdi = json_decode((new listController)->getTable('Prodi'),true);
         
         $arrayAkun = (new listController)->getAkun();
-        // print_r($tableProv);
+
+        // print_r($arrayAkun);
         return view('profile',compact('arrayAkun','tableProdi','tableKota','tableProv','taskbarValue'));
     }
 
@@ -171,7 +172,64 @@ class AkunController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function updateProfie(Request $request, $id) {
-        //
+        $tableAkun = json_decode((new listController)->getTable('Akun-'.$id),true);
+        $kota = json_decode((new listController)->getTable('KOTA-'.$request->kota),true)[0]['ID_KOTA'];
+        $provinsi = json_decode((new listController)->getTable('PROV-'.$request->prov),true)[0]['ID_PROVINSI'];
+
+        $img_name = $request->username;
+        $img_ext =  $request->file('imageup')->getClientOriginalExtension();
+        $img = $img_name.".".$img_ext;
+        $request->file('imageup')->storeAs('public/profile-image',$img);
+        // echo $request->file('imageup')->storeAs('public/profile-image',$img)."<br>";
+        
+        // echo $img."<br>";
+        // print_r($request->all());
+        akun::where('ID_AKUN',$id)->update([
+            'USERNAME' => $request->username,
+            'NAMA' => $request->name,
+            'NO_TELEPON' => $request->tlp,
+            'EMAIL' => $request->email,
+            'TANGGAL_LAHIR' => $request->tgl,
+            'ID_KOTA' => $kota,
+            'ID_PROVINSI' => $provinsi,
+            'ALAMAT' => $request->alamat,
+            'KODE_POS' => $request->pos,
+            'FOTO_PROFIL' => $img
+        ]);
+
+        if ($tableAkun[0]['STATUS_PENGGUNA'] == 'Penulis') {
+            $tablePenulis = json_decode((new listController)->getTable('PNL-'.$id),true);
+            $jurusan = json_decode((new listController)->getTable('Prodi-'.$request->prodi),true)[0]['ID_JURUSAN'];
+            $existID = penulis::where('NAMA_PENULIS','=',$request->name,'and')
+            ->where('ID_PENULIS','!=',$tablePenulis[0]['ID_PENULIS'])
+            ->whereNull('ID_AKUN')
+            ->exists();
+
+            // echo $existID;
+
+            if ($existID) {
+                # code...
+                $currentPNL_ID = $tablePenulis[0]['ID_PENULIS'];
+
+                penulis::where('ID_PENULIS','=',$tablePenulis[0]['ID_PENULIS'])->delete();
+                penulis::where('NAMA_PENULIS','=',$request->name,'and')
+                ->where('ID_PENULIS','!=',$tablePenulis[0]['ID_PENULIS'],'and')
+                ->whereNull('ID_AKUN')
+                ->update ([
+                    'ID_PENULIS' => $tablePenulis[0]['ID_PENULIS'],
+                    'ID_AKUN' => $id,
+                    'NAMA_PENULIS' => $request->name,
+                    'ID_JURUSAN' => $jurusan
+                ]);
+            }
+            else {
+                penulis::where('ID_AKUN',$id) -> update ([
+                    'ID_JURUSAN' => $jurusan,
+                    'NAMA_PENULIS' => $request->name
+                ]);
+            }
+        }
+        return redirect()->route('profile');
     }
 
     /**

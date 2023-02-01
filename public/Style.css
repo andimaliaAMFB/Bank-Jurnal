@@ -1135,11 +1135,33 @@ body {
         #img-profile{
             height: 15vw;
             width: 15vw;
+            border-radius: 50%;
         }
-        #img-profile>* {
+        #img-profile.img_add:hover img {
+            opacity: 0.5;
+        }
+        #img-profile * {
             height: 100%;
             width: 100%;
-            padding: 2rem;
+        }
+        #img-profile>* {
+            padding: 0;
+            position: relative;
+        }
+        #img-profile img,
+        .label-dropdown img.profile_img {
+            padding: 0;
+            margin: 0;
+            border-radius: 50%;
+        }
+        #img-profile svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+        }
+        #img-profile.img_add:hover svg {
+            display: block;
         }
 /* main end */
 

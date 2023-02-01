@@ -22,6 +22,7 @@ class produkController extends Controller
         $final = (new listController)->TabletoList($tableArray,$judul,'title-pnl-prodi');
 
         $arrayAkun = (new listController)->getAkun();
+        // print_r($final);
         return view('index',compact('arrayAkun','title','judul','penulis','tablePenulis','tableProdi','final','taskbarValue'));
     }
     public function profile($id_akun)

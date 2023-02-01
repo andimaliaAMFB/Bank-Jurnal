@@ -29,6 +29,8 @@ class statusEdit_Controller extends Controller
         $AlltableArray = json_decode((new listController)->getTable('All'),true);
         $tableArray = json_decode((new listController)->getTable($tableName),true);
         $tableProdi = json_decode((new listController)->getTable('Prodi'),true);
+        
+        $tableArray = (new listController)->SliceTable($tableArray, $AlltableArray, $tableName);
 
         $judul =  (new listController)->UniqueList($tableArray,'JUDUL');
         $penulis = (new listController)->UniqueList($tableArray,'PENULIS');

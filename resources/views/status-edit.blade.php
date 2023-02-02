@@ -216,6 +216,12 @@
             </div>
         @endif
         
+            
+        @if ($message = Session::get('success'))
+            <div class="alert alert-success alert-block d-flex justify-content-between align-items-center">
+                <strong>{{ $message }}</strong>
+            </div>
+        @endif
         <main>
             <div class="main-isi" id="main-isi">
                 <div class="judul-hlm"><h2>{{$title}}</h2></div>
@@ -369,7 +375,9 @@
                                 <button class="btn col-auto">X</button>
                             </div>
                             <div class="card-body">
-                                <form action="" id="form-status">
+                                <form action="{{ route('status.update', ['level_status' => $level_status,'id_artikel' => 1])}}" id="form-status" method="POST">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" name="_method" value="PUT">
                                     <div class="profile_form form_sub">
                                         <div class="form_sub row" id="judul">
                                             <div class="w-25 form_sub_title">Judul Artikel</div>
@@ -453,6 +461,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </main>
         <footer>
@@ -484,6 +493,7 @@
             id_artikel = '';
             tableArray.forEach(index => {
                 artikel_judul = '';
+                artikel_judul_detail = [];
                 artikel_count = 0;
                 index_up = true;
                 tgl = [];
@@ -496,6 +506,7 @@
                         if (index['ID_ARTIKEL'] == indexAll['ID_ARTIKEL']) {
                             if (indexAll['JUDUL_ARTIKEL'] != artikel_judul) {
                                 artikel_judul = indexAll['JUDUL_ARTIKEL'];
+                                artikel_judul_detail.push(indexAll['JUDUL_ARTIKEL']);
                                 artikel_count += 1;
                                 // console.log(indexAll);
                                 // console.log(artikel_judul, ' || ', artikel_count);
@@ -517,7 +528,7 @@
                         }
                     });
                     id_artikel = index['ID_ARTIKEL'];
-                    historyArray.push([index['JUDUL_ARTIKEL'],artikel_count,index['NAMA_PENULIS'],tgl.reverse(),status_lama.reverse(),status_baru.reverse(),revisi.reverse()]);
+                    historyArray.push([index['JUDUL_ARTIKEL'],artikel_count,index['NAMA_PENULIS'],tgl.reverse(),status_lama.reverse(),status_baru.reverse(),revisi.reverse(),artikel_judul_detail.reverse()]);
                 }
             });
 

@@ -52,7 +52,8 @@ class AkunController extends Controller
         ];
 
         $pesan = [
-            'required' => 'Data ini Wajib Diisi !'
+            'username.required' => 'Username Wajib Diisi !',
+            'pass.required' => 'Password Wajib Diisi !'
         ];
 
         $this->validate($request,$rule,$pesan);
@@ -86,10 +87,13 @@ class AkunController extends Controller
         ];
 
         $pesan = [
-            'required' => 'Data ini Wajib Diisi !',
-            'min' => 'Password Telalu Pendek',
+            'username.required' => 'Username Wajib Diisi !',
+            'pass.required' => 'Password Wajib Diisi !',
+            'email.required' => 'Email Wajib Diisi !',
+            'pass.min' => 'Password Telalu Pendek',
+            'passS.min' => 'Password Kedua Telalu Pendek',
             'required_with' => 'Masuki Ulang Password Kedua',
-            'same' => 'Kedua Password Tidak Sama'
+            'same' => 'Kedua Password Tidak Sama dengan Password Pertama'
         ];
 
         $validated = $this->validate($request,$rule,$pesan);
@@ -229,7 +233,9 @@ class AkunController extends Controller
                 ]);
             }
         }
-        return redirect()->route('profile');
+        return redirect()
+            ->route('profile')
+            ->with(['success' => 'Berhasil Update Profile']);
     }
 
     /**

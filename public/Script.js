@@ -554,6 +554,7 @@ var prodi_select_list = [].concat(list_prodi);
                                 var thisStatus = "";
                                 var thisNextStatus = "";
                                 var thisRevisi = "";
+                                var thisJudul = "";
                                 render_list.forEach(data => {
                                     if (data[0] == form_judul.textContent)
                                     {
@@ -564,12 +565,18 @@ var prodi_select_list = [].concat(list_prodi);
                                             thisStatus = element[4][pointerIndex];
                                             thisNextStatus = element[5][pointerIndex];
                                             thisRevisi = element[6][pointerIndex];
+                                            thisJudul = element[7][pointerIndex];
                                         }
                                     });
                                 });
 
-                                var input = input_history(form_judul.textContent, parent, last_list, indexChild, thisFinalize, thisStatus, thisNextStatus, thisRevisi);
+                                var input = input_history(thisJudul, parent, last_list, thisFinalize, thisStatus, thisNextStatus, thisRevisi);
                                 loc.innerHTML = input;
+                                
+                                if (form.querySelector(`select`)) {
+                                    e = form.querySelector(`select`);
+                                    change_Selected_Value(e,thisNextStatus,thisNextStatus);
+                                }
                             }
                         }
                     });
@@ -582,14 +589,35 @@ var prodi_select_list = [].concat(list_prodi);
                     if (open_form_btn && open_form_btn.contains(event.target)) { form_function(form_wrapper); } //open modal
 
                     if (form_wrapper.classList.contains("show")) { //form modal opened
+                        
+                        if (!check_prodi_list) {
+                            // console.log(form_wrapper.querySelector(`form`).action);
+                            split_route = form_wrapper.querySelector(`form`).action.split("/");
+                            // console.log(split_route, form_judul.textContent);
+                            nextAction = '';
+                            for (let index = 0; index < split_route.length; index++) {
+                                if (index != split_route.length-1) { 
+                                    // console.log(split_route[index]);
+                                    nextAction = nextAction + split_route[index]+'/'; 
+                                }
+                                else {
+                                    // console.log("last : "+split_route[index]);
+                                    nextAction = nextAction + form_judul.textContent; 
+                                }
+                                // console.log(nextAction);
+                            }
+                            form_wrapper.querySelector(`form`).action = nextAction;
+                            // console.log(form_wrapper.querySelector(`form`).action);
+                        }
+
                         var from_btn = form_wrapper.querySelectorAll(`.btn`);
                         from_btn.forEach((btn) => {
                             if ((event.target == form_wrapper.childNodes[1]) || (event.target == btn)) {
                                 if (btn.type === "submit") {
-                                    document.getElementById("form-status").addEventListener('submit', (event) => { event.preventDefault(); });
                                     
                                     // console.log("The form was submitted");
                                     if (check_prodi_list) {
+                                        document.getElementById("form-status").addEventListener('submit', (event) => { event.preventDefault(); });
                                         var checkboxes = document.querySelectorAll('input[name="prodi"]:checked');
                                         if (checkboxes) {
                                             var values = [];
@@ -609,6 +637,14 @@ var prodi_select_list = [].concat(list_prodi);
                             }
                         });
                     }
+                }
+
+                
+                if (document.querySelector(`select`)) {
+                    e = form_wrapper.querySelector(`select`);
+                    eValue = e.value;
+                    eText = e.options[e.selectedIndex].text;
+                    change_Selected_Value(e,eValue,eText);
                 }
             //login form
                 if (panel_switch) {
@@ -669,7 +705,19 @@ var prodi_select_list = [].concat(list_prodi);
     }
     function UniqueList(value, index, self) {
         return self.indexOf(value) === index;
-      }
+    }
+    function change_Selected_Value(selectElement,eValue,eText)
+    {
+        for (let i = 0; i < e.options.length; i++) {
+            if (selectElement.options[i].value == eText) {
+                // console.log(eValue, eText);
+                // console.log(i,e.options[i],e.options[i].value);
+                selectElement.options[0].removeAttribute('selected');
+                selectElement.options[i].setAttribute('selected',true);
+                // console.log(form_wrapper.querySelector(`select`));
+            }
+        }
+    }
 
 //tabel
     function replace_id_list(text, id) {
@@ -981,8 +1029,8 @@ var prodi_select_list = [].concat(list_prodi);
                     });
                 }
             });
-            console.log(wrapper);
-            console.log(wrapper.querySelector(`.card-head h3`));
+            // console.log(wrapper);
+            // console.log(wrapper.querySelector(`.card-head h3`));
             if (lokasi.includes('status')) { wrapper.querySelector(`.card-head h3`).textContent = 'Ubah Status Revisi'; }
             else {
                 wrapper.querySelector(`.card-head h3`).textContent = 'Status Revisi';
@@ -1011,7 +1059,7 @@ var prodi_select_list = [].concat(list_prodi);
             }
             
         }
-        function input_history(judulArtikel, parent, last_list, index, sFinalize, CurrentStatus, NextStatus, catatanRevisi) {
+        function input_history(judulDetail, parent, last_list, sFinalize, CurrentStatus, NextStatus, catatanRevisi) {
             var input = `<div class="history_detail row" id="lama">
                             <div class="form_sub_title">Status Lama</div>
                             <div>[`+CurrentStatus+`]</div>
@@ -1026,31 +1074,43 @@ var prodi_select_list = [].concat(list_prodi);
                             <div>[`+catatanRevisi+`]</div>
                         </div>
                         <div class="history_detail row" id="artikel">
-                            <div class="link" id="see_article">Lihat Artikel</div>
+                            <div class="link" id="see_article"><a href="../article/`+ judulDetail+`">Lihat Artikel</a></div>
                         </div>`;
             }
             else if (last_list == parent) {
-                if (lokasi.includes("status") && sFinalize == 'No') {
+                if (lokasi.includes("status")) {
                     input += `<div class="history_detail row" id="baru">
                                 <div class="form_sub_title">Status Baru</div>
                                 <div>
-                                    <select name="" id="tabel_status_change">
+                                    <select name="status_baru" id="tabel_status_change">
                                         <option disabled="" selected="" value="">[Status Baru]</option>
-                                        <option value="">Draft</option>
-                                        <option value="">Revisi Minor</option>
-                                        <option value="">Revisi Mayor</option>
-                                        <option value="">Layak Publish</option>
+                                        <option value="Draft">Draft</option>
+                                        <option value="Revisi Minor">Revisi Minor</option>
+                                        <option value="Revisi Mayor">Revisi Mayor</option>
+                                        <option value="Layak Publish">Layak Publish</option>
                                     </select>
                                 </div>
-                            </div>
-                            <div class="history_detail row" id="catatan">
+                            </div>`;
+                    if(sFinalize == 'No'){
+                        input += `<div class="history_detail row" id="catatan">
                                 <div class="form_sub_title">Catatan</div>
                                 <div>
-                                    <textarea name="" id="" rows="10" class="searchbar search-jdl" placeholder="[Catatan Revisi Yang diberikan Oleh Admin]"></textarea>
+                                    <textarea name="catatan_revisi" id="" rows="10" class="searchbar search-jdl" placeholder="[Catatan Revisi Yang diberikan Oleh Admin]"></textarea>
                                 </div>
-                            </div>
-                            <div class="history_detail row" id="artikel">
-                                <div class="link" id="see_article">Lihat Artikel</div>
+                            </div>`;
+                    }
+                    else {
+                        input += `<div class="history_detail row" id="catatan">
+                                <div class="form_sub_title">Catatan</div>
+                                <div>
+                                    <textarea name="catatan_revisi" id="" rows="10" class="searchbar search-jdl" placeholder="[Catatan Revisi Yang diberikan Oleh Admin]"
+                                    >`+catatanRevisi+`</textarea>
+                                </div>
+                            </div>`;
+                    }
+
+                    input += `<div class="history_detail row" id="artikel">
+                                <div class="link" id="see_article"><a href="../article/`+ judulDetail+`">Lihat Artikel</a></div>
                             </div>`;
                 }
                 else {
@@ -1063,7 +1123,7 @@ var prodi_select_list = [].concat(list_prodi);
                                 <div>[`+catatanRevisi+`]</div>
                             </div>
                             <div class="history_detail row" id="artikel">
-                                <div class="link" id="see_article">Lihat Artikel</div>
+                                <div class="link" id="see_article"><a href="../article/`+ judulDetail+`">Lihat Artikel</a></div>
                             </div>`;
                 }
             }
@@ -1220,14 +1280,14 @@ var prodi_select_list = [].concat(list_prodi);
                                         <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                                         <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
                                     </svg>
-                                    <input type="text" name="username" id="username" placeholder="Username" class="px-0 w-75 me-3 ms-1">
+                                    <input type="text" name="username" id="username" placeholder="Username" class="px-0 w-75 me-3 ms-1" value="">
                                 </div>
                                 <div class="searchbar">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-key me-1 ms-3" viewBox="0 0 16 16">
                                         <path d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8zm4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5z"/>
                                         <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                                     </svg>
-                                    <input type="password" name="pass" id="pass" placeholder="Password" class="px-0 w-75 me-3 ms-1">
+                                    <input type="password" name="pass" id="pass" placeholder="Password" class="px-0 w-75 me-3 ms-1" value="">
                                 </div>
                             </div>
                             <div class="d-flex flex-column">
@@ -1272,26 +1332,26 @@ var prodi_select_list = [].concat(list_prodi);
                                         <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                                         <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
                                     </svg>
-                                    <input type="text" name="username" id="username" placeholder="Username" class="px-0 w-75 me-3 ms-1">
+                                    <input type="text" name="username" id="username" placeholder="Username" class="px-0 w-75 me-3 ms-1" value="">
                                 </div>
                                 <div class="searchbar">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-envelope-open me-1 ms-3" viewBox="0 0 16 16">
                                         <path d="M8.47 1.318a1 1 0 0 0-.94 0l-6 3.2A1 1 0 0 0 1 5.4v.817l5.75 3.45L8 8.917l1.25.75L15 6.217V5.4a1 1 0 0 0-.53-.882l-6-3.2ZM15 7.383l-4.778 2.867L15 13.117V7.383Zm-.035 6.88L8 10.082l-6.965 4.18A1 1 0 0 0 2 15h12a1 1 0 0 0 .965-.738ZM1 13.116l4.778-2.867L1 7.383v5.734ZM7.059.435a2 2 0 0 1 1.882 0l6 3.2A2 2 0 0 1 16 5.4V14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5.4a2 2 0 0 1 1.059-1.765l6-3.2Z"/>
                                     </svg>
-                                    <input type="text" name="email" id="email" placeholder="Email" class="px-0 w-75 me-3 ms-1">
+                                    <input type="text" name="email" id="email" placeholder="Email" class="px-0 w-75 me-3 ms-1" value="">
                                 </div>
                                 <div class="searchbar">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-key me-1 ms-3" viewBox="0 0 16 16">
                                         <path d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8zm4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5z"/>
                                         <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                                     </svg>
-                                    <input type="password" name="pass" id="pass" placeholder="Password" class="px-0 w-75 me-3 ms-1">
+                                    <input type="password" name="pass" id="pass" placeholder="Password" class="px-0 w-75 me-3 ms-1" value="">
                                 </div>
                                 <div class="searchbar">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-key-fill me-1 ms-3" viewBox="0 0 16 16">
                                         <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
                                     </svg>
-                                    <input type="password" name="passS" id="passS" placeholder="Re Enter Password" class="px-0 w-75 me-3 ms-1">
+                                    <input type="password" name="passS" id="passS" placeholder="Re Enter Password" class="px-0 w-75 me-3 ms-1" value="">
                                 </div>
                             </div>
                             <div class="d-flex flex-column">

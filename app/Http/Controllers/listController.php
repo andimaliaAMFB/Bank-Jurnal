@@ -91,11 +91,7 @@ class listController extends Controller
                             'artikel_detail.TANGGAL_UPLOAD',
                             'artikel_detail.STATUS_ARTIKEL',
                             'revisi_detail.STATUS_ARTIKEL_BARU')
-                    ->where('artikel.ID_ARTIKEL','=',substr($typeTable,8))
-                    ->Where(function($query) use ($typeTable) {
-                        $query->where('artikel_detail.STATUS_ARTIKEL','=','Layak Publish')
-                                ->orWhere('revisi_detail.STATUS_ARTIKEL_BARU','=','Layak Publish');
-                    })
+                    ->where('artikel_detail.ID_DETAILARTIKEL','=',substr($typeTable,8))
                     ->orderByDesc('artikel.ID_ARTIKEL')
                     ->orderByDesc('artikel_detail.ID_DETAILARTIKEL')
                     ->get();
@@ -125,8 +121,16 @@ class listController extends Controller
         else if (str_contains($typeTable,'Judul-')){
             $Array = DB::table('artikel_detail')
                     ->join('artikel','artikel_detail.ID_ARTIKEL','=','artikel.ID_ARTIKEL')
+                    ->join('revisi','revisi.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
+                    ->join('revisi_detail','revisi_detail.ID_REVISI', '=', 'revisi.ID_REVISI')
                     ->select('artikel.ID_ARTIKEL',
-                            'artikel_detail.JUDUL_ARTIKEL')
+                            'artikel_detail.ID_DETAILARTIKEL',
+                            'artikel_detail.JUDUL_ARTIKEL',
+                            'revisi.ID_REVISI',
+                            'revisi_detail.ID_DETAILREVISI',
+                            'artikel_detail.STATUS_ARTIKEL',
+                            'revisi_detail.STATUS_ARTIKEL_BARU',
+                            'revisi_detail.REVISI')
                     ->where('artikel_detail.JUDUL_ARTIKEL','=',substr($typeTable,6))
                     ->orderByDesc('artikel.ID_ARTIKEL')
                     ->orderByDesc('artikel_detail.ID_DETAILARTIKEL')

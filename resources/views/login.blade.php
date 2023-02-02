@@ -9,7 +9,22 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="Style.css">
 </head>
-<body>
+<body>   
+
+    @if ($message = Session::get('success'))
+        <div class="alert alert-success alert-block d-flex justify-content-between align-items-center">
+            <strong>{{ $message }}</strong>
+        </div>
+    @endif    
+    @if ($errors->any())
+        <div class="alert alert-danger alert-block ">
+            <strong>Ada Kesalahan Input dalam: </strong>
+            <br>
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </div>
+    @endif
     <main>
         <div class="main-isi" id="main-isi">
             @if ($form == 'login')
@@ -109,15 +124,19 @@
         array_error[3] = document.querySelector(`#passS_error`);
 
         array_error.forEach(error => {
-            console.log(error);
+            // console.log(error);
             if (error) {
                 string_element = ".searchbar input#" + error.id.split('_')[0];
                 element = document.querySelector(string_element);
                 element.parentNode.classList.add('line-red-1');
                 // element.value = "{{ $errors->first('username') }}";
-                console.log(string_element,element,element.parentNode);
+                // console.log(string_element,element,element.parentNode);
             }
         });
+            if (document.querySelector(`#username`)) { document.querySelector(`#username`).value = "{{ old('username') }}"; }
+            if (document.querySelector(`#pass`)) { document.querySelector(`#pass`).value = "{{ old('pass') }}"; }
+            if (document.querySelector(`#email`)) { document.querySelector(`#email`).value = "{{ old('email') }}"; }
+            if (document.querySelector(`#passS`)) { document.querySelector(`#passS`).value = "{{ old('passS') }}"; }
     </script>
 </body>
 </html>

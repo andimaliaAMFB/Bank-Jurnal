@@ -509,12 +509,13 @@
             // console.table(list_judul);
             // console.table(list_penulis);
             // console.table(tableArray);
-            console.table(final);
+            // console.table(final);
 
             var historyArray = [];
             id_artikel = '';
             tableArray.forEach(index => {
                 artikel_judul = '';
+                artikel_judul_detail = [];
                 artikel_count = 0;
                 index_up = true;
                 tgl = [];
@@ -527,6 +528,7 @@
                         if (index['ID_ARTIKEL'] == indexAll['ID_ARTIKEL']) {
                             if (indexAll['JUDUL_ARTIKEL'] != artikel_judul) {
                                 artikel_judul = indexAll['JUDUL_ARTIKEL'];
+                                artikel_judul_detail.push(indexAll['JUDUL_ARTIKEL']);
                                 artikel_count += 1;
                                 // console.log(indexAll);
                                 // console.log(artikel_judul, ' || ', artikel_count);
@@ -548,7 +550,7 @@
                         }
                     });
                     id_artikel = index['ID_ARTIKEL'];
-                    historyArray.push([index['JUDUL_ARTIKEL'],artikel_count,index['NAMA_PENULIS'],tgl.reverse(),status_lama.reverse(),status_baru.reverse(),revisi.reverse()]);
+                    historyArray.push([index['JUDUL_ARTIKEL'],artikel_count,index['NAMA_PENULIS'],tgl.reverse(),status_lama.reverse(),status_baru.reverse(),revisi.reverse(),artikel_judul_detail.reverse()]);
                 }
             });
 

@@ -45,3 +45,4 @@ Route::group(['prefix' => 'article'], function()
     });
 });
 Route::get('/status/{level_status}', [statusEdit_Controller::class, 'index'])->name('status.index');
+Route::put('/status/{level_status}/{id_artikel}', [statusEdit_Controller::class, 'update'])->name('status.update');

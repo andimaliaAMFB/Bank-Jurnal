@@ -50,19 +50,9 @@ class ArtikelController extends Controller
     public function show($id) {
         // echo substr('Article-'.$id,8);
         $taskbarValue = (new listController)->taskbarList ();
-        $tableArray;
-        $loop = false;
         
-        do {
-            $tableArray = json_decode((new listController)->getTable('Article-'.$id),true);
-            // print_r($tableArray);
-            if (empty($tableArray)) {
-                $id = json_decode((new listController)->getTable('Judul-'.$id),true)[0]['ID_ARTIKEL'];
-                // print_r($id);
-                $loop = true;
-            }
-            else { $loop = false; }
-        } while ($loop);
+        $id_artikelDetail = json_decode((new listController)->getTable('Judul-'.$id),true)[0]['ID_DETAILARTIKEL'];
+        $tableArray = json_decode((new listController)->getTable('Article-'.$id_artikelDetail),true);
 
 
         $judul =  (new listController)->UniqueList($tableArray,'JUDUL');

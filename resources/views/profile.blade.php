@@ -216,6 +216,11 @@
             </div>
         @endif
 
+        @if ($message = Session::get('success'))
+            <div class="alert alert-success alert-block d-flex justify-content-between align-items-center">
+                <strong>{{ $message }}</strong>
+            </div>
+        @endif
         <main>
             <div class="main-isi" id="main-isi">
                 <form action="{{ route('profile.update', ['id' => $arrayAkun[0]['ID_AKUN']]) }}" method="POST" enctype="multipart/form-data">

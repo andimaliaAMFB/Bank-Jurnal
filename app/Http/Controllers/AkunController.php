@@ -128,7 +128,9 @@ class AkunController extends Controller
         ]);
             
         
-        return redirect()->route('loginShow');
+        return redirect()
+            ->route('loginShow')
+            ->with(['success' => 'Berhasil Signup Akun']);
     }
 
     public function logout() {

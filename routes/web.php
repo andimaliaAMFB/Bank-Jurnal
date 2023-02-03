@@ -37,12 +37,11 @@ Route::get('/myarticle', [produkController::class, 'myarticle'])->name('myarticl
 Route::get('/{id_penulis}', [ArtikelController::class, 'showbyPenulis'])->name('article.penulis');
 Route::group(['prefix' => 'article'], function()
 {
-    Route::get('/{id_article}', [ArtikelController::class, 'show'])->name('article');
-
-    Route::resource('upload', ArtikelController::class);
-    Route::group(['prefix' => 'upload'], function() {
-        Route::resource('re-upload', ArtikelController::class);
-    });
+    // Route::get('/{id_article}', [ArtikelController::class, 'show'])->name('article');
+    Route::get('/upload', [ArtikelController::class, 'create'])->name('article.create');
+    Route::post('/upload', [ArtikelController::class, 'store'])->name('article.store');
+    Route::get('/{id_article}/re-upload', [ArtikelController::class, 'Recrate'])->name('article.recreate');
+    Route::post('/{id_article}/re-upload', [ArtikelController::class, 'Restore'])->name('article.restore');
 });
 Route::get('/status/{level_status}', [statusEdit_Controller::class, 'index'])->name('status.index');
 Route::put('/status/{level_status}/{id_artikel}', [statusEdit_Controller::class, 'update'])->name('status.update');

@@ -201,7 +201,7 @@
                     <div class="task-content">
                         <ul>
                             <a href="{{ route('dashboard') }}"><li>Dashboard</li></a>
-                            <a href="{{ route('upload.create') }}"><li>Upload Artikel</li></a>
+                            <a href="{{ route('article.create') }}"><li>Upload Artikel</li></a>
                             @if(isset($arrayAkun[0]['STATUS_AKUN']) && $arrayAkun[0]['STATUS_AKUN'] == 'Admin')
                             <a href="{{ route('status.index', ['level_status' => 'draft']) }}"><li>Draft<p>{{ $taskbarValue['Draft'] }}</p></li></a>
                             <a href="{{ route('status.index', ['level_status' => 'revisi-mayor']) }}"><li>Revisi Mayor<p>{{ $taskbarValue['Revisi Mayor'] }}</p></li></a>
@@ -215,11 +215,30 @@
             </div>
         @endif
         
+        @if ($message = Session::get('success'))
+        <div class="alert alert-success alert-block d-flex justify-content-between align-items-center">
+            <strong>{{ $message }}</strong>
+        </div>
+        @endif    
+        @if ($errors->any())
+            <div class="alert alert-danger alert-block ">
+                <strong>Kesalahan Input: </strong>
+                <br>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </div>
+        @endif
         <main>
             <div class="main-isi" id="main-isi">
                 <div class="judul-hlm"><h2>{{ $title }}</h2></div>
                 
-                <form action="{{ route('upload.store') }}">
+                @if($title == 'Upload Artikel')
+                <form action="{{ route('article.store') }}" method="POST" enctype="multipart/form-data">
+                @elseif(str_contains($title,'Upload Revisi Artikel'))
+                <form action="{{ route('article.restore') }}" method="POST" enctype="multipart/form-data">
+                @endif
+                {{ csrf_field() }}
                     <div class="card form">
                         <div class="form_sub row" id="profile">
                             <div class="form_sub_title w-100">Penulis</div>
@@ -354,8 +373,58 @@
             prodi.forEach((element,index) => { list_prodi[index] = prodi[index]['NAMA_JURUSAN']; });
             let final_list = [];
 
+            var list_up_penulis = [];
+            var list_up_penulis_text = [];
+            var list_up_prodi = [];
+            var list_up_prodi_text = [];
+
+            var countPenulis_old = 3 - 1;
+
         </script>
         <!-- JS comunicate with database -->
         <script src="../../Script.js"></script>
+        <script type="text/javascript">
+            if (document.querySelector(`.judul-hlm`).textContent.includes('Upload Revisi Artikel')) {
+                console.log('This is Revision Upload Page');
+            }
+            while (countPenulis_old > 0) {
+                form_page.forEach(form => {
+                    if (form.id == 'profile') {
+                        var form_list = form.querySelectorAll(`.form-sub`);
+                        if (form_list) {
+                            form_list.forEach(list => {
+                                if (list.classList.contains('addBox')) {
+                                    form_addPenulis(form, list);
+                                    if (form.childElementCount == 6) { 
+                                        list.style.display = "none";
+                                    }
+                                    ThisForm = document.querySelector(`.form_sub.row#profile`);
+                                    if (ThisForm) {
+                                        // console.log(ThisForm.childElementCount, ThisForm.querySelectorAll(`.form-sub`).length);
+                                        ThisForm.querySelectorAll(`.form-sub`).forEach((item,itemIndex) => {
+                                            if (!item.classList.contains(`addBox`)) {
+                                                // console.log("Lenght: ",ThisForm.querySelectorAll(`.form-sub`).length, " | itemIndex: ",itemIndex,item);
+                                                // console.log(item,item.querySelectorAll(`input`));
+                                                // console.log("replace_id_list(item.outerHTML,", itemIndex+1,")");
+    
+                                                item.querySelectorAll(`input`).forEach(input => {
+                                                    // console.log("Before: ",input.name," | ",input.id," | ",input.outerHTML);
+                                                    input.name = replace_id_list(input.name, itemIndex+1);
+                                                    input.id = replace_id_list(input.id, itemIndex+1);
+                                                    input.outerHTML = replace_id_list(input.outerHTML, itemIndex+1);
+                                                    // console.log("After: ",input.name," | ",input.id," | ",input.outerHTML);
+                                                })
+                                                item.outerHTML = replace_id_list(item.outerHTML, itemIndex+1);
+                                            }
+                                        });
+                                    }
+                                    countPenulis_old -= 1;
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        </script>
     </body>
 </html>

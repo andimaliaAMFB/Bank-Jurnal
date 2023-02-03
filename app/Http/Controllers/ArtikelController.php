@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use DB;
+use Session;
 
 class ArtikelController extends Controller
 {
@@ -38,6 +41,118 @@ class ArtikelController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+        $field = array();
+        $penulis_jurusan = [];
+        $penulis = '';
+        foreach ($request->all() as $key => $value) {
+            echo $key.": ".$value."<br>";
+            if ($key != '_token') {
+                $field[] = $key;
+                if (str_contains($key,'pnl')) { $penulis = $value; }
+                else if (str_contains($key,'prodi')) { $penulis_jurusan += [$penulis => $value]; }
+            }
+        }
+        print_r($penulis_jurusan);
+
+        $rule = array();
+        foreach ($field as $key => $value) { $rule += [$value => 'required']; }
+
+        $pesan = [];
+        foreach ($rule as $key => $value) {
+            $txt = '';
+            if (str_contains($key,'pnl')) { $txt = $txt.'Nama Penulis-'; }
+            else if (str_contains($key,'prodi')) { $txt = $txt.'Nama Program Studi-'; }
+            else if (str_contains($key,'jdl')) { $txt = $txt.'Judul Artikel'; }
+            // echo $key.": ".$value."<br>";
+            for ($i=1; $i <= 4; $i++) { 
+                if (str_contains($key,$i)) { $txt = $txt.$i; }
+            }
+            $txt = $txt.' Wajib Diisi !';
+            $pesan += [$key.'.required' => $txt];
+        }
+
+        $validator = Validator::make($request->all(), $rule, $pesan);
+
+        if ($validator->fails()) {
+            // return redirect()
+            //     ->route('article.create')
+            //     ->withErrors($validator)
+            //     ->withInput();
+        }
+        
+        $id_akun = (new listController)->getAkun()[0]['ID_AKUN'];
+        $id_artikel = $id_akun."-".(date('m')+date("d")+date("B")).$id_akun;
+        $id_artikel_detail = substr(md5($id_artikel),0,4)."-1";
+
+        // DB::table('artikel')-> INSERT ([
+        //     'ID_ARTIKEL' => $id_artikel,
+        //         'ID_AKUN' => $id_akun
+        // ]);
+        // DB::table('artikel_detail')-> INSERT ([
+        //     'ID_DETAILARTIKEL' => $id_artikel_detail,
+        //     'ID_ARTIKEL' => $id_artikel,
+        //     'JUDUL_ARTIKEL' => $request->jdl,
+        //     'TANGGAL_UPLOAD' => date("Y-m-d"),
+        //     'STATUS_ARTIKEL' => 'Draft'
+        // ]);
+        $countPnl = 0;
+        foreach ($penulis_jurusan as $key => $value)
+        {
+            echo "<br>Penulis-".$countPnl;
+            $dataPenulis = json_decode((new listController)->getTable('PNL-'.$key),true);
+            $dataJurusan = json_decode((new listController)->getTable('Prodi-'.$value),true);
+            // print_r($dataPenulis);
+            // print_r($dataJurusan);
+            // $id_jurusan = '';
+            if(!$dataJurusan) {
+            //     $lastIdProdi = json_decode((new listController)->getTable('Prodi'),true).count();
+            //     DB::table('jurusan')-> INSERT (['ID_JURUSAN' => 'Jurusan-'.$lastIdProdi, 'NAMA_JURUSAN' => $value]);
+            //     $id_jurusan = 'Jurusan-'.$lastIdProdi;
+                echo "<br>Create new Prodi<br>";
+            }
+            // else { $id_jurusan = $dataJurusan[0]['ID_JURUSAN']; }
+            // $id_penulis = '';
+            if(!$dataPenulis) {
+            //     $lastIdPenulis = strval(date("m").(date("d")+date("B")))."-1";
+            //     DB::table('penulis')-> INSERT ([
+            //         'ID_PENULIS' => "PNL".substr(md5($lastIdPenulis),0,4),
+            //         'ID_AKUN' => null,
+            //         'ID_JURUSAN' => $id_jurusan,
+            //         'NAMA_PENULIS' => $key
+            //     ]);
+            //     $id_penulis = $lastIdPenulis;
+                echo "<br>Create new Penulis Tanpa Akun<br>";
+            }
+            if($id_jurusan && $dataPenulis) {
+                echo "<br>Ini Penulis dan Prodi yang sudah terdaftar di DB<br>";
+            //     $id_penulis = $dataPenulis[0]['ID_PENULIS'];
+                if($dataPenulis[0]['ID_JURUSAN'] == $id_jurusan) {
+                    echo "<br>Ini Penulis yang sudah terdaftar sesuai dengan jurusannya<br>";
+                }
+                else {
+                    echo "<br>Ini Penulis yang sudah terdaftar TAPI TIDAK sesuai dengan jurusannya<br>";
+                }
+            }
+            // DB::table('artikel_detail_penulis') -> INSERT ([
+            //     'ID_LIST_PENULIS' => 'PNL'.$id_artikel_detail."-".$i,
+            //     'ID_DETAILARTIKEL' => $id_artikel_detail,
+            //     'ID_PENULIS' => $id_penulis
+            // ]);
+            $countPnl += 1;
+        }
+
+        // return redirect()
+        //     ->route('article.create')
+        //     ->with(['success' => 'Berhasil Upload Artikel Baru']);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function Restore(Request $request) {
         //
     }
 

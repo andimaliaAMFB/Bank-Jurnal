@@ -133,10 +133,10 @@
                 // console.log(string_element,element,element.parentNode);
             }
         });
-            if (document.querySelector(`#username`)) { document.querySelector(`#username`).value = "{{ old('username') }}"; }
-            if (document.querySelector(`#pass`)) { document.querySelector(`#pass`).value = "{{ old('pass') }}"; }
-            if (document.querySelector(`#email`)) { document.querySelector(`#email`).value = "{{ old('email') }}"; }
-            if (document.querySelector(`#passS`)) { document.querySelector(`#passS`).value = "{{ old('passS') }}"; }
+        if (document.querySelector(`#username`)) { document.querySelector(`#username`).value = "{{ old('username') }}"; }
+        if (document.querySelector(`#pass`)) { document.querySelector(`#pass`).value = "{{ old('pass') }}"; }
+        if (document.querySelector(`#email`)) { document.querySelector(`#email`).value = "{{ old('email') }}"; }
+        if (document.querySelector(`#passS`)) { document.querySelector(`#passS`).value = "{{ old('passS') }}"; }
     </script>
 </body>
 </html>

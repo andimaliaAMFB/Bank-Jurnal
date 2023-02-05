@@ -122,7 +122,7 @@ var prodi_select_list = [].concat(list_prodi);
 //function
 //mouse clicked
     window.addEventListener('mouseup', function(event){
-        console.log(event.target);
+        // console.log(event.target);
         //general
             var minusIndex = 0;
             headBtn.forEach((btn,index) => { //Open Close Header Menu Modal
@@ -303,305 +303,93 @@ var prodi_select_list = [].concat(list_prodi);
         //form
             // form upload
             if (form_page) { //full form page for upload
-                let list_inputPnl = [];
-                let list_inputProdi = [];
-                // form_page.forEach((form,formIndex) => {
-                //     // console.log(form);
-                //     var form_list = form.querySelectorAll(`.form-sub`);
-
-                //     if (form_list) {
-                //         form_list.forEach((list,listIndex) => {
-                //             // console.log(form.id,list);
-
-                //             // Hierarki urutan searchbar
-                //             // .form-sub \.\ .form-sub.addBox                                                                        (M)
-                //             // .select   \\ .input                                                                                   (0)
-                //             // div(Title Searchbar) -|.|- div.search-input                                                           (1)
-                //             // .................... -|.|- div.searchbar.searchFull.search-value |.| .searchbar.search-dd.drop-select (2)
-                //             // .................... -|.|- input#id    || button                 |.| .se-se-bar                       (3)
-                //             // .................... -|.|- ..................................... |.| ul.select-droped                 (4)
-                //             // .................... -|.|- ..................................... |.| li                               (5)
-                            
-                //             var searchbar = list.querySelectorAll(`.search-value`); //hierarki (2)
-
-                //             // searchbar.forEach(search => {
-                //             //     // console.log(event.target,search.parentNode,search.parentNode.contains(event.target));
-                //             //     // console.log(search);
-                //             //     var thisBtn = search.querySelector(`button`);
-                //             //     if (search.parentNode.contains(event.target) || 
-                //             //         event.target == thisBtn || 
-                //             //         thisBtn.contains(event.target)) { //open searchbar dropdown menu, memilih list row revisi
-                //             //         var search_parent = search.parentNode; //hierarki (1)
-                //             //         var search_dd = search_parent.querySelector(`.search-dd`); //hierarki (2)
-                //             //         var search_input = search.querySelector(`input`);  //hierarki (3)
-                //             //         var search_dd_menu = search_dd.querySelectorAll(`div ul li`);  //hierarki (5)
-                //             //         // console.log(event.target);
-
-                //             //         form_searchbar(event.target, search_parent, search, search_input, search_dd, search_dd_menu); //open-close dropdown input that has suggestion, add active to selected value
-                                    
-                //             //         // console.log(search_input.value);
-                //             //         if (!search.classList.contains("show")) { //change after dropdown input closed
-                //             //             // console.log(search,search_parent.parentNode,search_parent.parentNode.nextElementSibling);
-                                        
-                //             //             var parent = search_parent.parentNode; //hierarki (0)
-                //             //             var loc_next = parent.nextElementSibling; //hierarki (0) yang mirip dengan parent
-                //             //             if (list_up_penulis) {
-                                            
-                //             //             }
-                //             //             if (search_input.value.includes("Baru")) { //memilih penulis atau prodi baru yang tidak ada dalam database
-                //             //                 // console.log(!loc_next || loc_next.classList.contains("select"));
-                //             //                 if (!loc_next || loc_next.classList.contains("select")) {
-                //             //                     var next = document.createElement("div"); //membuat .input, hierarki (0), baru di lokasi selanjut hierarki (0)
-                                                
-                //             //                     // .input
-                //             //                         parent.classList.forEach(classL => {
-                //             //                             // console.log(classL);
-                //             //                             next.classList.add(classL);
-                //             //                         })
-                //             //                         next.classList.add("input");
-                //             //                         next.classList.remove("select");
-                //             //                         next.setAttribute(`id`,`text-`+search_parent.id)
-        
-                //             //                         var inner = `<div class="col-md-3"></div>
-                //             //                                     <div class="col-md-9 search_input d-flex flex-wrap">
-                //             //                                         <div class="searchbar w-100">
-                //             //                                             <input class="w-100" type="text" name="`+search_parent.id+`" id="`+search_parent.id+`"`
-                //             //                         if (search_parent.id.includes("pnl")) {
-                //             //                             inner += `placeholder="[Nama Penulis]">
-                //             //                                         </div>
-                //             //                                     </div>`
-                //             //                         }
-                //             //                         else if (search_parent.id.includes("prodi")) {
-                //             //                             inner += `placeholder="[Program Studi]">
-                //             //                                         </div>
-                //             //                                     </div>`
-                //             //                         }
-                //             //                     // .input
-    
-                //             //                     form_addNewElement(parent.parentNode, loc_next, next, inner);
-                //             //                 }
-                //             //             }
-                //             //             else if (!search_input.value.includes("Baru")) { //memilih penulis atau prodi baru yang ada dalam database
-                //             //                 if (document.getElementById("text-"+search_parent.id)) {
-                //             //                     // console.log(document.getElementById("text-"+search_parent.id));
-                //             //                     document.getElementById("text-"+search_parent.id).remove();
-                //             //                 }
-                //             //             }
-                //             //         }
-                //             //         if (search_input.id.split('-')[0] == 'pnl') {
-                //             //             list_up_penulis[search_input.id.split('-')[1]-1] = search_input.value;
-                //             //             console.table(list_up_penulis);
-                //             //         }
-                //             //         else if (search_input.id.split('-')[0] == 'prodi') {
-                //             //             list_up_prodi[search_input.id.split('-')[1]-1] = search_input.value;
-                //             //             console.table(list_up_prodi);
-                //             //         }
-
-                //             //     }
-                //             //     else { search.classList.remove(`show`); } //close searchbar dropdown menu
-                //             // })
-                            
-                            
-                //             var listBtn = list.querySelectorAll(`button`); //list semua button yang ada dalam form-sub, hirarki (0)
-                //             listBtn.forEach(btn => {
-                //                 if (btn.contains(event.target)) {
-                //                     // console.log(btn);
-                //                     // console.log(list);
-                //                     // console.log(form,form.childElementCount,form.children);
-
-                //                     form.querySelectorAll(`.form-sub .search-value input`).forEach((item) => {
-                //                         // console.log(item);
-                //                         if (item.id.includes("pnl")) {
-                //                             list_inputPnl.push(item.value);
-                //                         }
-                //                         else if (item.id.includes("prodi")) {
-                //                             list_inputProdi.push(item.value);
-                //                         }
-                //                     })
-                //                     // console.log("---------");
-                //                     // console.log("formIndex: ",formIndex," | ",list_inputPnl," | ",list_inputProdi);
-                //                     // console.log("-----------------------------------------------");
-
-                //                     if (list.classList.contains("addBox")) { //click button child of div.form-sub.addBox
-                //                         console.log(btn,"Add");
-                //                         if (form.childElementCount <= 6) { //this button can only click 3x while form child <= 6
-
-                //                             var next = document.createElement("div"); //membuat .form-sub, hierarki (M), baru di lokasi selanjut hierarki (M)
-                //                             var innerText
-                                            
-                //                             // div.form-sub
-                //                                 form.children[1].classList.forEach(classL => {
-                //                                     next.classList.add(classL);
-                //                                 })
-                //                                 // console.log(form_sub_list);
-
-                //                                 form_sub_list.forEach((item, item_index) => { //add element based html only file
-                //                                     if (item_index == 0) {
-                //                                         item_text = "";
-                //                                         for (let i = 0; i < item.childElementCount; i++) {
-                //                                             if (!item.children[i].classList.contains("input")) {
-                //                                                 // console.log(i,item.children[i]); //hierarki (0)
-                //                                                 item_text += item.children[i].outerHTML; //add outerHTML of list
-                //                                             }
-                //                                         }
-                //                                         // console.log(item_text);
-                //                                         innerText = item_text;
-                //                                     }
-                //                                 })
-                //                                 // console.log(innerText);
-                //                                 innerText = replace_id_list(innerText, (form.childElementCount-1));
-                //                                 form_addNewElement(form, list, next, innerText);
-
-                //                                 form.querySelectorAll(`.form-sub`).forEach((item, item_index) => {
-                //                                     if (item_index < form_list.length) {
-                //                                         // console.log(item_index, "item",item);
-                //                                         // console.log("item_index: ",item_index," | ",list_inputPnl[item_index]," | ",list_inputProdi[item_index]);
-                //                                         // console.log("form_list.length : ",form_list.length," | ",item.childElementCount);
-                //                                         for (let i = 1; i < item.childElementCount; i++) {
-                //                                             // console.log(list_inputPnl.length, list_inputProdi.length);
-                //                                             // console.log(item.children[i].querySelector(`.search_input input`));
-                //                                             // console.log(item.children[i].querySelector(`.search_input input`).name, " to ", (item_index+1));
-                //                                             // console.log(item.children[i].querySelector(`.search_input input`).id, " to ", (item_index+1));
-                                                            
-                //                                             item.children[i].querySelector(`input`).outerHTML = replace_id_list(item.children[i].querySelector(`.search_input input`).outerHTML,(item_index+1));
-                                                            
-                //                                             if (item.children[i].querySelector(`.search_input`).id.includes("pnl") && list_inputPnl[item_index]) {
-                //                                                 item.children[i].querySelector(`.search_input input`).value = list_inputPnl[item_index];
-                //                                                 item.children[i].querySelector(`.search_input input`).defaultValue = list_inputPnl[item_index];
-                //                                             }
-                //                                             else if (item.children[i].querySelector(`.search_input`).id.includes("prodi") && list_inputProdi[item_index]){
-                //                                                 item.children[i].querySelector(`.search_input input`).value = list_inputProdi[item_index];
-                //                                                 item.children[i].querySelector(`.search_input input`).defaultValue = list_inputProdi[item_index];
-                //                                             }
-                //                                             else {
-                //                                                 // console.log(replace_id_list(item.children[i].querySelector(`.search_input input`).outerHTML,(item_index+1)));
-                //                                                 item.children[i].querySelector(`.search_input input`).defaultValue = "";
-                //                                             }
-                //                                         }
-                //                                         // console.log("============================================");
-                //                                     }
-                //                                 })
-
-                //                             // div.form-sub
-
-                //                             if (form.childElementCount == 6) { //hidden .addBox when form child == 6
-                //                                 btn.parentNode.style.display = "none";
-                //                             }
-                //                         }
-                //                     }
-                //                     else if (btn.classList.contains("cancel-btn")) { //delete a row from list form
-                //                         // console.log("---------------Cancel Penulis---------------");
-                //                         if (form.childElementCount > 3) {
-                //                             list.remove();
-                //                             // console.log(listIndex);
-                //                             list_inputPnl.splice(listIndex,1);
-                //                             list_inputProdi.splice(listIndex,1);
-                //                         }
-                //                         if (form.childElementCount < 6) {
-                //                             form.children[form.childElementCount-1].style.display = null;
-                //                         }
-                //                     }
-                                     
-                //                     ThisForm = document.querySelector(`.form_sub.row#profile`);
-                //                     if (ThisForm) {
-                //                         // console.log(ThisForm.childElementCount, ThisForm.querySelectorAll(`.form-sub`).length);
-                //                         ThisForm.querySelectorAll(`.form-sub`).forEach((item,itemIndex) => {
-                //                             if (!item.classList.contains(`addBox`)) {
-                //                                 // console.log("Lenght: ",ThisForm.querySelectorAll(`.form-sub`).length, " | itemIndex: ",itemIndex,item);
-                //                                 // // console.log(item,item.querySelectorAll(`input`));
-                //                                 // console.log("replace_id_list(item.outerHTML,", itemIndex+1,")");
-
-                //                                 item.querySelectorAll(`input`).forEach(input => {
-                //                                     // console.log("Before: ",input.name," | ",input.id," | ",input.outerHTML);
-                //                                     input.name = replace_id_list(input.name, itemIndex+1);
-                //                                     input.id = replace_id_list(input.id, itemIndex+1);
-                //                                     input.outerHTML = replace_id_list(input.outerHTML, itemIndex+1);
-                //                                     // console.log("After: ",input.name," | ",input.id," | ",input.outerHTML);
-                //                                 })
-                //                                 item.outerHTML = replace_id_list(item.outerHTML, itemIndex+1);
-                //                             }
-                //                         });
-                //                     }
-                //                 }
-                            
-                //             })
-                //             // console.log(list.querySelectorAll(`.search-value`));
-                //         })
-                //     }
-                // })
-
-                
-                
-                form_page.forEach(form => {
+                form_page.forEach((form,formIndex) => {
+                    // console.log(form);
                     var form_list = form.querySelectorAll(`.form-sub`);
+
                     if (form_list) {
                         form_list.forEach((list,listIndex) => {
-                            var searchbar = list.querySelectorAll(`.search-value`);
+                            // console.log(form.id,list);
+
+                            // Hierarki urutan searchbar
+                            // .form-sub \.\ .form-sub.addBox                                                                        (M)
+                            // .select   \\ .input                                                                                   (0)
+                            // div(Title Searchbar) -|.|- div.search-input                                                           (1)
+                            // .................... -|.|- div.searchbar.searchFull.search-value |.| .searchbar.search-dd.drop-select (2)
+                            // .................... -|.|- input#id    || button                 |.| .se-se-bar                       (3)
+                            // .................... -|.|- ..................................... |.| ul.select-droped                 (4)
+                            // .................... -|.|- ..................................... |.| li                               (5)
+                            
+                            var searchbar = list.querySelectorAll(`.search-value`); //hierarki (2)
+
                             searchbar.forEach(search => {
+                                // console.log(event.target,search.parentNode,search.parentNode.contains(event.target));
+                                // console.log(search);
                                 var thisBtn = search.querySelector(`button`);
-                                var search_parent = search.parentNode; //hierarki (1)
-                                var search_dd = search_parent.querySelector(`.search-dd`); //hierarki (2)
-                                var search_input = search.querySelector(`input`);  //hierarki (3)
-                                var search_dd_menu = search_dd.querySelectorAll(`div ul li`);  //hierarki (5)
-
-                                if ((search.parentNode.contains(event.target) || 
+                                if (search.parentNode.contains(event.target) || 
                                     event.target == thisBtn || 
-                                    thisBtn.contains(event.target)) &&
-                                    !search.classList.contains("show")) {
-                                    // console.log(search.parentNode, thisBtn ,event.target);
-                                    // console.log('open by click searchbar');
+                                    thisBtn.contains(event.target)) { //open searchbar dropdown menu, memilih list row revisi
+                                    var search_parent = search.parentNode; //hierarki (1)
+                                    var search_dd = search_parent.querySelector(`.search-dd`); //hierarki (2)
+                                    var search_input = search.querySelector(`input`);  //hierarki (3)
+                                    var search_dd_menu = search_dd.querySelectorAll(`div ul li`);  //hierarki (5)
+                                    // console.log(event.target);
 
-                                    form_searchbar(event.target, search_parent, search,
-                                                    search_input, search_dd, search_dd_menu); //open-close dropdown input that has suggestion, add active to selected value
-
-                                }
-                                else if (search.classList.contains("show")) //close searchbar dropdown menu
-                                {
-                                    form_searchbar(event.target, search_parent, search,
-                                        search_input, search_dd, search_dd_menu); //open-close dropdown input that has suggestion, add active to selected value
-
-                                    var parent = search_parent.parentNode; //hierarki (0)
-                                    var loc_next = parent.nextElementSibling; //hierarki (0) yang mirip dengan parent
-                                    if (search_input.value.includes("Baru")) { //memilih penulis atau prodi baru yang tidak ada dalam database
-                                        // console.log(!loc_next || loc_next.classList.contains("select"));
-                                        if (!loc_next || loc_next.classList.contains("select")) {
-                                            var next = document.createElement("div"); //membuat .input, hierarki (0), baru di lokasi selanjut hierarki (0)
-                                            
-                                            // .input
-                                                parent.classList.forEach(classL => {
-                                                    // console.log(classL);
-                                                    next.classList.add(classL);
-                                                })
-                                                next.classList.add("input");
-                                                next.classList.remove("select");
-                                                next.setAttribute(`id`,`text-`+search_parent.id)
+                                    form_searchbar(event.target, search_parent, search, search_input, search_dd, search_dd_menu); //open-close dropdown input that has suggestion, add active to selected value
+                                    
+                                    // console.log(search_input.value);
+                                    if (!search.classList.contains("show")) { //change after dropdown input closed
+                                        // console.log(search,search_parent.parentNode,search_parent.parentNode.nextElementSibling);
+                                        
+                                        var parent = search_parent.parentNode; //hierarki (0)
+                                        var loc_next = parent.nextElementSibling; //hierarki (0) yang mirip dengan parent
+                                        
+                                        if (search_input.value.includes("Baru")) { //memilih penulis atau prodi baru yang tidak ada dalam database
+                                            // console.log(!loc_next || loc_next.classList.contains("select"));
+                                            if (!loc_next || loc_next.classList.contains("select")) {
+                                                var next = document.createElement("div"); //membuat .input, hierarki (0), baru di lokasi selanjut hierarki (0)
+                                                
+                                                // .input
+                                                    parent.classList.forEach(classL => {
+                                                        // console.log(classL);
+                                                        next.classList.add(classL);
+                                                    })
+                                                    next.classList.add("input");
+                                                    next.classList.remove("select");
+                                                    next.setAttribute(`id`,`text-`+search_parent.id)
+        
+                                                    var inner = `<div class="col-md-3"></div>
+                                                                <div class="col-md-9 search_input d-flex flex-wrap">
+                                                                    <div class="searchbar w-100">
+                                                                        <input class="w-100" type="text" name="`+search_parent.id+`" id="`+search_parent.id+`"`
+                                                    if (search_parent.id.includes("pnl")) {
+                                                        inner += `placeholder="[Nama Penulis]">
+                                                                    </div>
+                                                                </div>`
+                                                    }
+                                                    else if (search_parent.id.includes("prodi")) {
+                                                        inner += `placeholder="[Program Studi]">
+                                                                    </div>
+                                                                </div>`
+                                                    }
+                                                // .input
     
-                                                var inner = `<div class="col-md-3"></div>
-                                                            <div class="col-md-9 search_input d-flex flex-wrap">
-                                                                <div class="searchbar w-100">
-                                                                    <input class="w-100" type="text" name="`+search_parent.id+`" id="`+search_parent.id+`"`
-                                                if (search_parent.id.includes("pnl")) {
-                                                    inner += `placeholder="[Nama Penulis]">
-                                                                </div>
-                                                            </div>`
-                                                }
-                                                else if (search_parent.id.includes("prodi")) {
-                                                    inner += `placeholder="[Program Studi]">
-                                                                </div>
-                                                            </div>`
-                                                }
-                                            // .input
-
-                                            form_addNewElement(parent.parentNode, loc_next, next, inner);
+                                                form_addNewElement(parent.parentNode, loc_next, next, inner);
+                                            }
                                         }
-                                    }
-                                    else if (!search_input.value.includes("Baru")) { //memilih penulis atau prodi baru yang ada dalam database
-                                        if (document.getElementById("text-"+search_parent.id)) {
-                                            // console.log(document.getElementById("text-"+search_parent.id));
-                                            document.getElementById("text-"+search_parent.id).remove();
+                                        else if (!search_input.value.includes("Baru")) { //memilih penulis atau prodi baru yang ada dalam database
+                                            if (document.getElementById("text-"+search_parent.id)) {
+                                                // console.log(document.getElementById("text-"+search_parent.id));
+                                                document.getElementById("text-"+search_parent.id).remove();
+                                            }
                                         }
+                                        list_penulis_jurusan.forEach(pp => {
+                                            if (search_input.value == pp[0]) {
+                                                list_up_prodi[search_input.id.split('-')[1]-1] = pp[1];
+                                            }
+                                        });
                                     }
-                                    // console.log(search_input.id, search_input.value, search_input.id.split('-')[1]);
+                                    // console.log(search_input);
                                     if (search_input.id.split('-')[0] == 'pnl') {
                                         list_up_penulis[search_input.id.split('-')[1]-1] = search_input.value;
                                         // console.table(list_up_penulis);
@@ -610,45 +398,23 @@ var prodi_select_list = [].concat(list_prodi);
                                         list_up_prodi[search_input.id.split('-')[1]-1] = search_input.value;
                                         // console.table(list_up_prodi);
                                     }
-                                    if (event.target == thisBtn || thisBtn.contains(event.target)) {
-                                        search.classList.remove(`show`);
-                                        console.log('close by click searchbar btn');
-                                    }
-                                    else if (!search.parentNode.contains(event.target)){
-                                        search.classList.remove(`show`);
-                                        console.log('close by click other than searchbar');
-                                    }
+
                                 }
-                            });
-                            var listBtn = list.querySelectorAll(`button`);
+                                else { search.classList.remove(`show`); } //close searchbar dropdown menu
+                            })
+                            
+                            
+                            var listBtn = list.querySelectorAll(`button`); //list semua button yang ada dalam form-sub, hirarki (0)
                             listBtn.forEach(btn => {
-                                if (btn == event.target || btn.contains(event.target)) {
-                                    console.log('btn clicked');
+                                if (btn.contains(event.target)) {
+                                    // console.log(btn);
+                                    // console.log(list);
+                                    // console.log(form,form.childElementCount,form.children);
+                                    
                                     if (list.classList.contains("addBox")) { //click button child of div.form-sub.addBox
                                         // console.log(btn,"Add");
                                         
-                                        form.querySelectorAll(`.form-sub`).forEach(item => {
-                                            // console.log(item.parentNode.id);
-                                            if (!item.classList.contains('addBox') && item.parentNode.id != 'artikel') {
-                                                item.querySelectorAll(`input`).forEach(element => {
-                                                    // console.log(element.value);
-                                                    if (element.id.includes('pnl') && list_up_penulis[element.id.split('-')[1]-1]) {
-                                                        if (element.classList.contains('text-center')) { element.defaultValue = list_up_penulis[element.id.split('-')[1]-1]; }
-                                                        else {
-                                                            if (!list_up_penulis_text[element.id.split('-')[1]-1]) { list_up_penulis_text[element.id.split('-')[1]-1] = element.value; }
-                                                            if (list_up_penulis_text[element.id.split('-')[1]-1]) { element.defaultValue = list_up_penulis_text[element.id.split('-')[1]-1]; }
-                                                        }
-                                                    } else {
-                                                        if (element.classList.contains('text-center') && list_up_prodi[element.id.split('-')[1]-1]) { element.defaultValue = list_up_prodi[element.id.split('-')[1]-1]; }
-                                                        else {
-                                                            if (!list_up_prodi_text[element.id.split('-')[1]-1]) { list_up_prodi_text[element.id.split('-')[1]-1] = element.value; }
-                                                            if (list_up_prodi_text[element.id.split('-')[1]-1]) { element.defaultValue = list_up_prodi_text[element.id.split('-')[1]-1]; }
-                                                        }
-                                                    }
-                                                    // console.log(element);
-                                                });
-                                            }
-                                        })
+                                        form_update(list.parentNode);
                                         if (form.childElementCount <= 6) { //this button can only click 3x while form child <= 6
                                             // console.log(form,list);
                                             form_addPenulis(form, list);
@@ -671,19 +437,16 @@ var prodi_select_list = [].concat(list_prodi);
                                             form.children[form.childElementCount-1].style.display = null;
                                         }
                                     }
-                                    // console.log(list_up_penulis);
-                                    // console.log(list_up_penulis_text);
-                                    // console.log(list_up_prodi);
-                                    // console.log(list_up_prodi_text);
+                                     
                                     ThisForm = document.querySelector(`.form_sub.row#profile`);
                                     if (ThisForm) {
                                         // console.log(ThisForm.childElementCount, ThisForm.querySelectorAll(`.form-sub`).length);
                                         ThisForm.querySelectorAll(`.form-sub`).forEach((item,itemIndex) => {
                                             if (!item.classList.contains(`addBox`)) {
                                                 // console.log("Lenght: ",ThisForm.querySelectorAll(`.form-sub`).length, " | itemIndex: ",itemIndex,item);
-                                                // console.log(item,item.querySelectorAll(`input`));
+                                                // // console.log(item,item.querySelectorAll(`input`));
                                                 // console.log("replace_id_list(item.outerHTML,", itemIndex+1,")");
-    
+
                                                 item.querySelectorAll(`input`).forEach(input => {
                                                     // console.log("Before: ",input.name," | ",input.id," | ",input.outerHTML);
                                                     input.name = replace_id_list(input.name, itemIndex+1);
@@ -695,32 +458,15 @@ var prodi_select_list = [].concat(list_prodi);
                                             }
                                         });
                                     }
+                                    form_update(form);
                                 }
-                            });
-                        });
+                            
+                            })
+                            // console.log(list.querySelectorAll(`.search-value`));
+                        
+                            form_update(form, list);
+                        })
                     }
-                    form.querySelectorAll(`.form-sub`).forEach(item => {
-                        // console.log(item.parentNode.id);
-                        if (!item.classList.contains('addBox') && item.parentNode.id != 'artikel') {
-                            item.querySelectorAll(`input`).forEach(element => {
-                                // console.log(element.value);
-                                if (element.id.includes('pnl') && list_up_penulis[element.id.split('-')[1]-1]) {
-                                    if (element.classList.contains('text-center')) { element.defaultValue = list_up_penulis[element.id.split('-')[1]-1]; }
-                                    else {
-                                        if (!list_up_penulis_text[element.id.split('-')[1]-1]) { list_up_penulis_text[element.id.split('-')[1]-1] = element.value; }
-                                        if (list_up_penulis_text[element.id.split('-')[1]-1]) { element.defaultValue = list_up_penulis_text[element.id.split('-')[1]-1]; }
-                                    }
-                                } else {
-                                    if (element.classList.contains('text-center') && list_up_prodi[element.id.split('-')[1]-1]) { element.defaultValue = list_up_prodi[element.id.split('-')[1]-1]; }
-                                    else {
-                                        if (!list_up_prodi_text[element.id.split('-')[1]-1]) { list_up_prodi_text[element.id.split('-')[1]-1] = element.value; }
-                                        if (list_up_prodi_text[element.id.split('-')[1]-1]) { element.defaultValue = list_up_prodi_text[element.id.split('-')[1]-1]; }
-                                    }
-                                }
-                                // console.log(element);
-                            });
-                        }
-                    })
                 })
             }    
 
@@ -1173,19 +919,12 @@ var prodi_select_list = [].concat(list_prodi);
     }
     //form
         function form_searchbar(value_select, search_wrapper, value_wrapper, input_wrapper, dd_wrapper, dd_menu) { //open-close dropdown input that has suggestion, add active to selected value
-            // console.log(value_select, search_wrapper, value_wrapper, input_wrapper, dd_wrapper);
+            // console.log(value_select);
+            // console.log(search_wrapper);
+            // console.log(value_wrapper);
             // console.log("input wrapper ", input_wrapper);
+            // console.log(dd_wrapper);
             var dd_menu_active = dd_wrapper.querySelector(`div ul li.active`);
-            if (!value_wrapper.classList.contains("show")) {
-                value_wrapper.classList.add("show");
-                if (input_wrapper.value) {
-                    suggestionBar(input_wrapper, dd_wrapper, input_wrapper.id, input_wrapper.value);
-                }
-                else {
-                    suggestionBar(input_wrapper, dd_wrapper, input_wrapper.id, input_wrapper.textContent);
-                }
-                dd_menu = dd_wrapper.querySelectorAll(`div ul li`)
-            }
             if (value_wrapper.classList.contains("show")) {
                 dd_menu.forEach(menu => {
                     // console.log(menu);
@@ -1200,6 +939,16 @@ var prodi_select_list = [].concat(list_prodi);
                         value_wrapper.classList.remove("show");
                     }
                 })
+            }
+            else {
+                value_wrapper.classList.add("show");
+                if (input_wrapper.value) {
+                    suggestionBar(input_wrapper, dd_wrapper, input_wrapper.id, input_wrapper.value);
+                }
+                else {
+                    suggestionBar(input_wrapper, dd_wrapper, input_wrapper.id, input_wrapper.textContent);
+                }
+                dd_menu = dd_wrapper.querySelectorAll(`div ul li`)
             }
         }
         function form_addNewElement(main_wrapper, Next, New, InnerNew) {
@@ -1342,6 +1091,56 @@ var prodi_select_list = [].concat(list_prodi);
             }
             return input;
         }
+        function form_update(form) {
+            // console.table(list_up_penulis);
+            // console.table(list_up_prodi);
+            // console.log(form);
+            form.querySelectorAll(`.form-sub`).forEach(item => {
+                // console.log(item.parentNode.id);
+                if (!item.classList.contains('addBox') && item.parentNode.id != 'artikel') {
+                    item.querySelectorAll(`input`).forEach(element => {
+                        // console.log("before: ",element);
+                        // console.log(element.id,element.id.split('-')[1],(element.id.includes('pnl')));
+                        if (element.id.includes('pnl')) {
+                            if (list_up_penulis[element.id.split('-')[1]-1]) {
+                                if (element.classList.contains('text-center')) {
+                                    // console.log(element, element.id.split('-')[1]-1, list_up_penulis[element.id.split('-')[1]-1]);
+                                    element.defaultValue = list_up_penulis[element.id.split('-')[1]-1];
+                                    element.value = list_up_penulis[element.id.split('-')[1]-1];
+
+                                    // cari Prodi dari penulis yang sudah terdaftar
+                                        list_penulis_jurusan.forEach(pp => {// console.log(list_up_penulis[element.id.split('-')[1]-1], pp[0], pp.value == element[0]);
+                                            if (element.value == pp[0]) {
+                                                list_up_prodi[element.id.split('-')[1]-1] = pp[1];
+                                            }
+                                        });
+                                }
+                                else {
+                                    if (!list_up_penulis_text[element.id.split('-')[1]-1]) { list_up_penulis_text[element.id.split('-')[1]-1] = element.value; }
+                                    if (list_up_penulis_text[element.id.split('-')[1]-1]) { element.defaultValue = list_up_penulis_text[element.id.split('-')[1]-1]; }
+                                }
+                            }
+                            else { element.removeAttribute('value'); }
+                        } 
+                        else if (element.id.includes('prodi'))
+                        {
+                            if (list_up_prodi[element.id.split('-')[1]-1]) {
+                                if (element.classList.contains('text-center') && list_up_prodi[element.id.split('-')[1]-1]) {
+                                    element.defaultValue = list_up_prodi[element.id.split('-')[1]-1];
+                                    element.value = list_up_prodi[element.id.split('-')[1]-1];
+                                }
+                                else {
+                                    if (!list_up_prodi_text[element.id.split('-')[1]-1]) { list_up_prodi_text[element.id.split('-')[1]-1] = element.value; }
+                                    if (list_up_prodi_text[element.id.split('-')[1]-1]) { element.defaultValue = list_up_prodi_text[element.id.split('-')[1]-1]; }
+                                }
+                            }
+                            else { element.removeAttribute('value'); }
+                        }
+                        // console.log("after: ",element);
+                    });
+                }
+            })
+        }
         function form_addPenulis(form, list) {
             var next = document.createElement("div"); //membuat .form-sub, hierarki (M), baru di lokasi selanjut hierarki (M)
             var innerText
@@ -1357,7 +1156,10 @@ var prodi_select_list = [].concat(list_prodi);
                         item_text = "";
                         for (let i = 0; i < item.childElementCount; i++) {
                             if (!item.children[i].classList.contains("input")) {
-                                // console.log(i,item.children[i]); //hierarki (0)
+                                if (item.children[i].querySelector('input')) {
+                                    item.children[i].querySelector('input').removeAttribute('value');//remove value if exist
+                                }
+                                // console.log(i,item.children[i].querySelector('input')); //hierarki (0)
                                 item_text += item.children[i].outerHTML; //add outerHTML of list
                             }
                         }
@@ -1373,6 +1175,7 @@ var prodi_select_list = [].concat(list_prodi);
             // div.form-sub
         }
         if(drop_file_input) {
+            
             drop_file_input.forEach(inputElement => {
                 const dropZone = inputElement.closest(`.drop-file`);
 
@@ -1403,13 +1206,14 @@ var prodi_select_list = [].concat(list_prodi);
                     if (e.dataTransfer.files.length) {
                         dropDragFile(dropZone, e.dataTransfer.files[0])
                     }
-                    dropZone.classList.remove(`drop-file__hover`)
+                    dropZone.classList.remove(`drop-file__hover`);
+                    
                 });
             })
         }
             function dropDragFile(zone, file) {
                 var extension = file.name.split('.').pop();
-                    // console.log(extension);
+                    console.log(extension);
 
                     var df_thumb = zone.querySelector(`.drop-file__prompt`);
                     
@@ -1423,6 +1227,9 @@ var prodi_select_list = [].concat(list_prodi);
 
 
                     if (extension.includes(`doc`) || extension.includes(`pdf`)) {
+                        console.log(file.name);
+                        // document.querySelector('input.drop-file__input').value = file.name;
+                        console.log(document.querySelector('input.drop-file__input').value);
                         if (df_thumb) {
                             df_thumb.classList.remove(`drop-file__prompt`);
                             df_thumb.classList.remove(`flex-column`);

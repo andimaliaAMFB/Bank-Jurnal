@@ -214,7 +214,10 @@
                 </div>
             </div>
         @endif
-        
+
+        @if($countPnl = Session::get('Count_penulis_jurusan'))
+            <input type="hidden" id="countPnl" value="{{$countPnl}}">
+        @endif
         @if ($message = Session::get('success'))
         <div class="alert alert-success alert-block d-flex justify-content-between align-items-center">
             <strong>{{ $message }}</strong>
@@ -346,7 +349,7 @@
                                         <p>or</p>
                                         <p class="link">Browser</p>
                                     </div>
-                                    <input type="file" name="doc" class="drop-file__input" accept="application/pdf, application/vnd.msword">
+                                    <input type="file" name="file" class="drop-file__input" accept="application/pdf, application/vnd.msword" required>
                                 </div>
                             </div>
                         </div>
@@ -378,7 +381,35 @@
             var list_up_prodi = [];
             var list_up_prodi_text = [];
 
-            var countPenulis_old = 3 - 1;
+            var countPenulis_old = 0;
+            var FieldInput = <?php echo json_encode(Session::get('field')); ?>;
+            if (document.querySelector(`#countPnl`)) { countPenulis_old = (document.querySelector(`#countPnl`).value) - 1; }
+            if (FieldInput) {
+                var index = 0;
+                FieldInput.forEach(element => {
+                    // console.log(index, element);
+                    var key = Object.keys(element)[0];
+                    var value = element[key];
+                    if (key.includes('pnl')) {
+                        if (list_penulis.includes(value)) { list_up_penulis[index] = value; }
+                        else { list_up_penulis_text[index] = value; }
+                    }
+                    if (key.includes('prodi')) {
+                        if (list_prodi.includes(value)) { list_up_prodi[index] = value; }
+                        else { list_up_prodi_text[index] = value; }
+                        index += 1;
+                    }
+                });
+            }
+            
+            let list_penulis_jurusan = [];
+            penulis.forEach(penulis => {
+                namaProdi = '';
+                prodi.forEach(prodi => {
+                    if (penulis['ID_JURUSAN'] == prodi['ID_JURUSAN']) { namaProdi = prodi['NAMA_JURUSAN']; }
+                });
+                list_penulis_jurusan.push([penulis['NAMA_PENULIS'],namaProdi]);
+            });
 
         </script>
         <!-- JS comunicate with database -->
@@ -387,6 +418,7 @@
             if (document.querySelector(`.judul-hlm`).textContent.includes('Upload Revisi Artikel')) {
                 console.log('This is Revision Upload Page');
             }
+            
             while (countPenulis_old > 0) {
                 form_page.forEach(form => {
                     if (form.id == 'profile') {
@@ -423,6 +455,7 @@
                             });
                         }
                     }
+                    form_update(form);
                 });
             }
         </script>

@@ -205,10 +205,10 @@ class listController extends Controller
                 }
             }
         }
-        else if ($typeTable == 'Penulis') { $Array = DB::table('penulis')->select('NAMA_PENULIS')->get(); }
-        else if ($typeTable == 'Prodi') { $Array = DB::table('jurusan')->select('NAMA_JURUSAN')->get(); }
-        else if ($typeTable == 'Kota') { $Array = DB::table('kota')->select('NAMA_KOTA')->get(); }
-        else if ($typeTable == 'Prov') { $Array = DB::table('provinsi')->select('NAMA_PROVINSI')->get(); }
+        else if ($typeTable == 'Penulis') { $Array = DB::table('penulis')->get(); }
+        else if ($typeTable == 'Prodi') { $Array = DB::table('jurusan')->get(); }
+        else if ($typeTable == 'Kota') { $Array = DB::table('kota')->get(); }
+        else if ($typeTable == 'Prov') { $Array = DB::table('provinsi')->get(); }
         return $Array;
     }
     function TabletoList (array $tableArray,array $Judul, string $format) {

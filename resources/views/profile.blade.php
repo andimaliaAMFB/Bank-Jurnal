@@ -68,7 +68,7 @@
                             <button class="head-button dot" id="button-profile">P</button>
                             <ul class="dropdown-menu" style="display: none;" id="dropdown-profile">
                                 <li class="user-profile label-dropdown">
-                                    <img src="" alt="" class="profile_img">
+                                    <img src="" alt="">
                                     <h3>{{ $arrayAkun[0]['USERNAME'] }}</h3>
                                     <p>{{ $arrayAkun[0]['STATUS_AKUN'] }}</p>
                                 </li>
@@ -202,7 +202,7 @@
                     <div class="task-content">
                         <ul>
                             <a href="{{ route('dashboard') }}"><li>Dashboard</li></a>
-                            <a href="{{ route('upload.create') }}"><li>Upload Artikel</li></a>
+                            <a href="{{ route('article.create') }}"><li>Upload Artikel</li></a>
                             @if(isset($arrayAkun[0]['STATUS_AKUN']) && $arrayAkun[0]['STATUS_AKUN'] == 'Admin')
                             <a href="{{ route('status.index', ['level_status' => 'draft']) }}"><li>Draft<p>{{ $taskbarValue['Draft'] }}</p></li></a>
                             <a href="{{ route('status.index', ['level_status' => 'revisi-mayor']) }}"><li>Revisi Mayor<p>{{ $taskbarValue['Revisi Mayor'] }}</p></li></a>

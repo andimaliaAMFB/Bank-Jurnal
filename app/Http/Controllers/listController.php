@@ -59,6 +59,7 @@ class listController extends Controller
                     ->join('revisi','revisi.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
                     ->join('revisi_detail','revisi_detail.ID_REVISI', '=', 'revisi.ID_REVISI')
                     ->select('artikel.ID_ARTIKEL',
+                            'artikel_detail.ID_DETAILARTIKEL',
                             'artikel_detail.JUDUL_ARTIKEL',
                             'revisi_detail.STATUS_REVISI',
                             'penulis.NAMA_PENULIS',
@@ -67,10 +68,6 @@ class listController extends Controller
                             'artikel_detail.STATUS_ARTIKEL',
                             'revisi_detail.STATUS_ARTIKEL_BARU')
                     ->where('penulis.ID_PENULIS','=',substr($typeTable,10))
-                    ->Where(function($query) {
-                        $query->where('revisi_detail.STATUS_ARTIKEL_BARU','=','-')
-                                ->orWhere('revisi_detail.STATUS_ARTIKEL_BARU','=','Layak Publish');
-                    })
                     ->orderByDesc('artikel.ID_ARTIKEL')
                     ->orderByDesc('artikel_detail.ID_DETAILARTIKEL')
                     ->get();

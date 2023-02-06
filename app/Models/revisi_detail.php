@@ -12,4 +12,5 @@ class revisi_detail extends Model
     public $timestamps = false;
     protected $primaryKey = 'ID_DETAILREVISI';
     protected $fillable = ['ID_DETAILREVISI','ID_REVISI','TANGGAL_REVISI','STATUS_ARTIKEL_BARU','STATUS_REVISI','REVISI'];
+    protected $keyType = 'string';
 }

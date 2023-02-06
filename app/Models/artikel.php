@@ -12,4 +12,5 @@ class artikel extends Model
     public $timestamps = false;
     protected $primaryKey = 'ID_ARTIKEL';
     protected $fillable = ['ID_ARTIKEL','ID_AKUN'];
+    protected $keyType = 'string';
 }

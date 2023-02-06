@@ -12,4 +12,5 @@ class artikel_detail_penulis extends Model
     public $timestamps = false;
     protected $primaryKey = 'ID_LIST_PENULIS';
     protected $fillable = ['ID_LIST_PENULIS','ID_PENULIS','ID_DETAILARTIKEL'];
+    protected $keyType = 'string';
 }

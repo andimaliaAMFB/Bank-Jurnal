@@ -12,4 +12,5 @@ class kota extends Model
     public $timestamps = false;
     protected $primaryKey = 'ID_KOTA';
     protected $fillable = ['ID_KOTA','NAMA_KOTA'];
+    protected $keyType = 'string';
 }

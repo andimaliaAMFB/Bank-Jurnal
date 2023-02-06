@@ -13,7 +13,7 @@ class akun extends Model
     public $timestamps = false;
     protected $primaryKey = 'ID_AKUN';
     protected $fillable = ['ID_AKUN','USERNAME','PASSWORD','NAMA','STATUS_PENGGUNA','NO_TELEPON','EMAIL','TANGGAL_LAHIR','ALAMAT','ID_KOTA','ID_PROVINSI','KODE_POS'];
-
+    protected $keyType = 'string';
 
     /**
      * The attributes that should be hidden for serialization.

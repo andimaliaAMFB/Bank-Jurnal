@@ -19,7 +19,7 @@ class Artikel extends Seeder
         $idArtikel = array();
         foreach ($akun as $index=>$data) { array_push($idArtikel,1); }
 
-        for ($i=0; $i < 25; $i++) {
+        for ($i=0; $i < 50; $i++) {
             $idAkun = rand(0,count($akun)-1);
             DB::table('artikel')-> INSERT ([
                 'ID_ARTIKEL' => $akun[$idAkun]->ID_AKUN."-".(date('m')+date("d")+date("B")).$idArtikel[$idAkun],
@@ -36,7 +36,7 @@ class Artikel extends Seeder
 
         foreach ($artikel as $index=>$data) {
             for ($i=0; $i < 4; $i++) { 
-                $randomStatus = rand(1,count($status)-1);
+                $randomStatus = rand(1,count($status)-2);
                 if ($i == 0) { $randomStatus = 0; }
                 DB::table('artikel_detail')-> INSERT ([
                     'ID_DETAILARTIKEL' => substr(md5($artikel[$index]->ID_ARTIKEL),0,4)."-".$idArtikelDetail[$index],

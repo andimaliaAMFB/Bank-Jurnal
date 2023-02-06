@@ -12,4 +12,5 @@ class jurusan extends Model
     public $timestamps = false;
     protected $primaryKey = 'ID_JURUSAN';
     protected $fillable = ['ID_JURUSAN','NAMA_JURUSAN'];
+    protected $keyType = 'string';
 }

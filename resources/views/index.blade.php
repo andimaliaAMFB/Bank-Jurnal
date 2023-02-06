@@ -439,6 +439,7 @@
             prodi.forEach((element,index) => { list_prodi[index] = prodi[index]['NAMA_JURUSAN']; });
             let final_list = final;
 
+            console.table(list_penulis);
         </script>
         <!-- JS comunicate with database -->
 

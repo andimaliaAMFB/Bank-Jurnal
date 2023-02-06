@@ -202,7 +202,7 @@
                     <div class="task-content">
                         <ul>
                             <a href="{{ route('dashboard') }}"><li>Dashboard</li></a>
-                            <a href="{{ route('upload.create') }}"><li>Upload Artikel</li></a>
+                            <a href="{{ route('article.create') }}"><li>Upload Artikel</li></a>
                             @if(isset($arrayAkun[0]['STATUS_AKUN']) && $arrayAkun[0]['STATUS_AKUN'] == 'Admin')
                             <a href="{{ route('status.index', ['level_status' => 'draft']) }}"><li>Draft<p>{{ $taskbarValue['Draft'] }}</p></li></a>
                             <a href="{{ route('status.index', ['level_status' => 'revisi-mayor']) }}"><li>Revisi Mayor<p>{{ $taskbarValue['Revisi Mayor'] }}</p></li></a>
@@ -224,7 +224,7 @@
                 <div class="list-artikel" id="mylist_wrapper" style="margin-block: 2rem;">
                     <div class="artikel-tabel-edit card px-3">
                         
-                        @if(empty($arrayAkun) || isset($final[0]['NAMA_PENULIS']) && $arrayAkun[0]['NAMA'] != $final[0]['NAMA_PENULIS'] || $arrayAkun[0]['NAMA'] != $final[0][2])
+                        @if(empty($arrayAkun) || isset($namaPenulis) && $arrayAkun[0]['NAMA'] != $namaPenulis)
                         <div class="d-flex box flex-grow-1 pb-3 border-bottom">
                         <div class="form_sub_list col-md-3 ps-3 pt-3" id="img-profile">
                             <label for="img-input" class="btn">
@@ -239,18 +239,16 @@
                             </label>
                         </div>
                         <div class="ms-3 p-3 flex-grow-1 profile-text d-flex flex-column justify-content-center form_sub">
-                            @if(isset($final[0]['NAMA_PENULIS']))
-                            <div><h4>{{ $final[0]['NAMA_PENULIS'] }}</h4></div>
-                            @else
-                            <div><h4>{{ $final[0][2] }}</h4></div>
+                            @if(isset($namaPenulis))
+                            <div><h4>{{ $namaPenulis }}</h4></div>
                             @endif
                             <div><h5>Penulis</h5></div>
                         </div>
                         </div>
                         @endif
-                        @if(isset($final[0]['NAMA_PENULIS']))
+                        @if(!isset($final))
                         <div class="article-order row flex-wrap card-head border-0">
-                            <h5 class="m-0">{{ $final[0]['NAMA_PENULIS'] }} Tidak Memiliki Artikel yang sudah di Publish</h5>
+                            <h5 class="m-0">{{ $namaPenulis }} Tidak Memiliki Artikel yang sudah di Publish</h5>
                         </div>
                         @else
                         <div class="article-order row flex-wrap card-head">
@@ -328,7 +326,7 @@
                             @endif
                         </div>
                         @endif
-                        @if(isset($final[0]['NAMA_PENULIS']))
+                        @if(!isset($final))
                         <table class="tabel-card" style="width: 100%;display:none;">
                         @else
                         <table class="tabel-card" style="width: 100%;">
@@ -352,7 +350,7 @@
                                 <tr><td colspan="4"><i>Loading...</i></td></tr>
                             </tbody>
                         </table>
-                        @if(isset($final[0]['NAMA_PENULIS']))
+                        @if(!isset($final))
                         <div class="page row" id="article_pagination" style="display:none">
                         @else
                         <div class="page row" id="article_pagination">
@@ -494,14 +492,13 @@
             var final = <?php echo json_encode($final); ?>;
             var tableArray = <?php echo json_encode($tableArray); ?>;
             var AlltableArray = <?php echo json_encode($AlltableArray); ?>;
-            if (final[0][2]) { var thisAuthor = final[0][2]; }
-            else { var thisAuthor = final[0]['NAMA_PENULIS']; }
+            var thisAuthor = '{{ $namaPenulis }}';
             // console.log(thisAuthor);
 
             let list_judul = [];
             judul.forEach((element,index) => { list_judul[index] = judul[index]; });
             let list_penulis = [];
-            penulis.forEach((element,index) => { list_penulis[index] = penulis[index]; });
+            penulis.forEach((element,index) => { list_penulis[index] = prodi[index]['NAMA_PENULIS']; });
             let list_prodi = [];
             prodi.forEach((element,index) => { list_prodi[index] = prodi[index]['NAMA_JURUSAN']; });
             let final_list = final;

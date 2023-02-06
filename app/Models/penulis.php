@@ -12,4 +12,5 @@ class penulis extends Model
     public $timestamps = false;
     protected $primaryKey = 'ID_PENULIS';
     protected $fillable = ['ID_PENULIS','ID_AKUN','ID_JURUSAN','NAMA_PENULIS'];
+    protected $keyType = 'string';
 }

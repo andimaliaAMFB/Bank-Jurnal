@@ -12,4 +12,5 @@ class provinsi extends Model
     public $timestamps = false;
     protected $primaryKey = 'ID_PROVINSI';
     protected $fillable = ['ID_PROVINSI','NAMA_PROVINSI'];
+    protected $keyType = 'string';
 }

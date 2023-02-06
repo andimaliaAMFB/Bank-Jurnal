@@ -48,6 +48,7 @@ class Revisi extends Seeder
                                             ))
                                 ->value('STATUS_ARTIKEL');
                 $kondisiRevisi = true;
+                $catatanRevisi = "REVISI Admin Tentang ";
                 if (!$statusAfter) {
                     $kondisiRevisi = rand(false,true);
                     if ($kondisiRevisi) {
@@ -55,6 +56,7 @@ class Revisi extends Seeder
                     }
                     else {
                         $statusAfter = "-";
+                        $catatanRevisi = '';
                     }
                 }
                 DB::table('revisi_detail') -> INSERT ([
@@ -63,7 +65,7 @@ class Revisi extends Seeder
                     'TANGGAL_REVISI' => date("Y-m-d"),
                     'STATUS_ARTIKEL_BARU' => $statusAfter,
                     'STATUS_REVISI' => $kondisiRevisi,
-                    'REVISI' => "REVISI Admin Tentang "
+                    'REVISI' => $catatanRevisi
                 ]);
             }
         }

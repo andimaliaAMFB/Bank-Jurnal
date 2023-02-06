@@ -709,7 +709,7 @@ var prodi_select_list = [].concat(list_prodi);
             // var thisAuthor = "Penulis A";
             item = [];
             items.forEach((data) => { 
-                if (data[2].toLocaleLowerCase() == thisAuthor.toLocaleLowerCase()) { item.push(data); }
+                if (data[2].toLocaleLowerCase().includes(thisAuthor.toLocaleLowerCase())) { item.push(data); }
             });
         }
         location_item.innerHTML = '';
@@ -723,10 +723,10 @@ var prodi_select_list = [].concat(list_prodi);
         let result = '';
         for (let i = 0; i < paginatedItems.length; i++) {
             if (type.includes("slide")) {
-                result += input_list((i + 1), "", paginatedItems[i], "", "", "", "", type);
+                result += input_list((i + 1), "", "", paginatedItems[i], "", "", "", "", type);
             }
             else if (type.includes("tabel")) {
-                result += input_list((i + 1), paginatedItems[i][0], paginatedItems[i][2], paginatedItems[i][3], paginatedItems[i][4], paginatedItems[i][5], paginatedItems[i][6], type);
+                result += input_list((i + 1), paginatedItems[i][0], paginatedItems[i][1], paginatedItems[i][2], paginatedItems[i][3], paginatedItems[i][4], paginatedItems[i][5], paginatedItems[i][6], type);
             }
         }
         location_item.innerHTML = result;
@@ -739,12 +739,12 @@ var prodi_select_list = [].concat(list_prodi);
             slide_page.innerHTML = page + 1;
             slide_detail.innerHTML = paginatedItems.length +" of " + item.length + " Authors";
         }
-        
         // console.log(result);
+        
         if (lokasi.includes("my")) { dropmenu = document.querySelectorAll(`.drop-btn`); }
         else  { dropmenu = document.querySelectorAll(`.pointer`); }
     }
-    function input_list(id, judul, pnl, prodi, up, rilis, status, type) {
+    function input_list(id, judul, revisi, pnl, prodi, up, rilis, status, type) {
         // console.log(type);
         let first_column = '';
         let last_column = '';
@@ -772,13 +772,15 @@ var prodi_select_list = [].concat(list_prodi);
                     <button class="btn pointer drop-btn"> Lainnya </button>
                     <div class="dropdown-menu card se-se-bar" id="dropdown-menu-article" style="display: none;">
                         <ul class="select-droped">
-                            <li>Lihat Artikel</li>
-                            <li>Upload Revisi</li>
-                            <li>Status Perubahan</li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>`;
+                            <a href="article/`+judul+`"><li>Lihat Artikel</li></a>`;
+                if (revisi == 'Yes' && status != 'Layak Publish') {
+                    last_column += `<a href="article/`+judul+`/re-upload"><li>Upload Revisi</li></a>`;
+                }
+                last_column += `<li>Status Perubahan</li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>`;
             }
             else if (type.includes("artikel_penulis")) {
                 first_column = `<tr  data-id="`+ id +`">
@@ -1109,11 +1111,11 @@ var prodi_select_list = [].concat(list_prodi);
                                     element.value = list_up_penulis[element.id.split('-')[1]-1];
 
                                     // cari Prodi dari penulis yang sudah terdaftar
-                                        list_penulis_jurusan.forEach(pp => {// console.log(list_up_penulis[element.id.split('-')[1]-1], pp[0], pp.value == element[0]);
-                                            if (element.value == pp[0]) {
-                                                list_up_prodi[element.id.split('-')[1]-1] = pp[1];
-                                            }
-                                        });
+                                        // list_penulis_jurusan.forEach(pp => {// console.log(list_up_penulis[element.id.split('-')[1]-1], pp[0], pp.value == element[0]);
+                                        //     if (element.value == pp[0]) {
+                                        //         list_up_prodi[element.id.split('-')[1]-1] = pp[1];
+                                        //     }
+                                        // });
                                 }
                                 else {
                                     if (!list_up_penulis_text[element.id.split('-')[1]-1]) { list_up_penulis_text[element.id.split('-')[1]-1] = element.value; }
@@ -1503,7 +1505,7 @@ function suggestionBar(input_box, dd, parent_id, selectValue) {
                             containData = true;
                         }
                         if (containData && !sudahDitambah) {
-                            stringData = input_list(dataIndex, array[0], array[2], array[3],'','','', "search");
+                            stringData = input_list(dataIndex, array[0], array[1], array[2], array[3],'','','', "search");
                             sudahDitambah = true;
                         }
                     })

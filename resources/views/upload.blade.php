@@ -239,7 +239,7 @@
                 @if($title == 'Upload Artikel')
                 <form action="{{ route('article.store') }}" method="POST" enctype="multipart/form-data">
                 @elseif(str_contains($title,'Upload Revisi Artikel'))
-                <form action="{{ route('article.restore') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('article.restore', ['id_article' => $id_article]) }}" method="POST" enctype="multipart/form-data">
                 @endif
                 {{ csrf_field() }}
                     <div class="card form">
@@ -331,7 +331,11 @@
                             </div>
                         </div>
                         <div class="form_sub row" id="artikel">
+                            @if(isset($id_article))
+                            <div class="form_sub_title w-100">Upload Artikel Baru</div>
+                            @else
                             <div class="form_sub_title w-100">Upload Artikel</div>
+                            @endif
                             <div class="row w-100 gx-0 py-3 px-3 form-sub border-0">
                                 <div class="d-flex flex-wrap align-items-center px-3 my-2" id="text-jdl">
                                     <div class="col-md-3">Judul Artikel</div>
@@ -383,7 +387,10 @@
 
             var countPenulis_old = 0;
             var FieldInput = <?php echo json_encode(Session::get('field')); ?>;
+            if (FieldInput) { FieldInput = <?php echo json_encode(Session::get('field')); ?>; }
+            else if({{isset($field)}}){ FieldInput = <?php echo json_encode($field); ?>; }
             if (document.querySelector(`#countPnl`)) { countPenulis_old = (document.querySelector(`#countPnl`).value) - 1; }
+            else if({{isset($Count_pj)}}){ countPenulis_old = <?php echo json_encode($Count_pj); ?>-1; }
             if (FieldInput) {
                 var index = 0;
                 FieldInput.forEach(element => {
@@ -401,6 +408,7 @@
                     }
                 });
             }
+            // console.log(FieldInput,countPenulis_old);
             
             let list_penulis_jurusan = [];
             penulis.forEach(penulis => {
@@ -415,9 +423,6 @@
         <!-- JS comunicate with database -->
         <script src="../../Script.js"></script>
         <script type="text/javascript">
-            if (document.querySelector(`.judul-hlm`).textContent.includes('Upload Revisi Artikel')) {
-                console.log('This is Revision Upload Page');
-            }
             
             while (countPenulis_old > 0) {
                 form_page.forEach(form => {
@@ -454,6 +459,9 @@
                                 }
                             });
                         }
+                    }
+                    else {
+                        if({{isset($id_article)}}) { form.querySelector('input#jdl').value = '{{ $id_article }}'; }
                     }
                     form_update(form);
                 });

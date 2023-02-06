@@ -25,7 +25,7 @@
                     @endif
                     <a href="{{ route('dashboard') }}" class="ms-2">
                         <div class="navbar head-logo">
-                            <img class="navbar-toggler-icon me-3" src="../asset/logo_rumah jurnal 1.png">
+                            <img class="navbar-toggler-icon me-3" src="../../asset/logo_rumah jurnal 1.png">
                             <p id="nama-aplikasi" style="font-weight: bold;">Rumah Jurnal</p>
                         </div>
                     </a>
@@ -194,7 +194,7 @@
                         </div>
                         <a href="{{ route('dashboard') }}" class="ms-2">
                             <div class="navbar head-logo">
-                                <img class="navbar-toggler-icon me-3" src="../asset/logo_rumah jurnal 1.png">
+                                <img class="navbar-toggler-icon me-3" src="../../asset/logo_rumah jurnal 1.png">
                                 <p id="nama-aplikasi" style="font-weight: bold;">Rumah Jurnal</p>
                             </div>
                         </a>
@@ -202,7 +202,7 @@
                     <div class="task-content">
                         <ul>
                             <a href="{{ route('dashboard') }}"><li>Dashboard</li></a>
-                            <a href="{{ route('upload.create') }}"><li>Upload Artikel</li></a>
+                            <a href="{{ route('article.create') }}"><li>Upload Artikel</li></a>
                             @if(isset($arrayAkun[0]['STATUS_AKUN']) && $arrayAkun[0]['STATUS_AKUN'] == 'Admin')
                             <a href="{{ route('status.index', ['level_status' => 'draft']) }}"><li>Draft<p>{{ $taskbarValue['Draft'] }}</p></li></a>
                             <a href="{{ route('status.index', ['level_status' => 'revisi-mayor']) }}"><li>Revisi Mayor<p>{{ $taskbarValue['Revisi Mayor'] }}</p></li></a>

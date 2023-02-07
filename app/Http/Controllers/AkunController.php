@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Models\akun;
 use App\Models\penulis;
 use DB;
@@ -46,25 +47,53 @@ class AkunController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function loginInput(Request $request) {
-        $rule = [
-            'username' => 'required',
-            'pass' => 'required'
-        ];
+        //validation data
+            $rule = [
+                'username' => 'required',
+                'pass' => 'required'
+            ];
 
-        $pesan = [
-            'username.required' => 'Username Wajib Diisi !',
-            'pass.required' => 'Password Wajib Diisi !'
-        ];
+            $pesan = [
+                'username.required' => 'Username Wajib Diisi !',
+                'pass.required' => 'Password Wajib Diisi !'
+            ];
 
-        $this->validate($request,$rule,$pesan);
+        
+        $validator = Validator::make($request->all(), $rule, $pesan);
+        $validator->validated();
 
-        $id_akun = DB::table('akun')->select('ID_AKUN','STATUS_PENGGUNA')->where('USERNAME','=',$request->username)->get();
-        // print_r($id_akun);
-        // echo $request->username." || ".$id_akun[0]->ID_AKUN."<br>";
-        // echo "STATUS_PENGGUNA || ".$id_akun[0]->STATUS_PENGGUNA."<br>";
+        //if ada form input yang tidak diisi
+        if ($validator->fails()) {
+            return redirect()
+                ->route('loginShow')
+                ->withErrors($validator)
+                ->withInput();
+        }
 
-        $data = $request->session()->put('id_akun',$id_akun[0]->ID_AKUN);
-        $data = $request->session()->put('status_akun',$id_akun[0]->STATUS_PENGGUNA);
+        //check if username and password exist
+            $errorString;
+            if(akun::where('USERNAME','=',$request->username)->exists())
+            {
+                $dataAkun = akun::where('USERNAME','=',$request->username)->first();
+                $username = $dataAkun['USERNAME'];
+                $password = $dataAkun['PASSWORD'];
+                if(substr(md5($request->pass),0,12) != $dataAkun['PASSWORD']) { $errorString = 'Password Yang Dimasukan Salah'; }
+            }
+            else { $errorString = 'Username Tidak Dikenali'; }
+            if($errorString) {
+                return redirect()
+                    ->route('loginShow')
+                    ->withErrors($validator)
+                    ->withInput()
+                    ->with('error',$errorString);
+            }
+        //
+
+        $id_akun = akun::select('ID_AKUN','STATUS_PENGGUNA')->where('USERNAME','=',$username)->first();
+        dd($id_akun);
+
+        $data = $request->session()->put('id_akun',$id_akun['ID_AKUN']);
+        $data = $request->session()->put('status_akun',$id_akun['STATUS_PENGGUNA']);
         
         // echo $request->session()->get('id_akun');
         // echo $request->session()->get('status_akun');
@@ -95,8 +124,34 @@ class AkunController extends Controller
             'required_with' => 'Masuki Ulang Password Kedua',
             'same' => 'Kedua Password Tidak Sama dengan Password Pertama'
         ];
+        
+        $validator = Validator::make($request->all(), $rule, $pesan);
+        $validator->validated();
 
-        $validated = $this->validate($request,$rule,$pesan);
+        //if ada form input yang tidak diisi
+        if ($validator->fails()) {
+            return redirect()
+                ->route('signupShow')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        //check if username and password exist
+            $errorString;
+            if(akun::where('USERNAME','=',$request->username)->exists()) {
+                $errorString = 'Username Sudah Digunakan Oleh Pengguna Lain';
+            }
+            else if(akun::where('EMAIL','=',$request->email)->exists()) {
+                $errorString = 'Email Sudah Digunakan Oleh Pengguna Lain';
+            }
+            if($errorString) {
+                return redirect()
+                    ->route('signupShow')
+                    ->withErrors($validator)
+                    ->withInput()
+                    ->with('error',$errorString);
+            }
+        //
 
         $kota = DB::table('kota')->select('ID_KOTA')->limit(1)->value('ID_KOTA');
         $provinsi = DB::table('provinsi')->select('ID_PROVINSI')->limit(1)->value('ID_PROVINSI');

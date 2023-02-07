@@ -33,7 +33,7 @@ Route::get('/logout', [AkunController::class, 'logout'])->name('logout');
 Route::get('/profile', [AkunController::class, 'showProfile'])->name('profile');
 Route::put('/profile/{id}', [AkunController::class, 'updateProfie'])->name('profile.update');
 
-Route::get('/myarticle', [produkController::class, 'myarticle'])->name('myarticle');
+Route::get('/myarticle', [ArtikelController::class, 'myarticle'])->name('myarticle');
 Route::get('/{id_penulis}', [ArtikelController::class, 'showbyPenulis'])->name('article.penulis');
 Route::group(['prefix' => 'article'], function()
 {

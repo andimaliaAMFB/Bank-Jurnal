@@ -33,7 +33,10 @@ class ArtikelController extends Controller
         $tablePenulis = json_decode((new listController)->getTable('Penulis'),true);
 
         $arrayAkun = (new listController)->getAkun();
-        return view('upload',compact('arrayAkun','title','tablePenulis','tableProdi','taskbarValue'));
+        $field = null;
+        $Count_pj = null;
+        $id_article = null;
+        return view('upload',compact('arrayAkun','title','tablePenulis','tableProdi','taskbarValue','field','Count_pj','id_article'));
     }
     /**
      * Show the form for creating a new resource.
@@ -154,6 +157,7 @@ class ArtikelController extends Controller
         //
 
         $this->insertArtikel ($id_akun, $id_artikel, $id_artikel_detail, $request->jdl);
+        $this->revisi ($id_artikel_detail);
         
         $countPnl = 0;
         foreach ($penulis_jurusan as $key => $value){
@@ -273,6 +277,7 @@ class ArtikelController extends Controller
         //
 
         $this->insertArtikel ($id_akun, $id_artikel, $id_artikel_detail, $request->jdl);
+        $this->revisi ($id_artikel_detail);
         
         $countPnl = 0;
         foreach ($penulis_jurusan as $key => $value){
@@ -324,6 +329,31 @@ class ArtikelController extends Controller
         // print_r($tableArray);
         return view('lihatArticle',compact('arrayAkun','final','judul','penulis','taskbarValue'));
     }
+
+    public function myarticle() {
+        $title = "My Article";
+
+        $taskbarValue = (new listController)->taskbarList ();
+        $arrayAkun = (new listController)->getAkun();
+        // print_r($arrayAkun);
+
+        $AlltableArray = json_decode((new listController)->getTable('All'),true);
+        $tableArray = json_decode((new listController)->getTable('MyArticle-'.$arrayAkun[0]['ID_PENULIS']),true);
+        $tableProdi = json_decode((new listController)->getTable('Prodi'),true);
+
+        // print_r($tableArray);
+
+        $judul =  (new listController)->UniqueList($tableArray,'JUDUL');
+        $penulis = json_decode((new listController)->getTable('Penulis'),true);
+        
+        $final = json_decode((new listController)->finalArray ($tableArray),true);
+        // echo "<br>============================<br>";
+        // dd($final, $penulis);
+
+        $namaPenulis = $arrayAkun[0]['NAMA'];
+
+        return view('myarticle',compact('arrayAkun','namaPenulis','title','judul','penulis','tableProdi','final','taskbarValue','tableArray','AlltableArray'));
+    }
     /**
      * Display the specified resource.
      *
@@ -337,32 +367,23 @@ class ArtikelController extends Controller
         $loop = false;
         
         $AlltableArray = json_decode((new listController)->getTable('All'),true);
-        $a = 0;
-        while ($a <= 1) {
-            // echo $id."<br>";
-            $tableArray = json_decode((new listController)->getTable('Penulis-'.$id),true);
-            if (empty($tableArray) && $a == 0) {
-                $id = json_decode((new listController)->getTable('PNL-'.substr($id,1)),true);
-                $pp = json_decode((new listController)->getTable('Akun-'.$id[0]['ID_AKUN']),true)[0]['FOTO_PROFIL'];
-                $id = $id[0]['ID_PENULIS'];
-            }
-            $a += 1;
-        }
+        $dataPenulis = json_decode((new listController)->getTable('PNL-'.substr($id,1)),true);
+        $tableArray = json_decode((new listController)->getTable('Penulis-'.$dataPenulis[0]['ID_PENULIS']),true);
+        $pp = json_decode((new listController)->getTable('Akun-'.$dataPenulis[0]['ID_AKUN']),true)[0]['FOTO_PROFIL'];
+    
         $tableProdi = json_decode((new listController)->getTable('Prodi'),true);
 
-        $namaPenulis;
+        $namaPenulis = $dataPenulis[0]['NAMA_PENULIS'];
         if (!empty($tableArray)) {
             $judul =  (new listController)->UniqueList($tableArray,'JUDUL');
             $penulis = (new listController)->UniqueList($tableArray,'PENULIS');
-            $final = (new listController)->TabletoList($tableArray,$judul,'up-ri-sta');
-            $namaPenulis = $final[0][2];
+            $final = json_decode((new listController)->finalArray ($tableArray),true);
         }
         else {
             $judul =  [];
             $penulis = [];
-            $tableArray = json_decode((new listController)->getTable('PNL-'.$id),true);
+            $tableArray = $dataPenulis;
             $final[0] = array('NAMA_PENULIS' => $tableArray[0]['NAMA_PENULIS']);
-            $namaPenulis = $final[0]['NAMA_PENULIS'];
         }
 
         $arrayAkun = (new listController)->getAkun();
@@ -371,15 +392,8 @@ class ArtikelController extends Controller
         // print_r($final);
         // echo "<br>";
         // print_r($arrayAkun);
-        if (!empty($arrayAkun) && $arrayAkun[0]['STATUS_AKUN'] == 'Penulis') {
-            if ($arrayAkun[0]['NAMA'] != $namaPenulis) {
-                // echo 'to article by penulis';
-                return view('myarticle',compact('arrayAkun','namaPenulis','judul','penulis','tableProdi','final','pp','taskbarValue','tableArray','AlltableArray'));
-            }
-            else {
-                // echo 'to my article';
-                return redirect()->route('myarticle');
-            }
+        if (!empty($arrayAkun) && $arrayAkun[0]['STATUS_AKUN'] == 'Penulis' && $arrayAkun[0]['NAMA'] = $namaPenulis) {
+            return redirect()->route('myarticle');
         }
         else {
             // echo 'to article by penulis';
@@ -469,5 +483,24 @@ class ArtikelController extends Controller
                     'ID_DETAILARTIKEL' => $id_artikel_detail,
                     'ID_PENULIS' => $id_penulis
                 ]);
+    }
+
+    function revisi ($id_artikel_detail) {
+        // dd(artikel::where('ID_ARTIKEL', '=', $id_artikel)->doesntExist(),artikel::where('ID_ARTIKEL', '=', $id_artikel)->get());
+        $id_revisi = 'REV'.$id_artikel_detail;
+        DB::table('revisi') -> INSERT ([
+            'ID_REVISI' => $id_revisi,
+            'ID_DETAILARTIKEL' => $id_artikel_detail,
+            'ID_AKUN' => null
+        ]);
+
+        DB::table('revisi_detail') -> INSERT ([
+            'ID_DETAILREVISI' => $id_revisi."_D",
+            'ID_REVISI' => $id_revisi,
+            'TANGGAL_REVISI' => null,
+            'STATUS_ARTIKEL_BARU' => '-',
+            'STATUS_REVISI' => 0,
+            'REVISI' => '-'
+        ]);
     }
 }

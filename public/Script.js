@@ -19,34 +19,18 @@ var drop_file_input = document.querySelectorAll(`.drop-file__input`);
 
 // alert(tryExport + 2); // Try Export Variable
 // console.table(arrayExport);
+document.querySelectorAll(`input`).forEach(element => {
+    if (!element.hasAttribute('autocomplete')) {
+        element.setAttribute('autocomplete','off');
+    }
+});
 
 
 //list example
-    // let list_judul = [];
-    //     for (let i = 1; i <= 100; i++) { list_judul.push("Artikel "+i); }
-    // let list_finalize = ["Yes","No","All"];
-    // let list_penulis = [];
-    //     for (let i = 0; i < 25; i++) { list_penulis.push("Penulis "+String.fromCharCode(i+97)); }
-    // let list_prodi = [];
-    //     for (let i = 0; i < 16; i++) { list_prodi.push("Prodi "+String.fromCharCode(i+65)); }
-    // let final_list = [];
-    //     for (let i = 0; i < list_judul.length; i++) {
-    //         const fnl = Math.floor(Math.random() * ((list_finalize.length-1) - 1 + 1) + 1);
-    //         const pnl = Math.floor(Math.random() * ((list_penulis.length-1) - 1 + 1) + 1);
-    //         const prodi = Math.floor(Math.random() * ((list_prodi.length-1) - 1 + 1) + 1);
-    //         final_list.push([list_judul[i], list_finalize[fnl-1], list_penulis[pnl-1], list_prodi[prodi-1]]);
-    //     }
+    list_judul.sort();
+    list_penulis.sort();
+    list_prodi.sort();
     let render_list = [].concat(final_list);
-    // let list_kota = [];
-    //     for (let i = 1; i <= 100; i++) { list_kota.push("Kota "+i); }
-    // let list_prov = [];
-    //     for (let i = 1; i <= 100; i++) { list_prov.push("Provinsi "+i); }
-// console.log("final_list");
-// console.log(final_list);
-// console.log(final_list[0]);
-// console.log(final_list[0][0]);
-// console.log(list_prodi);
-// console.log(list_prodi[0]);
 
 //banyak histori dalam 1 artikel
     const count_history = [];
@@ -334,7 +318,6 @@ var prodi_select_list = [].concat(list_prodi);
                                     var search_input = search.querySelector(`input`);  //hierarki (3)
                                     var search_dd_menu = search_dd.querySelectorAll(`div ul li`);  //hierarki (5)
                                     // console.log(event.target);
-
                                     form_searchbar(event.target, search_parent, search, search_input, search_dd, search_dd_menu); //open-close dropdown input that has suggestion, add active to selected value
                                     
                                     // console.log(search_input.value);
@@ -363,12 +346,12 @@ var prodi_select_list = [].concat(list_prodi);
                                                                     <div class="searchbar w-100">
                                                                         <input class="w-100" type="text" name="`+search_parent.id+`" id="`+search_parent.id+`"`
                                                     if (search_parent.id.includes("pnl")) {
-                                                        inner += `placeholder="[Nama Penulis]">
+                                                        inner += `placeholder="[Nama Penulis]" autocomplete="off">
                                                                     </div>
                                                                 </div>`
                                                     }
                                                     else if (search_parent.id.includes("prodi")) {
-                                                        inner += `placeholder="[Program Studi]">
+                                                        inner += `placeholder="[Program Studi]" autocomplete="off">
                                                                     </div>
                                                                 </div>`
                                                     }
@@ -845,7 +828,7 @@ var prodi_select_list = [].concat(list_prodi);
         for (let i = 0; i < render_item.length; i++) {
             if (final_select != "All") { //filter catatan revisi
                 if (render_item[i]) {
-                    if (render_item[i][1] != final_select) {
+                    if (!render_item[i][1].includes(final_select)) {
                         // console.log(render_item[i]);
                         render_item.splice(i, 1);
                         i--;
@@ -854,7 +837,7 @@ var prodi_select_list = [].concat(list_prodi);
             }
             if (pnl_select != "All") { //filter penulis
                 if (render_item[i]) {
-                    if (render_item[i][2] != pnl_select) {
+                    if (!render_item[i][2].includes(pnl_select)) {
                         render_item.splice(i, 1);
                         i--;
                     }
@@ -1101,6 +1084,9 @@ var prodi_select_list = [].concat(list_prodi);
                 // console.log(item.parentNode.id);
                 if (!item.classList.contains('addBox') && item.parentNode.id != 'artikel') {
                     item.querySelectorAll(`input`).forEach(element => {
+                        if (!element.hasAttribute('autocomplete')) {
+                            element.setAttribute('autocomplete','off');
+                        }
                         // console.log("before: ",element);
                         // console.log(element.id,element.id.split('-')[1],(element.id.includes('pnl')));
                         if (element.id.includes('pnl')) {
@@ -1332,14 +1318,14 @@ var prodi_select_list = [].concat(list_prodi);
                                         <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                                         <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
                                     </svg>
-                                    <input type="text" name="username" id="username" placeholder="Username" class="px-0 w-75 me-3 ms-1" value="">
+                                    <input type="text" name="username" id="username" placeholder="Username" class="px-0 w-75 me-3 ms-1" value="" autocomplete="off">
                                 </div>
                                 <div class="searchbar">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-key me-1 ms-3" viewBox="0 0 16 16">
                                         <path d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8zm4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5z"/>
                                         <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                                     </svg>
-                                    <input type="password" name="pass" id="pass" placeholder="Password" class="px-0 w-75 me-3 ms-1" value="">
+                                    <input type="password" name="pass" id="pass" placeholder="Password" class="px-0 w-75 me-3 ms-1" value="" autocomplete="off">
                                 </div>
                             </div>
                             <div class="d-flex flex-column">
@@ -1384,26 +1370,26 @@ var prodi_select_list = [].concat(list_prodi);
                                         <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                                         <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
                                     </svg>
-                                    <input type="text" name="username" id="username" placeholder="Username" class="px-0 w-75 me-3 ms-1" value="">
+                                    <input type="text" name="username" id="username" placeholder="Username" class="px-0 w-75 me-3 ms-1" value="" autocomplete="off">
                                 </div>
                                 <div class="searchbar">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-envelope-open me-1 ms-3" viewBox="0 0 16 16">
                                         <path d="M8.47 1.318a1 1 0 0 0-.94 0l-6 3.2A1 1 0 0 0 1 5.4v.817l5.75 3.45L8 8.917l1.25.75L15 6.217V5.4a1 1 0 0 0-.53-.882l-6-3.2ZM15 7.383l-4.778 2.867L15 13.117V7.383Zm-.035 6.88L8 10.082l-6.965 4.18A1 1 0 0 0 2 15h12a1 1 0 0 0 .965-.738ZM1 13.116l4.778-2.867L1 7.383v5.734ZM7.059.435a2 2 0 0 1 1.882 0l6 3.2A2 2 0 0 1 16 5.4V14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5.4a2 2 0 0 1 1.059-1.765l6-3.2Z"/>
                                     </svg>
-                                    <input type="text" name="email" id="email" placeholder="Email" class="px-0 w-75 me-3 ms-1" value="">
+                                    <input type="text" name="email" id="email" placeholder="Email" class="px-0 w-75 me-3 ms-1" value="" autocomplete="off">
                                 </div>
                                 <div class="searchbar">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-key me-1 ms-3" viewBox="0 0 16 16">
                                         <path d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8zm4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5z"/>
                                         <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                                     </svg>
-                                    <input type="password" name="pass" id="pass" placeholder="Password" class="px-0 w-75 me-3 ms-1" value="">
+                                    <input type="password" name="pass" id="pass" placeholder="Password" class="px-0 w-75 me-3 ms-1" value="" autocomplete="off">
                                 </div>
                                 <div class="searchbar">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-key-fill me-1 ms-3" viewBox="0 0 16 16">
                                         <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
                                     </svg>
-                                    <input type="password" name="passS" id="passS" placeholder="Re Enter Password" class="px-0 w-75 me-3 ms-1" value="">
+                                    <input type="password" name="passS" id="passS" placeholder="Re Enter Password" class="px-0 w-75 me-3 ms-1" value="" autocomplete="off">
                                 </div>
                             </div>
                             <div class="d-flex flex-column">
@@ -1427,7 +1413,10 @@ var prodi_select_list = [].concat(list_prodi);
 
 function suggestionBar(input_box, dd, parent_id, selectValue) {
     // console.log("input_box (suggestionBar())",input_box, "dd",dd, "parent_id",parent_id, selectValue);
-
+    
+    if (!input_box.hasAttribute('autocomplete')) {
+        input_box.setAttribute('autocomplete', 'off');
+    }
     let suggestions;
     let firstSuggestions;
     var baru = false;

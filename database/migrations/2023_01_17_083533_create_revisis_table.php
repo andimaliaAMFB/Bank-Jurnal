@@ -19,7 +19,7 @@ class CreateRevisisTable extends Migration
                 $table->primary('ID_REVISI');
 
                 $table->ipAddress('ID_DETAILARTIKEL',12);
-                $table->ipAddress('ID_AKUN',12);
+                $table->ipAddress('ID_AKUN',12)->nullable();
             });
         }
         Schema::table('revisi', function(Blueprint $table) {

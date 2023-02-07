@@ -19,7 +19,7 @@ class CreateRevisiDetailsTable extends Migration
                 $table->primary('ID_DETAILREVISI');
                 
                 $table->ipAddress('ID_REVISI',12);
-                $table->date('TANGGAL_REVISI');
+                $table->date('TANGGAL_REVISI')->nullable();
                 $table->ipAddress('STATUS_ARTIKEL_BARU',12);
                 $table->boolean('STATUS_REVISI');
                 $table->text('REVISI');

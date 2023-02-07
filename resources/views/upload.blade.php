@@ -387,10 +387,13 @@
 
             var countPenulis_old = 0;
             var FieldInput = <?php echo json_encode(Session::get('field')); ?>;
-            if (FieldInput) { FieldInput = <?php echo json_encode(Session::get('field')); ?>; }
-            else if({{isset($field)}}){ FieldInput = <?php echo json_encode($field); ?>; }
+
             if (document.querySelector(`#countPnl`)) { countPenulis_old = (document.querySelector(`#countPnl`).value) - 1; }
-            else if({{isset($Count_pj)}}){ countPenulis_old = <?php echo json_encode($Count_pj); ?>-1; }
+            if (FieldInput) { FieldInput = <?php echo json_encode(Session::get('field')); ?>; }
+            else if(window.location.href.includes('re-upload')){
+                FieldInput = <?php echo json_encode($field); ?>;
+                countPenulis_old = <?php echo json_encode($Count_pj); ?>-1;
+            }
             if (FieldInput) {
                 var index = 0;
                 FieldInput.forEach(element => {
@@ -461,7 +464,7 @@
                         }
                     }
                     else {
-                        if({{isset($id_article)}}) { form.querySelector('input#jdl').value = '{{ $id_article }}'; }
+                        if({{$id_article}}) { form.querySelector('input#jdl').value = '{{ $id_article }}'; }
                     }
                     form_update(form);
                 });

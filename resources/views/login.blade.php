@@ -24,7 +24,7 @@
                 <li>{{ $error }}</li>
             @endforeach
         </div>
-    @endif
+    @endif 
     <main>
         <div class="main-isi" id="main-isi">
             @if ($form == 'login')
@@ -137,6 +137,21 @@
         if (document.querySelector(`#pass`)) { document.querySelector(`#pass`).value = "{{ old('pass') }}"; }
         if (document.querySelector(`#email`)) { document.querySelector(`#email`).value = "{{ old('email') }}"; }
         if (document.querySelector(`#passS`)) { document.querySelector(`#passS`).value = "{{ old('passS') }}"; }
+
+        var WrongError = <?php echo json_encode(Session::get('error')); ?>;
+        var panelisi = document.querySelector(`.panel-isi`);
+        var Next = document.querySelector(`.panel-isi .flex-column`);
+        if (WrongError) {
+            console.log(WrongError);
+            const node = document.createElement('div');
+            node.classList.add('alert'); node.classList.add('alert-danger'); node.classList.add('alert-block');
+            node.classList.add('form-subtitle'); node.classList.add('my-0'); node.style.marginInline = '-3rem';
+            node.innerHTML = `<strong>`+ WrongError +`</strong>`;
+            panelisi.insertBefore(node, Next);
+        }
+        else if (document.querySelector(`.panel-isi .alert`)) {
+            document.querySelector(`.panel-isi .alert`).remove();
+        }
     </script>
 </body>
 </html>

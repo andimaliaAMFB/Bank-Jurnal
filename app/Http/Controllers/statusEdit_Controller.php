@@ -42,7 +42,7 @@ class statusEdit_Controller extends Controller
         $judul =  (new listController)->UniqueList($tableArray,'JUDUL');
         $penulis = (new listController)->UniqueList($tableArray,'PENULIS');
 
-        $final = (new listController)->TabletoList($tableArray,$judul,'title-pnl-prodi');
+        $final = (new listController)->finalArray($tableArray);
 
         $arrayAkun = (new listController)->getAkun();
         return view('status-edit',compact('arrayAkun','title','judul','penulis','tableProdi','final','taskbarValue','tableArray','AlltableArray','level_status'));

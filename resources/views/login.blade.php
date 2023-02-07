@@ -111,6 +111,7 @@
         let list_penulis = [];
         let list_prodi = [];
         let final_list = [];
+        let final_search = [];
 
     </script>
     <!-- JS comunicate with database -->

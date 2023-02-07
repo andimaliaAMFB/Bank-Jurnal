@@ -27,9 +27,10 @@ document.querySelectorAll(`input`).forEach(element => {
 
 
 //list example
-    list_judul.sort();
-    list_penulis.sort();
-    list_prodi.sort();
+    if (list_judul.length) {list_judul.sort();}
+    if (list_penulis.length) {list_penulis.sort();}
+    if (list_prodi.length) {list_prodi.sort();}
+    if (final_search.length) {final_search.sort();}
     let render_list = [].concat(final_list);
 
 //banyak histori dalam 1 artikel
@@ -1080,54 +1081,49 @@ var prodi_select_list = [].concat(list_prodi);
             // console.table(list_up_penulis);
             // console.table(list_up_prodi);
             // console.log(form);
-            form.querySelectorAll(`.form-sub`).forEach(item => {
-                // console.log(item.parentNode.id);
-                if (!item.classList.contains('addBox') && item.parentNode.id != 'artikel') {
-                    item.querySelectorAll(`input`).forEach(element => {
-                        if (!element.hasAttribute('autocomplete')) {
-                            element.setAttribute('autocomplete','off');
-                        }
-                        // console.log("before: ",element);
-                        // console.log(element.id,element.id.split('-')[1],(element.id.includes('pnl')));
-                        if (element.id.includes('pnl')) {
-                            if (list_up_penulis[element.id.split('-')[1]-1]) {
-                                if (element.classList.contains('text-center')) {
-                                    // console.log(element, element.id.split('-')[1]-1, list_up_penulis[element.id.split('-')[1]-1]);
-                                    element.defaultValue = list_up_penulis[element.id.split('-')[1]-1];
-                                    element.value = list_up_penulis[element.id.split('-')[1]-1];
-
-                                    // cari Prodi dari penulis yang sudah terdaftar
-                                        // list_penulis_jurusan.forEach(pp => {// console.log(list_up_penulis[element.id.split('-')[1]-1], pp[0], pp.value == element[0]);
-                                        //     if (element.value == pp[0]) {
-                                        //         list_up_prodi[element.id.split('-')[1]-1] = pp[1];
-                                        //     }
-                                        // });
-                                }
-                                else {
-                                    if (!list_up_penulis_text[element.id.split('-')[1]-1]) { list_up_penulis_text[element.id.split('-')[1]-1] = element.value; }
-                                    if (list_up_penulis_text[element.id.split('-')[1]-1]) { element.defaultValue = list_up_penulis_text[element.id.split('-')[1]-1]; }
-                                }
+            if (form.parentNode.parentNode.name == "formUpload") {
+                form.querySelectorAll(`.form-sub`).forEach(item => {
+                    // console.log(item.parentNode.id);
+                    if (!item.classList.contains('addBox') && item.parentNode.id != 'artikel') {
+                        item.querySelectorAll(`input`).forEach(element => {
+                            if (!element.hasAttribute('autocomplete')) {
+                                element.setAttribute('autocomplete','off');
                             }
-                            else { element.removeAttribute('value'); }
-                        } 
-                        else if (element.id.includes('prodi'))
-                        {
-                            if (list_up_prodi[element.id.split('-')[1]-1]) {
-                                if (element.classList.contains('text-center') && list_up_prodi[element.id.split('-')[1]-1]) {
-                                    element.defaultValue = list_up_prodi[element.id.split('-')[1]-1];
-                                    element.value = list_up_prodi[element.id.split('-')[1]-1];
+                            // console.log("before: ",element);
+                            // console.log(element.id,element.id.split('-')[1],(element.id.includes('pnl')));
+                            if (element.id.includes('pnl')) {
+                                if (list_up_penulis[element.id.split('-')[1]-1]) {
+                                    if (element.classList.contains('text-center')) {
+                                        // console.log(element, element.id.split('-')[1]-1, list_up_penulis[element.id.split('-')[1]-1]);
+                                        element.defaultValue = list_up_penulis[element.id.split('-')[1]-1];
+                                        element.value = list_up_penulis[element.id.split('-')[1]-1];
+                                    }
+                                    else {
+                                        if (!list_up_penulis_text[element.id.split('-')[1]-1]) { list_up_penulis_text[element.id.split('-')[1]-1] = element.value; }
+                                        if (list_up_penulis_text[element.id.split('-')[1]-1]) { element.defaultValue = list_up_penulis_text[element.id.split('-')[1]-1]; }
+                                    }
                                 }
-                                else {
-                                    if (!list_up_prodi_text[element.id.split('-')[1]-1]) { list_up_prodi_text[element.id.split('-')[1]-1] = element.value; }
-                                    if (list_up_prodi_text[element.id.split('-')[1]-1]) { element.defaultValue = list_up_prodi_text[element.id.split('-')[1]-1]; }
+                                else { element.removeAttribute('value'); }
+                            } 
+                            else if (element.id.includes('prodi'))
+                            {
+                                if (list_up_prodi[element.id.split('-')[1]-1]) {
+                                    if (element.classList.contains('text-center') && list_up_prodi[element.id.split('-')[1]-1]) {
+                                        element.defaultValue = list_up_prodi[element.id.split('-')[1]-1];
+                                        element.value = list_up_prodi[element.id.split('-')[1]-1];
+                                    }
+                                    else {
+                                        if (!list_up_prodi_text[element.id.split('-')[1]-1]) { list_up_prodi_text[element.id.split('-')[1]-1] = element.value; }
+                                        if (list_up_prodi_text[element.id.split('-')[1]-1]) { element.defaultValue = list_up_prodi_text[element.id.split('-')[1]-1]; }
+                                    }
                                 }
+                                else { element.removeAttribute('value'); }
                             }
-                            else { element.removeAttribute('value'); }
-                        }
-                        // console.log("after: ",element);
-                    });
-                }
-            })
+                            // console.log("after: ",element);
+                        });
+                    }
+                })
+            }
         }
         function form_addPenulis(form, list) {
             var next = document.createElement("div"); //membuat .form-sub, hierarki (M), baru di lokasi selanjut hierarki (M)
@@ -1448,7 +1444,7 @@ function suggestionBar(input_box, dd, parent_id, selectValue) {
             suggestions = [firstSuggestions].concat(list_judul);
         }
         else if ((parent_id.includes("search")) && i == 1) {
-            suggestions = [].concat(final_list);
+            suggestions = [].concat(final_search);
         }
         else if ((parent_id.includes("kota")) && i == 1) {
             firstSuggestions = ">--Pilih Kota--<";

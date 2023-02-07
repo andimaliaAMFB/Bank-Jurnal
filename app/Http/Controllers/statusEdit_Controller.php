@@ -32,6 +32,7 @@ class statusEdit_Controller extends Controller
         }
 
         $taskbarValue = (new listController)->taskbarList ();
+        $finalSearch = (new listController)->SearchBarList ();
 
         $AlltableArray = json_decode((new listController)->getTable('All'),true);
         $tableArray = json_decode((new listController)->getTable($tableName),true);
@@ -43,9 +44,10 @@ class statusEdit_Controller extends Controller
         $penulis = (new listController)->UniqueList($tableArray,'PENULIS');
 
         $final = (new listController)->finalArray($tableArray);
+        $history = (new listController)->historyArray ($tableArray);
 
         $arrayAkun = (new listController)->getAkun();
-        return view('status-edit',compact('arrayAkun','title','judul','penulis','tableProdi','final','taskbarValue','tableArray','AlltableArray','level_status'));
+        return view('status-edit',compact('arrayAkun','title','judul','penulis','tableProdi','final','taskbarValue','finalSearch','history','level_status'));
     }
     
     /**

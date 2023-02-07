@@ -27,7 +27,9 @@ class listController extends Controller
                     ->select('artikel_detail.JUDUL_ARTIKEL',
                                 'revisi_detail.STATUS_REVISI',
                                 'penulis.NAMA_PENULIS',
-                                'jurusan.NAMA_JURUSAN',)
+                                'jurusan.NAMA_JURUSAN',
+                                'artikel.ID_ARTIKEL',
+                                'artikel_detail.ID_DETAILARTIKEL')
                     ->Where(function($query) use ($typeTable) {
                         $query->where('artikel_detail.STATUS_ARTIKEL','=',$typeTable)
                                 ->orWhere('revisi_detail.STATUS_ARTIKEL_BARU','=',$typeTable);
@@ -51,7 +53,7 @@ class listController extends Controller
                             'artikel_detail.JUDUL_ARTIKEL',
                             'revisi_detail.STATUS_REVISI',
                             'penulis.NAMA_PENULIS',
-                            'jurusan.NAMA_JURUSAN',)
+                            'jurusan.NAMA_JURUSAN')
                     ->where('artikel_detail.STATUS_ARTIKEL','=',$typeTable)
                     ->orderByDesc('artikel.ID_ARTIKEL')
                     ->orderByDesc('artikel_detail.ID_DETAILARTIKEL')
@@ -115,7 +117,8 @@ class listController extends Controller
                             'jurusan.NAMA_JURUSAN',
                             'artikel_detail.TANGGAL_UPLOAD',
                             'artikel_detail.STATUS_ARTIKEL',
-                            'revisi_detail.STATUS_ARTIKEL_BARU')
+                            'revisi_detail.STATUS_ARTIKEL_BARU',
+                            'artikel_detail.ID_DETAILARTIKEL')
                     ->where('penulis.ID_PENULIS','=',substr($typeTable,8))
                     ->where('revisi_detail.STATUS_ARTIKEL_BARU','=','Layak Publish')
                     ->orderByDesc('artikel.ID_ARTIKEL')
@@ -309,13 +312,16 @@ class listController extends Controller
         }
         return $Array;
     }
-    function CountRevisied (array $TableArray) {
+    function CountRevisied (array $TableArray, string $type) {
         $count = 0;
         $jdl = '';
         foreach ($TableArray as $key => $value) {
-            if ($TableArray[$key]['STATUS_REVISI'] == 0 && $TableArray[$key]['JUDUL_ARTIKEL'] != $jdl) {
-                $count = $count + 1;
-                $jdl = $TableArray[$key]['JUDUL_ARTIKEL'];
+            if ($value[0] != $jdl) {
+                $jdl = $value[0];
+                if ($type == 'Admin' && $value[1] == "No") { $count = $count + 1; }
+                else if ($type == 'Penulis' && $value[1] == "Yes" && $value[6] != 'Layak Publish') {
+                    $count = $count + 1;
+                }
             }
         }
         return $count;
@@ -375,8 +381,7 @@ class listController extends Controller
             if($id_article_TA != $value['ID_ARTIKEL'])
             {
                 $id_article_TA = $value['ID_ARTIKEL'];
-
-                $id_articleDetail_TA = $value['ID_DETAILARTIKEL'];
+                
                 $datamodel = (artikel_detail::where('ID_ARTIKEL', '=', $id_article_TA)
                             ->orderByDesc('ID_DETAILARTIKEL')
                             ->first());
@@ -414,19 +419,109 @@ class listController extends Controller
                     if($detail_revisi[0]['STATUS_REVISI'] == '1') { $finalize = 'Yes'; }
                     else { $finalize = 'No'; }
 
-                    $final[] = [$datamodel['JUDUL_ARTIKEL'],$finalize,$stringList_of_penulis, $stringList_of_prodi,$datamodel['TANGGAL_UPLOAD'],$tanggalUp,$status];
+                    $final[] = [$datamodel['JUDUL_ARTIKEL'],
+                                $finalize,
+                                $stringList_of_penulis,
+                                $stringList_of_prodi,
+                                $datamodel['TANGGAL_UPLOAD'],
+                                $tanggalUp,
+                                $status];
                 }
             }
         }
+        // dd($tableArray, $final);
         return $final;
     }
+    function historyArray ($tableArray) {
+        $history = [];
+        
+        $id_article_TA = '';
+        foreach ($tableArray as $key => $value) {
+            if($id_article_TA != $value['ID_ARTIKEL'])
+            {
+                $id_article_TA = $value['ID_ARTIKEL'];
+
+                $datamodel = (artikel_detail::where('ID_ARTIKEL', '=', $id_article_TA)
+                            ->orderByDesc('ID_DETAILARTIKEL')
+                            ->first());
+                
+                // compare is this ID_DETAILARTIKEL is the last one from $ID_ARTIKEL
+                if ($datamodel['ID_DETAILARTIKEL'] == $value['ID_DETAILARTIKEL']) {
+                    $detailArtikel = (artikel_detail::where('ID_ARTIKEL', '=', $id_article_TA)
+                                        ->orderBy('ID_DETAILARTIKEL')
+                                        ->get());
+                    $listTGL = [];
+                    $CountHistory = 0;
+                    $listPenulis = [];
+                    $listStatus = [];
+                    $listStatusBaru = [];
+                    $listCatatanBaru = [];
+                    $listJudul = [];
+                    foreach($detailArtikel as $index => $AD){
+                        $List_PNL = artikel_detail_penulis::where('ID_DETAILARTIKEL','=',$AD['ID_DETAILARTIKEL'])->get();
+                        $listPenulis_AD = [];
+                        foreach($List_PNL as $noList => $valueList)
+                        {
+                            $NamaPenulis = penulis::where('ID_PENULIS','=',$valueList['ID_PENULIS'])->value('NAMA_PENULIS');
+                            if (!in_array($NamaPenulis,$listPenulis_AD)) { $listPenulis_AD [] = $NamaPenulis; }
+                        }
+                        $CountHistory += 1;
+                        $listPenulis [] = implode(', ',$listPenulis_AD);
+                        
+                        $idRevisi = (revisi::where('ID_DETAILARTIKEL', '=', $AD['ID_DETAILARTIKEL'])
+                                        ->value('ID_REVISI'));
+                        $RD = (revisi_detail::where('ID_REVISI', '=', $idRevisi)
+                                        ->orderBy('ID_REVISI')
+                                        ->first());
+                        
+                        $listTGL [] = $AD['TANGGAL_UPLOAD'];
+                        $listStatus [] = $AD['STATUS_ARTIKEL'];
+                        $listStatusBaru [] = $RD['STATUS_ARTIKEL_BARU'];
+                        $listCatatanBaru [] = $RD['REVISI'];
+                        $listJudul [] = $AD['JUDUL_ARTIKEL'];
+                    }
+                    $history[] = [$datamodel['JUDUL_ARTIKEL'],
+                                    $CountHistory,
+                                    end($listPenulis),
+                                    $listTGL,
+                                    $listStatus,
+                                    $listStatusBaru,
+                                    $listCatatanBaru,
+                                    $listJudul];
+                }
+            }
+        }
+        return $history;
+    }
+
 
     function taskbarList () {
-        $draft = $this->CountRevisied(json_decode($this->getTable('Draft'),true));
-        $rmayor = $this->CountRevisied(json_decode($this->getTable('Revisi Mayor'),true));
-        $rminor = $this->CountRevisied(json_decode($this->getTable('Revisi Minor'),true));
+        $draft = json_decode($this->getTable('Draft'),true);
+        $rmayor = json_decode($this->getTable('Revisi Mayor'),true);
+        $rminor = json_decode($this->getTable('Revisi Minor'),true);
         
-        $listJumlah = ['Draft' => $draft,'Revisi Mayor' => $rmayor,'Revisi Minor' => $rminor,];
+        $list_draft = $this->CountRevisied(($this->finalArray($draft)),'Admin');
+        $list_rmayor = $this->CountRevisied(($this->finalArray($rmayor)),'Admin');
+        $list_rminor = $this->CountRevisied(($this->finalArray($rminor)),'Admin');
+        // dd($list_draft, ($this->finalArray($draft)));
+
+        $listJumlah = ['Draft' => $list_draft,
+        'Revisi Mayor' => $list_rmayor,
+        'Revisi Minor' => $list_rminor,];
+
+        $arrayAkun = $this->getAkun();
+        $myArticle;
+        if ($arrayAkun && $arrayAkun[0]['STATUS_AKUN'] == 'Penulis') {
+            $idPenulis = json_decode($this->getTable ('PNL-'.$arrayAkun[0]['NAMA']),true)[0]['ID_PENULIS'];
+            $myArticle = json_decode($this->getTable('MyArticle-'.$idPenulis),true);
+            $list_myArticle = null;
+            if($myArticle) { $list_myArticle = $this->CountRevisied(($this->finalArray($myArticle)),'Penulis'); }
+            
+            $listJumlah = ['Draft' => $list_draft,
+                            'Revisi Mayor' => $list_rmayor,
+                            'Revisi Minor' => $list_rminor,
+                            'My Article' => $list_myArticle];
+        }
         // print_r($listJumlah);
         return $listJumlah;
     }
@@ -477,5 +572,12 @@ class listController extends Controller
         }
 
         return $arrayID;
+    }
+    function SearchBarList () {
+        $table = json_decode($this->getTable('Layak Publish'),true);
+        $finalSearch = $this->finalArray ($table);
+
+        // dd($table,$finalSearch);
+        return $finalSearch;
     }
 }

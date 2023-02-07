@@ -28,6 +28,7 @@ class ArtikelController extends Controller
     public function create() {
         $title = "Upload Artikel";
         $taskbarValue = (new listController)->taskbarList ();
+        $finalSearch = (new listController)->SearchBarList ();
         
         $tableProdi = json_decode((new listController)->getTable('Prodi'),true);
         $tablePenulis = json_decode((new listController)->getTable('Penulis'),true);
@@ -36,7 +37,7 @@ class ArtikelController extends Controller
         $field = null;
         $Count_pj = null;
         $id_article = null;
-        return view('upload',compact('arrayAkun','title','tablePenulis','tableProdi','taskbarValue','field','Count_pj','id_article'));
+        return view('upload',compact('arrayAkun','title','tablePenulis','tableProdi','taskbarValue','finalSearch','field','Count_pj','id_article'));
     }
     /**
      * Show the form for creating a new resource.
@@ -46,6 +47,7 @@ class ArtikelController extends Controller
     public function Recreate($id_article) {
         $title = "Upload Revisi Artikel ".$id_article;
         $taskbarValue = (new listController)->taskbarList ();
+        $finalSearch = (new listController)->SearchBarList ();
         
         $tableProdi = json_decode((new listController)->getTable('Prodi'),true);
         $tablePenulis = json_decode((new listController)->getTable('Penulis'),true);
@@ -65,7 +67,7 @@ class ArtikelController extends Controller
             }
         }
         $Count_pj = $i-1;
-        return view('upload',compact('arrayAkun','title','tablePenulis','tableProdi','taskbarValue','field','Count_pj','id_article'));
+        return view('upload',compact('arrayAkun','title','tablePenulis','tableProdi','taskbarValue','finalSearch','field','Count_pj','id_article'));
     }
 
     /**
@@ -314,6 +316,7 @@ class ArtikelController extends Controller
     public function show($id) {
         // echo substr('Article-'.$id,8);
         $taskbarValue = (new listController)->taskbarList ();
+        $finalSearch = (new listController)->SearchBarList ();
         
         $id_artikelDetail = json_decode((new listController)->getTable('Judul-'.$id),true)[0]['ID_DETAILARTIKEL'];
         $tableArray = json_decode((new listController)->getTable('Article-'.$id_artikelDetail),true);
@@ -334,6 +337,7 @@ class ArtikelController extends Controller
         $title = "My Article";
 
         $taskbarValue = (new listController)->taskbarList ();
+        $finalSearch = (new listController)->SearchBarList ();
         $arrayAkun = (new listController)->getAkun();
         // print_r($arrayAkun);
 
@@ -346,13 +350,14 @@ class ArtikelController extends Controller
         $judul =  (new listController)->UniqueList($tableArray,'JUDUL');
         $penulis = json_decode((new listController)->getTable('Penulis'),true);
         
-        $final = json_decode((new listController)->finalArray ($tableArray),true);
+        $final = (new listController)->finalArray ($tableArray);
+        $history = (new listController)->historyArray ($tableArray);
         // echo "<br>============================<br>";
         // dd($final, $penulis);
 
         $namaPenulis = $arrayAkun[0]['NAMA'];
 
-        return view('myarticle',compact('arrayAkun','namaPenulis','title','judul','penulis','tableProdi','final','taskbarValue','tableArray','AlltableArray'));
+        return view('myarticle',compact('arrayAkun','namaPenulis','title','judul','penulis','tableProdi','final','taskbarValue','finalSearch','history'));
     }
     /**
      * Display the specified resource.
@@ -363,41 +368,41 @@ class ArtikelController extends Controller
     public function showbyPenulis($id) {
         // echo substr('Penulis-'.$id,9);
         $taskbarValue = (new listController)->taskbarList ();
+        $finalSearch = (new listController)->SearchBarList ();
         $tableArray;
-        $loop = false;
         
         $AlltableArray = json_decode((new listController)->getTable('All'),true);
         $dataPenulis = json_decode((new listController)->getTable('PNL-'.substr($id,1)),true);
         $tableArray = json_decode((new listController)->getTable('Penulis-'.$dataPenulis[0]['ID_PENULIS']),true);
+        
+        
         $pp = json_decode((new listController)->getTable('Akun-'.$dataPenulis[0]['ID_AKUN']),true)[0]['FOTO_PROFIL'];
     
         $tableProdi = json_decode((new listController)->getTable('Prodi'),true);
 
         $namaPenulis = $dataPenulis[0]['NAMA_PENULIS'];
         if (!empty($tableArray)) {
-            $judul =  (new listController)->UniqueList($tableArray,'JUDUL');
-            $penulis = (new listController)->UniqueList($tableArray,'PENULIS');
-            $final = json_decode((new listController)->finalArray ($tableArray),true);
+            $final = (new listController)->finalArray($tableArray);
+            $history = (new listController)->historyArray ($tableArray);
+            $judul =  array_column($history,0);
+            $penulis = array_column($history,2);
         }
         else {
             $judul =  [];
             $penulis = [];
             $tableArray = $dataPenulis;
             $final[0] = array('NAMA_PENULIS' => $tableArray[0]['NAMA_PENULIS']);
+            $history = [];
         }
 
         $arrayAkun = (new listController)->getAkun();
-
-        // echo "hh".$pp;
-        // print_r($final);
-        // echo "<br>";
-        // print_r($arrayAkun);
-        if (!empty($arrayAkun) && $arrayAkun[0]['STATUS_AKUN'] == 'Penulis' && $arrayAkun[0]['NAMA'] = $namaPenulis) {
+        
+        if (!empty($arrayAkun) && $arrayAkun[0]['STATUS_AKUN'] == 'Penulis' && $arrayAkun[0]['NAMA'] == $namaPenulis) {
             return redirect()->route('myarticle');
         }
         else {
             // echo 'to article by penulis';
-            return view('myarticle',compact('arrayAkun','namaPenulis','judul','penulis','tableProdi','final','pp','taskbarValue','tableArray','AlltableArray'));
+            return view('myarticle',compact('arrayAkun','namaPenulis','judul','penulis','tableProdi','final','pp','taskbarValue','finalSearch','history'));
         }
     }
 

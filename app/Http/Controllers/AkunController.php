@@ -71,13 +71,15 @@ class AkunController extends Controller
         }
 
         //check if username and password exist
-            $errorString;
+            $errorString = null;
             if(akun::where('USERNAME','=',$request->username)->exists())
             {
                 $dataAkun = akun::where('USERNAME','=',$request->username)->first();
                 $username = $dataAkun['USERNAME'];
                 $password = $dataAkun['PASSWORD'];
-                if(substr(md5($request->pass),0,12) != $dataAkun['PASSWORD']) { $errorString = 'Password Yang Dimasukan Salah'; }
+                if(substr(md5($request->pass),0,12) != $dataAkun['PASSWORD']) {
+                    $errorString = 'Password Yang Dimasukan Salah';
+                }
             }
             else { $errorString = 'Username Tidak Dikenali'; }
             if($errorString) {
@@ -90,7 +92,7 @@ class AkunController extends Controller
         //
 
         $id_akun = akun::select('ID_AKUN','STATUS_PENGGUNA')->where('USERNAME','=',$username)->first();
-        dd($id_akun);
+        // dd($id_akun);
 
         $data = $request->session()->put('id_akun',$id_akun['ID_AKUN']);
         $data = $request->session()->put('status_akun',$id_akun['STATUS_PENGGUNA']);
@@ -137,7 +139,7 @@ class AkunController extends Controller
         }
 
         //check if username and password exist
-            $errorString;
+            $errorString = null;
             if(akun::where('USERNAME','=',$request->username)->exists()) {
                 $errorString = 'Username Sudah Digunakan Oleh Pengguna Lain';
             }
@@ -204,6 +206,7 @@ class AkunController extends Controller
      */
     public function showProfile() {
         $taskbarValue = (new listController)->taskbarList ();
+        $finalSearch = (new listController)->SearchBarList ();
 
         $tableKota = json_decode((new listController)->getTable('Kota'),true);
         $tableProv = json_decode((new listController)->getTable('Prov'),true);
@@ -212,7 +215,7 @@ class AkunController extends Controller
         $arrayAkun = (new listController)->getAkun();
 
         // print_r($arrayAkun);
-        return view('profile',compact('arrayAkun','tableProdi','tableKota','tableProv','taskbarValue'));
+        return view('profile',compact('arrayAkun','tableProdi','tableKota','tableProv','taskbarValue','finalSearch'));
     }
 
     /**
@@ -233,6 +236,20 @@ class AkunController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function updateProfie(Request $request, $id) {
+        //check if username and password exist
+            $errorString = [];
+            if(akun::where('USERNAME','=',$request->username)->exists()) {
+                $errorString[] = 'Username Sudah Digunakan Oleh Pengguna Lain';
+            }
+            if(akun::where('EMAIL','=',$request->email)->exists()) {
+                $errorString[] = 'Email Sudah Digunakan Oleh Pengguna Lain';
+            }
+            if($errorString) {
+                return redirect()
+                    ->route('profile')
+                    ->with('error',$errorString);
+            }
+        //
         $tableAkun = json_decode((new listController)->getTable('Akun-'.$id),true);
         $kota = json_decode((new listController)->getTable('KOTA-'.$request->kota),true)[0]['ID_KOTA'];
         $provinsi = json_decode((new listController)->getTable('PROV-'.$request->prov),true)[0]['ID_PROVINSI'];
@@ -290,6 +307,7 @@ class AkunController extends Controller
                 ]);
             }
         }
+
         return redirect()
             ->route('profile')
             ->with(['success' => 'Berhasil Update Profile']);

@@ -649,6 +649,14 @@ body {
         align-items: unset;
         cursor: pointer;
     }
+    #button-profile {
+        border: none;
+    }
+    #button-profile>*{
+        margin: 0;
+        width: 100%;
+        height: 100%;
+    }
     .search-btn {
         display: block;
         width: 28px;
@@ -807,7 +815,8 @@ body {
         height: calc(4rem*3);
         color: #FFFFFF;
     }
-    .dropdown-menu .user-profile img {
+    .dropdown-menu .user-profile img,
+    .dropdown-menu .user-profile svg {
         height: 5rem;
         width: 5rem;
         border-radius: 50%;

@@ -65,10 +65,26 @@
                             </ul>
                         </div>
                         <div class="head-profile navbar ms-2">
-                            <button class="head-button dot" id="button-profile">P</button>
+                            <button class="head-button dot" id="button-profile">
+                                @if(isset($arrayAkun[0]['FOTO_PROFIL']))
+                                <img src="{{ 'storage/profile-image/'.$arrayAkun[0]['FOTO_PROFIL'] }}" id="uploadedIMG" class="profile_img">
+                                @else
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" id="blank-pp" class="bi bi-person-circle" viewBox="0 0 16 16" style="display: block; opacity: 0.75;">
+                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                </svg>
+                                @endif
+                            </button>
                             <ul class="dropdown-menu" style="display: none;" id="dropdown-profile">
                                 <li class="user-profile label-dropdown">
-                                    <img src="" alt="">
+                                    @if(isset($arrayAkun[0]['FOTO_PROFIL']))
+                                    <img src="{{ 'storage/profile-image/'.$arrayAkun[0]['FOTO_PROFIL'] }}" id="uploadedIMG" class="profile_img">
+                                    @else
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" id="blank-pp" class="bi bi-person-circle" viewBox="0 0 16 16" style="display: block; opacity: 0.75;">
+                                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                    </svg>
+                                    @endif
                                     <h3>{{ $arrayAkun[0]['USERNAME'] }}</h3>
                                     <p>{{ $arrayAkun[0]['STATUS_AKUN'] }}</p>
                                 </li>
@@ -208,7 +224,7 @@
                             <a href="{{ route('status.index', ['level_status' => 'revisi-mayor']) }}"><li>Revisi Mayor<p>{{ $taskbarValue['Revisi Mayor'] }}</p></li></a>
                             <a href="{{ route('status.index', ['level_status' => 'revisi-minor']) }}"><li>Revisi Minor<p>{{ $taskbarValue['Revisi Minor'] }}</p></li></a>
                             @elseif(isset($arrayAkun[0]['STATUS_AKUN']) && $arrayAkun[0]['STATUS_AKUN'] == 'Penulis')
-                            <a href="{{ route('myarticle') }}"><li>My Article</li></a>
+                            <a href="{{ route('myarticle') }}"><li>My Article<p>{{ $taskbarValue['My Article'] }}</p></li></a>
                             @endif
                         </ul>
                     </div>
@@ -490,8 +506,7 @@
             var penulis = <?php echo json_encode($penulis); ?>;
             var prodi = <?php echo json_encode($tableProdi); ?>;
             var final = <?php echo json_encode($final); ?>;
-            var tableArray = <?php echo json_encode($tableArray); ?>;
-            var AlltableArray = <?php echo json_encode($AlltableArray); ?>;
+            var finalSearch = <?php echo json_encode($finalSearch); ?>;
             var thisAuthor = '{{ $namaPenulis }}';
             // console.log(thisAuthor);
 
@@ -502,57 +517,9 @@
             let list_prodi = [];
             prodi.forEach((element,index) => { list_prodi[index] = prodi[index]['NAMA_JURUSAN']; });
             let final_list = final;
-            
-            // console.table(list_judul);
-            // console.table(list_penulis);
-            // console.table(tableArray);
-            // console.table(final);
+            let final_search = finalSearch;
 
-            var historyArray = [];
-            id_artikel = '';
-            tableArray.forEach(index => {
-                artikel_judul = '';
-                artikel_judul_detail = [];
-                artikel_count = 0;
-                index_up = true;
-                tgl = [];
-                status_lama = [];
-                status_baru = [];
-                revisi = [];
-                // console.log(index['ID_ARTIKEL']);
-                if (index['ID_ARTIKEL'] != id_artikel) {
-                    AlltableArray.forEach(indexAll => {
-                        if (index['ID_ARTIKEL'] == indexAll['ID_ARTIKEL']) {
-                            if (indexAll['JUDUL_ARTIKEL'] != artikel_judul) {
-                                artikel_judul = indexAll['JUDUL_ARTIKEL'];
-                                artikel_judul_detail.push(indexAll['JUDUL_ARTIKEL']);
-                                artikel_count += 1;
-                                // console.log(indexAll);
-                                // console.log(artikel_judul, ' || ', artikel_count);
-
-                                AlltableArray.forEach((element,elementIndex) => {
-                                    if (element['JUDUL_ARTIKEL'] == artikel_judul) {
-                                        // console.log(elementIndex);
-                                        if (index_up) {
-                                            index_up = false;
-                                            tgl.push(element['TANGGAL_UPLOAD']);
-                                            status_lama.push(element['STATUS_ARTIKEL']);
-                                            status_baru.push(element['STATUS_ARTIKEL_BARU']);
-                                            revisi.push(element['REVISI']);
-                                        }
-                                    }
-                                });
-                                index_up = true;
-                            }
-                        }
-                    });
-                    id_artikel = index['ID_ARTIKEL'];
-                    historyArray.push([index['JUDUL_ARTIKEL'],artikel_count,index['NAMA_PENULIS'],tgl.reverse(),status_lama.reverse(),status_baru.reverse(),revisi.reverse(),artikel_judul_detail.reverse()]);
-                }
-            });
-
-            // console.table(historyArray);
-            // console.log(historyArray[0][1]);
+            var historyArray = <?php echo json_encode($history); ?>;
 
         </script>
         <!-- JS comunicate with database -->

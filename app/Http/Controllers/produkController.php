@@ -19,6 +19,8 @@ class produkController extends Controller
     public function index() {
         $title = "Dashboard";
         $taskbarValue = (new listController)->taskbarList ();
+        $finalSearch = (new listController)->SearchBarList ();
+
         $tableArray = json_decode((new listController)->getTable('Layak Publish'),true);
         $tableProdi = json_decode((new listController)->getTable('Prodi'),true);
         $tablePenulis = json_decode((new listController)->getTable('Penulis'),true);
@@ -30,10 +32,6 @@ class produkController extends Controller
 
         $arrayAkun = (new listController)->getAkun();
         // print_r($final);
-        return view('index',compact('arrayAkun','title','judul','penulis','tablePenulis','tableProdi','final','taskbarValue'));
-    }
-    public function profile($id_akun)
-    {
-        return view('profile',compact('id_akun'));
+        return view('index',compact('arrayAkun','title','judul','penulis','tablePenulis','tableProdi','final','taskbarValue','finalSearch'));
     }
 }

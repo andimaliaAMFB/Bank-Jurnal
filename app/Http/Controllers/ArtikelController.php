@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\UploadedFile;
 use App\Models\artikel;
+use App\Models\artikel_detail;
 use DB;
 use Session;
 
@@ -158,7 +159,7 @@ class ArtikelController extends Controller
             // dd($path);
         //
 
-        $this->insertArtikel ($id_akun, $id_artikel, $id_artikel_detail, $request->jdl);
+        $this->insertArtikel ($id_akun, $id_artikel, $id_artikel_detail, $request->jdl,$file);
         $this->revisi ($id_artikel_detail);
         
         $countPnl = 0;
@@ -268,17 +269,18 @@ class ArtikelController extends Controller
             $id_artikel_detail = substr($artikelDetail[0]['ID_DETAILARTIKEL'],0,5);
             $id_artikel_detail_last = intval(substr($artikelDetail[0]['ID_DETAILARTIKEL'],5)) + 1;
             $id_artikel = $artikelDetail[0]['ID_ARTIKEL'];
+            $id_AkunAwal = artikel::where('ID_ARTIKEL','=',$id_artikel)->value('ID_AKUN');
             $id_artikel_detail = $id_artikel_detail.$id_artikel_detail_last;
         //
 
         //store Artikel
             $file_ext =  $request->file('file')->getClientOriginalExtension();
             $file = $id_artikel_detail.".".$file_ext;
-            $path = $request->file('file')->storeAs('public/article/'.$id_akun.'/'.$id_artikel,$file);
+            $path = $request->file('file')->storeAs('public/article/'.$id_AkunAwal.'/'.$id_artikel,$file);
             // dd($path);
         //
 
-        $this->insertArtikel ($id_akun, $id_artikel, $id_artikel_detail, $request->jdl);
+        $this->insertArtikel ($id_akun, $id_artikel, $id_artikel_detail, $request->jdl, $file);
         $this->revisi ($id_artikel_detail);
         
         $countPnl = 0;
@@ -320,7 +322,14 @@ class ArtikelController extends Controller
         
         $id_artikelDetail = json_decode((new listController)->getTable('Judul-'.$id),true)[0]['ID_DETAILARTIKEL'];
         $tableArray = json_decode((new listController)->getTable('Article-'.$id_artikelDetail),true);
-
+        $id_AkunAwal = artikel::where('ID_ARTIKEL','=',$tableArray[0]['ID_ARTIKEL'])->value('ID_AKUN');
+        $id_file = artikel_detail::where('ID_DETAILARTIKEL','=',$id_artikelDetail)->value('ARTIKEL');
+        if(!$id_file) {
+            $id_file = $id_artikelDetail.'.pdf';
+        }
+        $pathArtikel = $id_AkunAwal.'/'.$tableArray[0]['ID_ARTIKEL'].'/'.$id_file;
+        // dd($id_AkunAwal,$id_file,$pathArtikel,'02646-2\02646-2-666\4012-1.pdf');
+        
 
         $judul =  (new listController)->UniqueList($tableArray,'JUDUL');
         $penulis = (new listController)->UniqueList($tableArray,'PENULIS');
@@ -330,7 +339,7 @@ class ArtikelController extends Controller
         $arrayAkun = (new listController)->getAkun();
 
         // print_r($tableArray);
-        return view('lihatArticle',compact('arrayAkun','final','judul','penulis','taskbarValue'));
+        return view('lihatArticle',compact('arrayAkun','final','judul','penulis','taskbarValue','finalSearch','pathArtikel'));
     }
 
     public function myarticle() {
@@ -437,7 +446,7 @@ class ArtikelController extends Controller
         //
     }
 
-    function insertArtikel ($id_akun, $id_artikel, $id_artikel_detail, $judul) {
+    function insertArtikel ($id_akun, $id_artikel, $id_artikel_detail, $judul, $file) {
         // dd(artikel::where('ID_ARTIKEL', '=', $id_artikel)->doesntExist(),artikel::where('ID_ARTIKEL', '=', $id_artikel)->get());
         if(artikel::where('ID_ARTIKEL', '=', $id_artikel)->doesntExist()) {
             DB::table('artikel')-> INSERT ([
@@ -449,7 +458,8 @@ class ArtikelController extends Controller
                 'ID_ARTIKEL' => $id_artikel,
                 'JUDUL_ARTIKEL' => $judul,
                 'TANGGAL_UPLOAD' => date("Y-m-d"),
-                'STATUS_ARTIKEL' => 'Draft'
+                'STATUS_ARTIKEL' => 'Draft',
+                'ARTIKEL' => $file
             ]);
     }
 

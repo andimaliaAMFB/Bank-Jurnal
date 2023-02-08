@@ -22,6 +22,7 @@ class CreateArtikelDetailsTable extends Migration
                 $table->ipAddress('JUDUL_ARTIKEL',20);
                 $table->date('TANGGAL_UPLOAD');
                 $table->ipAddress('STATUS_ARTIKEL',12);
+                $table->binary('ARTIKEL');
             });
         }
         Schema::table('artikel_detail', function(Blueprint $table) {

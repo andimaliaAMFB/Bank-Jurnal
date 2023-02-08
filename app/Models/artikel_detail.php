@@ -11,6 +11,6 @@ class artikel_detail extends Model
     protected $table = 'artikel_detail';
     public $timestamps = false;
     protected $primaryKey = 'ID_DETAILARTIKEL';
-    protected $fillable = ['ID_DETAILARTIKEL','ID_ARTIKEL','JUDUL_ARTIKEL','TANGGAL_UPLOAD','STATUS_ARTIKEL'];
+    protected $fillable = ['ID_DETAILARTIKEL','ID_ARTIKEL','JUDUL_ARTIKEL','TANGGAL_UPLOAD','STATUS_ARTIKEL','ARTIKEL'];
     protected $keyType = 'string';
 }

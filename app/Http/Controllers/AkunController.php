@@ -257,8 +257,8 @@ class AkunController extends Controller
         $img_name = $request->username;
         $img_ext =  $request->file('imageup')->getClientOriginalExtension();
         $img = $img_name.".".$img_ext;
-        $request->file('imageup')->storeAs('public/profile-image',$img);
-        // echo $request->file('imageup')->storeAs('public/profile-image',$img)."<br>";
+        $request->file('imageup')->storeAs('public/profile-image',$id);
+        echo $request->file('imageup')->storeAs('public/profile-image',$id)."<br>";
         
         // echo $img."<br>";
         // print_r($request->all());

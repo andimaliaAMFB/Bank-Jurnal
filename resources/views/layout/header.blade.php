@@ -1,7 +1,7 @@
 <header>
     <nav class="head-isi navbar justify-content-between" id="head-isi">
         <div class="head-left-side navbar d-flex">
-            @if(isset($arrayAkun[0]['ID_AKUN']))
+            @if(Auth::check())
                 <div class="head-taskbar navbar me-2">
                     <button class="head-button" id="taskbar-btn">
                         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
@@ -25,7 +25,7 @@
                     </svg>
                 </button>
             </div>
-            @if(isset($arrayAkun[0]['ID_AKUN']))
+            @if(Auth::check())
                 <div class="head-notif navbar mx-2">
                     <button class="head-button" id="button-notif">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
@@ -53,8 +53,8 @@
                 </div>
                 <div class="head-profile navbar ms-2">
                     <button class="head-button dot" id="button-profile">
-                        @if(isset($arrayAkun[0]['FOTO_PROFIL']))
-                        <img src="{{ 'storage/profile-image/'.$arrayAkun[0]['FOTO_PROFIL'] }}" id="uploadedIMG" class="profile_img">
+                        @if(isset(Auth::user()->foto_profil))
+                        <img src="{{ 'storage/profile-image/'.Auth::user()->foto_profil }}" id="uploadedIMG" class="profile_img">
                         @else
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" id="blank-pp" class="bi bi-person-circle" viewBox="0 0 16 16" style="display: block; opacity: 0.75;">
                             <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
@@ -64,16 +64,16 @@
                     </button>
                     <ul class="dropdown-menu" style="display: none;" id="dropdown-profile">
                         <li class="user-profile label-dropdown">
-                            @if(isset($arrayAkun[0]['FOTO_PROFIL']))
-                            <img src="{{ 'storage/profile-image/'.$arrayAkun[0]['ID_AKUN'].'/'.$arrayAkun[0]['FOTO_PROFIL'] }}" id="uploadedIMG" class="profile_img">
+                            @if(isset(Auth::user()->foto_profil))
+                            <img src="{{ 'storage/profile-image/'.Auth::user()->foto_profil }}" id="uploadedIMG" class="profile_img">
                             @else
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" id="blank-pp" class="bi bi-person-circle" viewBox="0 0 16 16" style="display: block; opacity: 0.75;">
                                 <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                                 <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
                             </svg>
                             @endif
-                            <h3>{{ $arrayAkun[0]['USERNAME'] }}</h3>
-                            <p>{{ $arrayAkun[0]['STATUS_AKUN'] }}</p>
+                            <h3>{{ Auth::user()->username }}</h3>
+                            <p>{{ Auth::user()->status }}</p>
                         </li>
                         <a href="{{ route('profile') }}">
                             <li>Profile</li>

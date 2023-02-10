@@ -15,26 +15,26 @@ class CreatePenulisTable extends Migration
     {
         if (!Schema::hasTable('penulis')) {
             Schema::create('penulis', function (Blueprint $table) {
-                $table->ipAddress('ID_PENULIS',12);
-                $table->primary('ID_PENULIS');
+                $table->ipAddress('id_penulis',12);
+                $table->primary('id_penulis');
 
-                $table->ipAddress('ID_AKUN',12)->nullable();
-                $table->ipAddress('ID_JURUSAN',12);
-                $table->ipAddress('NAMA_PENULIS',20);
+                $table->ipAddress('id_akun',12)->nullable();
+                $table->ipAddress('id_jurusan',12);
+                $table->ipAddress('nama_penulis',20);
             });
         }
         Schema::table('penulis', function(Blueprint $table) {
-            $table->foreign('ID_AKUN')
+            $table->foreign('id_akun')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade')
-                ->references('ID_AKUN')->on('akun');
+                ->references('id')->on('users');
 
-                $table->foreign('ID_JURUSAN')
+                $table->foreign('id_jurusan')
                     ->constrained()
                     ->onUpdate('cascade')
                     ->onDelete('cascade')
-                    ->references('ID_JURUSAN')->on('jurusan');
+                    ->references('id_jurusan')->on('jurusan');
         });
     }
 

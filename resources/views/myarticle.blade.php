@@ -22,7 +22,7 @@
                 <div class="list-artikel" id="mylist_wrapper" style="margin-block: 2rem;">
                     <div class="artikel-tabel-edit card px-3">
                         
-                        @if(empty($arrayAkun) || isset($namaPenulis) && $arrayAkun[0]['NAMA'] != $namaPenulis)
+                        @if(!Auth::User() || isset($namaPenulis) && Auth::User()->nama_lengkap != $namaPenulis)
                         <div class="d-flex box flex-grow-1 pb-3 border-bottom">
                         <div class="form_sub_list col-md-3 ps-3 pt-3" id="img-profile">
                             <label for="img-input" class="btn">
@@ -295,9 +295,9 @@
             let list_judul = [];
             judul.forEach((element,index) => { list_judul[index] = judul[index]; });
             let list_penulis = [];
-            penulis.forEach((element,index) => { list_penulis[index] = prodi[index]['NAMA_PENULIS']; });
+            penulis.forEach((element,index) => { list_penulis[index] = prodi[index]['nama_penulis']; });
             let list_prodi = [];
-            prodi.forEach((element,index) => { list_prodi[index] = prodi[index]['NAMA_JURUSAN']; });
+            prodi.forEach((element,index) => { list_prodi[index] = prodi[index]['nama_jurusan']; });
             let final_list = final;
             let final_search = finalSearch;
 

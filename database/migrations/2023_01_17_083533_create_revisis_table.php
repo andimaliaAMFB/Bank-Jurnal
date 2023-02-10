@@ -15,24 +15,30 @@ class CreateRevisisTable extends Migration
     {
         if (!Schema::hasTable('revisi')) {
             Schema::create('revisi', function (Blueprint $table) {
-                $table->ipAddress('ID_REVISI',12);
-                $table->primary('ID_REVISI');
+                $table->ipAddress('id_revisi',12);
+                $table->primary('id_revisi');
 
-                $table->ipAddress('ID_DETAILARTIKEL',12);
-                $table->ipAddress('ID_AKUN',12)->nullable();
+                $table->ipAddress('id_artikel_detail',12);
+                $table->ipAddress('id_akun',12)->nullable();
+                $table->ipAddress('status_artikel_baru',12)->nullable();
+                $table->boolean('status_revisi')->nullable();
+                $table->text('catatan_revisi')->nullable();
+                $table->timestamps();
             });
         }
         Schema::table('revisi', function(Blueprint $table) {
-            $table->foreign('ID_DETAILARTIKEL')
+            $table->foreign('id_artikel_detail')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade')
-                ->references('ID_DETAILARTIKEL')->on('artikel_detail');
-            $table->foreign('ID_AKUN')
+                ->references('id_artikel_detail')->on('artikel_detail');
+                
+            $table->foreign('id_akun')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade')
-                ->references('ID_AKUN')->on('akun');
+                ->references('id')->on('users');
+    
         });
     }
 

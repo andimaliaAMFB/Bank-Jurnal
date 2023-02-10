@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\UploadedFile;
 use App\Models\artikel;
 use App\Models\artikel_detail;
@@ -60,10 +61,10 @@ class ArtikelController extends Controller
         $i = 1;
         foreach($all as $key => $value)
         {
-            if ($all[$key]['ID_DETAILARTIKEL'] == $artikelDetail[0]['ID_DETAILARTIKEL'])
+            if ($all[$key]['id_artikel_detail'] == $artikelDetail[0]['id_artikel_detail'])
             {
-                $field[] = ['pnl-'.($i) => $all[$key]['NAMA_PENULIS']];
-                $field[] = ['prodi-'.($i) => $all[$key]['NAMA_JURUSAN']];
+                $field[] = ['pnl-'.($i) => $all[$key]['nama_penulis']];
+                $field[] = ['prodi-'.($i) => $all[$key]['nama_jurusan']];
                 $i += 1;
             }
         }
@@ -146,8 +147,8 @@ class ArtikelController extends Controller
                 ->with('field', $input);
         }
         
-        //initial [ID_AKUN], [ID_ARTIKEL], [ID_ARTIKEL_DETAIL]
-            $id_akun = (new listController)->getAkun()[0]['ID_AKUN'];
+        //initial [id_akun], [id_artikel], [id_artikel_DETAIL]
+            $id_akun = Auth::User()->id;
             $id_artikel = $id_akun."-".(date('m')+date("d")+date("B"));
             $id_artikel_detail = substr(md5($id_artikel),0,4)."-1";
         //
@@ -156,7 +157,6 @@ class ArtikelController extends Controller
             $file_ext =  $request->file('file')->getClientOriginalExtension();
             $file = $id_artikel_detail.".".$file_ext;
             $path = $request->file('file')->storeAs('public/article/'.$id_akun.'/'.$id_artikel,$file);
-            // dd($path);
         //
 
         $this->insertArtikel ($id_akun, $id_artikel, $id_artikel_detail, $request->jdl,$file);
@@ -171,8 +171,8 @@ class ArtikelController extends Controller
             
             if($id_jurusan && $dataPenulis) {
                 echo "<br>Ini Penulis dan Prodi yang sudah terdaftar di DB<br>";
-                $id_penulis = $dataPenulis[0]['ID_PENULIS'];
-                if($dataPenulis[0]['ID_JURUSAN'] == $id_jurusan) {
+                $id_penulis = $dataPenulis[0]['id_penulis'];
+                if($dataPenulis[0]['id_jurusan'] == $id_jurusan) {
                     echo "<br>Ini Penulis yang sudah terdaftar sesuai dengan jurusannya<br>";
                 }
                 else {
@@ -263,13 +263,13 @@ class ArtikelController extends Controller
                 ->with('field', $input);
         }
         
-        //initial [ID_AKUN], [ID_ARTIKEL], [ID_ARTIKEL_DETAIL]
-            $id_akun = (new listController)->getAkun()[0]['ID_AKUN'];
+        //initial [id_akun], [id_artikel], [id_artikel_DETAIL]
+            $id_akun = (new listController)->getAkun()[0]['id_akun'];
             $artikelDetail = json_decode((new listController)->getTable('Judul-'.$id_article),true);
-            $id_artikel_detail = substr($artikelDetail[0]['ID_DETAILARTIKEL'],0,5);
-            $id_artikel_detail_last = intval(substr($artikelDetail[0]['ID_DETAILARTIKEL'],5)) + 1;
-            $id_artikel = $artikelDetail[0]['ID_ARTIKEL'];
-            $id_AkunAwal = artikel::where('ID_ARTIKEL','=',$id_artikel)->value('ID_AKUN');
+            $id_artikel_detail = substr($artikelDetail[0]['id_artikel_detail'],0,5);
+            $id_artikel_detail_last = intval(substr($artikelDetail[0]['id_artikel_detail'],5)) + 1;
+            $id_artikel = $artikelDetail[0]['id_artikel'];
+            $id_AkunAwal = artikel::where('id_artikel','=',$id_artikel)->value('id_akun');
             $id_artikel_detail = $id_artikel_detail.$id_artikel_detail_last;
         //
 
@@ -292,8 +292,8 @@ class ArtikelController extends Controller
             
             if($id_jurusan && $dataPenulis) {
                 echo "<br>Ini Penulis dan Prodi yang sudah terdaftar di DB<br>";
-                $id_penulis = $dataPenulis[0]['ID_PENULIS'];
-                if($dataPenulis[0]['ID_JURUSAN'] == $id_jurusan) {
+                $id_penulis = $dataPenulis[0]['id_penulis'];
+                if($dataPenulis[0]['id_jurusan'] == $id_jurusan) {
                     echo "<br>Ini Penulis yang sudah terdaftar sesuai dengan jurusannya<br>";
                 }
                 else {
@@ -320,25 +320,27 @@ class ArtikelController extends Controller
         $taskbarValue = (new listController)->taskbarList ();
         $finalSearch = (new listController)->SearchBarList ();
         
-        $id_artikelDetail = json_decode((new listController)->getTable('Judul-'.$id),true)[0]['ID_DETAILARTIKEL'];
+        $id_artikelDetail = json_decode((new listController)->getTable('Judul-'.$id),true)[0]['id_artikel_detail'];
         $tableArray = json_decode((new listController)->getTable('Article-'.$id_artikelDetail),true);
-        $id_AkunAwal = artikel::where('ID_ARTIKEL','=',$tableArray[0]['ID_ARTIKEL'])->value('ID_AKUN');
-        $id_file = artikel_detail::where('ID_DETAILARTIKEL','=',$id_artikelDetail)->value('ARTIKEL');
+        $id_AkunAwal = artikel::where('id_artikel','=',$tableArray[0]['id_artikel'])->value('id_akun');
+        $id_file = artikel_detail::where('id_artikel_detail','=',$id_artikelDetail)->value('file_artikel');
         if(!$id_file) {
             $id_file = $id_artikelDetail.'.pdf';
         }
-        $pathArtikel = $id_AkunAwal.'/'.$tableArray[0]['ID_ARTIKEL'].'/'.$id_file;
-        // dd($id_AkunAwal,$id_file,$pathArtikel,'02646-2\02646-2-666\4012-1.pdf');
-        
+        $pathArtikel = $id_AkunAwal.'/'.$tableArray[0]['id_artikel'].'/'.$id_file;
 
-        $judul =  (new listController)->UniqueList($tableArray,'JUDUL');
-        $penulis = (new listController)->UniqueList($tableArray,'PENULIS');
-
-        $final = (new listController)->TabletoList($tableArray,$judul,'up-ri-sta');
+        $final = (new listController)->finalArray($tableArray);
+        $judul =  array_column($final, 0);
+        $penulis = [];
+        foreach(array_column($final, 2) as $list_penulis) {
+            $array_penulis = explode(", ",$list_penulis);
+            foreach($array_penulis as $nama_penulis) {
+                if(!in_array($nama_penulis,$penulis)) { $penulis[] = $nama_penulis; }
+            }
+        }
 
         $arrayAkun = (new listController)->getAkun();
 
-        // print_r($tableArray);
         return view('lihatArticle',compact('arrayAkun','final','judul','penulis','taskbarValue','finalSearch','pathArtikel'));
     }
 
@@ -351,20 +353,21 @@ class ArtikelController extends Controller
         // print_r($arrayAkun);
 
         $AlltableArray = json_decode((new listController)->getTable('All'),true);
-        $tableArray = json_decode((new listController)->getTable('MyArticle-'.$arrayAkun[0]['ID_PENULIS']),true);
+        $tableArray = json_decode((new listController)->getTable('MyArticle-'.$arrayAkun[0]['id_penulis']),true);
         $tableProdi = json_decode((new listController)->getTable('Prodi'),true);
 
-        // print_r($tableArray);
-
-        $judul =  (new listController)->UniqueList($tableArray,'JUDUL');
-        $penulis = json_decode((new listController)->getTable('Penulis'),true);
-        
-        $final = (new listController)->finalArray ($tableArray);
+        $final = (new listController)->finalArray($tableArray);
+        $judul =  array_column($final, 0);
+        $penulis = [];
+        foreach(array_column($final, 2) as $list_penulis) {
+            $array_penulis = explode(", ",$list_penulis);
+            foreach($array_penulis as $nama_penulis) {
+                if(!in_array($nama_penulis,$penulis)) { $penulis[] = $nama_penulis; }
+            }
+        }
         $history = (new listController)->historyArray ($tableArray);
-        // echo "<br>============================<br>";
-        // dd($final, $penulis);
 
-        $namaPenulis = $arrayAkun[0]['NAMA'];
+        $namaPenulis = $arrayAkun[0]['nama_lengkap'];
 
         return view('myarticle',compact('arrayAkun','namaPenulis','title','judul','penulis','tableProdi','final','taskbarValue','finalSearch','history'));
     }
@@ -382,31 +385,37 @@ class ArtikelController extends Controller
         
         $AlltableArray = json_decode((new listController)->getTable('All'),true);
         $dataPenulis = json_decode((new listController)->getTable('PNL-'.substr($id,1)),true);
-        $tableArray = json_decode((new listController)->getTable('Penulis-'.$dataPenulis[0]['ID_PENULIS']),true);
+        $tableArray = json_decode((new listController)->getTable('Penulis-'.$dataPenulis[0]['id_penulis']),true);
         
         
-        $pp = json_decode((new listController)->getTable('Akun-'.$dataPenulis[0]['ID_AKUN']),true)[0]['FOTO_PROFIL'];
+        $pp = json_decode((new listController)->getTable('Akun-'.$dataPenulis[0]['id_akun']),true)[0]['foto_profil'];
     
         $tableProdi = json_decode((new listController)->getTable('Prodi'),true);
 
-        $namaPenulis = $dataPenulis[0]['NAMA_PENULIS'];
+        $namaPenulis = $dataPenulis[0]['nama_penulis'];
         if (!empty($tableArray)) {
             $final = (new listController)->finalArray($tableArray);
             $history = (new listController)->historyArray ($tableArray);
-            $judul =  array_column($history,0);
-            $penulis = array_column($history,2);
+            $judul =  array_column($final, 0);
+            $penulis = [];
+            foreach(array_column($final, 2) as $list_penulis) {
+                $array_penulis = explode(", ",$list_penulis);
+                foreach($array_penulis as $nama_penulis) {
+                    if(!in_array($nama_penulis,$penulis)) { $penulis[] = $nama_penulis; }
+                }
+            }
         }
         else {
             $judul =  [];
             $penulis = [];
             $tableArray = $dataPenulis;
-            $final[0] = array('NAMA_PENULIS' => $tableArray[0]['NAMA_PENULIS']);
+            $final[0] = array('nama_penulis' => $tableArray[0]['nama_penulis']);
             $history = [];
         }
 
         $arrayAkun = (new listController)->getAkun();
         
-        if (!empty($arrayAkun) && $arrayAkun[0]['STATUS_AKUN'] == 'Penulis' && $arrayAkun[0]['NAMA'] == $namaPenulis) {
+        if (!empty($arrayAkun) && $arrayAkun[0]['status'] == 'Penulis' && $arrayAkun[0]['nama_lengkap'] == $namaPenulis) {
             return redirect()->route('myarticle');
         }
         else {
@@ -447,19 +456,25 @@ class ArtikelController extends Controller
     }
 
     function insertArtikel ($id_akun, $id_artikel, $id_artikel_detail, $judul, $file) {
-        // dd(artikel::where('ID_ARTIKEL', '=', $id_artikel)->doesntExist(),artikel::where('ID_ARTIKEL', '=', $id_artikel)->get());
-        if(artikel::where('ID_ARTIKEL', '=', $id_artikel)->doesntExist()) {
+        if(artikel::where('id_artikel', '=', $id_artikel)->doesntExist()) {
             DB::table('artikel')-> INSERT ([
-                    'ID_ARTIKEL' => $id_artikel, 'ID_AKUN' => $id_akun]);
+                    'id_artikel' => $id_artikel,
+                    'id_akun' => $id_akun,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'updated_at' => date("Y-m-d H:i:s")
+                ]);
+        }
+        else {
+            artikel::where('id_artikel', '=', $id_artikel)
+                ->update ([ 'updated_at' => date("Y-m-d H:i:s") ]);
         }
 
         DB::table('artikel_detail')-> INSERT ([
-                'ID_DETAILARTIKEL' => $id_artikel_detail,
-                'ID_ARTIKEL' => $id_artikel,
-                'JUDUL_ARTIKEL' => $judul,
-                'TANGGAL_UPLOAD' => date("Y-m-d"),
-                'STATUS_ARTIKEL' => 'Draft',
-                'ARTIKEL' => $file
+                'id_artikel_detail' => $id_artikel_detail,
+                'id_artikel' => $id_artikel,
+                'judul_artikel' => $judul,
+                'status_artikel' => 'Draft',
+                'file_artikel' => $file
             ]);
     }
 
@@ -468,10 +483,10 @@ class ArtikelController extends Controller
         $id_jurusan = '';
         if(!$dataJurusan) {
             $lastIdProdi = count(json_decode((new listController)->getTable('Prodi'),true)) + 1;
-            DB::table('jurusan')-> INSERT (['ID_JURUSAN' => 'Jurusan-'.$lastIdProdi, 'NAMA_JURUSAN' => $value]);
+            DB::table('jurusan')-> INSERT (['id_jurusan' => 'Jurusan-'.$lastIdProdi, 'nama_jurusan' => $value]);
             $id_jurusan = 'Jurusan-'.$lastIdProdi;
         }
-        else { $id_jurusan = $dataJurusan[0]['ID_JURUSAN']; }
+        else { $id_jurusan = $dataJurusan[0]['id_jurusan']; }
         return $id_jurusan;
     }
 
@@ -482,10 +497,10 @@ class ArtikelController extends Controller
             $lastIdPenulis = strval(date("m").(date("d")+date("B")))."-1";
             $id_penulis = "PNL".substr(md5($lastIdPenulis),0,4);
             DB::table('penulis')-> INSERT ([
-                'ID_PENULIS' => $id_penulis,
-                'ID_AKUN' => null,
-                'ID_JURUSAN' => $id_jurusan,
-                'NAMA_PENULIS' => $key
+                'id_penulis' => $id_penulis,
+                'id_akun' => null,
+                'id_jurusan' => $id_jurusan,
+                'nama_penulis' => $key
             ]);
             echo "<br>Create new Penulis Tanpa Akun<br>";
         }
@@ -494,28 +509,23 @@ class ArtikelController extends Controller
 
     function insertArtikelPenulis ($id_artikel_detail, $id_penulis, $i){
         DB::table('artikel_detail_penulis') -> INSERT ([
-                    'ID_LIST_PENULIS' => 'PNL'.$id_artikel_detail."-".$i,
-                    'ID_DETAILARTIKEL' => $id_artikel_detail,
-                    'ID_PENULIS' => $id_penulis
+                    'id_list_penulis' => 'PNL'.$id_artikel_detail."-".$i,
+                    'id_artikel_detail' => $id_artikel_detail,
+                    'id_penulis' => $id_penulis
                 ]);
     }
 
     function revisi ($id_artikel_detail) {
-        // dd(artikel::where('ID_ARTIKEL', '=', $id_artikel)->doesntExist(),artikel::where('ID_ARTIKEL', '=', $id_artikel)->get());
         $id_revisi = 'REV'.$id_artikel_detail;
         DB::table('revisi') -> INSERT ([
-            'ID_REVISI' => $id_revisi,
-            'ID_DETAILARTIKEL' => $id_artikel_detail,
-            'ID_AKUN' => null
-        ]);
-
-        DB::table('revisi_detail') -> INSERT ([
-            'ID_DETAILREVISI' => $id_revisi."_D",
-            'ID_REVISI' => $id_revisi,
-            'TANGGAL_REVISI' => null,
-            'STATUS_ARTIKEL_BARU' => '-',
-            'STATUS_REVISI' => 0,
-            'REVISI' => '-'
+            'id_revisi' => $id_revisi,
+            'id_artikel_detail' => $id_artikel_detail,
+            'id_akun' => null,
+            'status_artikel_baru' => '-',
+            'status_revisi' => 0,
+            'catatan_revisi' => '-',
+            'created_at' => date("Y-m-d H:i:s"),
+            'updated_at' => date("Y-m-d H:i:s")
         ]);
     }
 }

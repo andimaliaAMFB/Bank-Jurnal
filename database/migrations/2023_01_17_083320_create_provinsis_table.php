@@ -15,9 +15,9 @@ class CreateProvinsisTable extends Migration
     {
         if (!Schema::hasTable('provinsi')) {
             Schema::create('provinsi', function (Blueprint $table) {
-                $table->ipAddress('ID_PROVINSI',12);
-                $table->primary('ID_PROVINSI');
-                $table->ipAddress('NAMA_PROVINSI',20);
+                $table->ipAddress('id_provinsi',12);
+                $table->primary('id_provinsi');
+                $table->ipAddress('nama_provinsi',20);
             });
         }
     }

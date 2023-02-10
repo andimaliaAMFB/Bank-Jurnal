@@ -15,24 +15,25 @@ class CreateArtikelDetailPenulisTable extends Migration
     {
         if (!Schema::hasTable('artikel_detail_penulis')) {
             Schema::create('artikel_detail_penulis', function (Blueprint $table) {
-                $table->ipAddress('ID_LIST_PENULIS',12);
-                $table->primary('ID_LIST_PENULIS');
+                $table->ipAddress('id_list_penulis',12);
+                $table->primary('id_list_penulis');
 
-                $table->ipAddress('ID_PENULIS',12);
-                $table->ipAddress('ID_DETAILARTIKEL',12);
+                $table->ipAddress('id_penulis',12);
+                $table->ipAddress('id_artikel_detail',12);
             });
         }
         Schema::table('artikel_detail_penulis', function(Blueprint $table) {
-            $table->foreign('ID_PENULIS')
+            $table->foreign('id_penulis')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade')
-                ->references('ID_PENULIS')->on('penulis');
-            $table->foreign('ID_DETAILARTIKEL')
+                ->references('id_penulis')->on('penulis');
+                
+            $table->foreign('id_artikel_detail')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade')
-                ->references('ID_DETAILARTIKEL')->on('artikel_detail');
+                ->references('id_artikel_detail')->on('artikel_detail');
         });
     }
 

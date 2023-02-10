@@ -10,7 +10,7 @@ class penulis extends Model
     use HasFactory;
     protected $table = 'penulis';
     public $timestamps = false;
-    protected $primaryKey = 'ID_PENULIS';
-    protected $fillable = ['ID_PENULIS','ID_AKUN','ID_JURUSAN','NAMA_PENULIS'];
+    protected $primaryKey = 'id_penulis';
+    protected $fillable = ['id_penulis','id_akun','id_jurusan','nama_penulis'];
     protected $keyType = 'string';
 }

@@ -15,41 +15,24 @@ class Revisi extends Seeder
     public function run()
     {
         // Add Revisi
-        $detailArtikel = DB::table('artikel_detail')->get();
-        $akun = DB::table('akun')->where('STATUS_PENGGUNA','=','Admin')->get();
-        foreach ($detailArtikel as $index=>$data) {
-            $idAkun = rand(0,count($akun)-1);
-            if ($detailArtikel[$index]->STATUS_ARTIKEL != 'Layak Publish') { 
-                DB::table('revisi') -> INSERT ([
-                    'ID_REVISI' => 'REV'.$detailArtikel[$index]->ID_DETAILARTIKEL,
-                    'ID_DETAILARTIKEL' => $detailArtikel[$index]->ID_DETAILARTIKEL,
-                    'ID_AKUN' => $akun[$idAkun]->ID_AKUN
-                ]);
-            }
-        }
-
-        // Add Revisi_Detail
+        $detailArtikel = DB::table('artikel_detail')
+                        ->where('status_artikel','!=','Layak Publish')
+                        ->orderBy('id_artikel')
+                        ->orderBy('id_artikel_detail')
+                        ->get();
+        $users = DB::table('users')->where('status','=','Admin')->get();
         $status = array('Draft','Revisi Mayor','Revisi Minor','Layak Publish');
-        $revisi = DB::table('revisi')->get();
-        foreach ($revisi as $index=>$data) {
-            $statusBefore = DB::table('artikel_detail')
-                                ->where('ID_DETAILARTIKEL', '=', $revisi[$index]->ID_DETAILARTIKEL)
-                                ->value('STATUS_ARTIKEL');
-            
-            
-            if ($statusBefore != 'Layak Publish') {
-                $statusAfter = DB::table('artikel_detail')
-                                ->where('ID_DETAILARTIKEL', '=', 
-                                            substr($revisi[$index]->ID_DETAILARTIKEL,0,5).
-                                            (intval(
-                                                substr(
-                                                    $revisi[$index]->ID_DETAILARTIKEL,5)
-                                                ) + 1
-                                            ))
-                                ->value('STATUS_ARTIKEL');
-                $kondisiRevisi = true;
+        
+        
+        foreach ($detailArtikel as $key => $value) {
+            $idAkun = $users[rand(0,count($users)-1)]->id;
+            if ($value->status_artikel != 'Layak Publish') {
                 $catatanRevisi = "REVISI Admin Tentang ";
-                if (!$statusAfter) {
+                if ($key < count($detailArtikel)-1 && $detailArtikel[$key+1]->id_artikel == $value->id_artikel) {
+                    $statusAfter = $detailArtikel[$key+1]->status_artikel;
+                    $kondisiRevisi = true;
+                }
+                else {
                     $kondisiRevisi = rand(false,true);
                     if ($kondisiRevisi) {
                         $statusAfter = $status[rand(1,count($status)-1)];
@@ -57,17 +40,26 @@ class Revisi extends Seeder
                     else {
                         $statusAfter = "-";
                         $catatanRevisi = '';
+                        $idAkun = null;
                     }
                 }
-                DB::table('revisi_detail') -> INSERT ([
-                    'ID_DETAILREVISI' => $revisi[$index]->ID_REVISI."_D",
-                    'ID_REVISI' => $revisi[$index]->ID_REVISI,
-                    'TANGGAL_REVISI' => date("Y-m-d"),
-                    'STATUS_ARTIKEL_BARU' => $statusAfter,
-                    'STATUS_REVISI' => $kondisiRevisi,
-                    'REVISI' => $catatanRevisi
-                ]);
             }
+            else {
+                $kondisiRevisi = false;
+                $statusAfter = "-";
+                $catatanRevisi = '';
+                $idAkun = null;
+            }
+            DB::table('revisi')->INSERT ([
+                'id_revisi' => 'REV'.$value->id_artikel_detail,
+                'id_artikel_detail' => $value->id_artikel_detail,
+                'id_akun' => $idAkun,
+                'status_artikel_baru' => $statusAfter,
+                'status_revisi' => $kondisiRevisi,
+                'catatan_revisi' => $catatanRevisi,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ]);
         }
     }
 }

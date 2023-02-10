@@ -15,22 +15,21 @@ class CreateArtikelDetailsTable extends Migration
     {
         if (!Schema::hasTable('artikel_detail')) {
             Schema::create('artikel_detail', function (Blueprint $table) {
-                $table->ipAddress('ID_DETAILARTIKEL',12);
-                $table->primary('ID_DETAILARTIKEL');
+                $table->ipAddress('id_artikel_detail',12);
+                $table->primary('id_artikel_detail');
 
-                $table->ipAddress('ID_ARTIKEL',12);
-                $table->ipAddress('JUDUL_ARTIKEL',20);
-                $table->date('TANGGAL_UPLOAD');
-                $table->ipAddress('STATUS_ARTIKEL',12);
-                $table->binary('ARTIKEL');
+                $table->ipAddress('id_artikel',12);
+                $table->ipAddress('judul_artikel',20);
+                $table->ipAddress('status_artikel',12);
+                $table->binary('file_artikel');
             });
         }
         Schema::table('artikel_detail', function(Blueprint $table) {
-            $table->foreign('ID_ARTIKEL')
+            $table->foreign('id_artikel')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade')
-                ->references('ID_ARTIKEL')->on('artikel');
+                ->references('id_artikel')->on('artikel');
         });
     }
 

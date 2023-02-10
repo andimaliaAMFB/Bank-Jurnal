@@ -10,7 +10,7 @@ class artikel_detail_penulis extends Model
     use HasFactory;
     protected $table = 'artikel_detail_penulis';
     public $timestamps = false;
-    protected $primaryKey = 'ID_LIST_PENULIS';
-    protected $fillable = ['ID_LIST_PENULIS','ID_PENULIS','ID_DETAILARTIKEL'];
+    protected $primaryKey = 'id_list_penulis';
+    protected $fillable = ['id_list_penulis','id_penulis','id_artikel_detail'];
     protected $keyType = 'string';
 }

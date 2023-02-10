@@ -1,15 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 use App\Models\artikel;
 use App\Models\artikel_detail;
 use App\Models\artikel_detail_penulis;
 use App\Models\revisi;
-use App\Models\revisi_detail;
 use App\Models\penulis;
 use App\Models\jurusan;
+use App\Models\kota;
+use App\Models\provinsi;
 use DB;
 use Session;
 
@@ -18,196 +20,133 @@ class listController extends Controller
     function getTable (string $typeTable) {
         if ($typeTable == 'Layak Publish'){
             $Array = DB::table('artikel_detail')
-                    ->join('artikel','artikel_detail.ID_ARTIKEL','=','artikel.ID_ARTIKEL')
-                    ->join('artikel_detail_penulis','artikel_detail_penulis.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
-                    ->join('penulis','penulis.ID_PENULIS', '=', 'artikel_detail_penulis.ID_PENULIS')
-                    ->join('jurusan','jurusan.ID_JURUSAN', '=', 'penulis.ID_JURUSAN')
-                    ->join('revisi','revisi.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
-                    ->join('revisi_detail','revisi_detail.ID_REVISI', '=', 'revisi.ID_REVISI')
-                    ->select('artikel_detail.JUDUL_ARTIKEL',
-                                'revisi_detail.STATUS_REVISI',
-                                'penulis.NAMA_PENULIS',
-                                'jurusan.NAMA_JURUSAN',
-                                'artikel.ID_ARTIKEL',
-                                'artikel_detail.ID_DETAILARTIKEL')
+                    ->join('artikel','artikel_detail.id_artikel','=','artikel.id_artikel')
+                    ->join('artikel_detail_penulis','artikel_detail_penulis.id_artikel_detail','=','artikel_detail.id_artikel_detail')
+                    ->join('penulis','penulis.id_penulis', '=', 'artikel_detail_penulis.id_penulis')
+                    ->join('jurusan','jurusan.id_jurusan', '=', 'penulis.id_jurusan')
+                    ->join('revisi','revisi.id_artikel_detail','=','artikel_detail.id_artikel_detail')
                     ->Where(function($query) use ($typeTable) {
-                        $query->where('artikel_detail.STATUS_ARTIKEL','=',$typeTable)
-                                ->orWhere('revisi_detail.STATUS_ARTIKEL_BARU','=',$typeTable);
+                        $query->where('artikel_detail.status_artikel','=',$typeTable)
+                                ->orWhere('revisi.status_artikel_baru','=',$typeTable);
                     })
-                    ->orderByDesc('artikel.ID_ARTIKEL')
-                    ->orderByDesc('artikel_detail.ID_DETAILARTIKEL')
+                    ->orderByDesc('artikel.id_artikel')
+                    ->orderByDesc('artikel_detail.id_artikel_detail')
                     ->get();
         }
         else if ($typeTable == 'Draft' || 
                 $typeTable == 'Revisi Mayor' || 
                 $typeTable == 'Revisi Minor'){
             $Array = DB::table('artikel_detail')
-                    ->join('artikel','artikel_detail.ID_ARTIKEL','=','artikel.ID_ARTIKEL')
-                    ->join('artikel_detail_penulis','artikel_detail_penulis.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
-                    ->join('penulis','penulis.ID_PENULIS', '=', 'artikel_detail_penulis.ID_PENULIS')
-                    ->join('jurusan','jurusan.ID_JURUSAN', '=', 'penulis.ID_JURUSAN')
-                    ->join('revisi','revisi.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
-                    ->join('revisi_detail','revisi_detail.ID_REVISI', '=', 'revisi.ID_REVISI')
-                    ->select('artikel.ID_ARTIKEL',
-                            'artikel_detail.ID_DETAILARTIKEL',
-                            'artikel_detail.JUDUL_ARTIKEL',
-                            'revisi_detail.STATUS_REVISI',
-                            'penulis.NAMA_PENULIS',
-                            'jurusan.NAMA_JURUSAN')
-                    ->where('artikel_detail.STATUS_ARTIKEL','=',$typeTable)
-                    ->orderByDesc('artikel.ID_ARTIKEL')
-                    ->orderByDesc('artikel_detail.ID_DETAILARTIKEL')
+                    ->join('artikel','artikel_detail.id_artikel','=','artikel.id_artikel')
+                    ->join('artikel_detail_penulis','artikel_detail_penulis.id_artikel_detail','=','artikel_detail.id_artikel_detail')
+                    ->join('penulis','penulis.id_penulis', '=', 'artikel_detail_penulis.id_penulis')
+                    ->join('jurusan','jurusan.id_jurusan', '=', 'penulis.id_jurusan')
+                    ->join('revisi','revisi.id_artikel_detail','=','artikel_detail.id_artikel_detail')
+                    ->where('artikel_detail.status_artikel','=',$typeTable)
+                    ->orderByDesc('artikel.id_artikel')
+                    ->orderByDesc('artikel_detail.id_artikel_detail')
                     ->get();
         }
         else if (str_contains($typeTable,'MyArticle')){
             $Array = DB::table('artikel_detail')
-                    ->join('artikel','artikel_detail.ID_ARTIKEL','=','artikel.ID_ARTIKEL')
-                    ->join('artikel_detail_penulis','artikel_detail_penulis.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
-                    ->join('penulis','penulis.ID_PENULIS', '=', 'artikel_detail_penulis.ID_PENULIS')
-                    ->join('jurusan','jurusan.ID_JURUSAN', '=', 'penulis.ID_JURUSAN')
-                    ->join('revisi','revisi.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
-                    ->join('revisi_detail','revisi_detail.ID_REVISI', '=', 'revisi.ID_REVISI')
-                    ->select('artikel.ID_ARTIKEL',
-                            'artikel_detail.ID_DETAILARTIKEL',
-                            'artikel_detail.JUDUL_ARTIKEL',
-                            'revisi_detail.STATUS_REVISI',
-                            'penulis.NAMA_PENULIS',
-                            'jurusan.NAMA_JURUSAN',
-                            'artikel_detail.TANGGAL_UPLOAD',
-                            'artikel_detail.STATUS_ARTIKEL',
-                            'revisi_detail.STATUS_ARTIKEL_BARU')
-                    ->where('penulis.ID_PENULIS','=',substr($typeTable,10))
-                    ->orderByDesc('artikel.ID_ARTIKEL')
-                    ->orderByDesc('artikel_detail.ID_DETAILARTIKEL')
+                    ->join('artikel','artikel_detail.id_artikel','=','artikel.id_artikel')
+                    ->join('artikel_detail_penulis','artikel_detail_penulis.id_artikel_detail','=','artikel_detail.id_artikel_detail')
+                    ->join('penulis','penulis.id_penulis', '=', 'artikel_detail_penulis.id_penulis')
+                    ->join('jurusan','jurusan.id_jurusan', '=', 'penulis.id_jurusan')
+                    ->join('revisi','revisi.id_artikel_detail','=','artikel_detail.id_artikel_detail')
+                    ->where('penulis.id_penulis','=',substr($typeTable,10))
+                    ->orderByDesc('artikel.id_artikel')
+                    ->orderByDesc('artikel_detail.id_artikel_detail')
                     ->get();
         }
         else if (str_contains($typeTable,'Article-')){
             $Array = DB::table('artikel_detail')
-                    ->join('artikel','artikel_detail.ID_ARTIKEL','=','artikel.ID_ARTIKEL')
-                    ->join('artikel_detail_penulis','artikel_detail_penulis.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
-                    ->join('penulis','penulis.ID_PENULIS', '=', 'artikel_detail_penulis.ID_PENULIS')
-                    ->join('jurusan','jurusan.ID_JURUSAN', '=', 'penulis.ID_JURUSAN')
-                    ->join('revisi','revisi.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
-                    ->join('revisi_detail','revisi_detail.ID_REVISI', '=', 'revisi.ID_REVISI')
-                    ->select('artikel.ID_ARTIKEL',
-                            'artikel_detail.JUDUL_ARTIKEL',
-                            'revisi_detail.STATUS_REVISI',
-                            'penulis.NAMA_PENULIS',
-                            'jurusan.NAMA_JURUSAN',
-                            'artikel_detail.TANGGAL_UPLOAD',
-                            'artikel_detail.STATUS_ARTIKEL',
-                            'revisi_detail.STATUS_ARTIKEL_BARU')
-                    ->where('artikel_detail.ID_DETAILARTIKEL','=',substr($typeTable,8))
-                    ->orderByDesc('artikel.ID_ARTIKEL')
-                    ->orderByDesc('artikel_detail.ID_DETAILARTIKEL')
+                    ->join('artikel','artikel_detail.id_artikel','=','artikel.id_artikel')
+                    ->join('artikel_detail_penulis','artikel_detail_penulis.id_artikel_detail','=','artikel_detail.id_artikel_detail')
+                    ->join('penulis','penulis.id_penulis', '=', 'artikel_detail_penulis.id_penulis')
+                    ->join('jurusan','jurusan.id_jurusan', '=', 'penulis.id_jurusan')
+                    ->join('revisi','revisi.id_artikel_detail','=','artikel_detail.id_artikel_detail')
+                    ->where('artikel_detail.id_artikel_detail','=',substr($typeTable,8))
+                    ->orderByDesc('artikel.id_artikel')
+                    ->orderByDesc('artikel_detail.id_artikel_detail')
                     ->get();
         }
         else if (str_contains($typeTable,'Penulis-')){
             $Array = DB::table('artikel_detail')
-                    ->join('artikel','artikel_detail.ID_ARTIKEL','=','artikel.ID_ARTIKEL')
-                    ->join('artikel_detail_penulis','artikel_detail_penulis.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
-                    ->join('penulis','penulis.ID_PENULIS', '=', 'artikel_detail_penulis.ID_PENULIS')
-                    ->join('jurusan','jurusan.ID_JURUSAN', '=', 'penulis.ID_JURUSAN')
-                    ->join('revisi','revisi.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
-                    ->join('revisi_detail','revisi_detail.ID_REVISI', '=', 'revisi.ID_REVISI')
-                    ->select('artikel.ID_ARTIKEL',
-                            'artikel_detail.JUDUL_ARTIKEL',
-                            'revisi_detail.STATUS_REVISI',
-                            'penulis.NAMA_PENULIS',
-                            'jurusan.NAMA_JURUSAN',
-                            'artikel_detail.TANGGAL_UPLOAD',
-                            'artikel_detail.STATUS_ARTIKEL',
-                            'revisi_detail.STATUS_ARTIKEL_BARU',
-                            'artikel_detail.ID_DETAILARTIKEL')
-                    ->where('penulis.ID_PENULIS','=',substr($typeTable,8))
-                    ->where('revisi_detail.STATUS_ARTIKEL_BARU','=','Layak Publish')
-                    ->orderByDesc('artikel.ID_ARTIKEL')
-                    ->orderByDesc('artikel_detail.ID_DETAILARTIKEL')
+                    ->join('artikel','artikel_detail.id_artikel','=','artikel.id_artikel')
+                    ->join('artikel_detail_penulis','artikel_detail_penulis.id_artikel_detail','=','artikel_detail.id_artikel_detail')
+                    ->join('penulis','penulis.id_penulis', '=', 'artikel_detail_penulis.id_penulis')
+                    ->join('jurusan','jurusan.id_jurusan', '=', 'penulis.id_jurusan')
+                    ->join('revisi','revisi.id_artikel_detail','=','artikel_detail.id_artikel_detail')
+                    ->where('penulis.id_penulis','=',substr($typeTable,8))
+                    ->where('revisi.status_artikel_BARU','=','Layak Publish')
+                    ->orderByDesc('artikel.id_artikel')
+                    ->orderByDesc('artikel_detail.id_artikel_detail')
                     ->get();
         }
         else if (str_contains($typeTable,'Judul-')){
             $Array = DB::table('artikel_detail')
-                    ->join('artikel','artikel_detail.ID_ARTIKEL','=','artikel.ID_ARTIKEL')
-                    ->join('revisi','revisi.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
-                    ->join('revisi_detail','revisi_detail.ID_REVISI', '=', 'revisi.ID_REVISI')
-                    ->select('artikel.ID_ARTIKEL',
-                            'artikel_detail.ID_DETAILARTIKEL',
-                            'artikel_detail.JUDUL_ARTIKEL',
-                            'revisi.ID_REVISI',
-                            'revisi_detail.ID_DETAILREVISI',
-                            'artikel_detail.STATUS_ARTIKEL',
-                            'revisi_detail.STATUS_ARTIKEL_BARU',
-                            'revisi_detail.REVISI')
+                    ->join('artikel','artikel_detail.id_artikel','=','artikel.id_artikel')
+                    ->join('revisi','revisi.id_artikel_detail','=','artikel_detail.id_artikel_detail')
                     ->where('artikel_detail.JUDUL_ARTIKEL','=',substr($typeTable,6))
-                    ->orderByDesc('artikel.ID_ARTIKEL')
-                    ->orderByDesc('artikel_detail.ID_DETAILARTIKEL')
+                    ->orderByDesc('artikel.id_artikel')
+                    ->orderByDesc('artikel_detail.id_artikel_detail')
                     ->get();
         }
         else if (str_contains($typeTable,'Akun-')) {
-            $Array = DB::table('akun')
-                    ->where('ID_AKUN','=',substr($typeTable,5))
+            $Array = DB::table('users')
+                    ->where('id','=',substr($typeTable,5))
                     ->get();
         }
         else if (str_contains($typeTable,'PNL-')) {
-            $Array = DB::table('akun')
-                    ->join('penulis','penulis.ID_AKUN','=','akun.ID_AKUN')
-                    ->where('penulis.ID_AKUN','=',substr($typeTable,4))
-                    ->orWhere('penulis.ID_PENULIS','=',substr($typeTable,4))
-                    ->orWhere('penulis.NAMA_PENULIS','=',substr($typeTable,4))
+            $Array = DB::table('users')
+                    ->join('penulis','penulis.id_akun','=','users.id')
+                    ->where('penulis.id_akun','=',substr($typeTable,4))
+                    ->orWhere('penulis.id_penulis','=',substr($typeTable,4))
+                    ->orWhere('penulis.nama_penulis','=',substr($typeTable,4))
                     ->get();
         }
         else if (str_contains($typeTable,'KOTA-')) {
             $Array = DB::table('kota')
                     ->where('ID_KOTA','=',substr($typeTable,5))
-                    ->orWhere('NAMA_KOTA','=',substr($typeTable,5))
+                    ->orWhere('nama_kota','=',substr($typeTable,5))
                     ->get();
         }
         else if (str_contains($typeTable,'PROV-')) {
             $Array = DB::table('provinsi')
                     ->where('ID_PROVINSI','=',substr($typeTable,5))
-                    ->orWhere('NAMA_PROVINSI','=',substr($typeTable,5))
+                    ->orWhere('nama_provinsi','=',substr($typeTable,5))
                     ->get();
         }
         else if (str_contains($typeTable,'Prodi-')) {
             $Array = DB::table('jurusan')
-                    ->where('ID_JURUSAN','=',substr($typeTable,6))
-                    ->orWhere('NAMA_JURUSAN','=',substr($typeTable,6))
+                    ->where('id_jurusan','=',substr($typeTable,6))
+                    ->orWhere('nama_jurusan','=',substr($typeTable,6))
                     ->get();
         }
         else if ($typeTable == 'All') {
             $Array = DB::table('artikel_detail')
-                    ->join('artikel','artikel_detail.ID_ARTIKEL','=','artikel.ID_ARTIKEL')
-                    ->join('artikel_detail_penulis','artikel_detail_penulis.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
-                    ->join('penulis','penulis.ID_PENULIS', '=', 'artikel_detail_penulis.ID_PENULIS')
-                    ->join('jurusan','jurusan.ID_JURUSAN', '=', 'penulis.ID_JURUSAN')
-                    ->join('revisi','revisi.ID_DETAILARTIKEL','=','artikel_detail.ID_DETAILARTIKEL')
-                    ->join('revisi_detail','revisi_detail.ID_REVISI', '=', 'revisi.ID_REVISI')
-                    ->select('artikel.ID_ARTIKEL',
-                            'artikel_detail.ID_DETAILARTIKEL',
-                            'artikel_detail.JUDUL_ARTIKEL',
-                            'revisi_detail.STATUS_REVISI',
-                            'penulis.NAMA_PENULIS',
-                            'jurusan.NAMA_JURUSAN',
-                            'artikel_detail.TANGGAL_UPLOAD',
-                            'artikel_detail.STATUS_ARTIKEL',
-                            'revisi_detail.STATUS_ARTIKEL_BARU',
-                            'revisi_detail.REVISI')
-                    ->orderByDesc('artikel_detail.ID_DETAILARTIKEL')
+                    ->join('artikel','artikel_detail.id_artikel','=','artikel.id_artikel')
+                    ->join('artikel_detail_penulis','artikel_detail_penulis.id_artikel_detail','=','artikel_detail.id_artikel_detail')
+                    ->join('penulis','penulis.id_penulis', '=', 'artikel_detail_penulis.id_penulis')
+                    ->join('jurusan','jurusan.id_jurusan', '=', 'penulis.id_jurusan')
+                    ->join('revisi','revisi.id_artikel_detail','=','artikel_detail.id_artikel_detail')
+                    ->orderByDesc('artikel_detail.id_artikel_detail')
                     ->get();
         }
         else if ($typeTable == 'Judul') {
             $TableArray = DB::table('artikel')
-                    ->join('artikel_detail', 'artikel_detail.ID_DETAILARTIKEL', '=', 'artikel.ID_ARTIKEL' )
-                    ->select('artikel.ID_ARTIKEL', 'artikel_detail.ID_DETAILARTIKEL','artikel_detail.JUDUL_ARTIKEL')
+                    ->join('artikel_detail', 'artikel_detail.id_artikel_detail', '=', 'artikel.id_artikel' )
+                    ->select('artikel.id_artikel', 'artikel_detail.id_artikel_detail','artikel_detail.JUDUL_ARTIKEL')
                     ->get();
             $Array = [];
             foreach ($TableArray as $key => $value) {
                 $lastNumber = 1;
-                if ($key < (count($TableArray)-1) && $TableArray[$key]->ID_ARTIKEL == $TableArray[($key + 1)]->ID_ARTIKEL) {
+                if ($key < (count($TableArray)-1) && $TableArray[$key]->id_artikel == $TableArray[($key + 1)]->id_artikel) {
                     $lastNumber = $lastNumber + 1;
                 }
                 else {
-                    $lastNumber = intval(substr($TableArray[$key]->ID_DETAILARTIKEL,5));
+                    $lastNumber = intval(substr($TableArray[$key]->id_artikel_detail,5));
                     array_push($Array,$TableArray[$key]->JUDUL_ARTIKEL);
                 }
             }
@@ -229,55 +168,55 @@ class listController extends Controller
             $listPenulis = "";
             $listJurusan = "";
             foreach ($tableArray as $index => $data) {
-                if ($tableArray[$index]['JUDUL_ARTIKEL'] == $Judul[$key]) {
-                    if (!str_contains($listPenulis,$tableArray[$index]['NAMA_PENULIS'])) {
-                        $listPenulis = $listPenulis.$tableArray[$index]['NAMA_PENULIS'];
+                if ($tableArray[$index]['judul_artikel'] == $Judul[$key]) {
+                    if (!str_contains($listPenulis,$tableArray[$index]['nama_penulis'])) {
+                        $listPenulis = $listPenulis.$tableArray[$index]['nama_penulis'];
                     }
-                    if (!str_contains($listJurusan,$tableArray[$index]['NAMA_JURUSAN'])) {
-                        $listJurusan = $listJurusan.$tableArray[$index]['NAMA_JURUSAN'];
+                    if (!str_contains($listJurusan,$tableArray[$index]['nama_jurusan'])) {
+                        $listJurusan = $listJurusan.$tableArray[$index]['nama_jurusan'];
                     }
-                    if ($index < count($tableArray)-1 && $tableArray[($index + 1)]['JUDUL_ARTIKEL'] == $Judul[$key])  {
-                        if (!str_contains($listPenulis,$tableArray[($index + 1)]['NAMA_PENULIS'])) {
+                    if ($index < count($tableArray)-1 && $tableArray[($index + 1)]['judul_artikel'] == $Judul[$key])  {
+                        if (!str_contains($listPenulis,$tableArray[($index + 1)]['nama_penulis'])) {
                             $listPenulis = $listPenulis.", ";
                         }
-                        if (!str_contains($listJurusan,$tableArray[($index + 1)]['NAMA_JURUSAN'])) {
+                        if (!str_contains($listJurusan,$tableArray[($index + 1)]['nama_jurusan'])) {
                             $listJurusan = $listJurusan.", ";
                         }
                     }
                     if (!$finalizeAdd) {
-                        if ($tableArray[$index]['STATUS_REVISI'] == '1') {
+                        if ($tableArray[$index]['status_revisi'] == '1') {
                             $listFinalize = 'Yes';
                         }
-                        else if ($tableArray[$index]['STATUS_REVISI'] == '0') {$listFinalize = 'No';}
+                        else if ($tableArray[$index]['status_revisi'] == '0') {$listFinalize = 'No';}
                         if ($format == 'up-ri-sta') {
                             if ($tableArray[$index]['TANGGAL_UPLOAD']) { $tanggalUp = $tableArray[$index]['TANGGAL_UPLOAD']; }
-                            if ($tableArray[$index]['STATUS_ARTIKEL_BARU'] != '-') {
+                            if ($tableArray[$index]['status_artikel_baru'] != '-') {
                                 $tanggalRilis = '-';
-                                if ($tableArray[$index]['STATUS_ARTIKEL_BARU'] == 'Layak Publish') {
+                                if ($tableArray[$index]['status_artikel_baru'] == 'Layak Publish') {
                                     $tanggalRilis = $tableArray[$index]['TANGGAL_UPLOAD'];
                                 }
-                                $status = $tableArray[$index]['STATUS_ARTIKEL_BARU'];
+                                $status = $tableArray[$index]['status_artikel_baru'];
                             }
-                            else {  $status = $tableArray[$index]['STATUS_ARTIKEL']; $tanggalRilis = '-'; }
+                            else {  $status = $tableArray[$index]['status_artikel']; $tanggalRilis = '-'; }
                         }
                         $finalizeAdd = true;
                     }
-                    if ($index < count($tableArray)-1 && $tableArray[($index + 1)]['JUDUL_ARTIKEL'] != $Judul[$key])  {
+                    if ($index < count($tableArray)-1 && $tableArray[($index + 1)]['judul_artikel'] != $Judul[$key])  {
                         if (!$finalizeAdd) {
-                            if ($listFinalize.$tableArray[$index]['STATUS_REVISI'] == '1') {
+                            if ($listFinalize.$tableArray[$index]['status_revisi'] == '1') {
                                 $listFinalize = 'Yes';
                             }
                             else {$listFinalize = 'No';}
                             if ($format == 'up-ri-sta') {
                                 if ($tableArray[$index]['TANGGAL_UPLOAD']) { $tanggalUp = $tableArray[$index]['TANGGAL_UPLOAD']; }
-                                if ($tableArray[$index]['STATUS_ARTIKEL_BARU'] != '-') {
+                                if ($tableArray[$index]['status_artikel_baru'] != '-') {
                                     $tanggalRilis = '-';
-                                    if ($tableArray[$index]['STATUS_ARTIKEL_BARU'] == 'Layak Publish') {
+                                    if ($tableArray[$index]['status_artikel_baru'] == 'Layak Publish') {
                                         $tanggalRilis = $tableArray[$index]['TANGGAL_UPLOAD'];
                                     }
-                                    $status = $tableArray[$index]['STATUS_ARTIKEL_BARU'];
+                                    $status = $tableArray[$index]['status_artikel_baru'];
                                 }
-                                else {  $status = $tableArray[$index]['STATUS_ARTIKEL']; $tanggalRilis = '-'; }
+                                else {  $status = $tableArray[$index]['status_artikel']; $tanggalRilis = '-'; }
                             }
                             $FinalizeAdd = true;
                         }
@@ -300,12 +239,11 @@ class listController extends Controller
     function UniqueList (array $tableArray, string $ColumnTable) {
         $Array = array();
         foreach ($tableArray as $index => $data) {
-            if (str_contains($ColumnTable,'JUDUL')) { $Array[] = $tableArray[$index]['JUDUL_ARTIKEL']; }
-            else if (str_contains($ColumnTable,'STATUS')) { $Array[] = $tableArray[$index]['STATUS_REVISI']; }
-            else if (str_contains($ColumnTable,'PENULIS')) { $Array[] = $tableArray[$index]['NAMA_PENULIS']; }
-            else if (str_contains($ColumnTable,'JURUSAN')) { $Array[] = $tableArray[$index]['NAMA_JURUSAN']; }
+            if (str_contains($ColumnTable,'JUDUL')) { $Array[] = $data['judul_artikel']; }
+            else if (str_contains($ColumnTable,'STATUS')) { $Array[] = $data['status_revisi']; }
+            else if (str_contains($ColumnTable,'PENULIS')) { $Array[] = $data['nama_penulis']; }
+            else if (str_contains($ColumnTable,'JURUSAN')) { $Array[] = $data['nama_jurusan']; }
         }
-        // printf(count($Array).", ".count(array_values($Array)));
         if (count($Array) != 0) {
             $Array = array_unique($Array);
             $Array = array_combine(range(0,count($Array)-1),array_values($Array));
@@ -329,13 +267,13 @@ class listController extends Controller
     function SliceTable (array $TableArray, array $AlltableArray, string $typeTable) {
         $array_at_key = array();
         foreach ($TableArray as $key => $value) {
-            $currentID = intval(substr($TableArray[$key]['ID_DETAILARTIKEL'],5));
+            $currentID = intval(substr($TableArray[$key]['id_artikel_detail'],5));
             // echo $key."<br>";
             // print_r($TableArray[$key]);
             // echo "<br>";
             foreach ($AlltableArray as $keyAll => $valueAll) {
-                if ($AlltableArray[$keyAll]['ID_ARTIKEL'] == $TableArray[$key]['ID_ARTIKEL']) {
-                    $currentIDAll = intval(substr($AlltableArray[$keyAll]['ID_DETAILARTIKEL'],5));
+                if ($AlltableArray[$keyAll]['id_artikel'] == $TableArray[$key]['id_artikel']) {
+                    $currentIDAll = intval(substr($AlltableArray[$keyAll]['id_artikel_detail'],5));
                     if ($currentID < $currentIDAll) {
                         $array_at_key[] = $key;
                     }
@@ -362,8 +300,8 @@ class listController extends Controller
         $id_artikel = '';
         $count = 0;
         foreach ($TableArray as $key => $value) {
-            if ($TableArray[$key]['JUDUL_ARTIKEL'] != $id_artikel) {
-                $id_artikel = $TableArray[$key]['JUDUL_ARTIKEL'];
+            if ($TableArray[$key]['judul_artikel'] != $id_artikel) {
+                $id_artikel = $TableArray[$key]['judul_artikel'];
                 // echo $key."<br>";
                 // print_r($TableArray[$key]);
                 // echo "<br>";
@@ -375,61 +313,55 @@ class listController extends Controller
     }
     function finalArray ($tableArray) {
         $final = [];
-        
         $id_article_TA = '';
         foreach ($tableArray as $key => $value) {
-            if($id_article_TA != $value['ID_ARTIKEL'])
-            {
-                $id_article_TA = $value['ID_ARTIKEL'];
+            if($id_article_TA != $value['id_artikel']) {
+                $id_article_TA = $value['id_artikel'];
                 
-                $datamodel = (artikel_detail::where('ID_ARTIKEL', '=', $id_article_TA)
-                            ->orderByDesc('ID_DETAILARTIKEL')
+                $datamodel = (artikel_detail::where('id_artikel', '=', $id_article_TA)
+                            ->orderByDesc('id_artikel_detail')
                             ->first());
                 
-                if ($datamodel['ID_DETAILARTIKEL'] == $value['ID_DETAILARTIKEL']) {
-                    $listPenulis = artikel_detail_penulis::where('ID_DETAILARTIKEL','=',$value['ID_DETAILARTIKEL'])
+                if ($datamodel['id_artikel_detail'] == $value['id_artikel_detail']) {
+                    $listPenulis = artikel_detail_penulis::where('id_artikel_detail','=',$value['id_artikel_detail'])
                                     ->get();
                     $list_of_penulis = [];
                     $list_of_prodi = [];
                     foreach($listPenulis as $index => $datapenulis) {
-                        $detail_penulis = penulis::where('ID_PENULIS','=',$datapenulis['ID_PENULIS'])->get();
-                        if (!in_array($detail_penulis[0]['NAMA_PENULIS'],$list_of_penulis)) {
-                            $list_of_penulis[] = $detail_penulis[0]['NAMA_PENULIS'];
-                            $list_of_prodi[] = jurusan::where('ID_JURUSAN','=',$detail_penulis[0]['ID_JURUSAN'])->value('NAMA_JURUSAN');
+                        $detail_penulis = penulis::where('id_penulis','=',$datapenulis->id_penulis)->first();
+                        if (!in_array($detail_penulis->nama_penulis,$list_of_penulis)) {
+                            $list_of_penulis[] = $detail_penulis->nama_penulis;
+                            $namajurusan = jurusan::where('id_jurusan','=',$detail_penulis->id_jurusan)->value('nama_jurusan');
+                            if(!in_array($namajurusan,$list_of_prodi)) { $list_of_prodi[] = $namajurusan; }
                         }
                     }
-                    $stringList_of_penulis = '';
-                    $stringList_of_prodi = '';
-                    foreach($list_of_penulis as $index => $datapenulis){
-                        $stringList_of_penulis = $stringList_of_penulis.$datapenulis;
-                        $stringList_of_prodi = $stringList_of_prodi.$list_of_prodi[$index];
-                        if ($index < count($list_of_penulis)-1){
-                            $stringList_of_penulis = $stringList_of_penulis.', ';
-                            $stringList_of_prodi = $stringList_of_prodi.', ';
-                        }
-                    }
+                    $list_of_penulis = implode(', ',$list_of_penulis);
+                    $list_of_prodi = implode(', ',$list_of_prodi);
                     
-                    $revisi = revisi::where('ID_DETAILARTIKEL','=',$value['ID_DETAILARTIKEL'])->value('ID_REVISI');
-                    $detail_revisi = revisi_detail::where('ID_REVISI','=',$revisi)->get();
-                    $tanggalUp = '-';
-                    $finalize = 'No';
-                    $status = $detail_revisi[0]['STATUS_ARTIKEL_BARU'];
-                    if($detail_revisi[0]['STATUS_ARTIKEL_BARU'] == 'Layak Publish') { $tanggalUp = $detail_revisi[0]['TANGGAL_REVISI']; }
-                    if($detail_revisi[0]['STATUS_ARTIKEL_BARU'] == '-') { $status = $datamodel['STATUS_ARTIKEL']; }
-                    if($detail_revisi[0]['STATUS_REVISI'] == '1') { $finalize = 'Yes'; }
-                    else { $finalize = 'No'; }
+                    $revisi = revisi::where('id_artikel_detail','=',$value['id_artikel_detail'])->first();
+                    //insert revisi
+                        $tanggalUp = '-';
+                        if($revisi->status_artikel_baru == 'Layak Publish') { 
+                            $tanggalUp = (string)$revisi->updated_at;
+                        }
+                        $finalize = 'No';
+                        if($revisi->status_revisi == '1') { $finalize = 'Yes'; }
+                        else { $finalize = 'No'; }
+                        
+                        $status = $revisi->status_artikel_baru;
+                        if($revisi->status_artikel_baru == '-') { $status = $datamodel['status_artikel']; }
+                    //
 
-                    $final[] = [$datamodel['JUDUL_ARTIKEL'],
+                    $final[] = [$datamodel['judul_artikel'],
                                 $finalize,
-                                $stringList_of_penulis,
-                                $stringList_of_prodi,
-                                $datamodel['TANGGAL_UPLOAD'],
+                                $list_of_penulis,
+                                $list_of_prodi,
+                                $value['updated_at'],
                                 $tanggalUp,
                                 $status];
                 }
             }
         }
-        // dd($tableArray, $final);
         return $final;
     }
     function historyArray ($tableArray) {
@@ -437,18 +369,18 @@ class listController extends Controller
         
         $id_article_TA = '';
         foreach ($tableArray as $key => $value) {
-            if($id_article_TA != $value['ID_ARTIKEL'])
+            if($id_article_TA != $value['id_artikel'])
             {
-                $id_article_TA = $value['ID_ARTIKEL'];
+                $id_article_TA = $value['id_artikel'];
 
-                $datamodel = (artikel_detail::where('ID_ARTIKEL', '=', $id_article_TA)
-                            ->orderByDesc('ID_DETAILARTIKEL')
+                $datamodel = (artikel_detail::where('id_artikel', '=', $id_article_TA)
+                            ->orderByDesc('id_artikel_detail')
                             ->first());
                 
-                // compare is this ID_DETAILARTIKEL is the last one from $ID_ARTIKEL
-                if ($datamodel['ID_DETAILARTIKEL'] == $value['ID_DETAILARTIKEL']) {
-                    $detailArtikel = (artikel_detail::where('ID_ARTIKEL', '=', $id_article_TA)
-                                        ->orderBy('ID_DETAILARTIKEL')
+                // compare is this id_artikel_detail is the last one from $id_artikel
+                if ($datamodel['id_artikel_detail'] == $value['id_artikel_detail']) {
+                    $detailArtikel = (artikel_detail::where('id_artikel', '=', $id_article_TA)
+                                        ->orderBy('id_artikel_detail')
                                         ->get());
                     $listTGL = [];
                     $CountHistory = 0;
@@ -458,36 +390,34 @@ class listController extends Controller
                     $listCatatanBaru = [];
                     $listJudul = [];
                     foreach($detailArtikel as $index => $AD){
-                        $List_PNL = artikel_detail_penulis::where('ID_DETAILARTIKEL','=',$AD['ID_DETAILARTIKEL'])->get();
+                        $List_PNL = artikel_detail_penulis::where('id_artikel_detail','=',$AD->id_artikel_detail)->get();
                         $listPenulis_AD = [];
                         foreach($List_PNL as $noList => $valueList)
                         {
-                            $NamaPenulis = penulis::where('ID_PENULIS','=',$valueList['ID_PENULIS'])->value('NAMA_PENULIS');
+                            $NamaPenulis = penulis::where('id_penulis','=',$valueList['id_penulis'])->value('nama_penulis');
                             if (!in_array($NamaPenulis,$listPenulis_AD)) { $listPenulis_AD [] = $NamaPenulis; }
                         }
                         $CountHistory += 1;
                         $listPenulis [] = implode(', ',$listPenulis_AD);
                         
-                        $idRevisi = (revisi::where('ID_DETAILARTIKEL', '=', $AD['ID_DETAILARTIKEL'])
-                                        ->value('ID_REVISI'));
-                        $RD = (revisi_detail::where('ID_REVISI', '=', $idRevisi)
-                                        ->orderBy('ID_REVISI')
+                        $RD = (revisi::where('id_artikel_detail', '=', $AD['id_artikel_detail'])
                                         ->first());
                         
-                        $listTGL [] = $AD['TANGGAL_UPLOAD'];
-                        $listStatus [] = $AD['STATUS_ARTIKEL'];
-                        $listStatusBaru [] = $RD['STATUS_ARTIKEL_BARU'];
-                        $listCatatanBaru [] = $RD['REVISI'];
-                        $listJudul [] = $AD['JUDUL_ARTIKEL'];
+                        $listTGL [] = $value['updated_at'];
+                        $listStatus [] = $AD['status_artikel'];
+                        $listStatusBaru [] = $RD['status_artikel_baru'];
+                        $listCatatanBaru [] = $RD['catatan_revisi'];
+                        $listJudul [] = $AD['judul_artikel'];
                     }
-                    $history[] = [$datamodel['JUDUL_ARTIKEL'],
+                    $history[] = [$datamodel['judul_artikel'],
                                     $CountHistory,
                                     end($listPenulis),
                                     $listTGL,
                                     $listStatus,
                                     $listStatusBaru,
                                     $listCatatanBaru,
-                                    $listJudul];
+                                    $listJudul
+                                ];
                 }
             }
         }
@@ -503,16 +433,15 @@ class listController extends Controller
         $list_draft = $this->CountRevisied(($this->finalArray($draft)),'Admin');
         $list_rmayor = $this->CountRevisied(($this->finalArray($rmayor)),'Admin');
         $list_rminor = $this->CountRevisied(($this->finalArray($rminor)),'Admin');
-        // dd($list_draft, ($this->finalArray($draft)));
 
         $listJumlah = ['Draft' => $list_draft,
         'Revisi Mayor' => $list_rmayor,
         'Revisi Minor' => $list_rminor,];
 
-        $arrayAkun = $this->getAkun();
+        $arrayAkun = Auth::user();
         $myArticle;
-        if ($arrayAkun && $arrayAkun[0]['STATUS_AKUN'] == 'Penulis') {
-            $idPenulis = json_decode($this->getTable ('PNL-'.$arrayAkun[0]['NAMA']),true)[0]['ID_PENULIS'];
+        if ($arrayAkun && Auth::user()->status == "Penulis") {
+            $idPenulis = json_decode($this->getTable ('PNL-'.Auth::user()->nama_lengkap),true)[0]['id_penulis'];
             $myArticle = json_decode($this->getTable('MyArticle-'.$idPenulis),true);
             $list_myArticle = null;
             if($myArticle) { $list_myArticle = $this->CountRevisied(($this->finalArray($myArticle)),'Penulis'); }
@@ -522,55 +451,46 @@ class listController extends Controller
                             'Revisi Minor' => $list_rminor,
                             'My Article' => $list_myArticle];
         }
-        // print_r($listJumlah);
         return $listJumlah;
     }
     function getAkun () {
         $arrayID = [];
-        if (Session::get('id_akun')) {
-            $akun = json_decode($this->getTable('Akun-'.Session::get('id_akun')),true);
-            $penulis = json_decode($this->getTable('PNL-'.Session::get('id_akun')),true);
-            $kota = json_decode($this->getTable('KOTA-'.$akun[0]['ID_KOTA']),true);
-            $prov = json_decode($this->getTable('PROV-'.$akun[0]['ID_PROVINSI']),true);
-
-            // print_r($penulis);
-            // echo "<br>".$akun[0]['ID_KOTA']."<br>";
-            // print_r($kota);
-            // echo "<br>".$akun[0]['ID_PROVINSI']."<br>";
-            // print_r($prov);
-            if (!empty($penulis) && Session::get('status_akun') != "Admin") {
-                $prodi = json_decode($this->getTable('Prodi-'.$penulis[0]['ID_JURUSAN']),true);
-                $arrayID[] = ['ID_AKUN' => Session::get('id_akun'),
-                                'STATUS_AKUN' => Session::get('status_akun'),
-                                'USERNAME' => $akun[0]['USERNAME'],
-                                'ID_PENULIS' => $penulis[0]['ID_PENULIS'],
-                                'NAMA' => $penulis[0]['NAMA_PENULIS'],
-                                'NAMA_JURUSAN' => $prodi[0]['NAMA_JURUSAN'],
-                                'NO_TELEPON' => $akun[0]['NO_TELEPON'],
-                                'EMAIL' => $akun[0]['EMAIL'],
-                                'TANGGAL_LAHIR' => $akun[0]['TANGGAL_LAHIR'],
-                                'NAMA_KOTA' => $kota[0]['NAMA_KOTA'],
-                                'NAMA_PROVINSI' => $prov[0]['NAMA_PROVINSI'],
-                                'ALAMAT' => $akun[0]['ALAMAT'],
-                                'KODE_POS' => $akun[0]['KODE_POS'],
-                                'FOTO_PROFIL' => $akun[0]['FOTO_PROFIL']];
+        if (Auth::check()) {
+            $kota = kota::where('id_kota','=',Auth::user()->id_kota)->first();
+            $provinsi = provinsi::where('id_provinsi','=',Auth::user()->id_provinsi)->first();
+            if (Auth::user()->status == "Penulis") {
+                $penulis = penulis::where('id_akun','=',Auth::user()->id)->first();
+                $prodi = jurusan::where('id_jurusan','=',$penulis->id_jurusan)->first();
+                $arrayID[] = ['id' => Auth::user()->id,
+                                'status' => Auth::user()->status,
+                                'username' => Auth::user()->username,
+                                'id_penulis' => $penulis->id_penulis,
+                                'nama_lengkap' => $penulis->nama_penulis,
+                                'nama_jurusan' => $prodi->nama_jurusan,
+                                'no_telepon' => Auth::user()->no_telepon,
+                                'email' => Auth::user()->email,
+                                'tanggal_lahir' => Auth::user()->tanggal_lahir,
+                                'nama_kota' => $kota->nama_kota,
+                                'nama_provinsi' => $provinsi->nama_provinsi,
+                                'alamat' => Auth::user()->alamat,
+                                'kode_pos' => Auth::user()->kode_pos,
+                                'foto_profil' => Auth::user()->foto_profil];
             }
             else {
-                $arrayID[] = ['ID_AKUN' => Session::get('id_akun'),
-                                'STATUS_AKUN' => Session::get('status_akun'),
-                                'USERNAME' => $akun[0]['USERNAME'],
-                                'NAMA' => $akun[0]['NAMA'],
-                                'NO_TELEPON' => $akun[0]['NO_TELEPON'],
-                                'EMAIL' => $akun[0]['EMAIL'],
-                                'TANGGAL_LAHIR' => $akun[0]['TANGGAL_LAHIR'],
-                                'NAMA_KOTA' => $kota[0]['NAMA_KOTA'],
-                                'NAMA_PROVINSI' => $prov[0]['NAMA_PROVINSI'],
-                                'ALAMAT' => $akun[0]['ALAMAT'],
-                                'KODE_POS' => $akun[0]['KODE_POS'],
-                                'FOTO_PROFIL' => $akun[0]['FOTO_PROFIL']];
+                $arrayID[] = ['id' => Auth::user()->id,
+                                'status' => Auth::user()->status,
+                                'username' => Auth::user()->username,
+                                'nama_lengkap' => Auth::user()->nama_lengkap,
+                                'no_telepon' => Auth::user()->no_telepon,
+                                'email' => Auth::user()->email,
+                                'tanggal_lahir' => Auth::user()->tanggal_lahir,
+                                'nama_kota' => $kota->nama_kota,
+                                'nama_provinsi' => $provinsi->nama_provinsi,
+                                'alamat' => Auth::user()->alamat,
+                                'kode_pos' => Auth::user()->kode_pos,
+                                'foto_profil' => Auth::user()->foto_profil];
             }
         }
-
         return $arrayID;
     }
     function SearchBarList () {

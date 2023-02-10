@@ -13,37 +13,39 @@ class CreateAkunsTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('akun')) {
-            Schema::create('akun', function(Blueprint $table) {
-                $table->ipAddress('ID_AKUN',12);
-                $table->primary('ID_AKUN');
-
-                $table->ipAddress('USERNAME',20);
-                $table->ipAddress('PASSWORD',12);
-                $table->ipAddress('NAMA',20);
-                $table->ipAddress('STATUS_PENGGUNA',12);
-                $table->ipAddress('NO_TELEPON',12);
-                $table->ipAddress('EMAIL',20);
-                $table->date('TANGGAL_LAHIR');
-                $table->ipAddress('ID_KOTA',12);
-                $table->ipAddress('ID_PROVINSI',12);
-                $table->ipAddress('ALAMAT',200);
-                $table->ipAddress('KODE_POS',6);
-                $table->binary('FOTO_PROFIL')->nullable();
+        if (!Schema::hasTable('users')) {
+            Schema::create('users', function (Blueprint $table) {
+                $table->ipAddress('id',12);
+                $table->primary('id');
+                
+                $table->string('username');
+                $table->string('password');
+                $table->ipAddress('status',12);
+                $table->ipAddress('nama_lengkap',20);
+                $table->ipAddress('no_telepon',12);
+                $table->ipAddress('email',20);
+                $table->date('tanggal_lahir');
+                $table->ipAddress('id_kota',12);
+                $table->ipAddress('id_provinsi',12);
+                $table->ipAddress('alamat',200);
+                $table->ipAddress('kode_pos',6);
+                $table->binary('foto_profil')->nullable();
+                $table->rememberToken();
+                $table->timestamps();
             });
         }
-        Schema::table('akun', function(Blueprint $table) {
-            $table->foreign('ID_KOTA')
+        Schema::table('users', function(Blueprint $table) {
+            $table->foreign('id_kota')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade')
-                ->references('ID_KOTA')->on('kota');
+                ->references('id_kota')->on('kota');
                 
-            $table->foreign('ID_PROVINSI')
+            $table->foreign('id_provinsi')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade')
-                ->references('ID_PROVINSI')->on('provinsi');
+                ->references('id_provinsi')->on('provinsi');
         });
     }
 
@@ -54,6 +56,6 @@ class CreateAkunsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('akun');
+        Schema::dropIfExists('users');
     }
 }

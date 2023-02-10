@@ -9,8 +9,12 @@ class revisi extends Model
 {
     use HasFactory;
     protected $table = 'revisi';
-    public $timestamps = false;
-    protected $primaryKey = 'ID_REVISI';
-    protected $fillable = ['ID_REVISI','ID_DETAILARTIKEL','ID_AKUN'];
+    protected $primaryKey = 'id_revisi';
+    protected $fillable = ['id_revisi',
+                            'id_artikel_detail',
+                            'id_akun',
+                            'status_artikel_baru',
+                            'status_revisi',
+                            'catatan_revisi'];
     protected $keyType = 'string';
 }

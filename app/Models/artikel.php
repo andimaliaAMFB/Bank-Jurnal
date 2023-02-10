@@ -9,8 +9,7 @@ class artikel extends Model
 {
     use HasFactory;
     protected $table = 'artikel';
-    public $timestamps = false;
-    protected $primaryKey = 'ID_ARTIKEL';
-    protected $fillable = ['ID_ARTIKEL','ID_AKUN'];
+    protected $primaryKey = 'id_artikel';
+    protected $fillable = ['id_artikel','id_akun'];
     protected $keyType = 'string';
 }

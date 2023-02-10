@@ -225,21 +225,20 @@
         <!-- JS comunicate with database -->
         <script type="text/javascript">
             var judul = <?php echo json_encode($judul); ?>;
-            var penulis = <?php echo json_encode($tablePenulis); ?>;
+            var penulis = <?php echo json_encode($penulis); ?>;
             var prodi = <?php echo json_encode($tableProdi); ?>;
             var final = <?php echo json_encode($final); ?>;
             var finalSearch = <?php echo json_encode($finalSearch); ?>;
+            var All_penulis = <?php echo json_encode($tablePenulis); ?>;
 
-            let list_judul = [];
-            judul.forEach((element,index) => { list_judul[index] = judul[index]; });
-            let list_penulis = [];
-            penulis.forEach((element,index) => { list_penulis[index] = penulis[index]['NAMA_PENULIS']; });
+            let list_judul = judul;
+            let list_penulis = penulis;
             let list_prodi = [];
-            prodi.forEach((element,index) => { list_prodi[index] = prodi[index]['NAMA_JURUSAN']; });
+            prodi.forEach((element,index) => { list_prodi[index] = prodi[index]['nama_jurusan']; });
             let final_list = final;
             let final_search = finalSearch;
-
-            // console.table(list_penulis);
+            
+            // console.table(All_penulis);
         </script>
         <!-- JS comunicate with database -->
 

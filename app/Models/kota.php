@@ -10,7 +10,7 @@ class kota extends Model
     use HasFactory;
     protected $table = 'kota';
     public $timestamps = false;
-    protected $primaryKey = 'ID_KOTA';
-    protected $fillable = ['ID_KOTA','NAMA_KOTA'];
+    protected $primaryKey = 'id_kota';
+    protected $fillable = ['id_kota','nama_kota'];
     protected $keyType = 'string';
 }

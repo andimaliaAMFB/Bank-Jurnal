@@ -15,18 +15,19 @@ class CreateArtikelsTable extends Migration
     {
         if (!Schema::hasTable('artikel')) {
             Schema::create('artikel', function (Blueprint $table) {
-                $table->ipAddress('ID_ARTIKEL',12);
-                $table->primary('ID_ARTIKEL');
+                $table->ipAddress('id_artikel',12);
+                $table->primary('id_artikel');
                 
-                $table->ipAddress('ID_AKUN',12);
+                $table->ipAddress('id_akun',12);
+                $table->timestamps();
             });
         }
         Schema::table('artikel', function(Blueprint $table) {
-            $table->foreign('ID_AKUN')
+            $table->foreign('id_akun')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade')
-                ->references('ID_AKUN')->on('akun');
+                ->references('id')->on('users');
         });
     }
 

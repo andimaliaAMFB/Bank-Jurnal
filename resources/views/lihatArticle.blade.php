@@ -10,10 +10,6 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
         <link rel="stylesheet" href="../../Style.css">
 
-        <!-- JS -->
-        <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.943/pdf.min.js"></script> -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.943/pdf.min.js"></script>
-
     </head>
     <body>
         @include('layout.header')
@@ -25,7 +21,15 @@
                     <div class="card">
                         <div class="card-head p-3 m-0 mx-3">
                             <h3>{{ $final[0][0] }}</h3>
-                            <p>{{ $final[0][2] }}</p>
+                            <div class="d-flex justify-content-center">
+                            @foreach($penulis as $key => $value)
+                            <a href="{{ '../@'.$value }}"><p>{{ $value }}
+                                @if($key < count($penulis)-1)
+                                ,&nbsp;
+                                @endif
+                            </p></a>
+                            @endforeach
+                            </div>
                             <p style="font-size:medium;">Tanggal Upload: {{ $final[0][4] }}</p>
                             <p style="font-size:medium;">Tanggal Rilis: {{ $final[0][5] }}</p>
                         </div>

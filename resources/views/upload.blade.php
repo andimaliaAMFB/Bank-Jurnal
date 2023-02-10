@@ -174,9 +174,9 @@
 
             let list_judul = [];
             let list_penulis = [];
-            penulis.forEach((element,index) => { list_penulis[index] = penulis[index]['NAMA_PENULIS']; });
+            penulis.forEach((element,index) => { list_penulis[index] = penulis[index]['nama_penulis']; });
             let list_prodi = [];
-            prodi.forEach((element,index) => { list_prodi[index] = prodi[index]['NAMA_JURUSAN']; });
+            prodi.forEach((element,index) => { list_prodi[index] = prodi[index]['nama_jurusan']; });
             let final_list = [];
             let final_search = finalSearch;
 
@@ -219,9 +219,9 @@
             penulis.forEach(penulis => {
                 namaProdi = '';
                 prodi.forEach(prodi => {
-                    if (penulis['ID_JURUSAN'] == prodi['ID_JURUSAN']) { namaProdi = prodi['NAMA_JURUSAN']; }
+                    if (penulis['id_jurusan'] == prodi['id_jurusan']) { namaProdi = prodi['nama_jurusan']; }
                 });
-                list_penulis_jurusan.push([penulis['NAMA_PENULIS'],namaProdi]);
+                list_penulis_jurusan.push([penulis['nama_penulis'],namaProdi]);
             });
 
         </script>

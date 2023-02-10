@@ -18,12 +18,12 @@ class lokasiDaerah extends Seeder
                     'Jakarta','Jambi','Jawa Barat','Jawa Tengah','Jawa Timur','Kalimantan Barat','Kalimantan Selatan','Kalimantan Tengah','Kalimantan Timur','Kalimantan Utara',
                     'Kepulauan Riau','Lampung','Maluku Utara','Maluku','Nusa Tenggara Barat','Nusa Tenggara Timur','Papua Barat Daya','Papua','Riau',
                     'Sulawesi Selatan','Sulawesi Tengah','Sulawesi Tenggara','Sulawesi Utara','Sumatra Barat','Sumatra Selatan','Sumatra Utara');
-        $provinsi;
-        for ($i=0; $i < count($namaProvinsi); $i++) { 
-            $provinsi["P-".($i+1)] = $namaProvinsi[$i];
-        }
-        foreach ($provinsi as $id => $nama) {
-            DB::table('provinsi')-> INSERT (['ID_PROVINSI' => $id, 'NAMA_PROVINSI' => $nama]);
+        
+        foreach ($namaProvinsi as $id => $nama) {
+            DB::table('provinsi')-> INSERT([
+                'id_provinsi' => "P-".($id+1),
+                'nama_provinsi' => $nama
+            ]);
         }
         $namaKota = array('Banda Aceh','Langsa','Lhokseumawe','Sabang','Subulussalam','Denpasar','Pangkalpinang','Cilegon','Serang','Tangerang Selatan',
                     'Tangerang','Bengkulu','Yogyakarta','Gorontalo','Kota Administrasi Jakarta Barat','Kota Administrasi Jakarta Pusat','Kota Administrasi Jakarta Selatan',
@@ -36,12 +36,12 @@ class lokasiDaerah extends Seeder
                     'Binjai','Gunungsitoli','Medan','Padangsidimpuan','Pematangsiantar','Sibolga','Tanjungbalai','Tebing Tinggi');
         
         
-        $kota;
-        for ($i=0; $i < count($namaKota); $i++) { 
-            $kota["K-".($i+1)] = $namaKota[$i];
+        foreach ($namaKota as $id => $nama) {
+            DB::table('kota')-> INSERT([
+                'id_kota' => "K-".($id+1),
+                'nama_kota' => $nama
+            ]);
         }
-        foreach ($kota as $id => $nama) {
-            DB::table('kota')-> INSERT (array(['ID_KOTA' => $id, 'NAMA_KOTA' => $nama]));
-        }
+
     }
 }

@@ -14,27 +14,58 @@ class Akun extends Seeder
      */
     public function run()
     {
-        $kota = DB::table('kota')->select('ID_KOTA')->limit(1)->value('ID_KOTA');
-        $provinsi = DB::table('provinsi')->select('ID_PROVINSI')->limit(1)->value('ID_PROVINSI');
+        $kota = DB::table('kota')->first()->id_kota;
+        $provinsi = DB::table('provinsi')->first()->id_provinsi;
         
         for ($i=1; $i <= 5; $i++) { 
-            $baseId = strval(date("m").(date("d")+date("B")))."-".(($i*2) - 1);
-            DB::table('akun')-> INSERT (['ID_AKUN' => $baseId, 'USERNAME' => 'Admin-'.$i, 'PASSWORD' => substr(md5('admin-'.$i),0,12),
-                'NAMA' => 'Super Admin '.$i, 'STATUS_PENGGUNA' => 'Admin','NO_TELEPON' => '', 'EMAIL' => '', 
-                'TANGGAL_LAHIR' => date("Y-m-d"), 'ID_KOTA' => $kota, 'ID_PROVINSI' => $provinsi,'ALAMAT' => '', 'KODE_POS' => '']);
-            $baseId = strval(date("m").(date("d")+date("B")))."-".($i*2);
-            DB::table('akun')-> INSERT (['ID_AKUN' => $baseId, 'USERNAME' => 'Penulis-'.$i, 'PASSWORD' => substr(md5('penulis-'.$i),0,12),
-                'NAMA' => 'Penulis '.$i, 'STATUS_PENGGUNA' => 'Penulis', 'NO_TELEPON' => '', 'EMAIL' => '', 
-                'TANGGAL_LAHIR' => date("Y-m-d"), 'ID_KOTA' => $kota, 'ID_PROVINSI' => $provinsi,'ALAMAT' => '', 'KODE_POS' => '']);
+            //INSERT Admin
+                $baseId = strval(date("m").(date("d")+date("B")))."-".(($i*2) - 1);
+                DB::table('users')->INSERT([
+                    'id' => $baseId,
+                    'username' => 'Admin-'.$i,
+                    'password' => bcrypt('admin-'.$i),
+                    'status' => 'Admin',
+                    'nama_lengkap' => 'Super Admin '.$i,
+                    'no_telepon' => '',
+                    'email' => 'Admin-'.$i.'@example.com',
+                    'tanggal_lahir' => date("Y-m-d"),
+                    'id_kota' => $kota,
+                    'id_provinsi' => $provinsi,
+                    'alamat' => '',
+                    'kode_pos' => '',
+                    'created_at' => date("Y-m-d H:i:s")
+                ]);
+            
+            //INSERT PENULIS
+                $baseId = strval(date("m").(date("d")+date("B")))."-".($i*2);
+                DB::table('users')->INSERT([
+                    'id' => $baseId,
+                    'username' => 'Penulis-'.$i,
+                    'password' => bcrypt('penulis-'.$i),
+                    'status' => 'Penulis',
+                    'nama_lengkap' => 'Penulis '.$i,
+                    'no_telepon' => '',
+                    'email' => 'Penulis-'.$i.'@example.com',
+                    'tanggal_lahir' => date("Y-m-d"),
+                    'id_kota' => $kota,
+                    'id_provinsi' => $provinsi,
+                    'alamat' => '',
+                    'kode_pos' => '',
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'updated_at' => date("Y-m-d H:i:s")
+                ]);
         }
 
-        $akun = DB::table('akun')->get();
         $jurusan = DB::table('jurusan')->get();
 
-        foreach ($akun as $index=>$column) {
-            if ($akun[$index]->STATUS_PENGGUNA != 'Admin') {
-                DB::table('penulis')-> INSERT (['ID_PENULIS' => "PNL".substr(md5($akun[$index]->ID_AKUN),0,4), 'ID_AKUN' => $akun[$index]->ID_AKUN,
-                    'ID_JURUSAN' => $jurusan[rand(0,count($jurusan)-1)]->ID_JURUSAN, 'NAMA_PENULIS' => $akun[$index]->NAMA]);
+        foreach (DB::table('users')->get() as $key => $value) {
+            if ($value->status != 'Admin') {
+                DB::table('penulis')-> INSERT ([
+                    'id_penulis' => "PNL".substr(md5($value->id),0,4),
+                    'id_akun' => $value->id,
+                    'id_jurusan' => $jurusan[rand(0,count($jurusan)-1)]->id_jurusan,
+                    'nama_penulis' => $value->nama_lengkap
+                ]);
             }
         }
     }

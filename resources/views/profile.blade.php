@@ -31,7 +31,7 @@
         @endif
         <main>
             <div class="main-isi" id="main-isi">
-                <form action="{{ route('profile.update', ['id' => $arrayAkun[0]['ID_AKUN']]) }}" method="POST" enctype="multipart/form-data" name="profileAkun">
+                <form action="{{ route('profile.update', ['id' => Auth::user()->id]) }}" method="POST" enctype="multipart/form-data" name="profileAkun">
                 {{ csrf_field() }}
                 <input type="hidden" name="_method" value="PUT">
                     <div class="card form">
@@ -42,8 +42,8 @@
                             <div class="d-flex box flex-grow-1">
                                 <div class="form_sub_list col-md-3 img_add" id="img-profile">
                                     <label for="img-input" class="btn">
-                                        @if(isset($arrayAkun[0]['FOTO_PROFIL']))
-                                        <img src="{{ 'storage/profile-image/'.$arrayAkun[0]['FOTO_PROFIL'] }}" id="uploadedIMG" class="profile_img">
+                                        @if(isset(Auth::user()->foto_profil))
+                                        <img src="{{ 'storage/profile-image/'.Auth::user()->foto_profil }}" id="uploadedIMG" class="profile_img">
                                         @else
                                         <img src="" id="uploadedIMG" class="profile_img">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" id="blank-pp" class="bi bi-person-circle" viewBox="0 0 16 16" style="display: block; opacity: 0.75;">
@@ -60,8 +60,8 @@
                                     
                                 </div>
                                 <div class="ms-3 flex-grow-1 profile-text d-flex flex-column justify-content-center form_sub">
-                                    <div><h4>{{ $arrayAkun[0]['USERNAME'] }}</h4></div>
-                                    <div><h5>{{ $arrayAkun[0]['STATUS_AKUN'] }}</h5></div>
+                                    <div><h4>{{ Auth::user()->username }}</h4></div>
+                                    <div><h5>{{ Auth::user()->status }}</h5></div>
                                 </div>
                             </div>
                             <div class="mt-3 form_sub row box gx-0">
@@ -70,7 +70,7 @@
                                         <div class="form_sub_title w-100">Nama Pengguna</div>
                                         <div class="col-md-12 search_input d-flex flex-wrap w-100">
                                             <div class="searchbar w-100">
-                                                <input type="text" name="name" placeholder="[Nama Pengguna]" value="{{ $arrayAkun[0]['NAMA'] }}">
+                                                <input type="text" name="name" placeholder="[Nama Pengguna]" value="{{ Auth::user()->nama_lengkap }}">
                                             </div>
                                         </div>
                                     </div>
@@ -80,18 +80,18 @@
                                         <div class="form_sub_title w-100">Username</div>
                                         <div class="col-md-12 search_input d-flex flex-wrap w-100">
                                             <div class="searchbar w-100">
-                                                <input class="w-100" type="text" name="username" placeholder="[Username]" value="{{ $arrayAkun[0]['USERNAME'] }}">
+                                                <input class="w-100" type="text" name="username" placeholder="[Username]" value="{{ Auth::user()->username }}">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                @if (isset($arrayAkun[0]['NAMA_JURUSAN']))
+                                @if (Auth::user()->status == "Penulis")
                                 <div class="row col-md-12 gx-0 p-1 form-sub border-0">
                                     <div class="col-md-6 d-flex flex-wrap align-items-center px-3 my-2" id="prodi">
                                         <div class="form_sub_title w-100">Program Studi</div>
                                         <div class="col-md-6 search_input d-flex flex-wrap w-100">
                                             <div class="searchbar searchFull search-value w-100">
-                                                <input type="text" name="prodi" id="prodi" placeholder="[Program Studi]" value="{{ $arrayAkun[0]['NAMA_JURUSAN'] }}">
+                                                <input type="text" name="prodi" id="prodi" placeholder="[Program Studi]" value="{{ $arrayAkun[0]['nama_jurusan'] }}">
                                                 <button type="button">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
                                                         <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"></path>
@@ -118,7 +118,7 @@
                                         <div class="form_sub_title w-100">Tanggal Lahir</div>
                                         <div class="col-md-12 search_input d-flex flex-wrap">
                                             <div class="searchbar w-100 px-3">
-                                                <input type="date" name="tgl" style="width:100%;" placeholder="DD-MM-YYYY" value="{{ $arrayAkun[0]['TANGGAL_LAHIR'] }}">
+                                                <input type="date" name="tgl" style="width:100%;" placeholder="DD-MM-YYYY" value="{{ Auth::user()->tanggal_lahir }}">
                                             </div>
                                         </div>
                                     </div>
@@ -128,7 +128,7 @@
                                         <div class="form_sub_title w-100">Nomor Telp</div>
                                         <div class="col-md-12 search_input d-flex flex-wrap w-100">
                                             <div class="searchbar w-100">
-                                                <input type="text" name="tlp" placeholder="[xxxx-xxxx-xxxx]" value="{{ $arrayAkun[0]['NO_TELEPON'] }}">
+                                                <input type="text" name="tlp" placeholder="[xxxx-xxxx-xxxx]" value="{{ Auth::user()->no_telepon }}">
                                             </div>
                                         </div>
                                     </div>
@@ -138,7 +138,7 @@
                                         <div class="form_sub_title w-100">Email</div>
                                         <div class="col-md-12 search_input d-flex flex-wrap w-100">
                                             <div class="searchbar w-100">
-                                                <input type="text" name="email" placeholder="[xxxxx@xxxmail.com]" value="{{ $arrayAkun[0]['EMAIL'] }}">
+                                                <input type="text" name="email" placeholder="[xxxxx@xxxmail.com]" value="{{ Auth::user()->email }}">
                                             </div>
                                         </div>
                                     </div>
@@ -148,7 +148,7 @@
                                         <div class="form_sub_title w-100">Kota</div>
                                         <div class="col-md-12 search_input d-flex flex-wrap w-100" id="kota">
                                             <div class="searchbar searchFull search-value w-100">
-                                                <input type="text" name="kota" id="kota" placeholder="[Kota]" value="{{ $arrayAkun[0]['NAMA_KOTA'] }}">
+                                                <input type="text" name="kota" id="kota" placeholder="[Kota]" value="{{ $arrayAkun[0]['nama_kota'] }}">
                                                 <button type="button">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
                                                         <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"></path>
@@ -174,7 +174,7 @@
                                         <div class="form_sub_title w-100">Provinsi</div>
                                         <div class="col-md-12 search_input d-flex flex-wrap w-100">
                                             <div class="searchbar searchFull search-value w-100">
-                                                <input type="text" name="prov" id="prov" placeholder="[Provinsi]" value="{{ $arrayAkun[0]['NAMA_PROVINSI'] }}">
+                                                <input type="text" name="prov" id="prov" placeholder="[Provinsi]" value="{{ $arrayAkun[0]['nama_provinsi'] }}">
                                                 <button type="button">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
                                                         <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"></path>
@@ -200,7 +200,7 @@
                                         <div class="form_sub_title w-100">Alamat</div>
                                         <div class="col-md-12 search_input d-flex flex-wrap w-100">
                                             <div class="searchbar w-100">
-                                                <input type="text" name="alamat" placeholder="[Alamat]" value="{{ $arrayAkun[0]['ALAMAT'] }}">
+                                                <input type="text" name="alamat" placeholder="[Alamat]" value="{{ Auth::user()->alamat }}">
                                             </div>
                                         </div>
                                     </div>
@@ -210,7 +210,7 @@
                                         <div class="form_sub_title w-100">Kode Pos</div>
                                         <div class="col-md-12 search_input d-flex flex-wrap w-100">
                                             <div class="searchbar w-100">
-                                                <input type="text" name="pos" placeholder="[Kode Pos]" value="{{ $arrayAkun[0]['KODE_POS'] }}">
+                                                <input type="text" name="pos" placeholder="[Kode Pos]" value="{{ Auth::user()->kode_pos }}">
                                             </div>
                                         </div>
                                     </div>
@@ -257,12 +257,13 @@
                     var fileReader = new FileReader();
 
                     fileReader.onload = function (event){
-                        document.getElementById('uploadedIMG').setAttribute("src",event.target.result)
+                        document.getElementById('uploadedIMG').setAttribute("src",event.target.result);
                     };
 
                     fileReader.readAsDataURL(file[0]);
-                    document.getElementById('blank-pp').style.display = 'none';
                 }
+                parent = document.getElementById('uploadedIMG').parentNode;
+                parent.querySelector('svg#blank-pp').remove();
             }
         </script>
     </body>

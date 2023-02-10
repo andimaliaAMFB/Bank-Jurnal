@@ -4,15 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\listController;
-use App\Models\artikel;
-use App\Models\artikel_detail;
-use App\Models\artikel_detail_penulis;
-use App\Models\revisi;
-use App\Models\revisi_detail;
-use App\Models\penulis;
-use App\Models\jurusan;
+use Illuminate\Support\Facades\Notification;
+
 use DB;
 use Session;
+use App\Models\User;
+use App\Models\penulis;
 
 class produkController extends Controller
 {
@@ -23,15 +20,31 @@ class produkController extends Controller
 
         $tableArray = json_decode((new listController)->getTable('Layak Publish'),true);
         $tableProdi = json_decode((new listController)->getTable('Prodi'),true);
-        $tablePenulis = json_decode((new listController)->getTable('Penulis'),true);
+        $tablePenulis = [];
+        foreach(penulis::all() as $key => $value){
+            if($value->id_akun) {
+                $user = User::where('id','=',$value->id_akun)->first();
+                $tablePenulis[] = [ 'nama_penulis' => $value->nama_penulis,
+                                    'id_akun' => $value->id_akun,
+                                    'foto_profil' => $user->foto_profil ];
+            }
+            else {
+                $tablePenulis[] = [ 'nama_penulis' => $value->nama_penulis,
+                                    'id_akun' => null,
+                                    'foto_profil' => null ];
+            }
+        }
 
-        $judul =  (new listController)->UniqueList($tableArray,'JUDUL');
-        $penulis = (new listController)->UniqueList($tableArray,'PENULIS');
-
-        $final = (new listController)->TabletoList($tableArray,$judul,'title-pnl-prodi');
-
-        $arrayAkun = (new listController)->getAkun();
-        // print_r($final);
-        return view('index',compact('arrayAkun','title','judul','penulis','tablePenulis','tableProdi','final','taskbarValue','finalSearch'));
+        $final = (new listController)->finalArray($tableArray);
+        $judul =  array_column($final, 0);
+        $penulis = [];
+        foreach(array_column($final, 2) as $list_penulis) {
+            $array_penulis = explode(", ",$list_penulis);
+            foreach($array_penulis as $nama_penulis) {
+                if(!in_array($nama_penulis,$penulis)) { $penulis[] = $nama_penulis; }
+            }
+        }
+        
+        return view('index',compact('title','judul','penulis','tablePenulis','tableProdi','final','taskbarValue','finalSearch'));
     }
 }

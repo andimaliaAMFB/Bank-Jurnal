@@ -684,8 +684,8 @@ var prodi_select_list = [].concat(list_prodi);
         // console.log(type, type.includes("slide"));
         if (type.includes("slide")) {
             item = [];
-            var penulis = [];
-            list_penulis.forEach((data) => { penulis.push(data) });
+            var penulis = [].concat(All_penulis);
+            // list_penulis.forEach((data) => { penulis.push(data) });
             item = penulis.filter(UniqueList).sort();
             penulis_slide = penulis.filter(UniqueList).sort();
         }
@@ -707,7 +707,7 @@ var prodi_select_list = [].concat(list_prodi);
         let result = '';
         for (let i = 0; i < paginatedItems.length; i++) {
             if (type.includes("slide")) {
-                result += input_list((i + 1), "", "", paginatedItems[i], "", "", "", "", type);
+                result += input_list(paginatedItems[i]['id_akun'], paginatedItems[i]['foto_profil'], "", paginatedItems[i]['nama_penulis'], "", "", "", "", type);
             }
             else if (type.includes("tabel")) {
                 result += input_list((i + 1), paginatedItems[i][0], paginatedItems[i][1], paginatedItems[i][2], paginatedItems[i][3], paginatedItems[i][4], paginatedItems[i][5], paginatedItems[i][6], type);
@@ -774,10 +774,19 @@ var prodi_select_list = [].concat(list_prodi);
             }
         }
         else if (type.includes("slide")) {
-            first_column = `<a href="@`+ pnl +`" class="profile-box d-flex flex-wrap justify-content-around align-items-center col-md-3 m-2 mx-3">
-                            <img src="" alt="profile-image">
-                            <p id="profile-name">`+ pnl +`</p>
-                        </a>`;
+            first_column = `<a href="@`+ pnl +`" class="profile-box d-flex flex-wrap justify-content-around align-items-center col-md-3 m-2 mx-3">`
+            if (id && judul) {
+                first_column += `<img src="`+ window.location.origin +`/storage/profile-image/`+ judul +`" alt="`+ pnl +`" style="width:75px; height:75px;">`;
+            }
+            else {
+                first_column += `<svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" fill="currentColor" id="blank-pp" class="bi bi-person-circle" viewBox="0 0 16 16" style="display: block; opacity: 0.75;">
+                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                </svg>`;
+            }
+            first_column += `<p id="profile-name">`+ pnl +`</p>
+                            </a>`;
+                            
         }
         else if (type.includes("search")) {
             first_column = `<a href="">
@@ -1197,7 +1206,6 @@ var prodi_select_list = [].concat(list_prodi);
         }
             function dropDragFile(zone, file) {
                 var extension = file.name.split('.').pop();
-                    console.log(extension);
 
                     var df_thumb = zone.querySelector(`.drop-file__prompt`);
                     
@@ -1211,9 +1219,6 @@ var prodi_select_list = [].concat(list_prodi);
 
 
                     if (extension.includes(`doc`) || extension.includes(`pdf`)) {
-                        console.log(file.name);
-                        // document.querySelector('input.drop-file__input').value = file.name;
-                        console.log(document.querySelector('input.drop-file__input').value);
                         if (df_thumb) {
                             df_thumb.classList.remove(`drop-file__prompt`);
                             df_thumb.classList.remove(`flex-column`);

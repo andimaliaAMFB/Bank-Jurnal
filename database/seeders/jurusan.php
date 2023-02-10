@@ -24,12 +24,11 @@ class jurusan extends Seeder
                         'Sastra Inggris','Psikologi','Matematika','Biologi','Fisika','Kimia','Teknik Informatika',
                         'Agroteknologi','Teknik Elektro','Administrasi Publik','Sosiologi','Ilmu Politik','Akutansi Syariah',
                         'Ekonomi Syariah','Manajemen','Manajemen Keuangan Syaria');
-        $prodi;
-        for ($i=0; $i < count($namaProdi); $i++) { 
-            $prodi["Jurusan-".($i+1)] = $namaProdi[$i];
-        }
-        foreach ($prodi as $id => $nama) {
-            DB::table('jurusan')-> INSERT (['ID_JURUSAN' => $id, 'NAMA_JURUSAN' => $nama]);
+        
+        foreach ($namaProdi as $id => $nama) {
+            DB::table('jurusan')-> INSERT ([
+                'id_jurusan' => "Jurusan-".($id+1),
+                'nama_jurusan' => $nama]);
         }
     }
 }

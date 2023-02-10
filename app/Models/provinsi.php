@@ -10,7 +10,7 @@ class provinsi extends Model
     use HasFactory;
     protected $table = 'provinsi';
     public $timestamps = false;
-    protected $primaryKey = 'ID_PROVINSI';
-    protected $fillable = ['ID_PROVINSI','NAMA_PROVINSI'];
+    protected $primaryKey = 'id_provinsi';
+    protected $fillable = ['id_provinsi','nama_provinsi'];
     protected $keyType = 'string';
 }

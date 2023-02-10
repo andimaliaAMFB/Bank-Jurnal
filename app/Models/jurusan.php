@@ -10,7 +10,7 @@ class jurusan extends Model
     use HasFactory;
     protected $table = 'jurusan';
     public $timestamps = false;
-    protected $primaryKey = 'ID_JURUSAN';
-    protected $fillable = ['ID_JURUSAN','NAMA_JURUSAN'];
+    protected $primaryKey = 'id_jurusan';
+    protected $fillable = ['id_jurusan','nama_jurusan'];
     protected $keyType = 'string';
 }

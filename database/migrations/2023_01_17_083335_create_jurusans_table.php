@@ -15,9 +15,9 @@ class CreateJurusansTable extends Migration
     {
         if (!Schema::hasTable('jurusan')) {
             Schema::create('jurusan', function (Blueprint $table) {
-                $table->ipAddress('ID_JURUSAN',12);
-                $table->primary('ID_JURUSAN');
-                $table->ipAddress('NAMA_JURUSAN',20);
+                $table->ipAddress('id_jurusan',12);
+                $table->primary('id_jurusan');
+                $table->ipAddress('nama_jurusan',20);
             });
         }
     }

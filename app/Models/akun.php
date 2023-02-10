@@ -2,17 +2,21 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\akun as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
 
 class akun extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
+
     protected $table = 'akun';
     public $timestamps = false;
     protected $primaryKey = 'ID_AKUN';
-    protected $fillable = ['ID_AKUN','USERNAME','PASSWORD','NAMA','STATUS_PENGGUNA','NO_TELEPON','EMAIL','TANGGAL_LAHIR','ALAMAT','ID_KOTA','ID_PROVINSI','KODE_POS'];
+    protected $fillable = ['ID_AKUN','ID_USERS','NAMA','NO_TELEPON','EMAIL','TANGGAL_LAHIR','ALAMAT','ID_KOTA','ID_PROVINSI','KODE_POS'];
     protected $keyType = 'string';
 
     /**
@@ -20,8 +24,7 @@ class akun extends Model
      *
      * @var array<int, string>
      */
-    protected $hidden = [ 'PASSWORD', 'remember_token',
-    ];
+    protected $hidden = [ 'PASSWORD', 'remember_token'];
 
     /**
      * The attributes that should be cast.

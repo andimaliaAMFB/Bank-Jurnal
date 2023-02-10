@@ -15,16 +15,7 @@
         <div class="alert alert-success alert-block d-flex justify-content-between align-items-center">
             <strong>{{ $message }}</strong>
         </div>
-    @endif    
-    @if ($errors->any())
-        <div class="alert alert-danger alert-block ">
-            <strong>Ada Kesalahan Input dalam: </strong>
-            <br>
-            @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </div>
-    @endif 
+    @endif
     <main>
         <div class="main-isi" id="main-isi">
             @if ($form == 'login')
@@ -32,7 +23,7 @@
             @else
             <form action="{{ route('signup.store') }}" method="POST" class="row form-card justify-content-center" name="{{ $form }}">
             @endif
-                {{ csrf_field() }}
+            {{ csrf_field() }}
                 @if ($errors->has('username'))
                     <input type="hidden" name="username_error" id="username_error">
                 @endif
@@ -130,8 +121,6 @@
                 string_element = ".searchbar input#" + error.id.split('_')[0];
                 element = document.querySelector(string_element);
                 element.parentNode.classList.add('line-red-1');
-                // element.value = "{{ $errors->first('username') }}";
-                // console.log(string_element,element,element.parentNode);
             }
         });
         if (document.querySelector(`#username`)) { document.querySelector(`#username`).value = "{{ old('username') }}"; }
@@ -140,15 +129,41 @@
         if (document.querySelector(`#passS`)) { document.querySelector(`#passS`).value = "{{ old('passS') }}"; }
 
         var WrongError = <?php echo json_encode(Session::get('error')); ?>;
+        var UninputError = <?php echo json_encode($errors->all()); ?>;
         var panelisi = document.querySelector(`.panel-isi`);
         var Next = document.querySelector(`.panel-isi .flex-column`);
-        if (WrongError) {
-            console.log(WrongError);
+        if (WrongError || UninputError.length != 0) {
+            // console.log(WrongError);
             const node = document.createElement('div');
             node.classList.add('alert'); node.classList.add('alert-danger'); node.classList.add('alert-block');
             node.classList.add('form-subtitle'); node.classList.add('my-0'); node.style.marginInline = '-3rem';
-            node.innerHTML = `<strong>`+ WrongError +`</strong>`;
+            if (WrongError) { node.innerHTML = `<strong>`+ WrongError +`</strong>`; }
+            else if (UninputError) {
+                var node_text = '';
+                var wajib_error = [] ;
+                var short_error = [] ; 
+                UninputError.forEach((error,errorIndex) => {
+                    if (error.includes('Wajib Diisi !')) {
+                        wajib_error += error.substring(0, error.indexOf('Wajib Diisi !'));
+                    }
+                    if (error.includes('Telalu Pendek')) {
+                        short_error += error.substring(0, error.indexOf('Telalu Pendek'));
+                    }
+                });
+                node_text += `<ul style="list-style:none;padding:0;margin:0;">`;
+                node_text += `<li>` + wajib_error.toString() + ` Wajib Diisi !</li>`;
+                node_text += `<li>` + short_error.toString() + ` Telalu Pendek</li>`;
+                node_text += `</ul>`;
+                node.innerHTML = node_text;
+            }
             panelisi.insertBefore(node, Next);
+            if (window.location.href.includes('signup')) {
+                document.querySelectorAll(`.panel-isi div`).forEach(element => {
+                    element.style.marginBlock = '.5rem';
+                });
+                document.querySelector(`.panel-isi .alert`).style.padding = '.5rem';
+                document.querySelector(`.panel-isi`).style.padding = '1rem';
+            }
         }
         else if (document.querySelector(`.panel-isi .alert`)) {
             document.querySelector(`.panel-isi .alert`).remove();

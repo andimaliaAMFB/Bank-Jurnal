@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Models\akun;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use App\Models\penulis;
 use DB;
 use Session;
@@ -72,35 +73,51 @@ class AkunController extends Controller
 
         //check if username and password exist
             $errorString = null;
-            if(akun::where('USERNAME','=',$request->username)->exists())
-            {
-                $dataAkun = akun::where('USERNAME','=',$request->username)->first();
-                $username = $dataAkun['USERNAME'];
-                $password = $dataAkun['PASSWORD'];
-                if(substr(md5($request->pass),0,12) != $dataAkun['PASSWORD']) {
-                    $errorString = 'Password Yang Dimasukan Salah';
-                }
-            }
-            else { $errorString = 'Username Tidak Dikenali'; }
-            if($errorString) {
-                return redirect()
+            // if(User::where('username','=',$request->username)->exists())
+            // {
+            //     $dataAkun = User::where('username','=',$request->username)->first();
+            //     $username = $dataAkun['username'];
+            //     $password = $dataAkun['password'];
+            //     dd($password,bcrypt($request->pass),$request->pass, bcrypt('penulis-1'),bcrypt($request->pass));
+            //     if(bcrypt($request->pass) != $password) {
+            //         $errorString = 'Password Yang Dimasukan Salah';
+            //     }
+            // }
+            // else { $errorString = 'Username Tidak Dikenali'; }
+            // if($errorString) {
+            //     return redirect()
+            //         ->route('loginShow')
+            //         ->withErrors($validator)
+            //         ->withInput()
+            //         ->with('error',$errorString);
+            // }
+        //
+        
+        $input = $request->all();
+        $credentials = ['username' => $input['username'],
+                        'password' => $input['pass']];
+            
+        // dd($credentials,Auth::attempt($credentials));
+        if (Auth::attempt($credentials)) {
+
+            // $id_akun = User::select('id_akun','status')->where('username','=',$username)->first();
+            // // dd($id_akun);
+    
+            // $data = $request->session()->put('id_akun',$id_akun['id_akun']);
+            // $data = $request->session()->put('status_akun',$id_akun['status']);
+            
+            // echo $request->session()->get('id_akun');
+            // echo $request->session()->get('status_akun');
+            return redirect()->route('dashboard');
+    
+        }
+        else {
+            return redirect()
                     ->route('loginShow')
                     ->withErrors($validator)
                     ->withInput()
-                    ->with('error',$errorString);
-            }
-        //
-
-        $id_akun = akun::select('ID_AKUN','STATUS_PENGGUNA')->where('USERNAME','=',$username)->first();
-        // dd($id_akun);
-
-        $data = $request->session()->put('id_akun',$id_akun['ID_AKUN']);
-        $data = $request->session()->put('status_akun',$id_akun['STATUS_PENGGUNA']);
-        
-        // echo $request->session()->get('id_akun');
-        // echo $request->session()->get('status_akun');
-
-        return redirect()->route('dashboard');
+                    ->with('error','Kesalahan Dalam Username Atau Password');
+        }
     }
 
     /**
@@ -140,10 +157,10 @@ class AkunController extends Controller
 
         //check if username and password exist
             $errorString = null;
-            if(akun::where('USERNAME','=',$request->username)->exists()) {
+            if(User::where('username','=',$request->username)->exists()) {
                 $errorString = 'Username Sudah Digunakan Oleh Pengguna Lain';
             }
-            else if(akun::where('EMAIL','=',$request->email)->exists()) {
+            else if(User::where('email','=',$request->email)->exists()) {
                 $errorString = 'Email Sudah Digunakan Oleh Pengguna Lain';
             }
             if($errorString) {
@@ -154,34 +171,30 @@ class AkunController extends Controller
                     ->with('error',$errorString);
             }
         //
-
-        $kota = DB::table('kota')->select('ID_KOTA')->limit(1)->value('ID_KOTA');
-        $provinsi = DB::table('provinsi')->select('ID_PROVINSI')->limit(1)->value('ID_PROVINSI');
         
         $id_akun = strval(date("m").(date("d")+date("B")));
 
-        DB::table('akun')-> INSERT ([
-            'ID_AKUN' => $id_akun,
-            'USERNAME' => $request->username,
-            'PASSWORD' => substr(md5($request->pass),0,12),
-            'NAMA' => '',
-            'STATUS_PENGGUNA' => 'Penulis',
-            'NO_TELEPON' => "",
-            'EMAIL' => $request->email,
-            'TANGGAL_LAHIR' => date("Y-m-d"),
-            'ID_KOTA' => $kota,
-            'ID_PROVINSI' => $provinsi,
-            'ALAMAT' => '',
-            'KODE_POS' => ''
+        DB::table('users')-> INSERT ([
+            'id_akun' => $id_akun,
+            'username' => $request->username,
+            'password' => bcrypt($request->pass),
+            'nama_lengkap' => '',
+            'status' => 'Penulis',
+            'no_telepon' => "",
+            'email' => $request->email,
+            'tanggal_lahir' => date("Y-m-d"),
+            'id_kota' => DB::table('kota')->first()->id_kota,
+            'id_provinsi' => DB::table('provinsi')->first()->id_provinsi,
+            'alamat' => '',
+            'kode_pos' => ''
         ]);
 
-        $jurusan = DB::table('jurusan')->select('ID_JURUSAN')->limit(1)->value('ID_JURUSAN');
         
         DB::table('penulis')-> INSERT ([
-            'ID_PENULIS' => "PNL".substr(md5($id_akun),0,4), 
-            'ID_AKUN' => $id_akun,
-            'ID_JURUSAN' => $jurusan,
-            'NAMA_PENULIS' => ''
+            'id_penulis' => "PNL".substr(md5($id_akun),0,4), 
+            'id_akun' => $id_akun,
+            'id_jurusan' => DB::table('jurusan')->first()->id_jurusan,
+            'nama_penulis' => ''
         ]);
             
         
@@ -194,6 +207,7 @@ class AkunController extends Controller
             // For Forget
         Session::forget('id_akun');
         Session::forget('status_akun');
+        Auth::logout();
             // For Forget
         return redirect()->route('dashboard');
     }
@@ -238,10 +252,12 @@ class AkunController extends Controller
     public function updateProfie(Request $request, $id) {
         //check if username and password exist
             $errorString = [];
-            if(akun::where('USERNAME','=',$request->username)->exists()) {
+            $username_change = User::where('username','=',$request->username)->first();
+            $email_change = User::where('username','=',$request->username)->first();
+            if($username_change && Auth::user()->username != $username_change->username) {
                 $errorString[] = 'Username Sudah Digunakan Oleh Pengguna Lain';
             }
-            if(akun::where('EMAIL','=',$request->email)->exists()) {
+            if($email_change && Auth::user()->email != $email_change->email) {
                 $errorString[] = 'Email Sudah Digunakan Oleh Pengguna Lain';
             }
             if($errorString) {
@@ -251,59 +267,60 @@ class AkunController extends Controller
             }
         //
         $tableAkun = json_decode((new listController)->getTable('Akun-'.$id),true);
-        $kota = json_decode((new listController)->getTable('KOTA-'.$request->kota),true)[0]['ID_KOTA'];
-        $provinsi = json_decode((new listController)->getTable('PROV-'.$request->prov),true)[0]['ID_PROVINSI'];
-
-        $img_name = $request->username;
-        $img_ext =  $request->file('imageup')->getClientOriginalExtension();
-        $img = $img_name.".".$img_ext;
-        $request->file('imageup')->storeAs('public/profile-image',$id);
-        echo $request->file('imageup')->storeAs('public/profile-image',$id)."<br>";
+        $kota = json_decode((new listController)->getTable('KOTA-'.$request->kota),true)[0]['id_kota'];
+        $provinsi = json_decode((new listController)->getTable('PROV-'.$request->prov),true)[0]['id_provinsi'];
+        
+        $img = null;
+        if($request->hasFile('imageup')) {
+            $img_ext =  $request->file('imageup')->getClientOriginalExtension();
+            $img = $id.".".$img_ext;
+            $request->file('imageup')->storeAs('public/profile-image/',$img);
+        }
         
         // echo $img."<br>";
         // print_r($request->all());
-        akun::where('ID_AKUN',$id)->update([
-            'USERNAME' => $request->username,
-            'NAMA' => $request->name,
-            'NO_TELEPON' => $request->tlp,
-            'EMAIL' => $request->email,
-            'TANGGAL_LAHIR' => $request->tgl,
-            'ID_KOTA' => $kota,
-            'ID_PROVINSI' => $provinsi,
-            'ALAMAT' => $request->alamat,
-            'KODE_POS' => $request->pos,
-            'FOTO_PROFIL' => $img
+        User::where('id',$id)->update([
+            'username' => $request->username,
+            'nama_lengkap' => $request->name,
+            'no_telepon' => $request->tlp,
+            'email' => $request->email,
+            'tanggal_lahir' => $request->tgl,
+            'id_kota' => $kota,
+            'id_provinsi' => $provinsi,
+            'alamat' => $request->alamat,
+            'kode_pos' => $request->pos,
+            'foto_profil' => $img
         ]);
 
-        if ($tableAkun[0]['STATUS_PENGGUNA'] == 'Penulis') {
+        if (Auth::user()->status == 'Penulis') {
             $tablePenulis = json_decode((new listController)->getTable('PNL-'.$id),true);
-            $jurusan = json_decode((new listController)->getTable('Prodi-'.$request->prodi),true)[0]['ID_JURUSAN'];
-            $existID = penulis::where('NAMA_PENULIS','=',$request->name,'and')
-            ->where('ID_PENULIS','!=',$tablePenulis[0]['ID_PENULIS'])
-            ->whereNull('ID_AKUN')
+            $jurusan = json_decode((new listController)->getTable('Prodi-'.$request->prodi),true)[0]['id_jurusan'];
+            $existID = penulis::where('nama_penulis','=',$request->name,'and')
+            ->where('id_penulis','!=',$tablePenulis[0]['id_penulis'])
+            ->whereNull('id_akun')
             ->exists();
 
             // echo $existID;
 
             if ($existID) {
-                # code...
-                $currentPNL_ID = $tablePenulis[0]['ID_PENULIS'];
+                # hapus id penulis yang didaftarkan tanpa akun
+                $ExistPNL_ID = $tablePenulis[0]['id_penulis'];
 
-                penulis::where('ID_PENULIS','=',$tablePenulis[0]['ID_PENULIS'])->delete();
-                penulis::where('NAMA_PENULIS','=',$request->name,'and')
-                ->where('ID_PENULIS','!=',$tablePenulis[0]['ID_PENULIS'],'and')
-                ->whereNull('ID_AKUN')
+                penulis::where('id_penulis','=',$tablePenulis[0]['id_penulis'])->delete();
+                penulis::where('nama_penulis','=',$request->name,'and')
+                ->where('id_penulis','!=',$tablePenulis[0]['id_penulis'],'and')
+                ->whereNull('id_akun')
                 ->update ([
-                    'ID_PENULIS' => $tablePenulis[0]['ID_PENULIS'],
-                    'ID_AKUN' => $id,
-                    'NAMA_PENULIS' => $request->name,
-                    'ID_JURUSAN' => $jurusan
+                    'id_penulis' => $tablePenulis[0]['id_penulis'],
+                    'id_akun' => $id,
+                    'nama_penulis' => $request->name,
+                    'id_jurusan' => $jurusan
                 ]);
             }
             else {
-                penulis::where('ID_AKUN',$id) -> update ([
-                    'ID_JURUSAN' => $jurusan,
-                    'NAMA_PENULIS' => $request->name
+                penulis::where('id_akun',$id) -> update ([
+                    'id_jurusan' => $jurusan,
+                    'nama_penulis' => $request->name
                 ]);
             }
         }

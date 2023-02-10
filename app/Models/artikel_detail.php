@@ -9,8 +9,11 @@ class artikel_detail extends Model
 {
     use HasFactory;
     protected $table = 'artikel_detail';
-    public $timestamps = false;
-    protected $primaryKey = 'ID_DETAILARTIKEL';
-    protected $fillable = ['ID_DETAILARTIKEL','ID_ARTIKEL','JUDUL_ARTIKEL','TANGGAL_UPLOAD','STATUS_ARTIKEL','ARTIKEL'];
+    protected $primaryKey = 'id_artikel_detail';
+    protected $fillable = ['id_artikel_detail',
+                            'id_artikel',
+                            'judul_artikel',
+                            'status_artikel',
+                            'file_artikel'];
     protected $keyType = 'string';
 }

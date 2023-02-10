@@ -15,9 +15,9 @@ class CreateKotasTable extends Migration
     {
         if (!Schema::hasTable('kota')) {
             Schema::create('kota', function (Blueprint $table) {
-                $table->ipAddress('ID_KOTA',12);
-                $table->primary('ID_KOTA');
-                $table->ipAddress('NAMA_KOTA',20);
+                $table->ipAddress('id_kota',12);
+                $table->primary('id_kota');
+                $table->ipAddress('nama_kota',20);
             });
         }
     }

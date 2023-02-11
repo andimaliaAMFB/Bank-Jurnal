@@ -280,7 +280,7 @@
             let list_penulis = [];
             penulis.forEach((element,index) => { list_penulis[index] = penulis[index]; });
             let list_prodi = [];
-            prodi.forEach((element,index) => { list_prodi[index] = prodi[index]['NAMA_JURUSAN']; });
+            prodi.forEach((element,index) => { list_prodi[index] = prodi[index]['nama_jurusan']; });
             let final_list = final;
             let final_search = finalSearch;
 

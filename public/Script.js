@@ -683,9 +683,15 @@ var prodi_select_list = [].concat(list_prodi);
         var item = [].concat(items);
         // console.log(type, type.includes("slide"));
         if (type.includes("slide")) {
-            item = [];
+            // item = [];
             var penulis = [].concat(All_penulis);
-            // list_penulis.forEach((data) => { penulis.push(data) });
+            penulis = All_penulis.filter(function (value) {
+                var selected = false;
+                item.forEach(pnl => {
+                    if (pnl[2].includes(value['nama_penulis'])) { selected = true; }
+                });
+                if (selected) { return value; }
+            })
             item = penulis.filter(UniqueList).sort();
             penulis_slide = penulis.filter(UniqueList).sort();
         }
@@ -704,17 +710,22 @@ var prodi_select_list = [].concat(list_prodi);
 
         // console.log(start, end, item);
         // console.log(paginatedItems);
-        let result = '';
-        for (let i = 0; i < paginatedItems.length; i++) {
-            if (type.includes("slide")) {
-                result += input_list(paginatedItems[i]['id_akun'], paginatedItems[i]['foto_profil'], "", paginatedItems[i]['nama_penulis'], "", "", "", "", type);
+        if (paginatedItems.length != 0) {
+            let result = '';
+            for (let i = 0; i < paginatedItems.length; i++) {
+                if (type.includes("slide")) {
+                    result += input_list(paginatedItems[i]['id_akun'], paginatedItems[i]['foto_profil'], "", paginatedItems[i]['nama_penulis'], "", "", "", "", type);
+                }
+                else if (type.includes("tabel")) {
+                    result += input_list((i + 1), paginatedItems[i][0], paginatedItems[i][1], paginatedItems[i][2], paginatedItems[i][3], paginatedItems[i][4], paginatedItems[i][5], paginatedItems[i][6], type);
+                }
             }
-            else if (type.includes("tabel")) {
-                result += input_list((i + 1), paginatedItems[i][0], paginatedItems[i][1], paginatedItems[i][2], paginatedItems[i][3], paginatedItems[i][4], paginatedItems[i][5], paginatedItems[i][6], type);
-            }
+            location_item.innerHTML = result;
         }
-        location_item.innerHTML = result;
-        // console.log(location_item);
+        else {
+            
+        }
+        console.log(location_item);
         if (type.includes("tabel")) {
             tabel_page.innerHTML = page + 1;
             tabel_detail.innerHTML = paginatedItems.length +" of " + item.length + " Articles";
@@ -734,19 +745,37 @@ var prodi_select_list = [].concat(list_prodi);
         let last_column = '';
         if (type.includes("tabel")) {
             first_column = `<tr  data-id="`+ id +`">
-            <td>`+ judul+`</td>`;
+                                <td><a href="../article/`+ judul+`">`+ judul+`</a></td>`;
             if (type.includes("pointer")) {
-                last_column = `<td>`+ pnl +`</td>
-                    <td>`+ prodi+`</td>
-                    <td class="btn pointer">View</td>
-                </tr>`;
+                last_column = `<td>`;
+                if (pnl.includes(", ")) {
+                    pnl.split(", ").forEach((element, elementIndex) => {
+                        last_column += `<a href="@`+ element +`">`+ element +`</a>`
+                        if (elementIndex < (pnl.split(", ").length)-1) {
+                            last_column += `, `;
+                        }
+                    });
+                }
+                else { last_column += `<a href="@`+ pnl +`">`+ pnl +`</a>` }
+                last_column += `</td>
+                                <td>`+ prodi+`</td>
+                                <td class="btn pointer">View</td>
+                            </tr>`;
             }
             else if (type.includes("status")) {
-                first_column = `<tr  data-id="`+ id +`">
-                <td><a href="article/`+ judul+`">`+ judul+`</a></td>`;
-                last_column = `<td>`+ pnl +`</td>
-                    <td>`+ prodi+`</td>
-                </tr>`;
+                last_column = `<td>`;
+                if (pnl.includes(", ")) {
+                    pnl.split(", ").forEach((element, elementIndex) => {
+                        last_column += `<a href="@`+ element +`">`+ element +`</a>`
+                        if (elementIndex < (pnl.split(", ").length)-1) {
+                            last_column += `, `;
+                        }
+                    });
+                }
+                else { last_column += `<a href="@`+ pnl +`">`+ pnl +`</a>` }
+                last_column += `</td>
+                                <td>`+ prodi+`</td>
+                            </tr>`;
             }
             else if (type.includes("dropdown")) {
                 last_column = `<td>`+ up +`</td>
@@ -767,8 +796,6 @@ var prodi_select_list = [].concat(list_prodi);
                             </tr>`;
             }
             else if (type.includes("artikel_penulis")) {
-                first_column = `<tr  data-id="`+ id +`">
-                <td><a href="article/`+ judul+`">`+ judul+`</a></td>`;
                 last_column = `<td>`+ up +`</td>
                                 <td>`+ rilis +`</td>`;
             }
@@ -834,50 +861,35 @@ var prodi_select_list = [].concat(list_prodi);
         // console.log("judul_search", judul_search, "   || final_select", final_select);
         // console.log("prodi_select", prodi_select, "   || pnl_select", pnl_select);
         
-        // console.log(render_item);
-        for (let i = 0; i < render_item.length; i++) {
-            if (final_select != "All") { //filter catatan revisi
-                if (render_item[i]) {
-                    if (!render_item[i][1].includes(final_select)) {
-                        // console.log(render_item[i]);
-                        render_item.splice(i, 1);
-                        i--;
+        //Filter by Selected
+            render_item = render_item.filter(function (value) {//filter Finalize
+                if (final_select != "All") { return value[1] == final_select; }
+                else { return value }
+            })
+            render_item = render_item.filter(function (value) {//filter Penulis
+                if (pnl_select != "All") { return value[2].includes(pnl_select); }
+                else { return value }
+            })
+            render_item = render_item.filter(function (value) {//filter Prodi
+                if (prodi_select != "All") { 
+                    if (Array.isArray(prodi_select)) {
+                        var selected = false;
+                        prodi_select.forEach(prodi => {
+                            if (value[3].includes(prodi)) { selected = true; }
+                        });
+                        if (selected) { return value; }
                     }
-                }
-            }
-            if (pnl_select != "All") { //filter penulis
-                if (render_item[i]) {
-                    if (!render_item[i][2].includes(pnl_select)) {
-                        render_item.splice(i, 1);
-                        i--;
-                    }
-                }
-            }
-            if (prodi_select != "All") { //filter prodi
-                if (render_item[i]) {
-                    var prodiText = render_item[i][3].split(", ");
-                    // console.log("prodiText: ",prodiText);
-                    prodiText.forEach(element => {
-                        // console.log("render_item[",i,"][3] ",render_item[i][3],": ",prodi_select.includes(render_item[i][3]));
-                        // console.log("element",element,": ",prodi_select.includes(element));
-                        if (!prodi_select.includes(element)) {
-                            render_item.splice(i, 1);
-                            i--;
-                        }
-                    });
-                }
-            }
-            if (judul_search != "All") { //filter judul artikel
-                if (render_item[i]) {
-                    if (!render_item[i][0].toLocaleLowerCase().includes(judul_search.toLocaleLowerCase())) {
-                        render_item.splice(i, 1);
-                        i--;
-                    }
-                }
-            }
-        }
+                    else { return value[3].includes(prodi_select); }
+                 }
+                else { return value }
+            })
+            render_item = render_item.filter(function (value) {//filter Judul
+                if (judul_search != "All") { return value[0].includes(judul_search); }
+                else { return value }
+            })
+        //
+
         
-        // console.log(render_item);
         render_list = [].concat(render_item); //list yang akan ditampilkan
         // console.log(render_list, tabel_list, row_tabel, tabel_page.innerHTML, type);
         if (type.includes("tabel")) { DisplayList(render_item, tabel_list, row_tabel, tabel_page.innerHTML, type); } //list ditampilkan dalam tampilan tabel

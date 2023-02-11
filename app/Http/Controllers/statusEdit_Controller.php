@@ -34,16 +34,18 @@ class statusEdit_Controller extends Controller
         $taskbarValue = (new listController)->taskbarList ();
         $finalSearch = (new listController)->SearchBarList ();
 
-        $AlltableArray = json_decode((new listController)->getTable('All'),true);
         $tableArray = json_decode((new listController)->getTable($tableName),true);
         $tableProdi = json_decode((new listController)->getTable('Prodi'),true);
-        
-        $tableArray = (new listController)->SliceTable($tableArray, $AlltableArray, $tableName);
-
-        $judul =  (new listController)->UniqueList($tableArray,'JUDUL');
-        $penulis = (new listController)->UniqueList($tableArray,'PENULIS');
 
         $final = (new listController)->finalArray($tableArray);
+        $judul =  array_column($final, 0);
+        $penulis = [];
+        foreach(array_column($final, 2) as $list_penulis) {
+            $array_penulis = explode(", ",$list_penulis);
+            foreach($array_penulis as $nama_penulis) {
+                if(!in_array($nama_penulis,$penulis)) { $penulis[] = $nama_penulis; }
+            }
+        }
         $history = (new listController)->historyArray ($tableArray);
 
         $arrayAkun = (new listController)->getAkun();

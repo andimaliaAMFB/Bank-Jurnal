@@ -21,7 +21,7 @@ class produkController extends Controller
         $tableArray = json_decode((new listController)->getTable('Layak Publish'),true);
         $tableProdi = json_decode((new listController)->getTable('Prodi'),true);
         $tablePenulis = [];
-        foreach(penulis::all() as $key => $value){
+        foreach(penulis::orderBy('nama_penulis')->get() as $key => $value){
             if($value->id_akun) {
                 $user = User::where('id','=',$value->id_akun)->first();
                 $tablePenulis[] = [ 'nama_penulis' => $value->nama_penulis,

@@ -12,6 +12,7 @@ use DB;
 use Session;
 use App\Models\User;
 use App\Models\penulis;
+use App\Models\jurusan;
 
 class produkController extends Controller
 {
@@ -24,16 +25,21 @@ class produkController extends Controller
         $tableProdi = json_decode((new listController)->getTable('Prodi'),true);
         $tablePenulis = [];
         foreach(penulis::orderBy('nama_penulis')->get() as $key => $value){
+            $jurusanPenulis = jurusan::where('id_jurusan','=',$value->id_jurusan)->first()->nama_jurusan;
             if($value->id_akun) {
                 $user = User::where('id','=',$value->id_akun)->first();
                 $tablePenulis[] = [ 'nama_penulis' => $value->nama_penulis,
                                     'id_akun' => $value->id_akun,
-                                    'foto_profil' => $user->foto_profil ];
+                                    'foto_profil' => $user->foto_profil,
+                                    'nama_jurusan' => $jurusanPenulis 
+                                ];
             }
             else {
                 $tablePenulis[] = [ 'nama_penulis' => $value->nama_penulis,
                                     'id_akun' => null,
-                                    'foto_profil' => null ];
+                                    'foto_profil' => null,
+                                    'nama_jurusan' => $jurusanPenulis
+                                ];
             }
         }
 

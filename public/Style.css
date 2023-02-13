@@ -859,6 +859,14 @@ body {
         font-weight: bold;
         color: var(--bs-body-color);
     }
+    canvas#statistik {
+        width:100%!important;
+        height:100%!important;
+    }
+    canvas#doughnut {
+        width:80%!important;
+        height:80%!important;
+    }
     
     /* filter prodi */
         .filter-prodi div{

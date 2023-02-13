@@ -684,7 +684,13 @@ var prodi_select_list = [].concat(list_prodi);
             penulis = All_penulis.filter(function (value) {
                 var selected = false;
                 item.forEach(pnl => {
-                    if (pnl[2].includes(value['nama_penulis'])) { selected = true; }
+                    if (pnl[2].includes(value['nama_penulis'])) {
+                        prodi_select_list.forEach(element => {
+                            if (value['nama_jurusan'] == element) {
+                                selected = true;
+                            }
+                        });
+                    }
                 });
                 if (selected) { return value; }
             })
@@ -721,7 +727,6 @@ var prodi_select_list = [].concat(list_prodi);
         else {
             
         }
-        console.log(location_item);
         if (type.includes("tabel")) {
             tabel_page.innerHTML = page + 1;
             tabel_detail.innerHTML = paginatedItems.length +" of " + item.length + " Articles";
@@ -1591,21 +1596,21 @@ function suggestionBar(input_box, dd, parent_id, selectValue) {
 //prodi
     //color per prodi
     var pos;
-    var r = [], g = [], b = [];
     let normal = 65;
-    for (let i = 0; i < list_prodi.length; i++) {
+    var prodi_color = [];
+    list_prodi.forEach(prodi => {
         pos = Math.floor(Math.random() * (3 - 1 + 1) + 1);
-        if (pos != 1) { r.push(Math.floor(Math.random() * (255 - 102 + 1) + 102).toString(16)); }
-        else { r.push(normal.toString(16) ) }
-        if (pos != 2) { g.push(Math.floor(Math.random() * (255 - 102 + 1) + 102).toString(16)); }
-        else { g.push(normal.toString(16) ) }
-        if (pos != 3) { b.push(Math.floor(Math.random() * (255 - 102 + 1) + 102).toString(16)); }
-        else { b.push(normal.toString(16) ) }
-        // console.log(r[i],g[i],b[i]);
-    }
+        if (pos != 1) { r = (Math.floor(Math.random() * (255 - 102 + 1) + 102).toString(16)); }
+        else { r = (normal.toString(16) ) }
+        if (pos != 2) { g = (Math.floor(Math.random() * (255 - 102 + 1) + 102).toString(16)); }
+        else { g = (normal.toString(16) ) }
+        if (pos != 3) { b = (Math.floor(Math.random() * (255 - 102 + 1) + 102).toString(16)); }
+        else { b = (normal.toString(16) ) }
+
+        prodi_color.push({ "nama_prodi": prodi, "warna": r+g+b});
+    });
     
     function ProdiList(items) {
-        // console.log(items);
         if (document.getElementsByClassName("filter-prodi")) {
             prodi_select_list = items;
             let result = '';
@@ -1614,33 +1619,31 @@ function suggestionBar(input_box, dd, parent_id, selectValue) {
             let show = 0;
             let index = 0;
             if (items[0] == ">--Pilih Semua--<") { index = 1; }
-            for (let i = index; i < list_prodi.length; i++) {
-                // console.log(list_prodi[i]);
-                //prodi list that selected
-                    if ((show <= 11) && (items.includes(list_prodi[i]))) {
-                        result += `<div class="prodi-box" style="background-color: #`+r[i]+g[i]+b[i]+`;">`+list_prodi[i]+`</div>`;
-                        show += 1;
+            prodi_color.forEach(prodi => {
+                if ((show <= 11) && (items.includes(prodi['nama_prodi']))) {
+                    result += `<div class="prodi-box" style="background-color: #`+prodi['warna']+`;">`+prodi['nama_prodi']+`</div>`;
+                    show += 1;
+                }
+                else if (show > 11) { sisa += 1; }
+                
+                if (index == 0) {
+                    if (((show + sisa) == items.length) && (sisa != 0)) {
+                        result += `<div class="prodi-box" style="background-color: #787878;">`+sisa+` Other Program Studi</div>`;
                     }
-                    else if (show > 11) { sisa += 1; }
+                }
+                else {
+                    if (((show + sisa) == items.length-1) && (sisa != 0)) {
+                        result += `<div class="prodi-box" style="background-color: #787878;">`+sisa+` Other Program Studi</div>`;
+                    }
+                }
+                
 
-                    // console.log(items.length,show,sisa);
-                    if (index == 0) {
-                        if (((show + sisa) == items.length) && (sisa != 0)) {
-                            result += `<div class="prodi-box" style="background-color: #787878;">`+sisa+` Other Program Studi</div>`;
-                        }
-                    }
-                    else {
-                        if (((show + sisa) == items.length-1) && (sisa != 0)) {
-                            result += `<div class="prodi-box" style="background-color: #787878;">`+sisa+` Other Program Studi</div>`;
-                        }
-                    }
-                    
-
-                // prodi list in form
-                    result_form += `<article style="border-color: #`+r[i]+g[i]+b[i]+`;">
-                    <input type="checkbox" name="prodi">
-                    <div><span>`+list_prodi[i]+`</span></div></article>`;
-            }
+            // prodi list in form
+                result_form += `<article style="border-color: #`+prodi['warna']+`;">
+                <input type="checkbox" name="prodi">
+                <div><span>`+prodi['nama_prodi']+`</span></div></article>`;
+            });
+            
             prodi_wrapper.innerHTML = result;
             check_prodi_list.innerHTML = result_form;
             let checkboxes = document.querySelectorAll('input[name="prodi"]');

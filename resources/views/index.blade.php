@@ -17,14 +17,18 @@
         <main>
             <div class="main-isi" id="main-isi">
                 <div class="judul-hlm"><h2>{{ $title }}</h2></div>
-                <div class="statistic-data row justify-content-between">
+                <div class="statistic-data row justify-content-between gx-0 w-100">
                     <div class="static card col-md-6">
-                        <div class="card-head">Statistik Data</div>
-                        <div class="card-body">Statistik</div>
+                        <div class="card-head">Statistik Artikel Yang Dipublish Rumah Jurnal</div>
+                        <div class="card-body d-flex justify-content-center align-items-center">
+                            <canvas id="statistik"></canvas>
+                        </div>
                     </div>
                     <div class="donut card col-md-4">
-                        <div class="card-head">Donut Data</div>
-                        <div class="card-body">Donut</div>
+                        <div class="card-head">Artikel Per Jurusan</div>
+                        <div class="card-body d-flex justify-content-center align-items-center">
+                            <canvas id="doughnut"></canvas>
+                        </div>
                     </div>
                 </div>
                 <div class="filter-prodi">
@@ -237,12 +241,136 @@
             prodi.forEach((element,index) => { list_prodi[index] = prodi[index]['nama_jurusan']; });
             let final_list = final;
             let final_search = finalSearch;
-            
-            // console.table(All_penulis);
         </script>
         <!-- JS comunicate with database -->
 
         
         <script src="Script.js"></script>
+        
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            var prodiExist = {};
+            var tanggalRilis = {};
+            var prodiExist_Array = [];
+            var month_Array = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            //count unique
+                final_list.map(value => value[3]).forEach((element, index) => {
+                    element.split(", ").forEach(pnl => { prodiExist[pnl] = 1 + (prodiExist[pnl] || 0); });
+                });
+                final_list.map(value => new Date(value[5])).forEach(date => {
+                    var month = month_Array[date.getMonth()];
+                    var year = date.getFullYear();
+                    tanggalRilis[month + " " + year] = 1 + (tanggalRilis[month + " " + year] || 0);
+                });
+                var currentMonth = new Date();
+                var tanggalRilis_label = [];
+                var tanggalRilis_data = [];
+                for (let i = 0; i < 12; i++) {
+                    var month = month_Array[currentMonth.getMonth()];
+                    var year = currentMonth.getFullYear();
+
+                    var data_jumlah = tanggalRilis[month + " " + year];
+                    if (!data_jumlah) { data_jumlah = 0; }
+                    tanggalRilis_data.push(data_jumlah);
+
+                    tanggalRilis_label.push(month + " " + year);
+                    currentMonth.setMonth(currentMonth.getMonth() - 1);
+                }
+                var tanggalRilis_label = tanggalRilis_label.reverse();
+                var tanggalRilis_data = tanggalRilis_data.reverse();
+
+                prodi_color.forEach(value => {
+                    if (prodiExist[value['nama_prodi']]) {
+                        prodiExist_Array.push({
+                            'prodi': value['nama_prodi'],
+                            'jumlah': prodiExist[value['nama_prodi']],
+                            'warna': '#' + value['warna']
+                        });
+                    }
+                });
+                var prodiExist_label = prodiExist_Array.map(value => value['prodi']);
+                var prodiExist_data = prodiExist_Array.map(value => value['jumlah']);
+                var prodiExist_warna = prodiExist_Array.map(value => value['warna']);
+            //
+            
+            //statistik line
+                var statistikBar = document.querySelector('#statistik');
+                new Chart(statistikBar, {
+                    type: 'line',
+                    data: {
+                        labels: tanggalRilis_label,
+                        datasets: [{
+                            label: "Jumlah Artikel dirilis",
+                            data: tanggalRilis_data,
+                            borderWidth: 2,
+                            pointBorderWidth: 5
+                        }]
+                    },
+                    options: {
+                                responsive: true,
+                                interaction: {
+                                    intersect: false,
+                                },
+                                plugins: {
+                                    legend: {
+                                        display: false,
+                                    }
+                                },
+                                scales: {
+                                    x: {
+                                        ticks: {
+                                            display: false,
+                                        }
+                                    },
+                                    y: {
+                                        beginAtZero: true,
+                                    }
+                                }
+                            }
+                });
+            //Frekuensi Prodi doughnut
+                var doughnut = document.querySelector('#doughnut');
+                new Chart(doughnut, {
+                    type: 'doughnut',
+                    data: {
+                        labels: prodiExist_label,
+                        datasets: [{
+                            label: "Jumlah Artikel ",
+                            data: prodiExist_data,
+                            backgroundColor: prodiExist_warna,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        interaction: {
+                            intersect: false,
+                        },
+                        plugins: {
+                            legend: {
+                                display: false,
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: {
+                                    display: false,
+                                },
+                                grid: {
+                                    display: false,
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                display: false,
+                                grid: {
+                                    display: false,
+                                }
+                            }
+                        },
+                        cutout: "60%",
+                    }
+                });
+        </script>
     </body>
 </html>

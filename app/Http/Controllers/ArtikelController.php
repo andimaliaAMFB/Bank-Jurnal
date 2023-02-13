@@ -338,10 +338,24 @@ class ArtikelController extends Controller
                 if(!in_array($nama_penulis,$penulis)) { $penulis[] = $nama_penulis; }
             }
         }
+        $history = (new listController)->historyArray ($tableArray);
 
         $arrayAkun = (new listController)->getAkun();
+        //read notification
+            foreach (Auth::user()->unreadNotifications as $notification) {
+                if (Auth::user()->id == $notification->data['to'] && 
+                    str_contains($notification->data['message'], $judul[0]))
+                {
+                    $notification->markAsRead();
+                }
+            }
+        //
 
-        return view('lihatArticle',compact('arrayAkun','final','judul','penulis','taskbarValue','finalSearch','pathArtikel'));
+        return view('lihatArticle',compact('arrayAkun','final','judul','penulis','taskbarValue','finalSearch','pathArtikel','history'));
+    }
+
+    public function showUpdate(Request $request, $id) {
+        dd($request->all());
     }
 
     public function myarticle() {

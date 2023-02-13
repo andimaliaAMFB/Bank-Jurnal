@@ -21,6 +21,17 @@ Route::get('/', function(){
     return redirect()->route('dashboard');
 });
 Route::get('dashboard', [produkController::class, 'index'])->name('dashboard');
+Route::get('MarkAsRead',function (){
+    //read notification
+        foreach (Auth()->user()->unreadNotifications as $notification) {
+            if (Auth()->user()->id == $notification->data['to'])
+            {
+                $notification->markAsRead();
+            }
+        }
+    //
+    redirect()->back();
+});
 
 Route::get('/login', [AkunController::class, 'login'])->name('loginShow');
 Route::post('/login', [AkunController::class, 'loginInput'])->name('login.store');
@@ -41,6 +52,7 @@ Route::group(['prefix' => 'article'], function()
     Route::post('/upload', [ArtikelController::class, 'store'])->name('article.store');
 
     Route::get('/{id_article}', [ArtikelController::class, 'show'])->name('article');
+    Route::put('/{id_article}', [ArtikelController::class, 'showUpdate'])->name('article.status.update');
 
     Route::get('/{id_article}/re-upload', [ArtikelController::class, 'Recreate'])->name('article.recreate');
     Route::post('/{id_article}/re-upload', [ArtikelController::class, 'Restore'])->name('article.restore');

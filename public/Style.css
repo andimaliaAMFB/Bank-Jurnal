@@ -548,6 +548,11 @@ body {
             padding: 0;
             margin-inline: 1rem;
         }
+        .live_modal {
+            right: 5%;
+            bottom: 5%;
+            left: unset;
+        }
     
     .shade {
         position: fixed;
@@ -1249,5 +1254,12 @@ body {
     
     .article {
         height: 50vh;
+    }
+    
+    .live_modal {
+        right: 0;
+        bottom: 2rem;
+        left: 0;
+        margin: 1rem;
     }
 }

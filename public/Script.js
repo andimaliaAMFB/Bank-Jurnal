@@ -142,7 +142,6 @@ var prodi_select_list = [].concat(list_prodi);
                     }
                     else if ((headBtn.length <= 2 && index == headBtn.length - 2) || (headBtn.length > 2 && index == headBtn.length - 4)) { //close search menu if clicked the background
                         if (event.target == document.querySelector(`#form_search`)) {
-                            console.log('Clicked ',event.target);
                             form_function(document.querySelector(`.head-modal`));
                         }
                     }
@@ -575,15 +574,15 @@ var prodi_select_list = [].concat(list_prodi);
                             }
                         });
                     }
+                    if (form_wrapper.querySelector(`select`)) {
+                        e = form_wrapper.querySelector(`select`);
+                        eValue = e.value;
+                        eText = e.options[e.selectedIndex].text;
+                        change_Selected_Value(e,eValue,eText);
+                    }
                 }
 
                 
-                if (document.querySelector(`select`)) {
-                    e = form_wrapper.querySelector(`select`);
-                    eValue = e.value;
-                    eText = e.options[e.selectedIndex].text;
-                    change_Selected_Value(e,eValue,eText);
-                }
             //login form
                 if (panel_switch) {
                     var change_btn = document.querySelector(`.change-btn`);
@@ -648,11 +647,8 @@ var prodi_select_list = [].concat(list_prodi);
     {
         for (let i = 0; i < e.options.length; i++) {
             if (selectElement.options[i].value == eText) {
-                // console.log(eValue, eText);
-                // console.log(i,e.options[i],e.options[i].value);
                 selectElement.options[0].removeAttribute('selected');
                 selectElement.options[i].setAttribute('selected',true);
-                // console.log(form_wrapper.querySelector(`select`));
             }
         }
     }
@@ -969,7 +965,7 @@ var prodi_select_list = [].concat(list_prodi);
         }
         function form_function(modal) { //open-clos form modal
             // console.log(modal.classList.contains('show'),modal.style.display);
-            if (modal.style.display === "none") {
+            if (modal.style.display === "none" || !modal.classList.contains("show")) {
                 modal.style.display = null;
                 modal.classList.add("show");
                 shade_show("show");
@@ -1054,8 +1050,8 @@ var prodi_select_list = [].concat(list_prodi);
                                     <select name="status_baru" id="tabel_status_change">
                                         <option disabled="" selected="" value="">[Status Baru]</option>
                                         <option value="Draft">Draft</option>
-                                        <option value="Revisi Minor">Revisi Minor</option>
                                         <option value="Revisi Mayor">Revisi Mayor</option>
+                                        <option value="Revisi Minor">Revisi Minor</option>
                                         <option value="Layak Publish">Layak Publish</option>
                                     </select>
                                 </div>

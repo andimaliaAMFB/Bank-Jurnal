@@ -20,6 +20,15 @@
                 <strong>{{ $message }}</strong>
             </div>
         @endif
+        @if ($errorList = Session::get('error'))
+            <div class="alert alert-danger alert-block d-flex justify-content-between align-items-center">
+                <ul style="list-style-type:none; margin:0;">
+                @foreach($errorList as $value)
+                    <li><strong>{{ $value }}</strong></li>
+                @endforeach
+                </ul>
+            </div>
+        @endif
         <main>
             <div class="main-isi" id="main-isi">
                 <div class="judul-hlm"><h2>{{$title}}</h2></div>

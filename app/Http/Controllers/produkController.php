@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\listController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
+use App\Notifications\RevisionNotif;
 
 use DB;
 use Session;
@@ -44,7 +46,7 @@ class produkController extends Controller
                 if(!in_array($nama_penulis,$penulis)) { $penulis[] = $nama_penulis; }
             }
         }
-        
+
         return view('index',compact('title','judul','penulis','tablePenulis','tableProdi','final','taskbarValue','finalSearch'));
     }
 }

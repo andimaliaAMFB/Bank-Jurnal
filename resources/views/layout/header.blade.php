@@ -31,24 +31,100 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
                             <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"></path>
                         </svg>
+                        @php
+                            $notif = 0
+                        @endphp
+                        @php
+                            $notRead = 0
+                        @endphp
+                            @foreach (Auth::user()->unreadNotifications as $notification)
+                                @if (Auth::user()->id == $notification->data['to'])
+                                    @php
+                                        $notRead += 1
+                                    @endphp
+                                @endif
+                            @endforeach
+                            @foreach (Auth::user()->notifications as $notification)
+                                @if (Auth::user()->id == $notification->data['to'])
+                                    @php
+                                        $notif += 1
+                                    @endphp
+                                @endif
+                            @endforeach
+                        @if($notRead > 0)
+                            <span class="position-absolute translate-middle badge rounded-pill bg-danger">
+                                {{ $notRead; }}
+                            </span>
+                        @endif
                     </button>
                     <ul class="dropdown-menu" style="display: none;" id="dropdown-notif">
                         <li class="label-dropdown">Notifikasi</li>
-                        <li class="notif-isi">
-                            <p class="notif-isi-head">Artikel Baru Telah Terdaftar</p>
-                            <div class="notif-isi-waktu">
-                                <p>30 days Ago</p>
-                                <p class="view-full">View Full Notification</p>
-                            </div>
-                        </li>
-                        <li class="notif-isi">
-                            <p class="notif-isi-head">Artikel Baru Telah Terdaftar</p>
-                            <div class="notif-isi-waktu">
-                                <p>30 days Ago</p>
-                                <p class="view-full">View Full Notification</p>
-                            </div>
-                        </li>
-                        <li class="view-all">See Full Notification</li>
+                        @if($notif > 0)
+                            @foreach (Auth::user()->unreadNotifications as $notification)
+                                @if(Auth::user()->status == "Penulis" && Auth::user()->id == $notification->data['to'])
+                                    <li class="notif-isi d-flex align-items-center">
+                                        <span class="mx-2 p-1 bg-2 rounded-circle">
+                                        </span>
+                                        <div>
+                                            <p class="notif-isi-head position-relative">{{$notification->data['message']}}</p>
+                                            <div class="notif-isi-waktu">
+                                                @php
+                                                    $minute = date_diff( date_create(), date_create($notification->created_at) )->format("%I");
+                                                @endphp
+                                                @php
+                                                    $hour = date_diff( date_create(), date_create($notification->created_at) )->format("%H");
+                                                @endphp
+                                                @php
+                                                    $day = date_diff( date_create(), date_create($notification->created_at) )->format("%a");
+                                                @endphp
+                                                @if($day != 0 && $hour > 24)
+                                                    <p>{{$day}} Days 
+                                                @elseif ($hour > 0 && $hour < 24)
+                                                    <p>{{$hour}} Hours 
+                                                @else
+                                                    <p>{{$minute}} Minutes 
+                                                @endif
+                                                Ago</p>
+                                                <p class="view-full"><a href="../article/{{$notification->data['judul_artikel']}}" class="view-full">Lihat Artikel</a></p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                @endif
+                            @endforeach
+                            @foreach (Auth::user()->readnotifications as $notification)
+                                @if(Auth::user()->status == "Penulis" && Auth::user()->id == $notification->data['to'])
+                                    <li class="notif-isi d-flex align-items-center">
+                                        <span class="mx-2 p-1">
+                                        </span>
+                                        <div>
+                                            <p class="notif-isi-head position-relative">{{$notification->data['message']}}</p>
+                                            <div class="notif-isi-waktu">
+                                                @php
+                                                    $minute = date_diff( date_create(), date_create($notification->created_at) )->format("%I");
+                                                @endphp
+                                                @php
+                                                    $hour = date_diff( date_create(), date_create($notification->created_at) )->format("%H");
+                                                @endphp
+                                                @php
+                                                    $day = date_diff( date_create(), date_create($notification->created_at) )->format("%a");
+                                                @endphp
+                                                @if($day != 0 && $hour > 24)
+                                                    <p>{{$day}} Days 
+                                                @elseif ($hour > 0 && $hour < 24)
+                                                    <p>{{$hour}} Hours 
+                                                @else
+                                                    <p>{{$minute}} Minutes 
+                                                @endif
+                                                Ago</p>
+                                                <p class="view-full"><a href="../article/{{$notification->data['judul_artikel']}}" class="view-full">Lihat Artikel</a></p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                @endif
+                            @endforeach
+                        @else
+                            <li>Tidak ada Notifikasi</li>
+                        @endif
                     </ul>
                 </div>
                 <div class="head-profile navbar ms-2">

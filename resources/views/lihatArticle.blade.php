@@ -15,6 +15,17 @@
         @include('layout.header')
         @include('layout.taskbar')
         
+        @if ($message = Session::get('success'))
+            <div class="alert alert-success alert-block d-flex justify-content-between align-items-center">
+                <strong>{{ $message }}</strong>
+            </div>
+        @endif
+        @if ($errorList = Session::get('error'))
+            <div class="alert alert-danger alert-block d-flex justify-content-between align-items-center">
+                <strong>{{ $errorList }}</strong>
+            </div>
+        @endif
+
         <main>
             <div class="main-isi" id="main-isi">
                 <div class="detail-artikel">
@@ -22,14 +33,17 @@
                         <div class="card-head p-3 m-0 mx-3">
                             <h3>{{ $final[0][0] }}</h3>
                             <div class="d-flex justify-content-center">
-                            @foreach($penulis as $key => $value)
-                            <a href="{{ '../@'.$value }}"><p>{{ $value }}
-                                @if($key < count($penulis)-1)
-                                ,&nbsp;
-                                @endif
-                            </p></a>
-                            @endforeach
+                                @foreach($penulis as $key => $value)
+                                <a href="{{ '../@'.$value }}"><p>{{ $value }}
+                                    @if($key < count($penulis)-1)
+                                    ,&nbsp;
+                                    @endif
+                                </p></a>
+                                @endforeach
                             </div>
+                            @if($final[0][6] != "Layak Publish")
+                            <p>Status Artikel: {{ $final[0][6] }}</p>
+                            @endif
                             <p style="font-size:medium;">Tanggal Upload: {{ $final[0][4] }}</p>
                             <p style="font-size:medium;">Tanggal Rilis: {{ $final[0][5] }}</p>
                         </div>
@@ -59,7 +73,6 @@
             let list_prodi = [];
             let final_list = final;
             let final_search = finalSearch;
-            // console.log(final);
         </script>
         <!-- JS comunicate with database -->
 

@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\listController;
-use App\Models\akun;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\RevisionNotif;
+
+use App\Models\User;
 use App\Models\penulis;
 use App\Models\artikel;
 use App\Models\artikel_detail;
 use App\Models\artikel_detail_penulis;
 use App\Models\revisi;
-use App\Models\revisi_detail;
 use Session;
 
 class statusEdit_Controller extends Controller
@@ -60,27 +62,50 @@ class statusEdit_Controller extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $level_status, $id) {
-        // echo $level_status." || ".$id;
-        // print_r($request->all());
         $artikelDetail = json_decode((new listController)->getTable('Judul-'.$id),true);
 
         $StaBaru = ($request->status_baru) ? $request->status_baru : null;
         $CatatanBaru = ($request->catatan_revisi) ? $request->catatan_revisi : null ;
-        // echo "<br>".$StaBaru."<br>";
-        // echo "<br>".$CatatanBaru."<br>";
-
-        if ($StaBaru && $CatatanBaru) {
-            revisi_detail::where('ID_DETAILREVISI',$artikelDetail[0]['ID_DETAILREVISI'])
-            ->update ([
-                'STATUS_REVISI' => 1,
-                'STATUS_ARTIKEL_BARU' => $StaBaru,
-                'REVISI' => $CatatanBaru
-            ]);
+        $idPenulis = artikel_detail_penulis::where('id_artikel_detail', '=', $artikelDetail[0]['id_artikel_detail'])->get();
+        $Akun = [];
+        foreach($idPenulis as $key => $value) {
+            $idAkun = penulis::where('id_penulis','=',$value->id_penulis)->first()->id_akun;
+            if(!in_array($idAkun,$Akun)) { $Akun[] = $idAkun; }
         }
+
+        dd($request->all(),$StaBaru,$CatatanBaru);
+        if ($StaBaru && $CatatanBaru) {
+            revisi::where('id_artikel_detail',$artikelDetail[0]['id_artikel_detail'])
+            ->update ([
+                'id_akun' => Auth()->user()->id,
+                'status_revisi' => 1,
+                'status_artikel_baru' => $StaBaru,
+                'catatan_revisi' => $CatatanBaru,
+                'updated_at' => date("Y-m-d H:i:s")
+            ]);
         
-        return redirect()
-            ->route('status.index', ['level_status' => $level_status])
-            ->with(['success' => 'Berhasil Update Status Artikel '.$id.' dari ['.$artikelDetail[0]['STATUS_ARTIKEL'].'] ke ['.$StaBaru.']']);
+        
+            foreach ($Akun as $value) { //kirim notifikasi pembaruan revisi oleh admin
+                $message = [
+                    'to' => $value,
+                    'judul_artikel' => $id,
+                    'subject' => 'Perubahan Status Artikel',
+                    'message' => 'Artikel '.$id.' Telah Dinilai'
+                ];
+                User::where('id','=',$value)->first()->notify(new RevisionNotif($message));
+            }
+    
+            return redirect()
+                ->back()
+                ->with(['success' => 'Berhasil Update Status Artikel '.$id.' dari ['.$artikelDetail[0]['status_artikel'].'] ke ['.$StaBaru.']']);
+
+        }
+        else {
+
+            return redirect()
+                ->back()
+                ->with(['error' => 'Perubahan Status Artikel Gagal (Pastikan Memasukan Penilaian Revisi Sebelum Mengirim Perubahan)']);
+        }
     }
 
 }

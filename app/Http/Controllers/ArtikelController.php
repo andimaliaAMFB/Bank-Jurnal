@@ -350,7 +350,7 @@ class ArtikelController extends Controller
                 }
             }
         //
-
+        
         return view('lihatArticle',compact('arrayAkun','final','judul','penulis','taskbarValue','finalSearch','pathArtikel','history'));
     }
 

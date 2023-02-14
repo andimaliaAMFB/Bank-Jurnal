@@ -55,4 +55,47 @@ class produkController extends Controller
 
         return view('index',compact('title','judul','penulis','tablePenulis','tableProdi','final','taskbarValue','finalSearch'));
     }
+    public function programJurusan() {
+        $title = "Program Studi";
+        $taskbarValue = (new listController)->taskbarList ();
+        $finalSearch = (new listController)->SearchBarList ();
+
+        $tableProdi = json_decode((new listController)->getTable('Prodi'),true);
+        
+        return view('Jurusan',compact('title','tableProdi','taskbarValue','finalSearch'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function prodiUpdate(Request $request, $id) {
+        foreach ($request->all() as $key => $value) {
+            $jurusan = null;
+            if (str_contains($key,"imageup_")) { $jurusan = jurusan::where('id_jurusan','=',substr($key,8))->first(); }
+            elseif ($key != "_token" && $key != "_method") {
+                $jurusan = jurusan::where('id_jurusan','=',$key)->first();
+            }
+            
+            if ($jurusan) { //update prodi
+                jurusan::where('id_jurusan','=',$key)
+                    ->update([ 'nama_jurusan' => $value ]);
+                if ($request->hasFile('imageup_'.$jurusan->id_jurusan)) {
+                    $img_ext =  $request->file('imageup_'.$jurusan->id_jurusan)->getClientOriginalExtension();
+                    $img = $jurusan->id_jurusan.".".$img_ext;
+                    $request->file('imageup_'.$jurusan->id_jurusan)->storeAs('public/jurusan-image/',$img);
+
+                    jurusan::where('id_jurusan','=',$key)
+                        ->update([ 'lambang_jurusan' => $img ]);
+                }
+            }
+        }
+        
+        return redirect()
+            ->route('prodi')
+            ->with(['success' => 'Berhasil Update Program Studi']);
+    }
 }

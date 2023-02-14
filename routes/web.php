@@ -21,17 +21,8 @@ Route::get('/', function(){
     return redirect()->route('dashboard');
 });
 Route::get('dashboard', [produkController::class, 'index'])->name('dashboard');
-Route::get('MarkAsRead',function (){
-    //read notification
-        foreach (Auth()->user()->unreadNotifications as $notification) {
-            if (Auth()->user()->id == $notification->data['to'])
-            {
-                $notification->markAsRead();
-            }
-        }
-    //
-    redirect()->back();
-});
+Route::get('prodi', [produkController::class, 'programJurusan'])->name('prodi');
+Route::put('prodi/{id}', [produkController::class, 'prodiUpdate'])->name('prodi.update');
 
 Route::get('/login', [AkunController::class, 'login'])->name('loginShow');
 Route::post('/login', [AkunController::class, 'loginInput'])->name('login.store');

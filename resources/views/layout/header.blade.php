@@ -172,7 +172,10 @@
             <div class="form-card card col-md-8">
                 <div class="mx-3">
                     <form action="" class="card-head d-flex flex-wrap justify-content-center p-3 pt-0">
-                        <h3 class="w-100 mb-3">Search</h3>
+                        <div class="w-100 mb-3 row justify-content-between">
+                            <h3 class="col-auto">Search</h3>
+                            <button class="btn col-auto" type="button" >X</button>
+                        </div>
                         <div class="col-auto searchbar search-label justify-content-center full-1" style="box-shadow: none;">
                             <div class="dot border-0" style="background-color: unset;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">

@@ -28,7 +28,9 @@ class jurusan extends Seeder
         foreach ($namaProdi as $id => $nama) {
             DB::table('jurusan')-> INSERT ([
                 'id_jurusan' => "Jurusan-".($id+1),
-                'nama_jurusan' => $nama]);
+                'nama_jurusan' => $nama,
+                'lambang_jurusan' => null
+            ]);
         }
     }
 }

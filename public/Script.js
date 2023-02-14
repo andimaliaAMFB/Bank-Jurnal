@@ -141,7 +141,8 @@ var prodi_select_list = [].concat(list_prodi);
                         if (taskbar.style.display === "block") { taskbar.style.display = "none"; shade_show("remove"); } //close taskbar if clicked the background
                     }
                     else if ((headBtn.length <= 2 && index == headBtn.length - 2) || (headBtn.length > 2 && index == headBtn.length - 4)) { //close search menu if clicked the background
-                        if (event.target == document.querySelector(`#form_search`)) {
+                        var search_exitBtn = document.querySelector(`#form_search button`);
+                        if (event.target == document.querySelector(`#form_search`) || event.target == search_exitBtn) {
                             form_function(document.querySelector(`.head-modal`));
                         }
                     }

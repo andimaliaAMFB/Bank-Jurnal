@@ -73,7 +73,6 @@ class statusEdit_Controller extends Controller
             if(!in_array($idAkun,$Akun)) { $Akun[] = $idAkun; }
         }
 
-        dd($request->all(),$StaBaru,$CatatanBaru);
         if ($StaBaru && $CatatanBaru) {
             revisi::where('id_artikel_detail',$artikelDetail[0]['id_artikel_detail'])
             ->update ([

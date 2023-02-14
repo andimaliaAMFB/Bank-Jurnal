@@ -11,6 +11,6 @@ class jurusan extends Model
     protected $table = 'jurusan';
     public $timestamps = false;
     protected $primaryKey = 'id_jurusan';
-    protected $fillable = ['id_jurusan','nama_jurusan'];
+    protected $fillable = ['id_jurusan','nama_jurusan','lambang_jurusan'];
     protected $keyType = 'string';
 }

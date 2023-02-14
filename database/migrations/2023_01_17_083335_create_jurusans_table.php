@@ -18,6 +18,7 @@ class CreateJurusansTable extends Migration
                 $table->ipAddress('id_jurusan',12);
                 $table->primary('id_jurusan');
                 $table->ipAddress('nama_jurusan',20);
+                $table->binary('lambang_jurusan')->nullable();
             });
         }
     }

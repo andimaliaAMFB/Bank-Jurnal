@@ -23,9 +23,13 @@
         @if ($errorList = Session::get('error'))
             <div class="alert alert-danger alert-block d-flex justify-content-between align-items-center">
                 <ul style="list-style-type:none; margin:0;">
-                @foreach($errorList as $value)
-                    <li><strong>{{ $value }}</strong></li>
-                @endforeach
+                @if($errorList.gettype() == "array" || $errorList.gettype() == "object")
+                    @foreach($errorList as $value)
+                        <li><strong>{{ $value }}</strong></li>
+                    @endforeach
+                @else
+                    <li><strong>{{ $errorList }}</strong></li>
+                @endif
                 </ul>
             </div>
         @endif
@@ -239,11 +243,11 @@
             let list_judul = [];
             let list_penulis = [];
             let list_prodi = [];
-            prodi.forEach((element,index) => { list_prodi[index] = prodi[index]['NAMA_JURUSAN']; });
+            prodi.forEach((element,index) => { list_prodi[index] = prodi[index]['nama_jurusan']; });
             let list_kota = [];
-            kota.forEach((element,index) => { list_kota[index] = kota[index]['NAMA_KOTA']; });
+            kota.forEach((element,index) => { list_kota[index] = kota[index]['nama_kota']; });
             let list_prov = [];
-            prov.forEach((element,index) => { list_prov[index] = prov[index]['NAMA_PROVINSI']; });
+            prov.forEach((element,index) => { list_prov[index] = prov[index]['nama_provinsi']; });
             let final_list = [];
             let final_search = finalSearch;
         </script>

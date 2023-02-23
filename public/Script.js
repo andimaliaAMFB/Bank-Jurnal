@@ -985,9 +985,10 @@ var prodi_select_list = [].concat(list_prodi);
             }
         }
         function form_inside(wrapper,id) { //make div child for every revision in this article
-            form_function(wrapper); //open-clos form modal
+            form_function(wrapper); //open-close form modal
             const tr = document.querySelectorAll(`tr`); //list item in form per row
             var arraydate = [];
+            var arrayFinalize = 'No';
             tr.forEach((item) => {
                 if (item.getAttribute('data-id') == id) {
                     form_judul.innerHTML = item.childNodes[1].textContent;
@@ -996,6 +997,7 @@ var prodi_select_list = [].concat(list_prodi);
                             form_penulis.innerHTML = data[2];
                             n_history = count_history[index];
                             arraydate = historyArray[index][3];
+                            arrayFinalize = data[1];
                         }
                     });
                 }
@@ -1019,13 +1021,19 @@ var prodi_select_list = [].concat(list_prodi);
                 if (i != 0) { child.classList.add("border-top"); }
 
                 var loc = form_history.lastElementChild;
-                var input = `<div class="date_up">`+arraydate[i]+`</div>
-                    <span></span>
-                    <div class="pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-                        </svg>
-                    </div>`;
+                var input = ``;
+                if (arrayFinalize == 'No' && i == n_history-1) {
+                    input += `<div class="date_up"><strong class="col-red-1">`+arraydate[i]+`</strong></div>`;
+                }
+                else {
+                    input += `<div class="date_up">`+arraydate[i]+`</div>`;
+                }
+                input += `<span></span>
+                        <div class="pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                            </svg>
+                        </div>`;
                 loc.innerHTML = input;
             }
             

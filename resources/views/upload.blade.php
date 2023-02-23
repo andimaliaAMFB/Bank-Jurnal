@@ -16,11 +16,17 @@
         @if($countPnl = Session::get('Count_penulis_jurusan'))
             <input type="hidden" id="countPnl" value="{{$countPnl}}">
         @endif
+
         @if ($message = Session::get('success'))
-        <div class="alert alert-success alert-block d-flex justify-content-between align-items-center">
-            <strong>{{ $message }}</strong>
-        </div>
+            <div class="alert alert-success alert-block d-flex justify-content-between align-items-center">
+                <strong>{{ $message }}</strong>
+            </div>
+        @elseif ($message = Session::get('error'))
+            <div class="alert alert-danger alert-block ">
+                <strong>{{ $message }}</strong>
+            </div>
         @endif    
+        
         @if ($errors->any())
             <div class="alert alert-danger alert-block ">
                 <strong>Kesalahan Input: </strong>
@@ -55,7 +61,7 @@
                                     </div>
                                 </div>
                                 <div class="select d-flex flex-wrap align-items-center px-3 my-2">
-                                    <div class="col-md-3">Nama Penulis</div>
+                                    <div class="col-md-3 d-flex">Nama Penulis <strong class="col-red-1 px-1">*</strong> </div>
                                     <div class="col-md-9 search_input d-flex flex-wrap" id="pnl-1">
                                         <div class="searchbar searchFull search-value w-100">
                                             <input class="w-100 text-center" type="text" name="pnl-1" id="pnl-1" placeholder="Nama Penulis">
@@ -87,7 +93,7 @@
                                     </div>
                                 </div>
                                 <div class="select d-flex flex-wrap align-items-center px-3 my-2">
-                                    <div class="col-md-3">Program Studi</div>
+                                    <div class="col-md-3 d-flex">Program Studi <strong class="col-red-1 px-1">*</strong> </div>
                                     <div class="col-md-9 search_input d-flex flex-wrap" id="prodi-1">
                                         <div class="searchbar searchFull search-value w-100">
                                             <input class="w-100 text-center" type="text" name="prodi-1" id="prodi-1" placeholder="Program Studi">
@@ -136,7 +142,7 @@
                             @endif
                             <div class="row w-100 gx-0 py-3 px-3 form-sub border-0">
                                 <div class="d-flex flex-wrap align-items-center px-3 my-2" id="text-jdl">
-                                    <div class="col-md-3">Judul Artikel</div>
+                                    <div class="col-md-3 d-flex">Judul Artikel <strong class="col-red-1 px-1">*</strong> </div>
                                     <div class="col-md-9 search_input d-flex flex-wrap">
                                         <div class="col-10 searchbar w-100">
                                             <input type="text" name="jdl" id="jdl" placeholder="[Judul Artikel]">
@@ -147,8 +153,8 @@
                             <div class="form-sub addBox border-0 d-flex justify-content-center">
                                 <div class="drop-file searchbar p-3 w-75 flex-column h-auto">
                                     <div class="drop-file__prompt text-center w-100 d-flex flex-column align-items-center justify-content-center">
-                                        <p>Drop File</p>
-                                        <p>or</p>
+                                        <p>Upload Document (Doc/Docs/PDF)</p>
+                                        <p>Max Size 10 MB</p>
                                         <p class="link">Browser</p>
                                     </div>
                                     <input type="file" name="file" class="drop-file__input" accept="application/pdf, application/vnd.msword" required>
@@ -193,7 +199,7 @@
             if (FieldInput) { FieldInput = <?php echo json_encode(Session::get('field')); ?>; }
             else if(window.location.href.includes('re-upload')){
                 FieldInput = <?php echo json_encode($field); ?>;
-                countPenulis_old = {{ $Count_pj }} -1;
+                countPenulis_old = {{ $countPnl }} -1;
                 judulArtikel = '{{ $id_article }}';
             }
             if (FieldInput) {
@@ -213,7 +219,7 @@
                     }
                 });
             }
-            // console.log(FieldInput,countPenulis_old);
+            console.log(FieldInput,countPenulis_old);
             
             let list_penulis_jurusan = [];
             penulis.forEach(penulis => {
@@ -245,16 +251,11 @@
                                         // console.log(ThisForm.childElementCount, ThisForm.querySelectorAll(`.form-sub`).length);
                                         ThisForm.querySelectorAll(`.form-sub`).forEach((item,itemIndex) => {
                                             if (!item.classList.contains(`addBox`)) {
-                                                // console.log("Lenght: ",ThisForm.querySelectorAll(`.form-sub`).length, " | itemIndex: ",itemIndex,item);
-                                                // console.log(item,item.querySelectorAll(`input`));
-                                                // console.log("replace_id_list(item.outerHTML,", itemIndex+1,")");
     
                                                 item.querySelectorAll(`input`).forEach(input => {
-                                                    // console.log("Before: ",input.name," | ",input.id," | ",input.outerHTML);
                                                     input.name = replace_id_list(input.name, itemIndex+1);
                                                     input.id = replace_id_list(input.id, itemIndex+1);
                                                     input.outerHTML = replace_id_list(input.outerHTML, itemIndex+1);
-                                                    // console.log("After: ",input.name," | ",input.id," | ",input.outerHTML);
                                                 })
                                                 item.outerHTML = replace_id_list(item.outerHTML, itemIndex+1);
                                             }
@@ -271,6 +272,15 @@
                     form_update(form);
                 });
             }
+            form_page.forEach(element => {//insert old value
+                if (FieldInput) {
+                    FieldInput.forEach(value => {
+                        if (element.querySelector(`input#`+Object.keys(value)[0])) {
+                            element.querySelector(`input#`+Object.keys(value)[0]).value = Object.values(value)[0];
+                        }
+                    });
+                }
+            });
         </script>
     </body>
 </html>

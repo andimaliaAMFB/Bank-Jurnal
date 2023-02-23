@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\UploadedFile;
+use App\Models\penulis;
 use App\Models\artikel;
 use App\Models\artikel_detail;
 use DB;
@@ -94,8 +95,6 @@ class ArtikelController extends Controller
                     else if (str_contains($key,'prodi')) { $penulis_jurusan += [$penulis => $value]; }
                 }
             }
-            // echo $Count_penulis_jurusan."<br>";
-            // dd($penulis_jurusan);
             if($field) {
                 $rule = array();
                 foreach ($field as $key => $value) {
@@ -127,11 +126,6 @@ class ArtikelController extends Controller
                 // echo "<br>";
                 // dd($pesan);
             }
-            // echo "<br>has File (1/0): ".($request->hasFile('file'))."<br>";
-            if ($request->hasFile('file')) {
-                echo $request->file('file')->getClientOriginalName()."<br>";
-                echo $request->file('file')->getClientOriginalExtension()."<br>";
-            }
         //
 
         $validator = Validator::make($request->all(), $rule, $pesan);
@@ -146,46 +140,68 @@ class ArtikelController extends Controller
                 ->with('Count_penulis_jurusan', $Count_penulis_jurusan)
                 ->with('field', $input);
         }
-        
-        //initial [id_akun], [id_artikel], [id_artikel_DETAIL]
-            $id_akun = Auth::User()->id;
-            $id_artikel = $id_akun."-".(date('m')+date("d")+date("B"));
-            $id_artikel_detail = substr(md5($id_artikel),0,4)."-1";
-        //
 
-        //store Artikel
-            $file_ext =  $request->file('file')->getClientOriginalExtension();
-            $file = $id_artikel_detail.".".$file_ext;
-            $path = $request->file('file')->storeAs('public/article/'.$id_akun.'/'.$id_artikel,$file);
-        //
-
-        $this->insertArtikel ($id_akun, $id_artikel, $id_artikel_detail, $request->jdl,$file);
-        $this->revisi ($id_artikel_detail);
-        
-        $countPnl = 0;
-        foreach ($penulis_jurusan as $key => $value){
-            echo "<br>Penulis-".$countPnl;
-            $dataPenulis = json_decode((new listController)->getTable('PNL-'.$key),true);
-            $id_jurusan = $this->insertProdi ($value);
-            $id_penulis = $this->insertPenulis ($id_jurusan,$key);
-            
-            if($id_jurusan && $dataPenulis) {
-                echo "<br>Ini Penulis dan Prodi yang sudah terdaftar di DB<br>";
-                $id_penulis = $dataPenulis[0]['id_penulis'];
-                if($dataPenulis[0]['id_jurusan'] == $id_jurusan) {
+        array_pop($input);
+        //check kesesuaian jurusan dengan penulis
+        foreach ($penulis_jurusan as $key => $value) {
+            if (penulis::where('nama_penulis','=',$key)->exists()) {
+                $id_jurusan = $this->insertProdi ($value);
+                if (penulis::where('nama_penulis','=',$key)->first()->id_jurusan == $id_jurusan) {
                     echo "<br>Ini Penulis yang sudah terdaftar sesuai dengan jurusannya<br>";
                 }
                 else {
                     echo "<br>Ini Penulis yang sudah terdaftar TAPI TIDAK sesuai dengan jurusannya<br>";
+                    return redirect()
+                        ->route('article.create')
+                        ->with([
+                            'error' => 'Program Studi Penulis '.$key.' TIDAK SESUAI dengan Jurusan Di Database (Seharusnya '.$value.')',
+                            'Count_penulis_jurusan' => $Count_penulis_jurusan,
+                            'field' => $input
+                            ]);
                 }
             }
-            $this->insertArtikelPenulis ($id_artikel_detail, $id_penulis, $i);
-            
-            $countPnl += 1;
         }
-        return redirect()
-            ->route('article.create')
-            ->with(['success' => 'Berhasil Upload Artikel Baru']);
+
+        if ($request->hasFile('file')) {
+            //initial [id_akun], [id_artikel], [id_artikel_DETAIL]
+                $id_akun = Auth::User()->id;
+                $id_artikel = $id_akun."-".(date('m')+date("d")+date("B"));
+                $id_artikel_detail = substr(md5($id_artikel),0,4)."-1";
+            //
+
+            //store Artikel
+                $file_ext =  $request->file('file')->getClientOriginalExtension();
+                $file = $id_artikel_detail.".".$file_ext;
+                $path = $request->file('file')->storeAs('public/article/'.$id_akun.'/'.$id_artikel,$file);
+            //
+    
+            $this->insertArtikel ($id_akun, $id_artikel, $id_artikel_detail, $request->jdl,$file);
+            $this->revisi ($id_artikel_detail);
+            
+            $countPnl = 0;
+            foreach ($penulis_jurusan as $key => $value){
+                echo "<br>Penulis-".$countPnl;
+                $dataPenulis = json_decode((new listController)->getTable('PNL-'.$key),true);
+                $id_jurusan = $this->insertProdi ($value);
+                $id_penulis = $this->insertPenulis ($id_jurusan,$key);
+    
+                $this->insertArtikelPenulis ($id_artikel_detail, $id_penulis, $i);
+                
+                $countPnl += 1;
+            }
+            return redirect()
+                ->route('article.create')
+                ->with(['success' => 'Berhasil Upload Artikel Baru']);
+
+        }
+        else {
+            return redirect()
+                ->route('article.create')
+                ->with(['error' => 'File Dokumen Belum di Upload',
+                    'Count_penulis_jurusan' => $Count_penulis_jurusan,
+                    'field' => $input
+                ]);
+        }
     }
 
     /**
@@ -210,8 +226,7 @@ class ArtikelController extends Controller
                     else if (str_contains($key,'prodi')) { $penulis_jurusan += [$penulis => $value]; }
                 }
             }
-            // echo $Count_penulis_jurusan."<br>";
-            // dd($penulis_jurusan);
+            
             if($field) {
                 $rule = array();
                 foreach ($field as $key => $value) {
@@ -243,11 +258,7 @@ class ArtikelController extends Controller
                 // echo "<br>";
                 // dd($pesan);
             }
-            // echo "<br>has File (1/0): ".($request->hasFile('file'))."<br>";
-            if ($request->hasFile('file')) {
-                echo $request->file('file')->getClientOriginalName()."<br>";
-                echo $request->file('file')->getClientOriginalExtension()."<br>";
-            }
+            
         //
 
         $validator = Validator::make($request->all(), $rule, $pesan);
@@ -263,50 +274,70 @@ class ArtikelController extends Controller
                 ->with('field', $input);
         }
         
-        //initial [id_akun], [id_artikel], [id_artikel_DETAIL]
-            $id_akun = (new listController)->getAkun()[0]['id_akun'];
-            $artikelDetail = json_decode((new listController)->getTable('Judul-'.$id_article),true);
-            $id_artikel_detail = substr($artikelDetail[0]['id_artikel_detail'],0,5);
-            $id_artikel_detail_last = intval(substr($artikelDetail[0]['id_artikel_detail'],5)) + 1;
-            $id_artikel = $artikelDetail[0]['id_artikel'];
-            $id_AkunAwal = artikel::where('id_artikel','=',$id_artikel)->value('id_akun');
-            $id_artikel_detail = $id_artikel_detail.$id_artikel_detail_last;
-        //
-
-        //store Artikel
-            $file_ext =  $request->file('file')->getClientOriginalExtension();
-            $file = $id_artikel_detail.".".$file_ext;
-            $path = $request->file('file')->storeAs('public/article/'.$id_AkunAwal.'/'.$id_artikel,$file);
-            // dd($path);
-        //
-
-        $this->insertArtikel ($id_akun, $id_artikel, $id_artikel_detail, $request->jdl, $file);
-        $this->revisi ($id_artikel_detail);
-        
-        $countPnl = 0;
-        foreach ($penulis_jurusan as $key => $value){
-            echo "<br>Penulis-".$countPnl;
-            $dataPenulis = json_decode((new listController)->getTable('PNL-'.$key),true);
-            $id_jurusan = $this->insertProdi ($value);
-            $id_penulis = $this->insertPenulis ($id_jurusan,$key);
-            
-            if($id_jurusan && $dataPenulis) {
-                echo "<br>Ini Penulis dan Prodi yang sudah terdaftar di DB<br>";
-                $id_penulis = $dataPenulis[0]['id_penulis'];
-                if($dataPenulis[0]['id_jurusan'] == $id_jurusan) {
+        array_pop($input);
+        //check kesesuaian jurusan dengan penulis
+        foreach ($penulis_jurusan as $key => $value) {
+            if (penulis::where('nama_penulis','=',$key)->exist()) {
+                $id_jurusan = $this->insertProdi ($value);
+                if (penulis::where('nama_penulis','=',$key)->first()->id_jurusan == $id_jurusan) {
                     echo "<br>Ini Penulis yang sudah terdaftar sesuai dengan jurusannya<br>";
                 }
                 else {
                     echo "<br>Ini Penulis yang sudah terdaftar TAPI TIDAK sesuai dengan jurusannya<br>";
+                    return redirect()
+                    ->route('article.restore')
+                        ->with(['error' => 'Program Studi Penulis '.$key.' TIDAK SESUAI dengan Jurusan Di Database (Seharusnya '.$value.')',
+                        'Count_penulis_jurusan' => $Count_penulis_jurusan,
+                        'field' => $input
+                    ]);
                 }
             }
-            $this->insertArtikelPenulis ($id_artikel_detail, $id_penulis, $i);
-            
-            $countPnl += 1;
         }
-        return redirect()
-            ->route('myarticle')
-            ->with(['success' => 'Berhasil Upload Revisi Artikel Baru']);
+
+        if ($request->hasFile('file')) {
+            //initial [id_akun], [id_artikel], [id_artikel_DETAIL]
+                $id_akun = (new listController)->getAkun()[0]['id_akun'];
+                $artikelDetail = json_decode((new listController)->getTable('Judul-'.$id_article),true);
+                $id_artikel_detail = substr($artikelDetail[0]['id_artikel_detail'],0,5);
+                $id_artikel_detail_last = intval(substr($artikelDetail[0]['id_artikel_detail'],5)) + 1;
+                $id_artikel = $artikelDetail[0]['id_artikel'];
+                $id_AkunAwal = artikel::where('id_artikel','=',$id_artikel)->value('id_akun');
+                $id_artikel_detail = $id_artikel_detail.$id_artikel_detail_last;
+            //
+
+            //store Artikel
+                $file_ext =  $request->file('file')->getClientOriginalExtension();
+                $file = $id_artikel_detail.".".$file_ext;
+                $path = $request->file('file')->storeAs('public/article/'.$id_AkunAwal.'/'.$id_artikel,$file);
+            //
+    
+            $this->insertArtikel ($id_akun, $id_artikel, $id_artikel_detail, $request->jdl,$file);
+            $this->revisi ($id_artikel_detail);
+            
+            $countPnl = 0;
+            foreach ($penulis_jurusan as $key => $value){
+                echo "<br>Penulis-".$countPnl;
+                $dataPenulis = json_decode((new listController)->getTable('PNL-'.$key),true);
+                $id_jurusan = $this->insertProdi ($value);
+                $id_penulis = $this->insertPenulis ($id_jurusan,$key);
+    
+                $this->insertArtikelPenulis ($id_artikel_detail, $id_penulis, $i);
+                
+                $countPnl += 1;
+            }
+            return redirect()
+                ->route('myarticle')
+                ->with(['success' => 'Berhasil Upload Revisi Artikel Baru']);
+
+        }
+        else {
+            return redirect()
+                ->route('article.restore')
+                ->with(['error' => 'File Dokumen Belum di Upload',
+                'Count_penulis_jurusan' => $Count_penulis_jurusan,
+                'field' => $input
+            ]);
+        }
     }
 
     /**

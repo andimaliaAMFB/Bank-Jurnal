@@ -403,7 +403,7 @@ class listController extends Controller
                         $RD = (revisi::where('id_artikel_detail', '=', $AD['id_artikel_detail'])
                                         ->first());
                         
-                        $listTGL [] = $value['updated_at'];
+                        $listTGL [] = date_format(date_create($value['updated_at']), "Y/m/d") ;
                         $listStatus [] = $AD['status_artikel'];
                         $listStatusBaru [] = $RD['status_artikel_baru'];
                         $listCatatanBaru [] = $RD['catatan_revisi'];

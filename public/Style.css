@@ -58,14 +58,19 @@ body {
     .line-3-h,.full-3-h { border-color: #415663!important;}
     .line-red-1, .red-full-1 { border-color: #C64141!important;}
 
-    .line-1 { color: #97C641!important;}
-    .line-1-d { color: #76a71b!important;}
-    .line-1-h { color: #A8D470!important;}
-    .line-2 { color: #218AC8!important;}
-    .line-2-h { color: #70CED4!important;}
-    .line-3 { color: #1d3a4b!important;}
-    .line-3-h { color: #415663!important;}
-    .line-red-1 { color: #C64141!important;}
+    .col-1,.line-1 { color: #97C641!important;}
+    .col-1-d,.line-1-d { color: #76a71b!important;}
+    .col-1-h,.line-1-h { color: #A8D470!important;}
+    .col-2,.line-2 { color: #218AC8!important;}
+    .col-2-h,.line-2-h { color: #70CED4!important;}
+    .col-3,.line-3 { color: #1d3a4b!important;}
+    .col-3-h,.line-3-h { color: #415663!important;}
+    .col-red-1,.line-red-1 { color: #C64141!important;}
+
+    /* .col-1,.col-1-d,.col-1-h,
+    .col-2,.col-2-h,
+    .col-3,.col-3-h,
+    .col-red-1 { color: #C64141!important;} */
     /* p */
     p {
         margin: 0;
@@ -1197,7 +1202,7 @@ body {
             font-weight: bold;
         }
         .blockDiv {
-            min-height: 30vw;
+            min-height: 15vw;
         }
 /* main end */
 

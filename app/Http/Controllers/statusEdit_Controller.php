@@ -100,7 +100,6 @@ class statusEdit_Controller extends Controller
 
         }
         else {
-
             return redirect()
                 ->back()
                 ->with(['error' => 'Perubahan Status Artikel Gagal (Pastikan Memasukan Penilaian Revisi Sebelum Mengirim Perubahan)']);

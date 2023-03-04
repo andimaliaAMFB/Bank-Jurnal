@@ -130,7 +130,7 @@
                 <div class="head-profile navbar ms-2">
                     <button class="head-button dot" id="button-profile">
                         @if(isset(Auth::user()->foto_profil))
-                        <img src="{{ 'storage/profile-image/'.Auth::user()->foto_profil }}" id="uploadedIMG" class="profile_img">
+                        <img src="../{{ 'storage/profile-image/'.Auth::user()->foto_profil }}" id="uploadedIMG" class="profile_img">
                         @else
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" id="blank-pp" class="bi bi-person-circle" viewBox="0 0 16 16" style="display: block; opacity: 0.75;">
                             <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
@@ -141,7 +141,7 @@
                     <ul class="dropdown-menu" style="display: none;" id="dropdown-profile">
                         <li class="user-profile label-dropdown">
                             @if(isset(Auth::user()->foto_profil))
-                            <img src="{{ 'storage/profile-image/'.Auth::user()->foto_profil }}" id="uploadedIMG" class="profile_img">
+                            <img src="../{{ 'storage/profile-image/'.Auth::user()->foto_profil }}" id="uploadedIMG" class="profile_img">
                             @else
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" id="blank-pp" class="bi bi-person-circle" viewBox="0 0 16 16" style="display: block; opacity: 0.75;">
                                 <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>

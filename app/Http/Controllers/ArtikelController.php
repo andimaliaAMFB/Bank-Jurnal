@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\UploadedFile;
 use App\Models\penulis;
+use App\Models\jurusan;
 use App\Models\artikel;
 use App\Models\artikel_detail;
 use DB;
@@ -145,16 +146,18 @@ class ArtikelController extends Controller
         //check kesesuaian jurusan dengan penulis
         foreach ($penulis_jurusan as $key => $value) {
             if (penulis::where('nama_penulis','=',$key)->exists()) {
+                $jurusan_asli = penulis::where('nama_penulis','=',$key)->first()->id_jurusan;
                 $id_jurusan = $this->insertProdi ($value);
-                if (penulis::where('nama_penulis','=',$key)->first()->id_jurusan == $id_jurusan) {
+                if ($jurusan_asli == $id_jurusan) {
                     echo "<br>Ini Penulis yang sudah terdaftar sesuai dengan jurusannya<br>";
                 }
                 else {
+                    $nama_jurusan = jurusan::where('id_jurusan','=',$jurusan_asli)->first()->nama_jurusan;
                     echo "<br>Ini Penulis yang sudah terdaftar TAPI TIDAK sesuai dengan jurusannya<br>";
                     return redirect()
                         ->route('article.create')
                         ->with([
-                            'error' => 'Program Studi Penulis '.$key.' TIDAK SESUAI dengan Jurusan Di Database (Seharusnya '.$value.')',
+                            'error' => 'Program Studi Penulis '.$key.' TIDAK SESUAI dengan Jurusan Di Database (Seharusnya '.$nama_jurusan.')',
                             'Count_penulis_jurusan' => $Count_penulis_jurusan,
                             'field' => $input
                             ]);
@@ -185,7 +188,7 @@ class ArtikelController extends Controller
                 $id_jurusan = $this->insertProdi ($value);
                 $id_penulis = $this->insertPenulis ($id_jurusan,$key);
     
-                $this->insertArtikelPenulis ($id_artikel_detail, $id_penulis, $i);
+                $this->insertArtikelPenulis ($id_artikel_detail, $id_penulis, $countPnl);
                 
                 $countPnl += 1;
             }
@@ -277,19 +280,22 @@ class ArtikelController extends Controller
         array_pop($input);
         //check kesesuaian jurusan dengan penulis
         foreach ($penulis_jurusan as $key => $value) {
-            if (penulis::where('nama_penulis','=',$key)->exist()) {
+            if (penulis::where('nama_penulis','=',$key)->exists()) {
+                $jurusan_asli = penulis::where('nama_penulis','=',$key)->first()->id_jurusan;
                 $id_jurusan = $this->insertProdi ($value);
-                if (penulis::where('nama_penulis','=',$key)->first()->id_jurusan == $id_jurusan) {
+                if ($jurusan_asli == $id_jurusan) {
                     echo "<br>Ini Penulis yang sudah terdaftar sesuai dengan jurusannya<br>";
                 }
                 else {
+                    $nama_jurusan = jurusan::where('id_jurusan','=',$jurusan_asli)->first()->nama_jurusan;
                     echo "<br>Ini Penulis yang sudah terdaftar TAPI TIDAK sesuai dengan jurusannya<br>";
                     return redirect()
-                    ->route('article.restore')
-                        ->with(['error' => 'Program Studi Penulis '.$key.' TIDAK SESUAI dengan Jurusan Di Database (Seharusnya '.$value.')',
-                        'Count_penulis_jurusan' => $Count_penulis_jurusan,
-                        'field' => $input
-                    ]);
+                        ->route('article.recreate')
+                        ->with([
+                            'error' => 'Program Studi Penulis '.$key.' TIDAK SESUAI dengan Jurusan Di Database (Seharusnya '.$nama_jurusan.')',
+                            'Count_penulis_jurusan' => $Count_penulis_jurusan,
+                            'field' => $input
+                            ]);
                 }
             }
         }
@@ -321,7 +327,7 @@ class ArtikelController extends Controller
                 $id_jurusan = $this->insertProdi ($value);
                 $id_penulis = $this->insertPenulis ($id_jurusan,$key);
     
-                $this->insertArtikelPenulis ($id_artikel_detail, $id_penulis, $i);
+                $this->insertArtikelPenulis ($id_artikel_detail, $id_penulis, $countPnl);
                 
                 $countPnl += 1;
             }
@@ -332,7 +338,7 @@ class ArtikelController extends Controller
         }
         else {
             return redirect()
-                ->route('article.restore')
+                ->route('article.recreate')
                 ->with(['error' => 'File Dokumen Belum di Upload',
                 'Count_penulis_jurusan' => $Count_penulis_jurusan,
                 'field' => $input
@@ -538,7 +544,7 @@ class ArtikelController extends Controller
     function insertPenulis ($id_jurusan,$key) {
         $id_penulis = $key;
         $dataPenulis = json_decode((new listController)->getTable('PNL-'.$key),true);
-        if(!$dataPenulis) {
+        if(!$dataPenulis && penulis::where('nama_penulis','=',$key)->doesntExist()) {
             $lastIdPenulis = strval(date("m").(date("d")+date("B")))."-1";
             $id_penulis = "PNL".substr(md5($lastIdPenulis),0,4);
             DB::table('penulis')-> INSERT ([
@@ -548,6 +554,9 @@ class ArtikelController extends Controller
                 'nama_penulis' => $key
             ]);
             echo "<br>Create new Penulis Tanpa Akun<br>";
+        }
+        else {
+            $id_penulis = penulis::where('nama_penulis','=',$key)->first()->id_penulis;
         }
         return $id_penulis;
     }

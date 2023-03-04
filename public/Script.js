@@ -604,6 +604,72 @@ var prodi_select_list = [].concat(list_prodi);
                         }
                     }
                 }
+            
+            //delete from list
+            if (document.querySelector(`.cancel-btn`)) {
+                var ItemList;
+                if (lokasi.includes(`prodi`)) { ItemList = document.querySelectorAll(`.cancel-btn`); }
+                ItemList.forEach(item => {
+                    var ItemList_Parent = item.parentNode;
+                    var item_id;
+                    var item_name;
+                    var modal = ItemList_Parent.querySelector(`.form-modal`);
+                    if (modal) {
+                        item_id = modal.getAttribute(`data-id`);
+                        item_name = modal.querySelector(`strong`).id;
+                        var thisForm = document.querySelector(`main form`);
+                        thisForm.action = lokasi+`/delete/`+item_id;
+                        thisForm.querySelectorAll(`input`).forEach(inputElement => {
+                            if (inputElement.name == `_method`) {inputElement.value = `DELETE`;}
+                        });
+
+                        if (!modal.contains(event.target) || event.target.classList.contains("close-btn")) {
+                            thisForm.action = lokasi+`/update`;
+                            thisForm.querySelectorAll(`input`).forEach(inputElement => {
+                                if (inputElement.name == `_method`) {inputElement.value = `PUT`;}
+                            });
+
+                            form_function(modal);
+                            modal.remove();
+                        }
+                        console.log(thisForm);
+                    }
+                    else if (item.contains(event.target)){
+                        if (lokasi.includes(`prodi`)) {
+                            ItemList_Parent.querySelectorAll(`input`).forEach(element => {
+                                if (element.type == "file") { item_id = (element.id).replace(`img-input_`, ``); }
+                                else if (element.type == "text") { item_name = element.value; }
+                            });
+                        }
+                        modal = document.createElement("div");
+                        modal.classList.add(`form-modal`);
+                        modal.style.display = `none`;
+                        modal.setAttribute(`data-id`,item_id);
+                        form_addNewElement(ItemList_Parent, null , modal, 
+                            `<div class="fliter-form h-auto p-3" id="form_delete">
+                                <div class="form-card card col-md-8">
+                                    <div class="mx-3">
+                                        <div class="card-head d-flex flex-wrap justify-content-between align-items-center p-3 pt-0">
+                                            <h3 class="col-auto">Hapus Data</h3>
+                                            <button class="btn col-auto close-btn" type="button">X</button>
+                                        </div>
+                                        <div class="card-body">
+                                            <form action="`+lokasi+`/delete/`+item_id+`" method="POST">
+                                                <strong id="`+item_name+`"> Apakah Anda Yakin akan menghapus `+item_name+`?</strong>
+                                                <div class="row justify-content-end">
+                                                    <button type="button" class="btn rounded-pill col-auto mx-1 btn-secondary close-btn">Close</button>
+                                                    <button type="submit" class="btn rounded-pill col-auto bg-red-1 mx-1">Delete</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`
+                        );
+                        form_function(modal);
+                    }
+                });
+            }
                 
 
         //prodi_select
@@ -746,7 +812,7 @@ var prodi_select_list = [].concat(list_prodi);
         let first_column = '';
         let last_column = '';
         if (type.includes("tabel")) {
-            first_column = `<tr  data-id="`+ id +`">
+            first_column = `<tr data-id="`+ id +`">
                                 <td><a href="../article/`+ judul+`">`+ judul+`</a></td>`;
             if (type.includes("pointer")) {
                 last_column = `<td>`;
@@ -1592,7 +1658,8 @@ function suggestionBar(input_box, dd, parent_id, selectValue) {
                                     <b>Nothing Found</b>
                                 </li>`;
                 }
-                else { listData = '<li><b>Nothing Found</b></li>'; }
+                else { listData = `<li class="text-center">`+(firstSuggestions)+`</li>
+                                    <li class="text-center bg-red-1"><b>Nothing Found</b></li>`; }
             }
         }else {
             listData = list.join('');

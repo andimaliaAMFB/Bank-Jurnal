@@ -29,9 +29,6 @@
                     <div class="d-flex flex-wrap justify-content-center w-100">
                     @foreach($tableProdi as $key => $value)
                         <div class="d-flex flex-column justify-content-between align-items-center col-md-2 border p-2 m-2 img_add blockDiv position-relative">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill position-absolute top-0 end-0 m-3" viewBox="0 0 16 16">
-                                <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
-                            </svg>
                             <label for="img-input_{{ $value['id_jurusan'] }}" class="btn w-100 h-100 position-relative d-flex justify-content-center align-items-center">
                                 @if(isset($value['lambang_jurusan']))
                                 <img src="{{ 'storage/jurusan-image/'.$value['lambang_jurusan'] }}" id="uploadedIMG_{{ $value['id_jurusan'] }}" style="width:50%;">
@@ -53,6 +50,11 @@
                                     <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
                                 </svg>
                             </div>
+                            <button class="btn col-auto position-absolute top-0 end-0 cancel-btn" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                </svg>
+                            </button>
                         </div>
                     @endforeach
                     <button type="submit" class="position-fixed bottom-0 end-0 m-3 m-md-5 btn submit-btn col-auto" style="box-shadow: 0px 0px 16px rgb(0 0 0 / 25%);">Perbarui Program Studi</button>

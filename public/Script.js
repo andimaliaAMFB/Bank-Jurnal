@@ -614,12 +614,10 @@ var prodi_select_list = [].concat(list_prodi);
             //delete from list
             if (document.querySelector(`.cancel-btn`)) {
                 var ItemList;
-                if (lokasi.includes(`prodi`)) {
-                    ItemList = document.querySelectorAll(`.cancel-btn`);
-                    ItemList.forEach(item => {
-                        deleteAdd_btn(item, event.target, 'delete');
-                    });
-                }
+                ItemList = document.querySelectorAll(`.cancel-btn`);
+                ItemList.forEach(item => {
+                    deleteAdd_btn(item, event.target, 'delete');
+                });
             }
             if (document.querySelector(`.add-btn`)) {
                 var item = document.querySelector(`.add-btn`);
@@ -676,58 +674,108 @@ var prodi_select_list = [].concat(list_prodi);
     }
     function deleteAdd_btn(item, clicked, typeBtn) {
         var ItemList_Parent;
-        if (typeBtn == 'add') { ItemList_Parent = item.parentNode.parentNode; }
-        else if (typeBtn == 'delete'){ ItemList_Parent = item.parentNode; }
+        if (lokasi.includes(`prodi`)){
+            if (typeBtn == 'add') { ItemList_Parent = item.parentNode.parentNode; }
+            else if (typeBtn == 'delete'){ ItemList_Parent = item.parentNode; }
+        }
+        else if (lokasi.includes(`my`)) {
+            if (typeBtn == 'add') { ItemList_Parent = item.parentNode; }
+            else if (typeBtn == 'delete'){
+                document.querySelectorAll(`table tr td`).forEach(element => {
+                    if (element.contains(clicked)) {
+                        ItemList_Parent = element;
+                    }
+                });
+            }
+        }
         var item_id;
         var item_name;
         var clickedParent;
-        document.querySelectorAll(`form div input`).forEach(element => {
-            if (element.parentNode.contains(clicked)) {
-                clickedParent = (element.id).replace(`img-input_`, ``);
-            }
-        });
-
+        if (lokasi.includes(`prodi`)){
+            document.querySelectorAll(`form div input`).forEach(element => {
+                if (element.parentNode.contains(clicked)) {
+                    clickedParent = (element.id).replace(`img-input_`, ``);
+                }
+            });
+        }
+        else if (lokasi.includes(`my`)) {
+            document.querySelectorAll(`table tr`).forEach(element => {
+                if (element.contains(clicked)) {
+                    clickedParent = element.querySelector(`td`).innerText;
+                }
+            });
+        }
         var modal = ItemList_Parent.querySelector(`.form-modal`);
         if (modal) {
-            var thisForm = document.querySelector(`main form`);
+            var thisForm;
             var typeForm;
-            if (thisForm.querySelector(`#form_add`)) { typeForm = 'add'; }
-            else if (thisForm.querySelector(`#form_delete`)) { typeForm = 'delete_' + clickedParent; }
-            if (typeForm.includes('add')) {
-                thisForm.action = lokasi;
-                thisForm.querySelectorAll(`input`).forEach(inputElement => {
-                    if (inputElement.name == `_method`) {inputElement.remove()}
-                });
+            if (lokasi.includes(`prodi`)){
+                thisForm = document.querySelector(`main form`);
+                if (thisForm.querySelector(`#form_add`)) { typeForm = 'add'; }
+                else if (thisForm.querySelector(`#form_delete`)) { typeForm = 'delete_' + clickedParent; }
             }
-            if (typeForm.includes('delete')){
-                item_id = modal.getAttribute(`data-id`);
-                item_name = modal.querySelector(`strong`).id;
-                thisForm.action = lokasi+`/delete/`+item_id;
-                thisForm.querySelectorAll(`input`).forEach(inputElement => {
-                    if (inputElement.name == `_method`) {inputElement.value = `DELETE`;}
-                });
+            else if (lokasi.includes(`my`)) {
+                thisForm = modal.querySelector(`form`);
+                if (modal.querySelector(`#form_add`)) { typeForm = 'add'; }
+                else if (modal.querySelector(`#form_delete`)) { typeForm = 'delete_' + clickedParent; }
             }
-
-            if (typeForm.includes(typeBtn) && 
-                !modal.contains(clicked) || clicked.classList.contains("close-btn")) {
-                thisForm.action = lokasi+`/update`;
-                if (typeBtn == 'add' && typeForm.includes('add')) {
-                    var inputMethod = document.createElement("input");
-                    inputMethod.type = 'hidden';
-                    inputMethod.name = "_method";
-                    inputMethod.value = "PUT";
-                    form_function(modal);
-                    modal.remove();
-                }
-                else if (typeBtn == 'delete' && typeForm.includes('delete')){
+            
+            if (typeForm) {
+                if (typeForm.includes('add')) {
+                    thisForm.action = lokasi;
                     thisForm.querySelectorAll(`input`).forEach(inputElement => {
-                        if (inputElement.name == `_method`) {inputElement.value = `PUT`;}
+                        if (inputElement.name == `_method`) {inputElement.remove()}
                     });
-                    form_function(modal);
-                    modal.remove();
                 }
-
+                else if (typeForm.includes('delete')){
+                    item_id = modal.getAttribute(`data-id`);
+                    if (lokasi.includes(`prodi`)){
+                        item_name = modal.querySelector(`strong`).id;
+                        thisForm.querySelectorAll(`input`).forEach(inputElement => {
+                            if (inputElement.name == `_method`) {inputElement.value = `DELETE`;}
+                        });
+                    }
+                    else if (lokasi.includes(`my`)) {
+                        var inputMethod = document.createElement("input");
+                        inputMethod.type = 'hidden';
+                        inputMethod.name = "_method";
+                        inputMethod.value = "DELETE";
+                    }
+                    thisForm.action = lokasi+`/delete/`+item_id;
+                }
+                if (typeForm.includes(typeBtn) && 
+                    (!modal.contains(clicked) || clicked.classList.contains("close-btn"))) {
+                    thisForm.action = lokasi+`/update`;
+                    if (typeBtn == 'add' && typeForm.includes('add')) {
+                        console.log("=================Add Data=================");
+                        var inputMethod = document.createElement("input");
+                        inputMethod.type = 'hidden';
+                        inputMethod.name = "_method";
+                        inputMethod.value = "PUT";
+                        form_function(modal);
+                        modal.remove();
+                    }
+                    else if (typeBtn == 'delete' && typeForm.includes('delete')){
+                        var listData;
+                        var listData_Parent;
+                        if (lokasi.includes(`prodi`)){ listData = document.querySelectorAll(`form div input`); }
+                        else if (lokasi.includes(`my`)) { listData = document.querySelectorAll(`table tr`); }
+                        listData.forEach(element => {
+                            if (lokasi.includes(`prodi`)){ listData_Parent= element.parentNode; }
+                            else if (lokasi.includes(`my`)) { listData_Parent= element; }
+                            if (listData_Parent.contains(clicked) && listData_Parent.contains(item)) {
+                                thisForm.querySelectorAll(`input`).forEach(inputElement => {
+                                    if (inputElement.name == `_method`) {inputElement.value = `PUT`;}
+                                });
+                                form_function(modal);
+                                modal.remove();
+                            }
+                        });
+                    }
+    
+                }
             }
+
         }
         else if (item.contains(clicked)){
             if (lokasi.includes(`prodi`)) {
@@ -739,34 +787,14 @@ var prodi_select_list = [].concat(list_prodi);
                     });
                 }
             }
+            else if (lokasi.includes(`my`)) {
+                if (typeBtn == 'add') {}
+                else if (typeBtn == 'delete') { item_id = clickedParent; }
+            }
             modal = document.createElement("div");
             modal.classList.add(`form-modal`);
             modal.style.display = `none`;
-            if (typeBtn == 'delete' && lokasi.includes(`prodi`)) {
-                modal.setAttribute(`data-id`,item_id);
-                form_addNewElement(ItemList_Parent, null , modal, 
-                    `<div class="fliter-form h-auto p-3" id="form_delete">
-                        <div class="form-card card col-md-8">
-                            <div class="mx-3">
-                                <div class="card-head d-flex flex-wrap justify-content-between align-items-center p-3 pt-0">
-                                    <h3 class="col-auto">Hapus Data</h3>
-                                    <button class="btn col-auto close-btn" type="button">X</button>
-                                </div>
-                                <div class="card-body">
-                                    <form action="`+lokasi+`/delete/`+item_id+`" method="POST">
-                                        <strong id="`+item_name+`"> Apakah Anda Yakin akan menghapus `+item_name+`?</strong>
-                                        <div class="row justify-content-end">
-                                            <button type="button" class="btn rounded-pill col-auto mx-1 btn-secondary close-btn">Close</button>
-                                            <button type="submit" class="btn rounded-pill col-auto bg-red-1 mx-1">Delete</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`
-                );
-            }
-            else if (typeBtn == 'add' && lokasi.includes(`prodi`)) {
+            if (typeBtn == 'add' && lokasi.includes(`prodi`)) {
                 form_addNewElement(ItemList_Parent, null , modal, 
                     `<div class="fliter-form h-auto p-3" id="form_add">
                         <div class="form-card card col-md-8">
@@ -816,9 +844,56 @@ var prodi_select_list = [].concat(list_prodi);
                     </div>`
                 );
             }
+            else if (typeBtn == 'delete' && lokasi.includes(`prodi`)) {
+                modal.setAttribute(`data-id`,item_id);
+                form_addNewElement(ItemList_Parent, null , modal, 
+                    `<div class="fliter-form h-auto p-3" id="form_delete">
+                        <div class="form-card card col-md-8">
+                            <div class="mx-3">
+                                <div class="card-head d-flex flex-wrap justify-content-between align-items-center p-3 pt-0">
+                                    <h3 class="col-auto">Hapus Data</h3>
+                                    <button class="btn col-auto close-btn" type="button">X</button>
+                                </div>
+                                <div class="card-body">
+                                    <form action="`+lokasi+`/delete/`+item_id+`" method="POST">
+                                        <strong id="`+item_name+`"> Apakah Anda Yakin akan menghapus `+item_name+`?</strong>
+                                        <div class="row justify-content-end">
+                                            <button type="button" class="btn rounded-pill col-auto mx-1 btn-secondary close-btn">Close</button>
+                                            <button type="submit" class="btn rounded-pill col-auto bg-red-1 mx-1">Delete</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+                );
+            }
+            else if (typeBtn == 'delete' && lokasi.includes(`my`)) {
+                modal.setAttribute(`data-id`,item_id);
+                form_addNewElement(ItemList_Parent, null , modal, 
+                    `<div class="fliter-form h-auto p-3" id="form_delete">
+                        <div class="form-card card col-md-8">
+                            <div class="mx-3">
+                                <div class="card-head d-flex flex-wrap justify-content-between align-items-center p-3 pt-0">
+                                    <h3 class="col-auto">Hapus Artikel</h3>
+                                    <button class="btn col-auto close-btn" type="button">X</button>
+                                </div>
+                                <div class="card-body">
+                                    <form action="`+lokasi+`/delete/`+clickedParent+`" method="POST">
+                                        <strong id="`+clickedParent+`"> Apakah Anda Yakin akan menghapus Artikel [`+clickedParent+`]?</strong>
+                                        <div class="row justify-content-end">
+                                            <button type="button" class="btn rounded-pill col-auto mx-1 btn-secondary close-btn">Close</button>
+                                            <button type="submit" class="btn rounded-pill col-auto bg-red-1 mx-1">Delete</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+                );
+            }
             
             form_function(modal);
-            // console.log(typeBtn,modal);
         }
     }
 

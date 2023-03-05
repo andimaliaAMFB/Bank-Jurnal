@@ -27,36 +27,52 @@
                     {{ csrf_field() }}
                     <input type="hidden" name="_method" value="PUT">
                     <div class="d-flex flex-wrap justify-content-center w-100">
+
+                    @php
+                        $lastId_Prodi = 0;
+                    @endphp
                     @foreach($tableProdi as $key => $value)
-                        <div class="d-flex flex-column justify-content-between align-items-center col-md-2 border p-2 m-2 img_add blockDiv position-relative">
-                            <label for="img-input_{{ $value['id_jurusan'] }}" class="btn w-100 h-100 position-relative d-flex justify-content-center align-items-center">
-                                @if(isset($value['lambang_jurusan']))
-                                <img src="{{ 'storage/jurusan-image/'.$value['lambang_jurusan'] }}" id="uploadedIMG_{{ $value['id_jurusan'] }}" style="width:50%;">
-                                @else
-                                <img src="" id="uploadedIMG_{{ $value['id_jurusan'] }}" style="width:50%;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" id="blank-pp" class="bi bi-journal position-absolute w-100 h-100 top-0 start-0 p-2 p-md-4" viewBox="0 0 16 16" style="display: block; opacity: 0.75;">
-                                    <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
-                                    <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
-                                </svg>
-                                @endif
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg position-absolute w-100 h-100 top-0 start-0 p-3 p-md-5" viewBox="0 0 16 16" style="display:none;">
-                                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
-                                </svg>
-                            </label>
-                            <input class="form-file" id="img-input_{{ $value['id_jurusan'] }}" type="file" name="imageup_{{ $value['id_jurusan'] }}" style="display:none; visibility: none;" onchange="priviewImage(`{{ $value['id_jurusan'] }}`);"/>
-                            <div class="p-2 w-100 text-center line-3-h d-flex justify-content-between align-items-center">
-                                <input name="{{ $value['id_jurusan'] }}" type="text" class="p-0" value="{{ $value['nama_jurusan'] }}" style="font-weight:bolder;" required>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
-                                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
-                                </svg>
-                            </div>
-                            <button class="btn col-auto position-absolute top-0 end-0 cancel-btn" type="button">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
-                                </svg>
-                            </button>
-                        </div>
+                        @if (intval(substr($value['id_jurusan'],8)) > $lastId_Prodi)
+                            @php
+                                $lastId_Prodi = intval(substr($value['id_jurusan'],8));
+                            @endphp
+                        @endif
                     @endforeach
+
+                    @for($idProdi = 0; $idProdi <= $lastId_Prodi ; $idProdi++)
+                        @foreach($tableProdi as $key => $value)
+                            @if($value['id_jurusan'] == 'Jurusan-'.$idProdi)
+                                <div class="d-flex flex-column justify-content-between align-items-center col-md-2 border p-2 m-2 img_add blockDiv position-relative">
+                                    <label for="img-input_{{ $value['id_jurusan'] }}" class="btn w-100 h-100 position-relative d-flex justify-content-center align-items-center">
+                                        @if(isset($value['lambang_jurusan']))
+                                        <img src="{{ 'storage/jurusan-image/'.$value['lambang_jurusan'] }}" id="uploadedIMG_{{ $value['id_jurusan'] }}" style="width:50%;">
+                                        @else
+                                        <img src="" id="uploadedIMG_{{ $value['id_jurusan'] }}" style="width:50%;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" id="blank-pp" class="bi bi-journal position-absolute w-100 h-100 top-0 start-0 p-2 p-md-4" viewBox="0 0 16 16" style="display: block; opacity: 0.75;">
+                                            <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+                                            <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+                                        </svg>
+                                        @endif
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg position-absolute w-100 h-100 top-0 start-0 p-3 p-md-5" viewBox="0 0 16 16" style="display:none;">
+                                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+                                        </svg>
+                                    </label>
+                                    <input class="form-file" id="img-input_{{ $value['id_jurusan'] }}" type="file" name="imageup_{{ $value['id_jurusan'] }}" style="display:none; visibility: none;" onchange="priviewImage(`{{ $value['id_jurusan'] }}`);"/>
+                                    <div class="p-2 w-100 text-center line-3-h d-flex justify-content-between align-items-center">
+                                        <input name="{{ $value['id_jurusan'] }}" type="text" class="p-0" value="{{ $value['nama_jurusan'] }}" style="font-weight:bolder;" required>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+                                            <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
+                                        </svg>
+                                    </div>
+                                    <button class="btn col-auto position-absolute top-0 end-0 cancel-btn" type="button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            @endif
+                        @endforeach
+                    @endfor
 
                     <div class="position-fixed bottom-0 end-0 m-3 m-md-4 d-flex flex-column align-items-end">
                         <button class="btn bg-3 my-3 dot p-1 add-btn" type="button" style="width:3rem; height:3rem;">
@@ -114,6 +130,8 @@
                 if (id.includes('Create_img')) {
                     parent = document.getElementById('Create_img_upload').parentNode;
                     parent.querySelector('#Create_img_upload').classList.add('mb-3');
+                    parent.querySelector('#Create_img_upload').style.maxWidth= '15vw';
+                    parent.querySelector('#Create_img_upload').style.maxHeight= '15vw';
                     parent.querySelector('svg#blank-pp').remove();
                 }
                 else {

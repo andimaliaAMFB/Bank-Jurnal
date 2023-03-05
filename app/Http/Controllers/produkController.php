@@ -75,7 +75,43 @@ class produkController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function prodiStore(Request $request) {
-        foreach ($request->all() as $key => $value) {
+        if ($request->hasFile('Create_img')) {
+            $lastId_jurusan = 0;
+            $img_jurusan;
+            $nama_jurusan;
+            foreach (jurusan::all() as $key => $value) {
+                if (intval(substr($value->id_jurusan,8)) > $lastId_jurusan) {
+                    $lastId_jurusan = intval(substr($value->id_jurusan,8));
+                }
+            }
+            $lastId_jurusan = 'Jurusan-'.($lastId_jurusan + 1);
+            foreach ($request->all() as $key => $value) {
+                if (str_contains($key,'Create_')) {
+                    if (str_contains($key,'nama')) { $nama_jurusan = $value; }
+                    else if (str_contains($key,'img')) {
+                        $img_ext =  $request->file('Create_img')->getClientOriginalExtension();
+                        $img_jurusan = $lastId_jurusan.".".$img_ext;
+                    }
+                }
+            }
+            $request->file('Create_img')->storeAs('public/jurusan-image/',$img_jurusan);
+
+            if(jurusan::where('id_jurusan', '=', $lastId_jurusan)->doesntExist()) {
+                jurusan::create([
+                        'id_jurusan' => $lastId_jurusan,
+                        'nama_jurusan' => $nama_jurusan,
+                        'lambang_jurusan' => $img_jurusan
+                    ]);
+            }
+        
+            return redirect()
+                ->route('prodi')
+                ->with(['success' => 'Berhasil Menambahkan Program Studi']);
+        }
+        else {
+            return redirect()
+            ->route('prodi')
+            ->with(['success' => 'Terjadi Kesalahan Dalam Menambah Program Studi']);
         }
     }
 

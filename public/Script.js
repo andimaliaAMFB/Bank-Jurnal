@@ -709,7 +709,7 @@ var prodi_select_list = [].concat(list_prodi);
                                     </div>
                                     <div class="card-body">
                                         <div class="input d-flex flex-wrap justify-content-between align-items-center my-3 mb-4 my-md-2" id="text-pnl-1">
-                                            <div class="col-12 col-md-3"><strong>Lambang Program Studi</strong></div>
+                                            <div class="col-12 col-md-3"><strong>Lambang Program Studi</strong><strong class="col-red-1 px-1">*</strong></div>
                                             <div class="col-12 col-md-9 search_input d-flex flex-wrap">
                                                 <div class="searchbar w-100 px-3 h-auto" style="min-height:15vw">
                                                     <input class="form-file" id="Create_img" type="file" name="Create_img" accept=".jpg, .png" autocomplete="off" hidden required onchange="priviewImage('Create_img');">
@@ -730,7 +730,7 @@ var prodi_select_list = [].concat(list_prodi);
                                         </div>
                                         
                                         <div class="input d-flex flex-wrap justify-content-between align-items-center my-3 my-mb-2" id="text-pnl-1">
-                                            <div class="col-12 col-md-3"><strong>Nama Program Studi</strong></div>
+                                            <div class="col-12 col-md-3"><strong>Nama Program Studi</strong><strong class="col-red-1 px-1">*</strong></div>
                                             <div class="col-12 col-md-9 search_input d-flex flex-wrap">
                                                 <div class="searchbar w-100 px-3">
                                                     <input name="Create_nama" type="text" class="p-0" placeholder="Nama Program Studi" autocomplete="off" required>

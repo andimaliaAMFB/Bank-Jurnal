@@ -155,7 +155,7 @@
                                     <div class="drop-file__prompt text-center w-100 d-flex flex-column align-items-center justify-content-center">
                                         <p>Upload Document (Doc/Docs/PDF)</p>
                                         <p>Max Size 10 MB</p>
-                                        <p class="link">Browser</p>
+                                        <p class="link">Pilih Dokumen</p>
                                     </div>
                                     <input type="file" name="file" class="drop-file__input" accept="application/pdf, application/vnd.msword" required>
                                 </div>

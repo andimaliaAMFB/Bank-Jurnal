@@ -57,7 +57,15 @@
                             </button>
                         </div>
                     @endforeach
-                    <button type="submit" class="position-fixed bottom-0 end-0 m-3 m-md-5 btn submit-btn col-auto" style="box-shadow: 0px 0px 16px rgb(0 0 0 / 25%);">Perbarui Program Studi</button>
+
+                    <div class="position-fixed bottom-0 end-0 m-3 m-md-4 d-flex flex-column align-items-end">
+                        <button class="btn bg-3 my-3 dot p-1 add-btn" type="button" style="width:3rem; height:3rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg w-100 h-100" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+                            </svg>
+                        </button>
+                        <button type="submit" class="btn submit-btn col-auto" style="box-shadow: 0px 0px 16px rgb(0 0 0 / 25%);">Perbarui Program Studi</button>
+                    </div>
                     </div>
                 </div>
             </form>
@@ -83,17 +91,35 @@
         <script src="Script.js"></script>
         <script type="text/javascript">
             function priviewImage(id){
-                var file = document.getElementById('img-input_'+id).files;
+                var file;
+                if (id.includes('Create_img')) {
+                    file = document.getElementById('Create_img').files;
+                }
+                else {
+                    file = document.getElementById('img-input_'+id).files;
+                }
                 if (file.length > 0) {
                     var fileReader = new FileReader();
 
                     fileReader.onload = function (event){
-                        document.getElementById('uploadedIMG_'+id).setAttribute("src",event.target.result);
+                        if (id.includes('Create_img')) {
+                            document.getElementById('Create_img_upload').setAttribute("src",event.target.result);
+                        }
+                        else {
+                            document.getElementById('uploadedIMG_'+id).setAttribute("src",event.target.result);
+                        }
                     };
                     fileReader.readAsDataURL(file[0]);
                 }
-                parent = document.getElementById('uploadedIMG_'+id).parentNode;
-                parent.querySelector('svg#blank-pp').remove();
+                if (id.includes('Create_img')) {
+                    parent = document.getElementById('Create_img_upload').parentNode;
+                    parent.querySelector('#Create_img_upload').classList.add('mb-3');
+                    parent.querySelector('svg#blank-pp').remove();
+                }
+                else {
+                    parent = document.getElementById('uploadedIMG_'+id).parentNode;
+                    parent.querySelector('svg#blank-pp').remove();
+                }
             }
         </script>
     </body>

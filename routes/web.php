@@ -22,6 +22,7 @@ Route::get('/', function(){
 });
 Route::get('dashboard', [produkController::class, 'index'])->name('dashboard');
 Route::get('prodi', [produkController::class, 'programJurusan'])->name('prodi');
+Route::post('prodi', [produkController::class, 'prodiStore'])->name('prodi.store');
 Route::put('prodi/update', [produkController::class, 'prodiUpdate'])->name('prodi.update');
 Route::delete('prodi/delete/{id}', [produkController::class, 'prodiDelete'])->name('prodi.delete');
 

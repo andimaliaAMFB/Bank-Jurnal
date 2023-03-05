@@ -30,7 +30,7 @@ document.querySelectorAll(`input`).forEach(element => {
     if (list_judul.length) {list_judul.sort();}
     if (list_penulis.length) {list_penulis.sort();}
     if (list_prodi.length) {
-        list_prodi.push('[ N/a ]');
+        if(lokasi.includes("dashboard")) {list_prodi.push('[ N/a ]');}
         list_prodi.sort();
     }
     if (final_search.length) {final_search.sort();}
@@ -672,6 +672,83 @@ var prodi_select_list = [].concat(list_prodi);
                         form_function(modal);
                     }
                 });
+            }
+            if (document.querySelector(`.add-btn`)) {
+                var item = document.querySelector(`.add-btn`);
+                var ItemList_Parent = item.parentNode.parentNode;
+                var modal = ItemList_Parent.querySelector(`.form-modal`);
+                if (modal) {
+                    var thisForm = document.querySelector(`main form`);
+                    thisForm.action = lokasi;
+                    thisForm.querySelectorAll(`input`).forEach(inputElement => {
+                        if (inputElement.name == `_method`) {inputElement.remove()}
+                    });
+
+                    if (!modal.querySelector(`.form-card`).contains(event.target) || event.target.classList.contains("close-btn")) {
+                        thisForm.action = lokasi+`/update`;
+                        var inputMethod = document.createElement("input");
+                        inputMethod.type = 'hidden';
+                        inputMethod.name = "_method";
+                        inputMethod.value = "PUT";
+
+                        form_function(modal);
+                        modal.remove();
+                    }
+                }
+                else if (item.contains(event.target)){
+                    modal = document.createElement("div");
+                    modal.classList.add(`form-modal`);
+                    modal.style.display = `none`;
+                    form_addNewElement(ItemList_Parent, null , modal, 
+                        `<div class="fliter-form h-auto p-3" id="form_add">
+                            <div class="form-card card col-md-8">
+                                <div class="mx-3">
+                                    <div class="card-head d-flex flex-wrap justify-content-between align-items-center p-3 pt-0">
+                                        <h3 class="col-auto">Menambahkan Data</h3>
+                                        <button class="btn col-auto close-btn" type="button">X</button>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="input d-flex flex-wrap justify-content-between align-items-center my-3 mb-4 my-md-2" id="text-pnl-1">
+                                            <div class="col-12 col-md-3"><strong>Lambang Program Studi</strong></div>
+                                            <div class="col-12 col-md-9 search_input d-flex flex-wrap">
+                                                <div class="searchbar w-100 px-3 h-auto" style="min-height:15vw">
+                                                    <input class="form-file" id="Create_img" type="file" name="Create_img" accept=".jpg, .png" autocomplete="off" hidden required onchange="priviewImage('Create_img');">
+                                                    <label for="Create_img" class="btn w-100 h-100 position-relative d-flex flex-wrap justify-content-center align-items-center">
+                                                        <img src="" id="Create_img_upload" style="width:100%;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" id="blank-pp" class="bi bi-journal" viewBox="0 0 16 16" style="display: block; opacity: 0.75;">
+                                                            <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+                                                            <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+                                                        </svg>
+                                                        <div class="text-center w-100 d-flex flex-column align-items-center justify-content-center">
+                                                            <p>Upload Image (JPG/PNG)</p>
+                                                            <p>Max Size 5 MB</p>
+                                                            <p class="link"><strong>Pilih Gambar</strong></p>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="input d-flex flex-wrap justify-content-between align-items-center my-3 my-mb-2" id="text-pnl-1">
+                                            <div class="col-12 col-md-3"><strong>Nama Program Studi</strong></div>
+                                            <div class="col-12 col-md-9 search_input d-flex flex-wrap">
+                                                <div class="searchbar w-100 px-3">
+                                                    <input name="Create_nama" type="text" class="p-0" placeholder="Nama Program Studi" autocomplete="off" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                            
+                                        <div class="row justify-content-end">
+                                            <button type="button" class="btn submit-btn-border col-auto mx-1 close-btn">Close</button>
+                                            <button type="submit" class="btn submit-btn col-auto mx-1">Tambah Baru</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`
+                    );
+                    form_function(modal);
+                }
             }
                 
 
@@ -1689,7 +1766,6 @@ function suggestionBar(input_box, dd, parent_id, selectValue) {
         if (prodi == '[ N/a ]') { prodi_color.push({ "nama_prodi": prodi, "warna": '343a40'}); }
         else { prodi_color.push({ "nama_prodi": prodi, "warna": r+g+b}); }
     });
-    check_prodi_list = document.querySelector('.prodi-pilih');
     
     function ProdiList(items) {
         if (document.getElementsByClassName("filter-prodi")) {

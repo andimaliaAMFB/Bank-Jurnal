@@ -238,6 +238,9 @@ var prodi_select_list = [].concat(list_prodi);
                                     else if (event.target.textContent.includes("Status Perubahan")) { //if click (Lihat Artikel) menu
                                         form_inside(form_wrapper,tr.getAttribute('data-id')); //make div child for every revision in this article
                                     }
+                                    else if (event.target.textContent.includes("Hapus Artikel")) { //if click (Lihat Artikel) menu
+                                        
+                                    }
                                     next.style.display = "none"; //close menu dropdown
                                 }
                             }
@@ -611,144 +614,16 @@ var prodi_select_list = [].concat(list_prodi);
             //delete from list
             if (document.querySelector(`.cancel-btn`)) {
                 var ItemList;
-                if (lokasi.includes(`prodi`)) { ItemList = document.querySelectorAll(`.cancel-btn`); }
-                ItemList.forEach(item => {
-                    var ItemList_Parent = item.parentNode;
-                    var item_id;
-                    var item_name;
-                    var modal = ItemList_Parent.querySelector(`.form-modal`);
-                    if (modal) {
-                        item_id = modal.getAttribute(`data-id`);
-                        item_name = modal.querySelector(`strong`).id;
-                        var thisForm = document.querySelector(`main form`);
-                        thisForm.action = lokasi+`/delete/`+item_id;
-                        thisForm.querySelectorAll(`input`).forEach(inputElement => {
-                            if (inputElement.name == `_method`) {inputElement.value = `DELETE`;}
-                        });
-
-                        if (!modal.contains(event.target) || event.target.classList.contains("close-btn")) {
-                            thisForm.action = lokasi+`/update`;
-                            thisForm.querySelectorAll(`input`).forEach(inputElement => {
-                                if (inputElement.name == `_method`) {inputElement.value = `PUT`;}
-                            });
-
-                            form_function(modal);
-                            modal.remove();
-                        }
-                        console.log(thisForm);
-                    }
-                    else if (item.contains(event.target)){
-                        if (lokasi.includes(`prodi`)) {
-                            ItemList_Parent.querySelectorAll(`input`).forEach(element => {
-                                if (element.type == "file") { item_id = (element.id).replace(`img-input_`, ``); }
-                                else if (element.type == "text") { item_name = element.value; }
-                            });
-                        }
-                        modal = document.createElement("div");
-                        modal.classList.add(`form-modal`);
-                        modal.style.display = `none`;
-                        modal.setAttribute(`data-id`,item_id);
-                        form_addNewElement(ItemList_Parent, null , modal, 
-                            `<div class="fliter-form h-auto p-3" id="form_delete">
-                                <div class="form-card card col-md-8">
-                                    <div class="mx-3">
-                                        <div class="card-head d-flex flex-wrap justify-content-between align-items-center p-3 pt-0">
-                                            <h3 class="col-auto">Hapus Data</h3>
-                                            <button class="btn col-auto close-btn" type="button">X</button>
-                                        </div>
-                                        <div class="card-body">
-                                            <form action="`+lokasi+`/delete/`+item_id+`" method="POST">
-                                                <strong id="`+item_name+`"> Apakah Anda Yakin akan menghapus `+item_name+`?</strong>
-                                                <div class="row justify-content-end">
-                                                    <button type="button" class="btn rounded-pill col-auto mx-1 btn-secondary close-btn">Close</button>
-                                                    <button type="submit" class="btn rounded-pill col-auto bg-red-1 mx-1">Delete</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>`
-                        );
-                        form_function(modal);
-                    }
-                });
+                if (lokasi.includes(`prodi`)) {
+                    ItemList = document.querySelectorAll(`.cancel-btn`);
+                    ItemList.forEach(item => {
+                        deleteAdd_btn(item, event.target, 'delete');
+                    });
+                }
             }
             if (document.querySelector(`.add-btn`)) {
                 var item = document.querySelector(`.add-btn`);
-                var ItemList_Parent = item.parentNode.parentNode;
-                var modal = ItemList_Parent.querySelector(`.form-modal`);
-                if (modal) {
-                    var thisForm = document.querySelector(`main form`);
-                    thisForm.action = lokasi;
-                    thisForm.querySelectorAll(`input`).forEach(inputElement => {
-                        if (inputElement.name == `_method`) {inputElement.remove()}
-                    });
-
-                    if (!modal.querySelector(`.form-card`).contains(event.target) || event.target.classList.contains("close-btn")) {
-                        thisForm.action = lokasi+`/update`;
-                        var inputMethod = document.createElement("input");
-                        inputMethod.type = 'hidden';
-                        inputMethod.name = "_method";
-                        inputMethod.value = "PUT";
-
-                        form_function(modal);
-                        modal.remove();
-                    }
-                }
-                else if (item.contains(event.target)){
-                    modal = document.createElement("div");
-                    modal.classList.add(`form-modal`);
-                    modal.style.display = `none`;
-                    form_addNewElement(ItemList_Parent, null , modal, 
-                        `<div class="fliter-form h-auto p-3" id="form_add">
-                            <div class="form-card card col-md-8">
-                                <div class="mx-3">
-                                    <div class="card-head d-flex flex-wrap justify-content-between align-items-center p-3 pt-0">
-                                        <h3 class="col-auto">Menambahkan Data</h3>
-                                        <button class="btn col-auto close-btn" type="button">X</button>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="input d-flex flex-wrap justify-content-between align-items-center my-3 mb-4 my-md-2" id="text-pnl-1">
-                                            <div class="col-12 col-md-3"><strong>Lambang Program Studi</strong><strong class="col-red-1 px-1">*</strong></div>
-                                            <div class="col-12 col-md-9 search_input d-flex flex-wrap">
-                                                <div class="searchbar w-100 px-3 h-auto" style="min-height:15vw">
-                                                    <input class="form-file" id="Create_img" type="file" name="Create_img" accept=".jpg, .png" autocomplete="off" hidden required onchange="priviewImage('Create_img');">
-                                                    <label for="Create_img" class="btn w-100 h-100 position-relative d-flex flex-wrap justify-content-center align-items-center">
-                                                        <img src="" id="Create_img_upload" style="width:100%;">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" id="blank-pp" class="bi bi-journal" viewBox="0 0 16 16" style="display: block; opacity: 0.75;">
-                                                            <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
-                                                            <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
-                                                        </svg>
-                                                        <div class="text-center w-100 d-flex flex-column align-items-center justify-content-center">
-                                                            <p>Upload Image (JPG/PNG)</p>
-                                                            <p>Max Size 5 MB</p>
-                                                            <p class="link"><strong>Pilih Gambar</strong></p>
-                                                        </div>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="input d-flex flex-wrap justify-content-between align-items-center my-3 my-mb-2" id="text-pnl-1">
-                                            <div class="col-12 col-md-3"><strong>Nama Program Studi</strong><strong class="col-red-1 px-1">*</strong></div>
-                                            <div class="col-12 col-md-9 search_input d-flex flex-wrap">
-                                                <div class="searchbar w-100 px-3">
-                                                    <input name="Create_nama" type="text" class="p-0" placeholder="Nama Program Studi" autocomplete="off" required>
-                                                </div>
-                                            </div>
-                                        </div>
-                            
-                                        <div class="row justify-content-end">
-                                            <button type="button" class="btn submit-btn-border col-auto mx-1 close-btn">Close</button>
-                                            <button type="submit" class="btn submit-btn col-auto mx-1">Tambah Baru</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>`
-                    );
-                    form_function(modal);
-                }
+                deleteAdd_btn(item, event.target, 'add');
             }
                 
 
@@ -797,6 +672,153 @@ var prodi_select_list = [].concat(list_prodi);
                 selectElement.options[0].removeAttribute('selected');
                 selectElement.options[i].setAttribute('selected',true);
             }
+        }
+    }
+    function deleteAdd_btn(item, clicked, typeBtn) {
+        var ItemList_Parent;
+        if (typeBtn == 'add') { ItemList_Parent = item.parentNode.parentNode; }
+        else if (typeBtn == 'delete'){ ItemList_Parent = item.parentNode; }
+        var item_id;
+        var item_name;
+        var clickedParent;
+        document.querySelectorAll(`form div input`).forEach(element => {
+            if (element.parentNode.contains(clicked)) {
+                clickedParent = (element.id).replace(`img-input_`, ``);
+            }
+        });
+
+        var modal = ItemList_Parent.querySelector(`.form-modal`);
+        if (modal) {
+            var thisForm = document.querySelector(`main form`);
+            var typeForm;
+            if (thisForm.querySelector(`#form_add`)) { typeForm = 'add'; }
+            else if (thisForm.querySelector(`#form_delete`)) { typeForm = 'delete_' + clickedParent; }
+            if (typeForm.includes('add')) {
+                thisForm.action = lokasi;
+                thisForm.querySelectorAll(`input`).forEach(inputElement => {
+                    if (inputElement.name == `_method`) {inputElement.remove()}
+                });
+            }
+            if (typeForm.includes('delete')){
+                item_id = modal.getAttribute(`data-id`);
+                item_name = modal.querySelector(`strong`).id;
+                thisForm.action = lokasi+`/delete/`+item_id;
+                thisForm.querySelectorAll(`input`).forEach(inputElement => {
+                    if (inputElement.name == `_method`) {inputElement.value = `DELETE`;}
+                });
+            }
+
+            if (typeForm.includes(typeBtn) && 
+                !modal.contains(clicked) || clicked.classList.contains("close-btn")) {
+                thisForm.action = lokasi+`/update`;
+                if (typeBtn == 'add' && typeForm.includes('add')) {
+                    var inputMethod = document.createElement("input");
+                    inputMethod.type = 'hidden';
+                    inputMethod.name = "_method";
+                    inputMethod.value = "PUT";
+                    form_function(modal);
+                    modal.remove();
+                }
+                else if (typeBtn == 'delete' && typeForm.includes('delete')){
+                    thisForm.querySelectorAll(`input`).forEach(inputElement => {
+                        if (inputElement.name == `_method`) {inputElement.value = `PUT`;}
+                    });
+                    form_function(modal);
+                    modal.remove();
+                }
+
+            }
+        }
+        else if (item.contains(clicked)){
+            if (lokasi.includes(`prodi`)) {
+                if (typeBtn == 'add') {}
+                else if (typeBtn == 'delete') {
+                    ItemList_Parent.querySelectorAll(`input`).forEach(element => {
+                        if (element.type == "file") { item_id = (element.id).replace(`img-input_`, ``); }
+                        else if (element.type == "text") { item_name = element.value; }
+                    });
+                }
+            }
+            modal = document.createElement("div");
+            modal.classList.add(`form-modal`);
+            modal.style.display = `none`;
+            if (typeBtn == 'delete' && lokasi.includes(`prodi`)) {
+                modal.setAttribute(`data-id`,item_id);
+                form_addNewElement(ItemList_Parent, null , modal, 
+                    `<div class="fliter-form h-auto p-3" id="form_delete">
+                        <div class="form-card card col-md-8">
+                            <div class="mx-3">
+                                <div class="card-head d-flex flex-wrap justify-content-between align-items-center p-3 pt-0">
+                                    <h3 class="col-auto">Hapus Data</h3>
+                                    <button class="btn col-auto close-btn" type="button">X</button>
+                                </div>
+                                <div class="card-body">
+                                    <form action="`+lokasi+`/delete/`+item_id+`" method="POST">
+                                        <strong id="`+item_name+`"> Apakah Anda Yakin akan menghapus `+item_name+`?</strong>
+                                        <div class="row justify-content-end">
+                                            <button type="button" class="btn rounded-pill col-auto mx-1 btn-secondary close-btn">Close</button>
+                                            <button type="submit" class="btn rounded-pill col-auto bg-red-1 mx-1">Delete</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+                );
+            }
+            else if (typeBtn == 'add' && lokasi.includes(`prodi`)) {
+                form_addNewElement(ItemList_Parent, null , modal, 
+                    `<div class="fliter-form h-auto p-3" id="form_add">
+                        <div class="form-card card col-md-8">
+                            <div class="mx-3">
+                                <div class="card-head d-flex flex-wrap justify-content-between align-items-center p-3 pt-0">
+                                    <h3 class="col-auto">Menambahkan Data</h3>
+                                    <button class="btn col-auto close-btn" type="button">X</button>
+                                </div>
+                                <div class="card-body">
+                                    <div class="input d-flex flex-wrap justify-content-between align-items-center my-3 mb-4 my-md-2" id="text-pnl-1">
+                                        <div class="col-12 col-md-3"><strong>Lambang Program Studi</strong><strong class="col-red-1 px-1">*</strong></div>
+                                        <div class="col-12 col-md-9 search_input d-flex flex-wrap">
+                                            <div class="searchbar w-100 px-3 h-auto" style="min-height:15vw">
+                                                <input class="form-file" id="Create_img" type="file" name="Create_img" accept=".jpg, .png" autocomplete="off" hidden required onchange="priviewImage('Create_img');">
+                                                <label for="Create_img" class="btn w-100 h-100 position-relative d-flex flex-wrap justify-content-center align-items-center">
+                                                    <img src="" id="Create_img_upload" style="width:100%;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" id="blank-pp" class="bi bi-journal" viewBox="0 0 16 16" style="display: block; opacity: 0.75;">
+                                                        <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+                                                        <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+                                                    </svg>
+                                                    <div class="text-center w-100 d-flex flex-column align-items-center justify-content-center">
+                                                        <p>Upload Image (JPG/PNG)</p>
+                                                        <p>Max Size 5 MB</p>
+                                                        <p class="link"><strong>Pilih Gambar</strong></p>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="input d-flex flex-wrap justify-content-between align-items-center my-3 my-mb-2" id="text-pnl-1">
+                                        <div class="col-12 col-md-3"><strong>Nama Program Studi</strong><strong class="col-red-1 px-1">*</strong></div>
+                                        <div class="col-12 col-md-9 search_input d-flex flex-wrap">
+                                            <div class="searchbar w-100 px-3">
+                                                <input name="Create_nama" type="text" class="p-0" placeholder="Nama Program Studi" autocomplete="off" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                        
+                                    <div class="row justify-content-end">
+                                        <button type="button" class="btn submit-btn-border col-auto mx-1 close-btn">Close</button>
+                                        <button type="submit" class="btn submit-btn col-auto mx-1">Tambah Baru</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+                );
+            }
+            
+            form_function(modal);
+            // console.log(typeBtn,modal);
         }
     }
 
@@ -939,6 +961,7 @@ var prodi_select_list = [].concat(list_prodi);
                     last_column += `<a href="article/`+judul+`/re-upload"><li>Upload Revisi</li></a>`;
                 }
                 last_column += `<li>Status Perubahan</li>
+                                <li class="bg-red-1 cancel-btn">Hapus Artikel</li>
                                         </ul>
                                     </div>
                                 </td>

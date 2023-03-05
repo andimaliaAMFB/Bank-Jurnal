@@ -465,7 +465,6 @@ class ArtikelController extends Controller
         }
 
         $arrayAkun = (new listController)->getAkun();
-        
         if (!empty($arrayAkun) && $arrayAkun[0]['status'] == 'Penulis' && $arrayAkun[0]['nama_lengkap'] == $namaPenulis) {
             return redirect()->route('myarticle');
         }

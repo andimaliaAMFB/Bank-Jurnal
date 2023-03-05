@@ -19,7 +19,7 @@ class CreatePenulisTable extends Migration
                 $table->primary('id_penulis');
 
                 $table->ipAddress('id_akun',12)->nullable();
-                $table->ipAddress('id_jurusan',12);
+                $table->ipAddress('id_jurusan',12)->nullable();
                 $table->ipAddress('nama_penulis',20);
             });
         }

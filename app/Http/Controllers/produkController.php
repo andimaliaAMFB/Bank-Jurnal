@@ -25,7 +25,10 @@ class produkController extends Controller
         $tableProdi = json_decode((new listController)->getTable('Prodi'),true);
         $tablePenulis = [];
         foreach(penulis::orderBy('nama_penulis')->get() as $key => $value){
-            $jurusanPenulis = jurusan::where('id_jurusan','=',$value->id_jurusan)->first()->nama_jurusan;
+            $jurusanPenulis = null;
+            if ($value->id_jurusan) {
+                $jurusanPenulis = jurusan::where('id_jurusan','=',$value->id_jurusan)->first()->nama_jurusan;
+            }
             if($value->id_akun) {
                 $user = User::where('id','=',$value->id_akun)->first();
                 $tablePenulis[] = [ 'nama_penulis' => $value->nama_penulis,
@@ -97,5 +100,23 @@ class produkController extends Controller
         return redirect()
             ->route('prodi')
             ->with(['success' => 'Berhasil Update Program Studi']);
+    }
+    
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function prodiDelete($id) {
+        //nullified jurusan penulis dengan jurusan ini
+        penulis::where('id_jurusan','=',$id)->update(['id_jurusan' => null ]);
+
+        $nama_jurusan = jurusan::where('id_jurusan','=',$id)->first()->nama_jurusan;
+        jurusan::where('id_jurusan','=',$id)->delete();
+
+        return redirect()
+            ->route('prodi')
+            ->with(['success' => 'Berhasil Hapus Program Studi ['.$nama_jurusan.']']);
     }
 }

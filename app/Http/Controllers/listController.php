@@ -331,7 +331,10 @@ class listController extends Controller
                         $detail_penulis = penulis::where('id_penulis','=',$datapenulis->id_penulis)->first();
                         if (!in_array($detail_penulis->nama_penulis,$list_of_penulis)) {
                             $list_of_penulis[] = $detail_penulis->nama_penulis;
-                            $namajurusan = jurusan::where('id_jurusan','=',$detail_penulis->id_jurusan)->value('nama_jurusan');
+                            $namajurusan = '[ N/a ]';
+                            if (jurusan::where('id_jurusan','=',$detail_penulis->id_jurusan)->exists()) {
+                                $namajurusan = jurusan::where('id_jurusan','=',$detail_penulis->id_jurusan)->value('nama_jurusan');
+                            }
                             if(!in_array($namajurusan,$list_of_prodi)) { $list_of_prodi[] = $namajurusan; }
                         }
                     }
@@ -369,8 +372,7 @@ class listController extends Controller
         
         $id_article_TA = '';
         foreach ($tableArray as $key => $value) {
-            if($id_article_TA != $value['id_artikel'])
-            {
+            if($id_article_TA != $value['id_artikel']) {
                 $id_article_TA = $value['id_artikel'];
 
                 $datamodel = (artikel_detail::where('id_artikel', '=', $id_article_TA)
@@ -460,13 +462,17 @@ class listController extends Controller
             $provinsi = provinsi::where('id_provinsi','=',Auth::user()->id_provinsi)->first();
             if (Auth::user()->status == "Penulis") {
                 $penulis = penulis::where('id_akun','=',Auth::user()->id)->first();
+                $nama_prodi = null;
+                if (jurusan::where('id_jurusan','=',$penulis->id_jurusan)->exists()) {
+                    $nama_prodi = jurusan::where('id_jurusan','=',$penulis->id_jurusan)->first()->nama_jurusan;
+                }
                 $prodi = jurusan::where('id_jurusan','=',$penulis->id_jurusan)->first();
                 $arrayID[] = ['id' => Auth::user()->id,
                                 'status' => Auth::user()->status,
                                 'username' => Auth::user()->username,
                                 'id_penulis' => $penulis->id_penulis,
                                 'nama_lengkap' => $penulis->nama_penulis,
-                                'nama_jurusan' => $prodi->nama_jurusan,
+                                'nama_jurusan' => $nama_prodi,
                                 'no_telepon' => Auth::user()->no_telepon,
                                 'email' => Auth::user()->email,
                                 'tanggal_lahir' => Auth::user()->tanggal_lahir,

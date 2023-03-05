@@ -29,7 +29,10 @@ document.querySelectorAll(`input`).forEach(element => {
 //list example
     if (list_judul.length) {list_judul.sort();}
     if (list_penulis.length) {list_penulis.sort();}
-    if (list_prodi.length) {list_prodi.sort();}
+    if (list_prodi.length) {
+        list_prodi.push('[ N/a ]');
+        list_prodi.sort();
+    }
     if (final_search.length) {final_search.sort();}
     let render_list = [].concat(final_list);
 
@@ -753,7 +756,7 @@ var prodi_select_list = [].concat(list_prodi);
                 item.forEach(pnl => {
                     if (pnl[2].includes(value['nama_penulis'])) {
                         prodi_select_list.forEach(element => {
-                            if (value['nama_jurusan'] == element) {
+                            if (value['nama_jurusan'] == element || value['nama_jurusan'] == null) {
                                 selected = true;
                             }
                         });
@@ -762,6 +765,7 @@ var prodi_select_list = [].concat(list_prodi);
                 if (selected) { return value; }
             })
             item = penulis.filter(UniqueList).sort();
+            
             penulis_slide = penulis.filter(UniqueList).sort();
         }
         else if (type.includes("dropdown")) {
@@ -924,7 +928,6 @@ var prodi_select_list = [].concat(list_prodi);
             if ((!prodi_select) && (document.querySelector(`.filter-prodi`))) { prodi_select = prodi_select_list; }
             else { prodi_select = "All"; }
         }
-        // console.log("prodi_select: ",prodi_select);
 
         // console.log("judul_search", judul_search, "   || final_select", final_select);
         // console.log("prodi_select", prodi_select, "   || pnl_select", pnl_select);
@@ -943,7 +946,7 @@ var prodi_select_list = [].concat(list_prodi);
                     if (Array.isArray(prodi_select)) {
                         var selected = false;
                         prodi_select.forEach(prodi => {
-                            if (value[3].includes(prodi)) { selected = true; }
+                            if (value[3].includes(prodi) || value[3] == null) { selected = true; }
                         });
                         if (selected) { return value; }
                     }
@@ -1683,8 +1686,10 @@ function suggestionBar(input_box, dd, parent_id, selectValue) {
         if (pos != 3) { b = (Math.floor(Math.random() * (255 - 102 + 1) + 102).toString(16)); }
         else { b = (normal.toString(16) ) }
 
-        prodi_color.push({ "nama_prodi": prodi, "warna": r+g+b});
+        if (prodi == '[ N/a ]') { prodi_color.push({ "nama_prodi": prodi, "warna": '343a40'}); }
+        else { prodi_color.push({ "nama_prodi": prodi, "warna": r+g+b}); }
     });
+    check_prodi_list = document.querySelector('.prodi-pilih');
     
     function ProdiList(items) {
         if (document.getElementsByClassName("filter-prodi")) {
@@ -1735,9 +1740,9 @@ function suggestionBar(input_box, dd, parent_id, selectValue) {
     }
 
     function checkProdi(check) {
-        for (let i = 0; i < list_prodi.length; i++) {
+        for (let i = 0; i < prodi_color.length; i++) {
             var check_prodi = check_prodi_list.children[i].querySelector('input');
-            // console.log(check_prodi_list.children[i].querySelector('input'));
+            console.log(check_prodi_list.children[i].querySelector('input'));
             check_prodi.checked = check;
             checkProdi_final(check_prodi,check);
         }

@@ -23,7 +23,7 @@
         <main>
             <div class="main-isi" id="main-isi">
                 <div class="judul-hlm"><h2>{{ $title }}</h2></div>
-                <form action="{{ route('prodi.update', ['id' => 'update']) }}" method="POST" enctype="multipart/form-data" name="Jurusan">
+                <form action="{{ route('prodi.update') }}" method="POST" enctype="multipart/form-data" name="Jurusan">
                     {{ csrf_field() }}
                     <input type="hidden" name="_method" value="PUT">
                     <div class="d-flex flex-wrap justify-content-center w-100">

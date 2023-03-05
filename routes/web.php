@@ -22,7 +22,8 @@ Route::get('/', function(){
 });
 Route::get('dashboard', [produkController::class, 'index'])->name('dashboard');
 Route::get('prodi', [produkController::class, 'programJurusan'])->name('prodi');
-Route::put('prodi/{id}', [produkController::class, 'prodiUpdate'])->name('prodi.update');
+Route::put('prodi/update', [produkController::class, 'prodiUpdate'])->name('prodi.update');
+Route::delete('prodi/delete/{id}', [produkController::class, 'prodiDelete'])->name('prodi.delete');
 
 Route::get('/login', [AkunController::class, 'login'])->name('loginShow');
 Route::post('/login', [AkunController::class, 'loginInput'])->name('login.store');

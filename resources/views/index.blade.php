@@ -280,9 +280,11 @@
                 var tanggalRilis_data = tanggalRilis_data.reverse();
 
                 prodi_color.forEach(value => {
+                    var nama_prodi = value['nama_prodi'];
+                    if (value['nama_prodi'] == '[ N/a ]') { nama_prodi = 'Unknown Program Studi'; }
                     if (prodiExist[value['nama_prodi']]) {
                         prodiExist_Array.push({
-                            'prodi': value['nama_prodi'],
+                            'prodi': nama_prodi,
                             'jumlah': prodiExist[value['nama_prodi']],
                             'warna': '#' + value['warna']
                         });

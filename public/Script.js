@@ -727,7 +727,7 @@ var prodi_select_list = [].concat(list_prodi);
             var modal = ItemList_Parent.querySelector(`.form-modal`);
             var thisForm;
             var typeForm;
-            if (lokasi.includes(`prodi`)){
+            if (lokasi.includes(`prodi`) || lokasi.includes(`akun`)){
                 thisForm = document.querySelector(`main form`);
                 if (thisForm.querySelector(`#form_add`)) { typeForm = 'add'; }
                 else if (thisForm.querySelector(`#form_delete`)) { typeForm = 'delete_' + clickedParent; }
@@ -767,8 +767,14 @@ var prodi_select_list = [].concat(list_prodi);
                             }
                         });
                     }
+                    else if (lokasi.includes(`akun`)){
+                        thisForm.querySelectorAll(`input`).forEach(inputElement => {
+                            if (inputElement.name == `_method`) {inputElement.value = `DELETE`;}
+                        });
+                    }
                     thisForm.action = lokasi+`/delete/`+item_id;
                 }
+
                 if (typeForm.includes(typeBtn) && 
                 ItemList_Parent.contains(clicked) &&
                 (!modal.contains(clicked) ||
@@ -787,10 +793,11 @@ var prodi_select_list = [].concat(list_prodi);
                         var listData;
                         var listData_Parent;
                         if (lokasi.includes(`prodi`)){ listData = document.querySelectorAll(`form div input`); }
-                        else if (lokasi.includes(`my`)) { listData = document.querySelectorAll(`table tr`); }
+                        else if (lokasi.includes(`my`) || lokasi.includes(`akun`)) { listData = document.querySelectorAll(`table tr`); }
                         listData.forEach(element => {
                             if (lokasi.includes(`prodi`)){ listData_Parent= element.parentNode; }
-                            else if (lokasi.includes(`my`)) { listData_Parent= element; }
+                            else if (lokasi.includes(`my`) || lokasi.includes(`akun`)) { listData_Parent= element; }
+                            
                             if (listData_Parent.contains(clicked) && listData_Parent.contains(item)) {
                                 thisForm.querySelectorAll(`input`).forEach(inputElement => {
                                     if (inputElement.name == `_method`) {inputElement.value = `PUT`;}

@@ -22,7 +22,7 @@
 
         <main>
             <div class="main-isi" id="main-isi">
-                <form action="{{ route('prodi.update') }}" method="POST" enctype="multipart/form-data" name="Jurusan">
+                <form action="{{ route('akun.store') }}" method="POST" name="Akun">
                     {{ csrf_field() }}
                     <input type="hidden" name="_method" value="PUT">
                     <div class="card row px-3 mb-4">

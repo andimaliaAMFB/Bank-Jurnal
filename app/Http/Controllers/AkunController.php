@@ -430,15 +430,16 @@ class AkunController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function akunDelete($id) {
+        $akun = User::where('username','=',$id)->first();
+        
         //nullified akun penulis dengan akun ini
-        penulis::where('id_akun','=',$id)->update(['id_akun' => null ]);
+        penulis::where('id_akun','=',$akun->akun)->update(['id_akun' => null ]);
 
-        $username_akun = User::where('id','=',$id)->first()->username;
-        User::where('id','=',$id)->delete();
+        $akun->delete();
 
         return redirect()
             ->route('akun')
-            ->with(['success' => 'Berhasil Menghapus Akun ['.$username_akun.']']);
+            ->with(['success' => 'Berhasil Menghapus Akun ['.$id.']']);
     }
 
     /**

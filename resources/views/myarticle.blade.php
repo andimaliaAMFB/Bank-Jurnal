@@ -193,6 +193,7 @@
                             </div>
                             <div class="card-body">
                                 <form action="" id="form-status">
+                                    {{ csrf_field() }}
                                     <div class="profile_form form_sub">
                                         <div class="form_sub row" id="judul">
                                             <div class="form_sub_title w-25">Judul Artikel</div>

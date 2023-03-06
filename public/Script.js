@@ -681,8 +681,8 @@ var prodi_select_list = [].concat(list_prodi);
         else if (lokasi.includes(`my`)) {
             if (typeBtn == 'add') { ItemList_Parent = item.parentNode; }
             else if (typeBtn == 'delete'){
-                document.querySelectorAll(`table tr td`).forEach(element => {
-                    if (element.contains(clicked)) {
+                document.querySelectorAll(`table tr`).forEach(element => {
+                    if (element.contains(clicked) && element.contains(item)) {
                         ItemList_Parent = element;
                     }
                 });
@@ -705,8 +705,8 @@ var prodi_select_list = [].concat(list_prodi);
                 }
             });
         }
-        var modal = ItemList_Parent.querySelector(`.form-modal`);
-        if (modal) {
+        if (ItemList_Parent && ItemList_Parent.querySelector(`.form-modal`)) {
+            var modal = ItemList_Parent.querySelector(`.form-modal`);
             var thisForm;
             var typeForm;
             if (lokasi.includes(`prodi`)){
@@ -736,15 +736,25 @@ var prodi_select_list = [].concat(list_prodi);
                         });
                     }
                     else if (lokasi.includes(`my`)) {
-                        var inputMethod = document.createElement("input");
-                        inputMethod.type = 'hidden';
-                        inputMethod.name = "_method";
-                        inputMethod.value = "DELETE";
+                        document.querySelectorAll(`input`).forEach(element => {
+                            if (element.type == 'hidden' && !thisForm.contains(element)) {
+                                var inputMethod = element;
+                                form_addNewElement(thisForm, thisForm.querySelector(`strong`), inputMethod, '');
+                                
+                                inputMethod = document.createElement("input");
+                                inputMethod.type = 'hidden';
+                                inputMethod.name = "_method";
+                                inputMethod.value = "DELETE";
+                                form_addNewElement(thisForm, thisForm.querySelector(`strong`), inputMethod, '');
+                            }
+                        });
                     }
                     thisForm.action = lokasi+`/delete/`+item_id;
                 }
                 if (typeForm.includes(typeBtn) && 
-                    (!modal.contains(clicked) || clicked.classList.contains("close-btn"))) {
+                ItemList_Parent.contains(clicked) &&
+                (!modal.contains(clicked) ||
+                clicked.classList.contains("close-btn"))) {
                     thisForm.action = lokasi+`/update`;
                     if (typeBtn == 'add' && typeForm.includes('add')) {
                         console.log("=================Add Data=================");
@@ -856,7 +866,7 @@ var prodi_select_list = [].concat(list_prodi);
                                 </div>
                                 <div class="card-body">
                                     <form action="`+lokasi+`/delete/`+item_id+`" method="POST">
-                                        <strong id="`+item_name+`"> Apakah Anda Yakin akan menghapus `+item_name+`?</strong>
+                                        <strong id="`+item_name+`"> Apakah Anda Yakin akan menghapus Program Studi [`+item_name+`]?</strong>
                                         <div class="row justify-content-end">
                                             <button type="button" class="btn rounded-pill col-auto mx-1 btn-secondary close-btn">Close</button>
                                             <button type="submit" class="btn rounded-pill col-auto bg-red-1 mx-1">Delete</button>

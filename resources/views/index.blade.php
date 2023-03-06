@@ -234,6 +234,7 @@
             var final = <?php echo json_encode($final); ?>;
             var finalSearch = <?php echo json_encode($finalSearch); ?>;
             var All_penulis = <?php echo json_encode($tablePenulis); ?>;
+            var notifOpen = false;
 
             let list_judul = judul;
             let list_penulis = penulis;
@@ -248,6 +249,24 @@
         <script src="Script.js"></script>
         
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            window.addEventListener('mouseup', function(event){
+                @if(Auth::user())
+                    if (document.querySelector(`.head-notif ul`).style.display === 'block') {
+                        notifOpen = true;
+                    }
+                    else if (document.querySelector(`.head-notif ul`).style.display === 'none' && notifOpen) {
+                        
+                        @foreach (Auth::user()->unreadNotifications as $notification)
+                            @php
+                                $notification->markAsRead();
+                            @endphp
+                        @endforeach
+                        window.location = window.location;
+                    }
+                @endif
+            });
+        </script>
         <script>
             var prodiExist = {};
             var tanggalRilis = {};

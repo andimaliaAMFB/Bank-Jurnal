@@ -287,6 +287,7 @@
             var prodi = <?php echo json_encode($tableProdi); ?>;
             var final = <?php echo json_encode($final); ?>;
             var finalSearch = <?php echo json_encode($finalSearch); ?>;
+            var notifOpen = false;
 
             let list_judul = [];
             judul.forEach((element,index) => { list_judul[index] = judul[index]; });
@@ -303,5 +304,23 @@
         <!-- JS comunicate with database -->
 
         <script src="../Script.js"></script>
+        <script>
+            window.addEventListener('mouseup', function(event){
+                @if(Auth::user())
+                    if (document.querySelector(`.head-notif ul`).style.display === 'block') {
+                        notifOpen = true;
+                    }
+                    else if (document.querySelector(`.head-notif ul`).style.display === 'none' && notifOpen) {
+                        
+                        @foreach (Auth::user()->unreadNotifications as $notification)
+                            @php
+                                $notification->markAsRead();
+                            @endphp
+                        @endforeach
+                        window.location = window.location;
+                    }
+                @endif
+            });
+        </script>
     </body>
 </html>

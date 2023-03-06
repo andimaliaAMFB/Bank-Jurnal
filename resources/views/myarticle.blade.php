@@ -14,6 +14,12 @@
         @include('layout.header')
         @include('layout.taskbar')
         
+        @if ($message = Session::get('success'))
+            <div class="alert alert-success alert-block d-flex justify-content-between align-items-center">
+                <strong>{{ $message }}</strong>
+            </div>
+        @endif
+
         <main>
             <div class="main-isi" id="main-isi">
                 @if(isset($title))
@@ -291,6 +297,7 @@
             var final = <?php echo json_encode($final); ?>;
             var finalSearch = <?php echo json_encode($finalSearch); ?>;
             var thisAuthor = '{{ $namaPenulis }}';
+            var notifOpen = false;
             // console.log(thisAuthor);
 
             let list_judul = [];
@@ -304,6 +311,24 @@
 
             var historyArray = <?php echo json_encode($history); ?>;
 
+        </script>
+        <script>
+            window.addEventListener('mouseup', function(event){
+                @if(Auth::user())
+                    if (document.querySelector(`.head-notif ul`).style.display === 'block') {
+                        notifOpen = true;
+                    }
+                    else if (document.querySelector(`.head-notif ul`).style.display === 'none' && notifOpen) {
+                        
+                        @foreach (Auth::user()->unreadNotifications as $notification)
+                            @php
+                                $notification->markAsRead();
+                            @endphp
+                        @endforeach
+                        window.location = window.location;
+                    }
+                @endif
+            });
         </script>
         <!-- JS comunicate with database -->
         <script src="../Script.js"></script>

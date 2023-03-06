@@ -6,10 +6,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\UploadedFile;
+use App\Notifications\DeleteNotif;
+
+use App\Models\User;
 use App\Models\penulis;
 use App\Models\jurusan;
 use App\Models\artikel;
 use App\Models\artikel_detail;
+use App\Models\artikel_detail_penulis;
 use DB;
 use Session;
 
@@ -502,7 +506,37 @@ class ArtikelController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function myarticleDelete($id) {
-        dd($id);
+        $id_artikelDetail = json_decode((new listController)->getTable('Judul-'.$id),true);
+        
+        //kirim notifikasi deleted artikel kepenulis lainnya
+            $lastArtikelUp = artikel_detail::where('id_artikel','=',$id_artikelDetail[0]['id_artikel'])
+                            ->orderby('id_artikel_detail', 'desc')
+                            ->first();
+            $listPenulisLast = artikel_detail_penulis::where('id_artikel_detail','=',$lastArtikelUp->id_artikel_detail)->get();
+            $Akun = [];
+            $id_akun;
+            foreach($listPenulisLast as $key => $value) {
+                $idAkun = penulis::where('id_penulis','=',$value->id_penulis)->first()->id_akun;
+                if(!in_array($idAkun,$Akun) && $idAkun) { $Akun[] = $idAkun; }
+            }
+            foreach ($Akun as $value) { //kirim notifikasi deleted artikel kepenulis lainnya
+                if ($value != Auth()->user()->id) {
+                    $message = [
+                        'to' => $value,
+                        'judul_artikel' => $id,
+                        'subject' => 'Artikel Telah Dihapus',
+                        'message' => 'Artikel ['.$id.'] Telah Dihapus oleh Penulis '.Auth()->user()->nama_lengkap
+                    ];
+                    User::where('id','=',$value)->first()->notify(new DeleteNotif($message));
+                }
+            }
+        //
+        
+        artikel::where('id_artikel','=',$id_artikelDetail[0]['id_artikel'])->delete();
+        
+        return redirect()
+        ->route('myarticle')
+        ->with(['success' => 'Berhasil Hapus Artikel ['.$id.']']);
     }
 
     function insertArtikel ($id_akun, $id_artikel, $id_artikel_detail, $judul, $file) {

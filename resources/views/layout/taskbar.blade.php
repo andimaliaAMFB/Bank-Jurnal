@@ -21,6 +21,7 @@
                     <a href="{{ route('dashboard') }}"><li>Dashboard</li></a>
                     <a href="{{ route('article.create') }}"><li>Upload Artikel</li></a>
                     @if(isset(Auth::user()->status) && Auth::user()->status == 'Admin')
+                    <a href="{{ route('akun') }}"><li>Akun Pengguna</li></a>
                     <a href="{{ route('prodi') }}"><li>Program Studi</li></a>
                     <a href="{{ route('status.index', ['level_status' => 'draft']) }}"><li>Draft<p>{{ $taskbarValue['Draft'] }}</p></li></a>
                     <a href="{{ route('status.index', ['level_status' => 'revisi-mayor']) }}"><li>Revisi Mayor<p>{{ $taskbarValue['Revisi Mayor'] }}</p></li></a>

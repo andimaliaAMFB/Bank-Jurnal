@@ -330,6 +330,117 @@ class AkunController extends Controller
             ->with(['success' => 'Berhasil Update Profile']);
     }
 
+    public function akunPengguna() {
+        $title = "Akun Pengguna";
+        $taskbarValue = (new listController)->taskbarList ();
+        $finalSearch = (new listController)->SearchBarList ();
+
+        $tableAkun = User::orderby('status')->orderby('username')->get();
+        
+        return view('akunPengguna',compact('title','tableAkun','taskbarValue','finalSearch'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function akunStore(Request $request) {
+        $rule = [
+            'username' => 'required',
+            'pass' => 'required|required_with:passS|same:passS|min:6',
+            'email' => 'required',
+            'status' => 'required'
+        ];
+
+        $pesan = [
+            'username.required' => 'Username Wajib Diisi !',
+            'pass.required' => 'Password Wajib Diisi !',
+            'email.required' => 'Email Wajib Diisi !',
+            'status.required' => 'Status Akun Wajib Diisi !',
+            'pass.min' => 'Password Telalu Pendek',
+            'required_with' => 'Masuki Ulang Password Kedua'
+        ];
+        
+        $validator = Validator::make($request->all(), $rule, $pesan);
+        $validator->validated();
+
+        //if ada form input yang tidak diisi
+        if ($validator->fails()) {
+            return redirect()
+                ->route('akun')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        //check if username and password exist
+            $errorString = null;
+            if(User::where('username','=',$request->username)->exists()) {
+                $errorString = 'Username Sudah Digunakan Oleh Pengguna Lain';
+            }
+            else if(User::where('email','=',$request->email)->exists()) {
+                $errorString = 'Email Sudah Digunakan Oleh Pengguna Lain';
+            }
+            if($errorString) {
+                return redirect()
+                    ->route('akun')
+                    ->withErrors($validator)
+                    ->withInput()
+                    ->with('error',$errorString);
+            }
+        //
+        
+        $id_akun = strval(date("m").(date("d")+date("B")));
+
+        DB::table('users')-> INSERT ([
+            'id_akun' => $id_akun,
+            'username' => $request->username,
+            'password' => bcrypt($request->pass),
+            'nama_lengkap' => '',
+            'status' => $request->status,
+            'no_telepon' => "",
+            'email' => $request->email,
+            'tanggal_lahir' => date("Y-m-d"),
+            'id_kota' => DB::table('kota')->first()->id_kota,
+            'id_provinsi' => DB::table('provinsi')->first()->id_provinsi,
+            'alamat' => '',
+            'kode_pos' => ''
+        ]);
+
+        if ($request->status == 'Penulis') {
+            DB::table('penulis')-> INSERT ([
+                'id_penulis' => "PNL".substr(md5($id_akun),0,4), 
+                'id_akun' => $id_akun,
+                'id_jurusan' => DB::table('jurusan')->first()->id_jurusan,
+                'nama_penulis' => ''
+            ]);
+        }
+            
+        
+        return redirect()
+            ->route('akun')
+            ->with(['success' => 'Berhasil Menambahkan Akun Baru']);
+    }
+    
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function akunDelete($id) {
+        //nullified akun penulis dengan akun ini
+        penulis::where('id_akun','=',$id)->update(['id_akun' => null ]);
+
+        $username_akun = User::where('id','=',$id)->first()->username;
+        User::where('id','=',$id)->delete();
+
+        return redirect()
+            ->route('akun')
+            ->with(['success' => 'Berhasil Menghapus Akun ['.$username_akun.']']);
+    }
+
     /**
      * Remove the specified resource from storage.
      *

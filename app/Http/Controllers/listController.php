@@ -153,6 +153,7 @@ class listController extends Controller
         else if ($typeTable == 'Prodi') { $Array = DB::table('jurusan')->get(); }
         else if ($typeTable == 'Kota') { $Array = DB::table('kota')->get(); }
         else if ($typeTable == 'Prov') { $Array = DB::table('provinsi')->get(); }
+        else if ($typeTable == 'Akun') { $Array = DB::table('users')->get(); }
         return $Array;
     }
     function TabletoList (array $tableArray,array $Judul, string $format) {

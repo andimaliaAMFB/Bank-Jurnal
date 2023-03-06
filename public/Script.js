@@ -688,9 +688,16 @@ var prodi_select_list = [].concat(list_prodi);
                 });
             }
         }
+        else if (lokasi.includes(`akun`)) {
+            document.querySelectorAll(`table tr`).forEach(element => {
+                if (element.contains(clicked) && element.contains(item)) {
+                    ItemList_Parent = element;
+                }
+            });
+        }
         var item_id;
         var item_name;
-        var clickedParent;
+        var clickedParent, statusList;
         if (lokasi.includes(`prodi`)){
             document.querySelectorAll(`form div input`).forEach(element => {
                 if (element.parentNode.contains(clicked)) {
@@ -705,6 +712,17 @@ var prodi_select_list = [].concat(list_prodi);
                 }
             });
         }
+        else if (lokasi.includes(`akun`)) {
+            document.querySelectorAll(`table tr`).forEach(element => {
+                if (element.contains(clicked)) {
+                    element.querySelectorAll(`td`).forEach((td,index) => {
+                        if (index == 0) { clickedParent = td.innerText; }
+                        else if (index == 2){ statusList = td.innerText; }
+                    });
+                }
+            });
+        }
+
         if (ItemList_Parent && ItemList_Parent.querySelector(`.form-modal`)) {
             var modal = ItemList_Parent.querySelector(`.form-modal`);
             var thisForm;
@@ -787,7 +805,7 @@ var prodi_select_list = [].concat(list_prodi);
             }
 
         }
-        else if (item.contains(clicked)){
+        else if (item.contains(clicked)){//crate pop up modal
             if (lokasi.includes(`prodi`)) {
                 if (typeBtn == 'add') {}
                 else if (typeBtn == 'delete') {
@@ -801,6 +819,11 @@ var prodi_select_list = [].concat(list_prodi);
                 if (typeBtn == 'add') {}
                 else if (typeBtn == 'delete') { item_id = clickedParent; }
             }
+            else if (lokasi.includes(`akun`)) {
+                if (typeBtn == 'add') {}
+                else if (typeBtn == 'delete') { item_id = clickedParent; }
+            }
+
             modal = document.createElement("div");
             modal.classList.add(`form-modal`);
             modal.style.display = `none`;
@@ -902,6 +925,30 @@ var prodi_select_list = [].concat(list_prodi);
                     </div>`
                 );
             }
+            else if (typeBtn == 'delete' && lokasi.includes(`akun`)) {
+                modal.setAttribute(`data-id`,item_id);
+                form_addNewElement(ItemList_Parent, null , modal, 
+                    `<div class="fliter-form h-auto p-3" id="form_delete">
+                        <div class="form-card card col-md-8">
+                            <div class="mx-3">
+                                <div class="card-head d-flex flex-wrap justify-content-between align-items-center p-3 pt-0">
+                                    <h3 class="col-auto">Hapus Akun</h3>
+                                    <button class="btn col-auto close-btn" type="button">X</button>
+                                </div>
+                                <div class="card-body">
+                                    <form action="`+lokasi+`/delete/`+clickedParent+`" method="POST">
+                                        <strong id="`+clickedParent+`"> Apakah Anda Yakin akan menghapus Akun `+statusList+` [`+clickedParent+`]?</strong>
+                                        <div class="row justify-content-end">
+                                            <button type="button" class="btn rounded-pill col-auto mx-1 btn-secondary close-btn">Close</button>
+                                            <button type="submit" class="btn rounded-pill col-auto bg-red-1 mx-1">Delete</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+                );
+            }
             
             form_function(modal);
         }
@@ -974,7 +1021,12 @@ var prodi_select_list = [].concat(list_prodi);
                     result += input_list(paginatedItems[i]['id_akun'], paginatedItems[i]['foto_profil'], "", paginatedItems[i]['nama_penulis'], "", "", "", "", type);
                 }
                 else if (type.includes("tabel")) {
-                    result += input_list((i + 1), paginatedItems[i][0], paginatedItems[i][1], paginatedItems[i][2], paginatedItems[i][3], paginatedItems[i][4], paginatedItems[i][5], paginatedItems[i][6], type);
+                    if (type == 'tabel_akun') {
+                        result += input_list((i + 1), paginatedItems[i]['username'], paginatedItems[i]['email'], '', '', '', '', paginatedItems[i]['status'], type);
+                    }
+                    else {
+                        result += input_list((i + 1), paginatedItems[i][0], paginatedItems[i][1], paginatedItems[i][2], paginatedItems[i][3], paginatedItems[i][4], paginatedItems[i][5], paginatedItems[i][6], type);
+                    }
                 }
             }
             location_item.innerHTML = result;
@@ -985,6 +1037,9 @@ var prodi_select_list = [].concat(list_prodi);
         if (type.includes("tabel")) {
             tabel_page.innerHTML = page + 1;
             tabel_detail.innerHTML = paginatedItems.length +" of " + item.length + " Articles";
+            if (type == 'tabel_akun') {
+                tabel_detail.innerHTML = paginatedItems.length +" of " + item.length + " Akun";
+            }
         }
         else if (type.includes("slide")) {
             slide_page.innerHTML = page + 1;
@@ -1056,6 +1111,19 @@ var prodi_select_list = [].concat(list_prodi);
                 last_column = `<td>`+ up +`</td>
                                 <td>`+ rilis +`</td>`;
             }
+            else if (type == 'tabel_akun') {
+                first_column = `<tr data-id="`+ id +`">
+                                <td>`+ judul +`</td>
+                                <td>`+ revisi +`</td>
+                                <td>`+ status+`</td>
+                                <td>
+                                    <button class="btn btn-danger cancel-btn" type="button" style="z-index:0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                            <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+                                        </svg>
+                                    </button>
+                                </td>`;
+            }
         }
         else if (type.includes("slide")) {
             first_column = `<a href="@`+ pnl +`" class="profile-box d-flex flex-wrap justify-content-around align-items-center col-md-3 m-2 mx-3">`
@@ -1092,15 +1160,18 @@ var prodi_select_list = [].concat(list_prodi);
     function RenderFinal(type) { //render type table that gonna show
         var render_item = [].concat(final_list); //render list for table
         var judul_search, final_select, pnl_select, prodi_select = ''; //selected item for filter
-        tabel_select.forEach(item => { //check if this page has filter menu
-            // console.log(item,item.id,item.querySelector('.search-value').textContent);
-            // console.log(item,item.querySelector('.search-value'),item.querySelector('.search-value').innerText);
-            
-            if (item.id.includes("jdl")) { judul_search = item.querySelector('.search-value input').value }
-            if (item.id.includes("final")) { final_select = item.querySelector('.search-value').innerText; }
-            if (item.id.includes("pnl")) { pnl_select = item.querySelector('.search-value').innerText; }
-            if (item.id.includes("prodi")) { prodi_select = item.querySelector('.search-value').innerText; }
-        });
+        if (tabel_select) {
+            tabel_select.forEach(item => { //check if this page has filter menu
+                // console.log(item,item.id,item.querySelector('.search-value').textContent);
+                // console.log(item,item.querySelector('.search-value'),item.querySelector('.search-value').innerText);
+                
+                if (item.id.includes("jdl")) { judul_search = item.querySelector('.search-value input').value }
+                if (item.id.includes("final")) { final_select = item.querySelector('.search-value').innerText; }
+                if (item.id.includes("pnl")) { pnl_select = item.querySelector('.search-value').innerText; }
+                if (item.id.includes("prodi")) { prodi_select = item.querySelector('.search-value').innerText; }
+            });
+        }
+        
         
         // console.log(render_item);
         // console.log(judul_search, final_select, pnl_select, prodi_select);
@@ -1178,6 +1249,9 @@ var prodi_select_list = [].concat(list_prodi);
         }
         else if (lokasi.includes("Penulis")) { //upload article page
             RenderFinal("tabel_artikel_penulis");
+        }
+        else if (lokasi.includes("akun")) { //edit akun page
+            RenderFinal("tabel_akun");
         }
     }
     //form

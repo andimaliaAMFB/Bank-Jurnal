@@ -620,8 +620,10 @@ var prodi_select_list = [].concat(list_prodi);
                 });
             }
             if (document.querySelector(`.add-btn`)) {
-                var item = document.querySelector(`.add-btn`);
-                deleteAdd_btn(item, event.target, 'add');
+                if (!lokasi.includes('upload')) {
+                    var item = document.querySelector(`.add-btn`);
+                    deleteAdd_btn(item, event.target, 'add');
+                }
             }
                 
 

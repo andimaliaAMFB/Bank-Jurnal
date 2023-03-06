@@ -19,6 +19,28 @@
                 <strong>{{ $message }}</strong>
             </div>
         @endif
+        @if ($errorList = Session::get('error'))
+            <div class="alert alert-danger alert-block d-flex justify-content-between align-items-center">
+                <ul style="list-style-type:none; margin:0;">
+                @if($errorList.gettype() == "array" || $errorList.gettype() == "object")
+                    @foreach($errorList as $value)
+                        <li><strong>{{ $value }}</strong></li>
+                    @endforeach
+                @else
+                    <li><strong>{{ $errorList }}</strong></li>
+                @endif
+                </ul>
+            </div>
+        @endif
+        @if ($errors->any())
+            <div class="alert alert-danger alert-block ">
+                <strong>Kesalahan Input Dalam Menambahkan Akun Baru: </strong>
+                <br>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </div>
+        @endif
 
         <main>
             <div class="main-isi" id="main-isi">
@@ -32,8 +54,8 @@
                                 <td><input type="text" name="username" class="form-control" placeholder="Username"></td>
                                 <td class="col-md-4"><input type="text" name="email" class="form-control" placeholder="Email@example"></td>
                                 <td class="col-md-2">
-                                    <select class="form-select" name="status" id="inputGroupSelect01">
-                                        <option selected>>--Pilih Status Akun--<</option>
+                                    <select class="form-select" name="status" id="status">
+                                        <option disabled selected>>--Pilih Status Akun--<</option>
                                         <option value="Admin">Admin</option>
                                         <option value="Penulis">Penulis</option>
                                     </select>

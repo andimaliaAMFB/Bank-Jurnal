@@ -665,7 +665,7 @@ var prodi_select_list = [].concat(list_prodi);
     }
     function change_Selected_Value(selectElement,eValue,eText)
     {
-        for (let i = 0; i < e.options.length; i++) {
+        for (let i = 0; i < selectElement.options.length; i++) {
             if (selectElement.options[i].value == eText) {
                 selectElement.options[0].removeAttribute('selected');
                 selectElement.options[i].setAttribute('selected',true);
@@ -713,14 +713,31 @@ var prodi_select_list = [].concat(list_prodi);
             });
         }
         else if (lokasi.includes(`akun`)) {
-            document.querySelectorAll(`table tr`).forEach(element => {
-                if (element.contains(clicked)) {
-                    element.querySelectorAll(`td`).forEach((td,index) => {
-                        if (index == 0) { clickedParent = td.innerText; }
-                        else if (index == 2){ statusList = td.innerText; }
-                    });
-                }
-            });
+            if (typeBtn == 'add') {
+                document.querySelectorAll(`table tr`).forEach((element,key,array) => {
+                    if (element.contains(clicked) && array[key-1]) {
+                        array[key-1].querySelectorAll(`td`).forEach((td,index) => {
+                            if (index == 0) { clickedParent = td.querySelector(`input`).value; }
+                            else if (index == 2){
+                                change_Selected_Value(td.querySelector(`select`),
+                                    td.querySelector(`select`).value,
+                                    td.querySelector(`select`).value)
+                                statusList = td.querySelector(`select`).value;
+                            }
+                        });
+                    }
+                });
+            }
+            else if (typeBtn == 'delete') {
+                document.querySelectorAll(`table tr`).forEach(element => {
+                    if (element.contains(clicked)) {
+                        element.querySelectorAll(`td`).forEach((td,index) => {
+                            if (index == 0) { clickedParent = td.innerText; }
+                            else if (index == 2){ statusList = td.innerText; }
+                        });
+                    }
+                });
+            }
         }
 
         if (ItemList_Parent && ItemList_Parent.querySelector(`.form-modal`)) {
@@ -729,7 +746,7 @@ var prodi_select_list = [].concat(list_prodi);
             var typeForm;
             if (lokasi.includes(`prodi`) || lokasi.includes(`akun`)){
                 thisForm = document.querySelector(`main form`);
-                if (thisForm.querySelector(`#form_add`)) { typeForm = 'add'; }
+                if (thisForm.querySelector(`#form_add`)) { typeForm = 'add_' + clickedParent; }
                 else if (thisForm.querySelector(`#form_delete`)) { typeForm = 'delete_' + clickedParent; }
             }
             else if (lokasi.includes(`my`)) {
@@ -926,6 +943,27 @@ var prodi_select_list = [].concat(list_prodi);
                                             <button type="submit" class="btn rounded-pill col-auto bg-red-1 mx-1">Delete</button>
                                         </div>
                                     </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+                );
+            }
+            else if (typeBtn == 'add' && lokasi.includes(`akun`)) {
+                form_addNewElement(ItemList_Parent, null , modal, 
+                    `<div class="fliter-form h-auto p-3" id="form_add">
+                        <div class="form-card card col-md-8">
+                            <div class="mx-3">
+                                <div class="card-head d-flex flex-wrap justify-content-between align-items-center p-3 pt-0">
+                                    <h3 class="col-auto">Tambah Akun</h3>
+                                    <button class="btn col-auto close-btn" type="button">X</button>
+                                </div>
+                                <div class="card-body">
+                                    <strong id="`+clickedParent+`"> Apakah Anda yakin akan menambahkan akun `+statusList+` [`+clickedParent+`]?</strong>
+                                    <div class="row justify-content-end">
+                                        <button type="button" class="btn submit-btn-border col-auto mx-1 close-btn">Close</button>
+                                        <button type="submit" class="btn submit-btn col-auto mx-1">Tambah Baru</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -58,8 +58,8 @@ class AkunController extends Controller
                 'username.required' => 'Username Wajib Diisi !',
                 'pass.required' => 'Password Wajib Diisi !'
             ];
+        //
 
-        
         $validator = Validator::make($request->all(), $rule, $pesan);
         $validator->validated();
 
@@ -70,28 +70,6 @@ class AkunController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-
-        //check if username and password exist
-            $errorString = null;
-            // if(User::where('username','=',$request->username)->exists())
-            // {
-            //     $dataAkun = User::where('username','=',$request->username)->first();
-            //     $username = $dataAkun['username'];
-            //     $password = $dataAkun['password'];
-            //     dd($password,bcrypt($request->pass),$request->pass, bcrypt('penulis-1'),bcrypt($request->pass));
-            //     if(bcrypt($request->pass) != $password) {
-            //         $errorString = 'Password Yang Dimasukan Salah';
-            //     }
-            // }
-            // else { $errorString = 'Username Tidak Dikenali'; }
-            // if($errorString) {
-            //     return redirect()
-            //         ->route('loginShow')
-            //         ->withErrors($validator)
-            //         ->withInput()
-            //         ->with('error',$errorString);
-            // }
-        //
         
         $input = $request->all();
         $credentials = ['username' => $input['username'],
@@ -99,17 +77,7 @@ class AkunController extends Controller
             
         // dd($credentials,Auth::attempt($credentials));
         if (Auth::attempt($credentials)) {
-
-            // $id_akun = User::select('id_akun','status')->where('username','=',$username)->first();
-            // // dd($id_akun);
-    
-            // $data = $request->session()->put('id_akun',$id_akun['id_akun']);
-            // $data = $request->session()->put('status_akun',$id_akun['status']);
-            
-            // echo $request->session()->get('id_akun');
-            // echo $request->session()->get('status_akun');
             return redirect()->route('dashboard');
-    
         }
         else {
             return redirect()
@@ -349,9 +317,9 @@ class AkunController extends Controller
     public function akunStore(Request $request) {
         $rule = [
             'username' => 'required',
-            'pass' => 'required|required_with:passS|same:passS|min:6',
             'email' => 'required',
-            'status' => 'required'
+            'status' => 'required',
+            'pass' => 'required|required_with:passS|same:passS|min:6'
         ];
 
         $pesan = [
@@ -373,6 +341,7 @@ class AkunController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
+        dd($pesan);
 
         //check if username and password exist
             $errorString = null;

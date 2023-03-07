@@ -244,7 +244,7 @@
         </main>
         <footer class="px-3 py-5">
             <div class="row justify-content-center">
-                <div class="col-3">
+                <div class="col-3 align-self-start">
                     <h5 class="col-1-d"><strong>LINK INTERNAL</strong></h5>
                     <ul class="nav flex-column">
                         <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">UIN SGD BANDUNG</a></li>
@@ -258,7 +258,7 @@
                         <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">E-KNOWS</a></li>
                     </ul>
                 </div>
-                <div class="col-3">
+                <div class="col-3 align-self-start">
                     <h5 class="col-1-d"><strong>LINK FAKULTAS</strong></h5>
                     <ul class="nav flex-column">
                         <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">ADAB DAN HUMANIORA</a></li>

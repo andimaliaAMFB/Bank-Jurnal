@@ -567,6 +567,7 @@ body {
         width: 100vw;
         height: 100vh;
         background-color: #000000;
+        z-index: 2;
     }
     .fade:not(.show) {
         opacity: 0;
@@ -1030,7 +1031,37 @@ body {
                 padding: 0.5rem 1rem;
                 border-radius: 4px;
             }
-    
+    /* Slide */
+        .slide-container {
+            background: url("asset/bg.png") center no-repeat;
+            background-size: cover;
+            height: 30vw;
+        }
+        .slide-container:hover>div:last-child{
+            background-color: rgba(0, 0, 0, .25);
+            box-shadow: inset 0 -4rem 2rem rgba(0, 0, 0, .25);
+        }
+        .slide-container>div:not(:last-child){
+            z-index: 1;
+        }
+        .slide-container button{
+            background-color: #76a71b!important;
+            color: #EFF6E3!important;
+        }
+        .slide-container:hover button{
+            background-color: #EFF6E3!important;
+            color: #76a71b!important;
+        }
+        .slide-container>div:not(:last-child)>*:not(button){
+            font-weight: bolder;
+            color: #1d3a4b;
+            text-shadow: 0 0 1rem rgba(255, 255, 255, 0.5);
+        }
+        .slide-container:hover>div:not(:last-child)>*:not(button){
+            color: #EFF6E3!important;
+            text-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+        }
+
     /* penulis slide */
         .penulis-isi div {
             margin-block-end: 0;
@@ -1209,7 +1240,7 @@ body {
     footer{
         background: #415663;
         width: inherit;
-        height: 320px;
+        min-height: 30vw;
         align-content: center;
         justify-content: center;
     }
@@ -1298,5 +1329,13 @@ body {
     }
     .blockDiv {
         min-height: 50vw;
+    }
+    
+    .slide-container {
+        background-size: cover;
+        height: 100vw;
+    }
+    .slide-container>img {
+        display: none;
     }
 }

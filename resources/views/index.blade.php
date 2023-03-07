@@ -13,10 +13,31 @@
     <body>
         @include('layout.header')
         @include('layout.taskbar')
-    
+
+        <div class="mb-3 w-100 slide-container position-relative">
+            <img src="../asset/Group 28.png" alt="" class="position-absolute top-0 end-0 h-100">
+            <div class="text-center position-absolute top-50 start-50 translate-middle">
+                <h1>RUMAH JURNAL</h1>
+                <h3>Universitas Islam Negeri Sunan Gunung Djati Bandung</h3>
+                <h5>Publikasi, Diseminasi Riset, Akreditasi Pengelolaan Jurnal</h5>
+            </div>
+            <div class="row justify-content-between align-items-center py-3 px-4 position-absolute bottom-0 h-auto w-100 menu">
+                <button class="btn col-auto mx-3">
+                    <a href="#">
+                        <h4 class="m-0"><strong>Rumah Jurnal</strong></h4>
+                    </a>
+                </button>
+                <div class="row justify-content-center col-auto p-0">
+                    <a href="#" class="col-auto"><img src="../asset/logo uin - logo Only.png" alt="" style="width:2rem"></a>
+                    <a href="#" class="col-auto"><img src="../asset/logo_rumah jurnal 1.png" alt="" style="width:2rem"></a>
+                    <a href="#" class="col-auto"><img src="../asset/logo_BLU.png" alt="" style="width:2rem"></a>
+                </div>
+            </div>
+            <div class="position-absolute top-0 w-100 h-100">
+            </div>
+        </div>
         <main>
             <div class="main-isi" id="main-isi">
-                <div class="judul-hlm"><h2>{{ $title }}</h2></div>
                 <div class="statistic-data row justify-content-between gx-0 w-100">
                     <div class="static card col-md-6">
                         <div class="card-head">Statistik Artikel Yang Dipublish Rumah Jurnal</div>
@@ -221,8 +242,49 @@
                 </div>
             </div>
         </main>
-        <footer>
+        <footer class="px-3 py-5">
+            <div class="row justify-content-center">
+                <div class="col-3">
+                    <h5 class="col-1-d"><strong>LINK INTERNAL</strong></h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">UIN SGD BANDUNG</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">PASCA SARJANA</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">LAYANAN AKADEMIK</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">PCMB JALUR MANDIRI</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">SARANA & PRASARANA</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">PERPUSTAKAAN</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">DIGITAL LIBRARY</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">E-JOURNAL</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">E-KNOWS</a></li>
+                    </ul>
+                </div>
+                <div class="col-3">
+                    <h5 class="col-1-d"><strong>LINK FAKULTAS</strong></h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">ADAB DAN HUMANIORA</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">DAKWAH DAN KOMUNIKASI</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">EKONOMI DAN BISNIS ISLAM</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">ILMU SOSIAL DAN ILMU POLITIK</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">PSIKOLOGI</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">SAINS DAN TEKNOLOGI</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">SYARIAH DAN HUKUM</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">TARBIYAH DAN KEGURUAN</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">USHULUDDIN</a></li>
+                    </ul>
+                </div>
 
+                <div class="col-4 offset-1">
+                    <form>
+                        <h5>Subscribe to our newsletter</h5>
+                        <p>Monthly digest of whats new and exciting from us.</p>
+                        <div class="d-flex w-100 gap-2">
+                            <label for="newsletter1" class="visually-hidden">Email address</label>
+                            <input id="newsletter1" type="text" class="form-control" placeholder="Email address">
+                            <button class="btn btn-primary" type="button">Subscribe</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </footer>
         <div class="shade fade" id="shade"></div>
         

@@ -86,9 +86,7 @@
                 </div>
             </form>
         </main>
-        <footer>
-
-        </footer>
+        @include('layout.footer')
         <div class="shade fade" id="shade"></div>
         
         <!-- JS comunicate with database -->

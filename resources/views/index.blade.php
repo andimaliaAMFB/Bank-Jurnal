@@ -242,50 +242,8 @@
                 </div>
             </div>
         </main>
-        <footer class="px-3 py-5">
-            <div class="row justify-content-center">
-                <div class="col-3 align-self-start">
-                    <h5 class="col-1-d"><strong>LINK INTERNAL</strong></h5>
-                    <ul class="nav flex-column">
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">UIN SGD BANDUNG</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">PASCA SARJANA</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">LAYANAN AKADEMIK</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">PCMB JALUR MANDIRI</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">SARANA & PRASARANA</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">PERPUSTAKAAN</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">DIGITAL LIBRARY</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">E-JOURNAL</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">E-KNOWS</a></li>
-                    </ul>
-                </div>
-                <div class="col-3 align-self-start">
-                    <h5 class="col-1-d"><strong>LINK FAKULTAS</strong></h5>
-                    <ul class="nav flex-column">
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">ADAB DAN HUMANIORA</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">DAKWAH DAN KOMUNIKASI</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">EKONOMI DAN BISNIS ISLAM</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">ILMU SOSIAL DAN ILMU POLITIK</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">PSIKOLOGI</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">SAINS DAN TEKNOLOGI</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">SYARIAH DAN HUKUM</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">TARBIYAH DAN KEGURUAN</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">USHULUDDIN</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-4 offset-1">
-                    <form>
-                        <h5>Subscribe to our newsletter</h5>
-                        <p>Monthly digest of whats new and exciting from us.</p>
-                        <div class="d-flex w-100 gap-2">
-                            <label for="newsletter1" class="visually-hidden">Email address</label>
-                            <input id="newsletter1" type="text" class="form-control" placeholder="Email address">
-                            <button class="btn btn-primary" type="button">Subscribe</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </footer>
+        
+        @include('layout.footer')
         <div class="shade fade" id="shade"></div>
         
         <!-- JS comunicate with database -->

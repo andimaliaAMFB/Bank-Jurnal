@@ -143,7 +143,7 @@ class AkunController extends Controller
         $id_akun = strval(date("m").(date("d")+date("B")));
 
         DB::table('users')-> INSERT ([
-            'id_akun' => $id_akun,
+            'id' => $id_akun,
             'username' => $request->username,
             'password' => bcrypt($request->pass),
             'nama_lengkap' => '',
@@ -160,7 +160,7 @@ class AkunController extends Controller
         
         DB::table('penulis')-> INSERT ([
             'id_penulis' => "PNL".substr(md5($id_akun),0,4), 
-            'id_akun' => $id_akun,
+            'id' => $id_akun,
             'id_jurusan' => DB::table('jurusan')->first()->id_jurusan,
             'nama_penulis' => ''
         ]);
@@ -319,7 +319,7 @@ class AkunController extends Controller
             'username' => 'required',
             'email' => 'required',
             'status' => 'required',
-            'pass' => 'required|required_with:passS|same:passS|min:6'
+            'pass' => 'required|min:6'
         ];
 
         $pesan = [
@@ -341,7 +341,6 @@ class AkunController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-        dd($pesan);
 
         //check if username and password exist
             $errorString = null;
@@ -363,7 +362,7 @@ class AkunController extends Controller
         $id_akun = strval(date("m").(date("d")+date("B")));
 
         DB::table('users')-> INSERT ([
-            'id_akun' => $id_akun,
+            'id' => $id_akun,
             'username' => $request->username,
             'password' => bcrypt($request->pass),
             'nama_lengkap' => '',
@@ -380,7 +379,7 @@ class AkunController extends Controller
         if ($request->status == 'Penulis') {
             DB::table('penulis')-> INSERT ([
                 'id_penulis' => "PNL".substr(md5($id_akun),0,4), 
-                'id_akun' => $id_akun,
+                'id' => $id_akun,
                 'id_jurusan' => DB::table('jurusan')->first()->id_jurusan,
                 'nama_penulis' => ''
             ]);

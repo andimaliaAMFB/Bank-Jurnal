@@ -28,7 +28,7 @@
                         <li class="nav-item mb-2"><a href="#" class="nav-link p-0 col-1-h small">USHULUDDIN</a></li>
                     </ul>
                 </div>
-                <img src="../asset/logo_rumah jurnal.png" alt="" class="col-2">
+                <img src="../../asset/logo_rumah jurnal.png" alt="" class="col-2">
                 <div class="col-3 align-self-start px-3">
                     <h5 class="col-1-d"><strong>ABOUT US</strong></h5>
                     <p class="col-1-h">Unit Kerja Rumah Jurnal UIN SGD Bandung</p>
@@ -45,8 +45,8 @@
                         </div>
                     </div>
                     <div class="row mt-2 g-1">
-                        <img src="../asset/logo uin - logo Only.png" alt="" class="col-2">
-                        <img src="../asset/logo_BLU.png" alt="" class="col-2">
+                        <img src="../../asset/logo uin - logo Only.png" alt="" class="col-2">
+                        <img src="../../asset/logo_BLU.png" alt="" class="col-2">
                     </div>
                 </div>
             </div>

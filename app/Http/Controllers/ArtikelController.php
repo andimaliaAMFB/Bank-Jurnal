@@ -175,6 +175,15 @@ class ArtikelController extends Controller
                 $id_artikel = $id_akun."-".(date('m')+date("d")+date("B"));
                 $id_artikel_detail = substr(md5($id_artikel),0,4)."-1";
             //
+            
+            //check if judul exist
+                $errorString = null;
+                if(artikel_detail::where('judul_artikel','=',$request->jdl)->exists()) {
+                    return redirect()
+                        ->route('article.create')
+                        ->with('error','Gagal Upload Artikel Dikarenakan Judul Artikel Sudah Ada');
+                }
+            //
 
             //store Artikel
                 $file_ext =  $request->file('file')->getClientOriginalExtension();
@@ -294,7 +303,7 @@ class ArtikelController extends Controller
                     $nama_jurusan = jurusan::where('id_jurusan','=',$jurusan_asli)->first()->nama_jurusan;
                     echo "<br>Ini Penulis yang sudah terdaftar TAPI TIDAK sesuai dengan jurusannya<br>";
                     return redirect()
-                        ->route('article.recreate')
+                        ->back()
                         ->with([
                             'error' => 'Program Studi Penulis '.$key.' TIDAK SESUAI dengan Jurusan Di Database (Seharusnya '.$nama_jurusan.')',
                             'Count_penulis_jurusan' => $Count_penulis_jurusan,
@@ -306,13 +315,25 @@ class ArtikelController extends Controller
 
         if ($request->hasFile('file')) {
             //initial [id_akun], [id_artikel], [id_artikel_DETAIL]
-                $id_akun = (new listController)->getAkun()[0]['id_akun'];
+                $id_akun = (new listController)->getAkun()[0]['id'];
                 $artikelDetail = json_decode((new listController)->getTable('Judul-'.$id_article),true);
                 $id_artikel_detail = substr($artikelDetail[0]['id_artikel_detail'],0,5);
                 $id_artikel_detail_last = intval(substr($artikelDetail[0]['id_artikel_detail'],5)) + 1;
                 $id_artikel = $artikelDetail[0]['id_artikel'];
                 $id_AkunAwal = artikel::where('id_artikel','=',$id_artikel)->value('id_akun');
                 $id_artikel_detail = $id_artikel_detail.$id_artikel_detail_last;
+            //
+
+            //check if judul exist
+                if(artikel_detail::where('judul_artikel','=',$request->jdl)
+                    ->where('id_artikel','<>',$id_artikel)
+                    ->exists()) {
+                    return redirect()
+                        ->back()
+                        ->with(['error' => 'Gagal Upload Artikel Dikarenakan Judul Artikel Sudah Ada',
+                        'Count_penulis_jurusan' => $Count_penulis_jurusan,
+                        'field' => $input]);
+                }
             //
 
             //store Artikel
@@ -342,7 +363,7 @@ class ArtikelController extends Controller
         }
         else {
             return redirect()
-                ->route('article.recreate')
+                ->back()
                 ->with(['error' => 'File Dokumen Belum di Upload',
                 'Count_penulis_jurusan' => $Count_penulis_jurusan,
                 'field' => $input
@@ -443,7 +464,7 @@ class ArtikelController extends Controller
         $tableArray = json_decode((new listController)->getTable('Penulis-'.$dataPenulis[0]['id_penulis']),true);
         
         
-        $pp = json_decode((new listController)->getTable('Akun-'.$dataPenulis[0]['id_akun']),true)[0]['foto_profil'];
+        $pp = json_decode((new listController)->getTable('Akun-'.$dataPenulis[0]['id']),true)[0]['foto_profil'];
     
         $tableProdi = json_decode((new listController)->getTable('Prodi'),true);
 
